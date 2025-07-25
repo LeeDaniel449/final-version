@@ -1,0 +1,23 @@
+import { type NextRequest, NextResponse } from "next/server"
+import { stockAPI } from "@/lib/stock-api"
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const query = searchParams.get("q")
+
+    if (!query) {
+      return NextResponse.json({ error: "Query parameter is required" }, { status: 400 })
+    }
+
+    const results = await stockAPI.searchStocks(query)
+
+    return NextResponse.json({
+      success: true,
+      data: results,
+    })
+  } catch (error) {
+    console.error("Stock search API error:", error)
+    return NextResponse.json({ error: "Failed to search stocks" }, { status: 500 })
+  }
+}
