@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
+import OpenAI from "openai"
 
 interface Message {
   role: "user" | "assistant" | "system"
@@ -9,12 +10,12 @@ interface RequestBody {
   messages: Message[]
 }
 
-// Build comprehensive user context for personalized advice
-function buildUserContext() {
-  // Since we're on the server side, we can't access localStorage directly
-  // We'll provide general context and encourage users to sign up for personalized advice
-  return "User context not available on server side. Provide general financial advice and encourage user to sign up for personalized recommendations."
-}
+// Initialize OpenAI client only on server side
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  : null
 
 // Generate intelligent response based on user question
 function generateIntelligentResponse(userQuestion: string): string {
@@ -408,16 +409,10 @@ export async function POST(request: NextRequest) {
     let reply: string
     let source = "fallback"
 
-    // Try OpenAI if available
-    if (process.env.OPENAI_API_KEY) {
+    // Try OpenAI if available and properly configured
+    if (openai) {
       try {
         console.log("🤖 Attempting OpenAI API call...")
-
-        // Dynamic import to avoid issues
-        const OpenAI = (await import("openai")).default
-        const openai = new OpenAI({
-          apiKey: process.env.OPENAI_API_KEY,
-        })
 
         const systemPrompt = `You are a professional AI financial advisor with expertise in personal finance, budgeting, investing, and debt management. You provide helpful, actionable advice to users.
 
@@ -457,7 +452,7 @@ Always provide valuable advice even for general questions. If users want persona
         source = "fallback"
       }
     } else {
-      console.log("⚠️ No OpenAI API key found, using intelligent fallback")
+      console.log("⚠️ No OpenAI client available, using intelligent fallback")
       reply = generateIntelligentResponse(userQuestion)
       source = "fallback"
     }

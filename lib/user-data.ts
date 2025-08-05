@@ -7,27 +7,32 @@ interface UserProfile {
   email: string
   username: string
   password: string
-  age: string
+  age: number
   experience: string
   goals: string[]
   income: string
   expenses: string
   savings: string
   debt: string
-  riskTolerance: string
-  timeHorizon: string
-  investmentExperience: string
-  completedOnboarding: boolean
-  signedUp: boolean
-  signedIn: boolean
-  rememberMe: boolean
+  riskTolerance: "conservative" | "moderate" | "aggressive"
+  timeHorizon: "short" | "medium" | "long"
+  investmentExperience: "beginner" | "intermediate" | "advanced"
 }
 
 interface BudgetData {
   income: number
-  expenses: { [category: string]: number }
+  expenses: {
+    housing: number
+    food: number
+    transportation: number
+    utilities: number
+    insurance: number
+    healthcare: number
+    entertainment: number
+    shopping: number
+    other: number
+  }
   savings: number
-  goals: { name: string; target: number; current: number }[]
 }
 
 interface Goal {
@@ -35,10 +40,9 @@ interface Goal {
   title: string
   targetAmount: number
   currentAmount: number
-  targetDate: string
-  description: string
-  priority: "high" | "medium" | "low"
+  deadline: string
   status: "active" | "completed" | "paused"
+  category: "emergency" | "retirement" | "house" | "vacation" | "education" | "other"
 }
 
 interface BudgetCategory {
@@ -100,51 +104,50 @@ interface RegisteredUser {
   lastSignIn: string
 }
 
-// interface UserData {
-//   isSignedIn: boolean
-//   profile: UserProfile
-//   budgetData: BudgetData
-//   goals: Goal[]
-//   lastUpdated: string
-// }
+interface UserData {
+  isSignedIn: boolean
+  profile: UserProfile
+  budgetData: BudgetData
+  goals: Goal[]
+}
 
 // Default user data structure
-// const defaultUserData: UserData = {
-//   isSignedIn: false,
-//   profile: {
-//     firstName: "",
-//     lastName: "",
-//     email: "",
-//     age: 25,
-//     experience: "",
-//     goals: [],
-//     income: "",
-//     expenses: "",
-//     savings: "",
-//     debt: "",
-//     riskTolerance: "moderate",
-//     timeHorizon: "long",
-//     investmentExperience: "beginner",
-//     completedOnboarding: false,
-//     signedUp: false,
-//     signedIn: false,
-//     rememberMe: false,
-//   },
-//   budgetData: {
-//     income: 0,
-//     expenses: {
-//       housing: 0,
-//       food: 0,
-//       transportation: 0,
-//       entertainment: 0,
-//       healthcare: 0,
-//       other: 0,
-//     },
-//     savings: 0,
-//   },
-//   goals: [],
-//   lastUpdated: new Date().toISOString(),
-// }
+const defaultUserData: UserData = {
+  isSignedIn: false,
+  profile: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
+    age: 25,
+    experience: "",
+    goals: [],
+    income: "",
+    expenses: "",
+    savings: "",
+    debt: "",
+    riskTolerance: "moderate",
+    timeHorizon: "long",
+    investmentExperience: "beginner",
+  },
+  budgetData: {
+    income: 0,
+    expenses: {
+      housing: 0,
+      food: 0,
+      transportation: 0,
+      utilities: 0,
+      insurance: 0,
+      healthcare: 0,
+      entertainment: 0,
+      shopping: 0,
+      other: 0,
+    },
+    savings: 0,
+  },
+  goals: [],
+}
 
 // Storage key for localStorage
 const STORAGE_KEY = "financial_app_user_data"
@@ -171,7 +174,7 @@ class UserDataManager {
     email: "",
     username: "",
     password: "",
-    age: "",
+    age: 25,
     experience: "",
     goals: [],
     income: "",
@@ -181,17 +184,22 @@ class UserDataManager {
     riskTolerance: "",
     timeHorizon: "",
     investmentExperience: "",
-    completedOnboarding: false,
-    signedUp: false,
-    signedIn: false,
-    rememberMe: false,
   }
 
   private defaultBudgetData: BudgetData = {
     income: 0,
-    expenses: {},
+    expenses: {
+      housing: 0,
+      food: 0,
+      transportation: 0,
+      utilities: 0,
+      insurance: 0,
+      healthcare: 0,
+      entertainment: 0,
+      shopping: 0,
+      other: 0,
+    },
     savings: 0,
-    goals: [],
   }
 
   private defaultLearningProgress: LearningProgress = {
@@ -214,80 +222,80 @@ class UserDataManager {
     modules: {},
   }
 
-  // private userData: UserData
-  // private listeners: Set<() => void> = new Set()
+  private userData: UserData
+  private listeners: Set<() => void> = new Set()
 
-  // constructor() {
-  //   this.userData = this.loadFromStorage()
-  // }
+  constructor() {
+    this.userData = this.loadFromStorage()
+  }
 
-  // // Load user data from localStorage
-  // private loadFromStorage(): UserData {
-  //   if (typeof window === "undefined") {
-  //     return { ...defaultUserData }
-  //   }
+  // Load user data from localStorage
+  private loadFromStorage(): UserData {
+    if (typeof window === "undefined") {
+      return { ...defaultUserData }
+    }
 
-  //   try {
-  //     const stored = localStorage.getItem(STORAGE_KEY)
-  //     if (stored) {
-  //       const parsed = JSON.parse(stored)
-  //       // Merge with default data to ensure all properties exist
-  //       return {
-  //         ...defaultUserData,
-  //         ...parsed,
-  //         profile: { ...defaultUserData.profile, ...parsed.profile },
-  //         budgetData: {
-  //           ...defaultUserData.budgetData,
-  //           ...parsed.budgetData,
-  //           expenses: { ...defaultUserData.budgetData.expenses, ...parsed.budgetData?.expenses },
-  //         },
-  //         goals: parsed.goals || [],
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error loading user data from storage:", error)
-  //   }
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        // Merge with default data to ensure all properties exist
+        return {
+          ...defaultUserData,
+          ...parsed,
+          profile: { ...defaultUserData.profile, ...parsed.profile },
+          budgetData: {
+            ...defaultUserData.budgetData,
+            ...parsed.budgetData,
+            expenses: { ...defaultUserData.budgetData.expenses, ...parsed.budgetData?.expenses },
+          },
+          goals: parsed.goals || [],
+        }
+      }
+    } catch (error) {
+      console.error("Error loading user data from storage:", error)
+    }
 
-  //   return { ...defaultUserData }
-  // }
+    return { ...defaultUserData }
+  }
 
-  // // Save user data to localStorage
-  // private saveToStorage(): void {
-  //   if (typeof window === "undefined") return
+  // Save user data to localStorage
+  private saveToStorage(): void {
+    if (typeof window === "undefined") return
 
-  //   try {
-  //     this.userData.lastUpdated = new Date().toISOString()
-  //     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.userData))
-  //     this.notifyListeners()
-  //     // Dispatch custom event for components that don't use the manager directly
-  //     window.dispatchEvent(
-  //       new CustomEvent(USER_DATA_CHANGED_EVENT, {
-  //         detail: this.userData,
-  //       }),
-  //     )
-  //   } catch (error) {
-  //     console.error("Error saving user data to storage:", error)
-  //   }
-  // }
+    try {
+      this.userData.lastUpdated = new Date().toISOString()
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.userData))
+      this.notifyListeners()
+      // Dispatch custom event for components that don't use the manager directly
+      window.dispatchEvent(
+        new CustomEvent(USER_DATA_CHANGED_EVENT, {
+          detail: this.userData,
+        }),
+      )
+    } catch (error) {
+      console.error("Error saving user data to storage:", error)
+    }
+  }
 
-  // // Notify all listeners of data changes
-  // private notifyListeners(): void {
-  //   this.listeners.forEach((listener) => {
-  //     try {
-  //       listener()
-  //     } catch (error) {
-  //       console.error("Error in user data listener:", error)
-  //     }
-  //   })
-  // }
+  // Notify all listeners of data changes
+  private notifyListeners(): void {
+    this.listeners.forEach((listener) => {
+      try {
+        listener()
+      } catch (error) {
+        console.error("Error in user data listener:", error)
+      }
+    })
+  }
 
-  // // Subscribe to user data changes
-  // subscribe(listener: () => void): () => void {
-  //   this.listeners.add(listener)
-  //   return () => {
-  //     this.listeners.delete(listener)
-  //   }
-  // }
+  // Subscribe to user data changes
+  subscribe(listener: () => void): () => void {
+    this.listeners.add(listener)
+    return () => {
+      this.listeners.delete(listener)
+    }
+  }
 
   // Check if user is signed in
   isUserSignedIn(): boolean {
@@ -295,19 +303,19 @@ class UserDataManager {
     return localStorage.getItem(this.STORAGE_KEYS.SIGNED_IN) === "true"
   }
 
-  // // Get current user data
-  // getUserData(): UserData {
-  //   return { ...this.userData }
-  // }
+  // Get current user data
+  getUserData(): UserData {
+    return { ...this.userData }
+  }
 
-  // // Sign in user
-  // signIn(profile: Partial<UserProfile>): void {
-  //   this.userData.isSignedIn = true
-  //   this.userData.profile = { ...this.userData.profile, ...profile }
-  //   this.saveToStorage()
-  // }
+  // Sign in user
+  signIn(profile: Partial<UserProfile>): void {
+    this.userData.isSignedIn = true
+    this.userData.profile = { ...this.userData.profile, ...profile }
+    this.saveToStorage()
+  }
 
-  // // Sign out user
+  // Sign out user
   signOut(): void {
     if (typeof window === "undefined") return
 
@@ -353,38 +361,38 @@ class UserDataManager {
     return registeredUsers.some((u) => u.profile.email === identifier || u.profile.username === identifier)
   }
 
-  // // Update user profile
-  // updateProfile(updates: Partial<UserProfile>): void {
-  //   this.userData.profile = { ...this.userData.profile, ...updates }
-  //   this.saveToStorage()
-  // }
+  // Update user profile
+  updateProfile(updates: Partial<UserProfile>): void {
+    this.userData.profile = { ...this.userData.profile, ...updates }
+    this.saveToStorage()
+  }
 
-  // // Update budget data
-  // updateBudgetData(updates: Partial<BudgetData>): void {
-  //   this.userData.budgetData = {
-  //     ...this.userData.budgetData,
-  //     ...updates,
-  //     expenses: { ...this.userData.budgetData.expenses, ...updates.expenses },
-  //   }
-  //   this.saveToStorage()
-  // }
+  // Update budget data
+  updateBudgetData(updates: Partial<BudgetData>): void {
+    this.userData.budgetData = {
+      ...this.userData.budgetData,
+      ...updates,
+      expenses: { ...this.userData.budgetData.expenses, ...updates.expenses },
+    }
+    this.saveToStorage()
+  }
 
-  // // Add or update a goal
-  // updateGoal(goal: Goal): void {
-  //   const existingIndex = this.userData.goals.findIndex((g) => g.id === goal.id)
-  //   if (existingIndex >= 0) {
-  //     this.userData.goals[existingIndex] = goal
-  //   } else {
-  //     this.userData.goals.push(goal)
-  //   }
-  //   this.saveToStorage()
-  // }
+  // Add or update a goal
+  updateGoal(goal: Goal): void {
+    const existingIndex = this.userData.goals.findIndex((g) => g.id === goal.id)
+    if (existingIndex >= 0) {
+      this.userData.goals[existingIndex] = goal
+    } else {
+      this.userData.goals.push(goal)
+    }
+    this.saveToStorage()
+  }
 
-  // // Remove a goal
-  // removeGoal(goalId: string): void {
-  //   this.userData.goals = this.userData.goals.filter((g) => g.id !== goalId)
-  //   this.saveToStorage()
-  // }
+  // Remove a goal
+  removeGoal(goalId: string): void {
+    this.userData.goals = this.userData.goals.filter((g) => g.id !== goalId)
+    this.saveToStorage()
+  }
 
   // User Profile Management
   getUserProfile(): UserProfile {
@@ -567,109 +575,109 @@ class UserDataManager {
   }
 
   // Get budget data
-  // getBudgetData(): BudgetData {
-  //   return { ...this.userData.budgetData }
-  // }
+  getBudgetData(): BudgetData {
+    return { ...this.userData.budgetData }
+  }
 
   // Get goals
-  // getGoals(): Goal[] {
-  //   return [...this.userData.goals]
-  // }
+  getGoals(): Goal[] {
+    return [...this.userData.goals]
+  }
 
   // Calculate financial metrics
-  // getFinancialMetrics() {
-  //   const { income, expenses, savings } = this.userData.budgetData
-  //   const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  //   const monthlyLeftover = income - totalExpenses
-  //   const savingsRate = income > 0 ? (monthlyLeftover / income) * 100 : 0
-  //   const emergencyFundMonths = totalExpenses > 0 ? savings / totalExpenses : 0
+  getFinancialMetrics() {
+    const { income, expenses, savings } = this.userData.budgetData
+    const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
+    const monthlyLeftover = income - totalExpenses
+    const savingsRate = income > 0 ? (monthlyLeftover / income) * 100 : 0
+    const emergencyFundMonths = totalExpenses > 0 ? savings / totalExpenses : 0
 
-  //   return {
-  //     totalExpenses,
-  //     monthlyLeftover,
-  //     savingsRate,
-  //     emergencyFundMonths,
-  //     isEmergencyFundAdequate: emergencyFundMonths >= 3,
-  //     isInvestmentReady: emergencyFundMonths >= 3 && monthlyLeftover > 0,
-  //   }
-  // }
+    return {
+      totalExpenses,
+      monthlyLeftover,
+      savingsRate,
+      emergencyFundMonths,
+      isEmergencyFundAdequate: emergencyFundMonths >= 6,
+      isInvestmentReady: emergencyFundMonths >= 6 && monthlyLeftover > 0,
+    }
+  }
 
   // Reset all data (for testing/demo purposes)
-  // resetData(): void {
-  //   this.userData = { ...defaultUserData }
-  //   this.saveToStorage()
-  // }
+  resetData(): void {
+    this.userData = { ...defaultUserData }
+    this.saveToStorage()
+  }
 
   // Load sample data for demo
-  // loadSampleData(): void {
-  //   const sampleData: UserData = {
-  //     isSignedIn: true,
-  //     profile: {
-  //       firstName: "Alex",
-  //       lastName: "Johnson",
-  //       email: "alex.johnson@example.com",
-  //       age: 28,
-  //       experience: "",
-  //       goals: [],
-  //       income: "",
-  //       expenses: "",
-  //       savings: "",
-  //       debt: "",
-  //       riskTolerance: "moderate",
-  //       timeHorizon: "long",
-  //       investmentExperience: "beginner",
-  //       completedOnboarding: false,
-  //       signedUp: false,
-  //       signedIn: false,
-  //       rememberMe: false,
-  //     },
-  //     budgetData: {
-  //       income: 5500,
-  //       expenses: {
-  //         housing: 1800,
-  //         food: 600,
-  //         transportation: 450,
-  //         entertainment: 300,
-  //         healthcare: 200,
-  //         other: 250,
-  //       },
-  //       savings: 15000,
-  //     },
-  //     goals: [
-  //       {
-  //         id: "1",
-  //         title: "Emergency Fund",
-  //         target: 20000,
-  //         current: 15000,
-  //         deadline: "2024-12-31",
-  //         priority: "high",
-  //         status: "active",
-  //       },
-  //       {
-  //         id: "2",
-  //         title: "House Down Payment",
-  //         target: 60000,
-  //         current: 8000,
-  //         deadline: "2026-06-01",
-  //         priority: "medium",
-  //         status: "active",
-  //       },
-  //       {
-  //         id: "3",
-  //         title: "Vacation Fund",
-  //         target: 5000,
-  //         current: 1200,
-  //         deadline: "2024-08-01",
-  //         priority: "low",
-  //         status: "active",
-  //       },
-  //     ],
-  //     lastUpdated: new Date().toISOString(),
-  //   }
+  loadSampleData(): void {
+    const sampleData: UserData = {
+      isSignedIn: true,
+      profile: {
+        firstName: "Alex",
+        lastName: "Johnson",
+        email: "alex.johnson@example.com",
+        username: "alexjohnson",
+        password: "securepassword123",
+        age: 28,
+        experience: "",
+        goals: [],
+        income: "",
+        expenses: "",
+        savings: "",
+        debt: "",
+        riskTolerance: "moderate",
+        timeHorizon: "long",
+        investmentExperience: "beginner",
+      },
+      budgetData: {
+        income: 5500,
+        expenses: {
+          housing: 1800,
+          food: 600,
+          transportation: 400,
+          utilities: 200,
+          insurance: 300,
+          healthcare: 150,
+          entertainment: 300,
+          shopping: 250,
+          other: 200,
+        },
+        savings: 15000,
+      },
+      goals: [
+        {
+          id: "1",
+          title: "Emergency Fund",
+          targetAmount: 20000,
+          currentAmount: 15000,
+          deadline: "2024-12-31",
+          status: "active",
+          category: "emergency",
+        },
+        {
+          id: "2",
+          title: "House Down Payment",
+          targetAmount: 50000,
+          currentAmount: 12000,
+          deadline: "2026-06-30",
+          status: "active",
+          category: "house",
+        },
+        {
+          id: "3",
+          title: "Retirement Savings",
+          targetAmount: 100000,
+          currentAmount: 25000,
+          deadline: "2030-12-31",
+          status: "active",
+          category: "retirement",
+        },
+      ],
+    }
 
-  //   this.userData = sampleData
-  //   this.saveToStorage()
-  // }
+    this.userData = sampleData
+    this.saveToStorage()
+  }
 
   private getRegisteredUsers(): RegisteredUser[] {
     if (typeof window === "undefined") return []
@@ -863,54 +871,6 @@ class UserDataManager {
     return newEntry
   }
 
-  // Budget Data Management
-  getBudgetData(): BudgetData {
-    if (typeof window === "undefined") return this.defaultBudgetData
-
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA)
-      return stored ? JSON.parse(stored) : this.defaultBudgetData
-    } catch (error) {
-      console.error("Error loading budget data:", error)
-      return this.defaultBudgetData
-    }
-  }
-
-  saveBudgetData(budgetData: Partial<BudgetData>): void {
-    if (typeof window === "undefined") return
-
-    try {
-      const currentData = this.getBudgetData()
-      const updatedData = { ...currentData, ...budgetData }
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA, JSON.stringify(updatedData))
-    } catch (error) {
-      console.error("Error saving budget data:", error)
-    }
-  }
-
-  hasStartedBudgeting(): boolean {
-    const budget = this.getBudgetData()
-
-    // Income or savings entered.
-    if (budget.income > 0 || budget.savings > 0) return true
-
-    // Any expense amount entered.
-    if (Object.values(budget.expenses).some((value) => value > 0)) return true
-
-    // Any goal with a non-zero target/current amount.
-    if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
-
-    // Check budget categories
-    const categories = this.getBudgetCategories()
-    if (categories.some((c) => c.budgetAmount > 0 || c.spentAmount > 0)) return true
-
-    // Check budget entries
-    const entries = this.getBudgetEntries()
-    if (entries.length > 0) return true
-
-    return false
-  }
-
   // -------------------- USER PROGRESS MANAGEMENT -------------------- //
   getUserProgress(): UserProgress {
     if (typeof window === "undefined") return this.defaultUserProgress
@@ -1012,7 +972,7 @@ class UserDataManager {
     const goals = this.getGoals()
     const index = goals.findIndex((goal) => goal.id === id)
     if (index !== -1) {
-      goals[index] = { ...goals[index], ...updates }
+      Object.assign(goals[index], updates)
       this.saveGoals(goals)
     }
   }
@@ -1256,16 +1216,25 @@ export function getUserData() {
         lastName: "",
         email: "",
         username: "",
-        age: "",
+        age: 25,
         riskTolerance: "moderate",
         investmentExperience: "beginner",
-        timeHorizon: "5-10 years",
+        timeHorizon: "long",
       },
       budgetData: {
         income: 0,
-        expenses: {},
+        expenses: {
+          housing: 0,
+          food: 0,
+          transportation: 0,
+          utilities: 0,
+          insurance: 0,
+          healthcare: 0,
+          entertainment: 0,
+          shopping: 0,
+          other: 0,
+        },
         savings: 0,
-        goals: [],
       },
       goals: [],
       budgetCategories: [],
@@ -1298,3 +1267,144 @@ export function getUserData() {
 
 // Export types
 export type { UserProfile, BudgetData, Goal, UserProgress }
+
+// Mock user data for demonstration purposes
+// In a real app, this would come from a database or authentication system
+
+const mockUserData: UserData = {
+  isSignedIn: true,
+  profile: {
+    firstName: "Alex",
+    lastName: "Johnson",
+    email: "alex.johnson@example.com",
+    username: "alexjohnson",
+    age: 28,
+    riskTolerance: "moderate",
+    investmentExperience: "beginner",
+    timeHorizon: "long",
+  },
+  budgetData: {
+    income: 5500,
+    expenses: {
+      housing: 1800,
+      food: 600,
+      transportation: 400,
+      utilities: 200,
+      insurance: 300,
+      healthcare: 150,
+      entertainment: 300,
+      shopping: 250,
+      other: 200,
+    },
+    savings: 15000,
+  },
+  goals: [
+    {
+      id: "1",
+      title: "Emergency Fund",
+      targetAmount: 20000,
+      currentAmount: 15000,
+      deadline: "2024-12-31",
+      status: "active",
+      category: "emergency",
+    },
+    {
+      id: "2",
+      title: "House Down Payment",
+      targetAmount: 50000,
+      currentAmount: 12000,
+      deadline: "2026-06-30",
+      status: "active",
+      category: "house",
+    },
+    {
+      id: "3",
+      title: "Retirement Savings",
+      targetAmount: 100000,
+      currentAmount: 25000,
+      deadline: "2030-12-31",
+      status: "active",
+      category: "retirement",
+    },
+  ],
+}
+
+export function updateUserProfile(profile: Partial<UserProfile>): void {
+  // In a real app, this would update the database
+  Object.assign(mockUserData.profile, profile)
+}
+
+export function updateBudgetData(budgetData: Partial<BudgetData>): void {
+  // In a real app, this would update the database
+  Object.assign(mockUserData.budgetData, budgetData)
+}
+
+export function addGoal(goal: Omit<Goal, "id">): void {
+  // In a real app, this would add to the database
+  const newGoal: Goal = {
+    ...goal,
+    id: Date.now().toString(),
+  }
+  mockUserData.goals.push(newGoal)
+}
+
+export function updateGoal(id: string, updates: Partial<Goal>): void {
+  // In a real app, this would update the database
+  const goalIndex = mockUserData.goals.findIndex((g) => g.id === id)
+  if (goalIndex !== -1) {
+    Object.assign(mockUserData.goals[goalIndex], updates)
+  }
+}
+
+export function deleteGoal(id: string): void {
+  // In a real app, this would delete from the database
+  mockUserData.goals = mockUserData.goals.filter((g) => g.id !== id)
+}
+
+// Helper functions for financial calculations
+export function calculateSavingsRate(): number {
+  const { income, expenses } = mockUserData.budgetData
+  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
+  const monthlyLeftover = income - totalExpenses
+  return income > 0 ? (monthlyLeftover / income) * 100 : 0
+}
+
+export function calculateEmergencyFundMonths(): number {
+  const { expenses, savings } = mockUserData.budgetData
+  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
+  return totalExpenses > 0 ? savings / totalExpenses : 0
+}
+
+export function getFinancialHealthScore(): {
+  score: number
+  factors: Array<{ name: string; status: "good" | "warning" | "poor"; description: string }>
+} {
+  const savingsRate = calculateSavingsRate()
+  const emergencyMonths = calculateEmergencyFundMonths()
+  const { income, expenses } = mockUserData.budgetData
+  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
+  const monthlyLeftover = income - totalExpenses
+
+  const factors = [
+    {
+      name: "Emergency Fund",
+      status: emergencyMonths >= 6 ? "good" : emergencyMonths >= 3 ? "warning" : "poor",
+      description: `${emergencyMonths.toFixed(1)} months of expenses saved`,
+    },
+    {
+      name: "Savings Rate",
+      status: savingsRate >= 20 ? "good" : savingsRate >= 10 ? "warning" : "poor",
+      description: `Saving ${savingsRate.toFixed(1)}% of income`,
+    },
+    {
+      name: "Budget Balance",
+      status: monthlyLeftover > 0 ? "good" : monthlyLeftover === 0 ? "warning" : "poor",
+      description: monthlyLeftover > 0 ? `$${monthlyLeftover} monthly surplus` : "Expenses equal or exceed income",
+    },
+  ]
+
+  const goodFactors = factors.filter((f) => f.status === "good").length
+  const score = Math.round((goodFactors / factors.length) * 100)
+
+  return { score, factors }
+}
