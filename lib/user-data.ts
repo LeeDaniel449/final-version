@@ -106,53 +106,6 @@ interface RegisteredUser {
   lastSignIn: string
 }
 
-// User data interface
-interface UserData {
-  isSignedIn: boolean
-  profile: UserProfile
-  budgetData: BudgetData
-  goals: Goal[]
-}
-
-// Default user data structure
-const defaultUserData: UserData = {
-  isSignedIn: false,
-  profile: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    username: "",
-    password: "",
-    age: "",
-    experience: "",
-    goals: [],
-    income: "",
-    expenses: "",
-    savings: "",
-    debt: "",
-    riskTolerance: "",
-    timeHorizon: "",
-    investmentExperience: "",
-    completedOnboarding: false,
-    signedUp: false,
-    signedIn: false,
-    rememberMe: false,
-  },
-  budgetData: {
-    income: 0,
-    expenses: {},
-    savings: 0,
-    goals: [],
-  },
-  goals: [],
-}
-
-// Storage key for localStorage
-const STORAGE_KEY = "financial_app_user_data"
-
-// Event name for user data changes
-const USER_DATA_CHANGED_EVENT = "userDataChanged"
-
 // Declare learningModules variable
 const learningModules = [
   { id: "1", lessons: 5 },
@@ -222,175 +175,10 @@ class UserDataManager {
     modules: {},
   }
 
-  private userData: UserData
-  private listeners: Set<() => void> = new Set()
-
-  constructor() {
-    this.userData = this.loadFromStorage()
-  }
-
-  // Load user data from localStorage
-  private loadFromStorage(): UserData {
-    if (typeof window === "undefined") {
-      return { ...defaultUserData }
-    }
-
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const parsed = JSON.parse(stored)
-        // Merge with default data to ensure all properties exist
-        return {
-          ...defaultUserData,
-          ...parsed,
-          profile: { ...defaultUserData.profile, ...parsed.profile },
-          budgetData: {
-            ...defaultUserData.budgetData,
-            ...parsed.budgetData,
-            expenses: { ...defaultUserData.budgetData.expenses, ...parsed.budgetData?.expenses },
-          },
-          goals: parsed.goals || [],
-        }
-      }
-    } catch (error) {
-      console.error("Error loading user data from storage:", error)
-    }
-
-    return { ...defaultUserData }
-  }
-
-  // Save user data to localStorage
-  private saveToStorage(): void {
-    if (typeof window === "undefined") return
-
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.userData))
-      this.notifyListeners()
-      // Dispatch custom event for components that don't use the manager directly
-      window.dispatchEvent(
-        new CustomEvent(USER_DATA_CHANGED_EVENT, {
-          detail: this.userData,
-        }),
-      )
-    } catch (error) {
-      console.error("Error saving user data to storage:", error)
-    }
-  }
-
-  // Notify all listeners of data changes
-  private notifyListeners(): void {
-    this.listeners.forEach((listener) => {
-      try {
-        listener()
-      } catch (error) {
-        console.error("Error in user data listener:", error)
-      }
-    })
-  }
-
-  // Subscribe to user data changes
-  subscribe(listener: () => void): () => void {
-    this.listeners.add(listener)
-    return () => {
-      this.listeners.delete(listener)
-    }
-  }
-
   // Check if user is signed in
   isUserSignedIn(): boolean {
     if (typeof window === "undefined") return false
     return localStorage.getItem(this.STORAGE_KEYS.SIGNED_IN) === "true"
-  }
-
-  // Get current user data
-  getUserData(): UserData {
-    return { ...this.userData }
-  }
-
-  // Sign in user
-  signIn(profile: Partial<UserProfile>): void {
-    this.userData.isSignedIn = true
-    this.userData.profile = { ...this.userData.profile, ...profile }
-    this.saveToStorage()
-  }
-
-  // Sign out user
-  signOut(): void {
-    if (typeof window === "undefined") return
-
-    // Save current user data before signing out
-    this.saveCurrentUserData()
-
-    // Clear sign-in status and current session data
-    this.setUserSignedIn(false)
-    localStorage.removeItem(this.STORAGE_KEYS.CURRENT_USER)
-
-    // Clear current session progress data (but keep it saved for the user)
-    localStorage.removeItem(this.STORAGE_KEYS.USER_PROGRESS)
-    localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
-    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
-    localStorage.removeItem(this.STORAGE_KEYS.GOALS)
-
-    // Clear remember me if not set
-    const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
-    if (!rememberMe) {
-      localStorage.removeItem(this.STORAGE_KEYS.REMEMBER_ME)
-      // Also clear the user profile if not remembering
-      localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
-    }
-
-    console.log("User signed out and session data cleared")
-  }
-
-  isUserSignedUp(): boolean {
-    if (typeof window === "undefined") return false
-
-    // 1) Active session?
-    if (this.isUserSignedIn()) return true
-
-    // 2) Cached profile flag?
-    const profile = this.getUserProfile()
-    if (profile.signedUp) return true
-
-    // 3) Stored in the registry?
-    const identifier = profile.email || profile.username
-    if (!identifier) return false
-
-    const registeredUsers = this.getRegisteredUsers()
-    return registeredUsers.some((u) => u.profile.email === identifier || u.profile.username === identifier)
-  }
-
-  // Update user profile
-  updateProfile(updates: Partial<UserProfile>): void {
-    this.userData.profile = { ...this.userData.profile, ...updates }
-    this.saveToStorage()
-  }
-
-  // Update budget data
-  updateBudgetData(updates: Partial<BudgetData>): void {
-    this.userData.budgetData = {
-      ...this.userData.budgetData,
-      ...updates,
-      expenses: { ...this.userData.budgetData.expenses, ...updates.expenses },
-    }
-    this.saveToStorage()
-  }
-
-  // Add or update a goal
-  updateGoal(goal: Goal): void {
-    const existingIndex = this.userData.goals.findIndex((g) => g.id === goal.id)
-    if (existingIndex >= 0) {
-      this.userData.goals[existingIndex] = goal
-    } else {
-      this.userData.goals.push(goal)
-    }
-    this.saveToStorage()
-  }
-
-  // Remove a goal
-  removeGoal(goalId: string): void {
-    this.userData.goals = this.userData.goals.filter((g) => g.id !== goalId)
-    this.saveToStorage()
   }
 
   // User Profile Management
@@ -568,9 +356,50 @@ class UserDataManager {
     localStorage.setItem(this.STORAGE_KEYS.REMEMBER_ME, remember.toString())
   }
 
-  // Get user profile
-  getProfile(): UserProfile {
-    return { ...this.getUserProfile() }
+  // Sign out user
+  signOut(): void {
+    if (typeof window === "undefined") return
+
+    // Save current user data before signing out
+    this.saveCurrentUserData()
+
+    // Clear sign-in status and current session data
+    this.setUserSignedIn(false)
+    localStorage.removeItem(this.STORAGE_KEYS.CURRENT_USER)
+
+    // Clear current session progress data (but keep it saved for the user)
+    localStorage.removeItem(this.STORAGE_KEYS.USER_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
+    localStorage.removeItem(this.STORAGE_KEYS.GOALS)
+
+    // Clear remember me if not set
+    const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
+    if (!rememberMe) {
+      localStorage.removeItem(this.STORAGE_KEYS.REMEMBER_ME)
+      // Also clear the user profile if not remembering
+      localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
+    }
+
+    console.log("User signed out and session data cleared")
+  }
+
+  isUserSignedUp(): boolean {
+    if (typeof window === "undefined") return false
+
+    // 1) Active session?
+    if (this.isUserSignedIn()) return true
+
+    // 2) Cached profile flag?
+    const profile = this.getUserProfile()
+    if (profile.signedUp) return true
+
+    // 3) Stored in the registry?
+    const identifier = profile.email || profile.username
+    if (!identifier) return false
+
+    const registeredUsers = this.getRegisteredUsers()
+    return registeredUsers.some((u) => u.profile.email === identifier || u.profile.username === identifier)
   }
 
   private getRegisteredUsers(): RegisteredUser[] {
@@ -640,131 +469,6 @@ class UserDataManager {
     }
   }
 
-  /* ---------- CATEGORY HELPERS ---------- */
-  private getDefaultBudgetCategories(): BudgetCategory[] {
-    return [
-      {
-        id: "1",
-        name: "Housing",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#0F52B9",
-        type: "expense",
-      },
-      {
-        id: "2",
-        name: "Food & Dining",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#10B981",
-        type: "expense",
-      },
-      {
-        id: "3",
-        name: "Transportation",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#8953A9",
-        type: "expense",
-      },
-      {
-        id: "4",
-        name: "Entertainment",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#EF4444",
-        type: "expense",
-      },
-      {
-        id: "5",
-        name: "Utilities",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#06B6D4",
-        type: "expense",
-      },
-      {
-        id: "6",
-        name: "Healthcare",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#8B5CF6",
-        type: "expense",
-      },
-      { id: "7", name: "Travel", budgetAmount: 0, spentAmount: 0, spendingLimit: 0, color: "#84CC16", type: "expense" },
-    ]
-  }
-
-  /* ---------- CATEGORY CRUD ---------- */
-  getBudgetCategories(): BudgetCategory[] {
-    if (typeof window === "undefined") return this.getDefaultBudgetCategories()
-
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
-      if (stored) {
-        const parsed: BudgetCategory[] = JSON.parse(stored)
-        return parsed.length ? parsed : this.getDefaultBudgetCategories()
-      }
-    } catch (err) {
-      console.error("Error loading budget categories:", err)
-    }
-
-    return this.getDefaultBudgetCategories()
-  }
-
-  saveBudgetCategories(categories: BudgetCategory[]): void {
-    if (typeof window === "undefined") return
-    try {
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories", JSON.stringify(categories))
-    } catch (err) {
-      console.error("Error saving budget categories:", err)
-    }
-  }
-
-  updateBudgetCategory(name: string, updates: Partial<BudgetCategory>): void {
-    const cats = this.getBudgetCategories()
-    const idx = cats.findIndex((c) => c.name.toLowerCase() === name.toLowerCase())
-    if (idx === -1) return
-    cats[idx] = { ...cats[idx], ...updates }
-    this.saveBudgetCategories(cats)
-  }
-
-  /* ---------- BUDGET ENTRIES ---------- */
-  getBudgetEntries(): BudgetEntry[] {
-    if (typeof window === "undefined") return []
-
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
-      return stored ? JSON.parse(stored) : []
-    } catch (err) {
-      console.error("Error loading budget entries:", err)
-      return []
-    }
-  }
-
-  saveBudgetEntries(entries: BudgetEntry[]): void {
-    if (typeof window === "undefined") return
-    try {
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries", JSON.stringify(entries))
-    } catch (err) {
-      console.error("Error saving budget entries:", err)
-    }
-  }
-
-  addBudgetEntry(entry: Omit<BudgetEntry, "id">): BudgetEntry {
-    const newEntry: BudgetEntry = { ...entry, id: Date.now().toString() }
-    const all = this.getBudgetEntries()
-    all.push(newEntry)
-    this.saveBudgetEntries(all)
-    return newEntry
-  }
-
   // Budget Data Management
   getBudgetData(): BudgetData {
     if (typeof window === "undefined") return this.defaultBudgetData
@@ -787,93 +491,6 @@ class UserDataManager {
       localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA, JSON.stringify(updatedData))
     } catch (error) {
       console.error("Error saving budget data:", error)
-    }
-  }
-
-  hasStartedBudgeting(): boolean {
-    const budget = this.getBudgetData()
-
-    // Income or savings entered.
-    if (budget.income > 0 || budget.savings > 0) return true
-
-    // Any expense amount entered.
-    if (Object.values(budget.expenses).some((value) => value > 0)) return true
-
-    // Any goal with a non-zero target/current amount.
-    if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
-
-    // Check budget categories
-    const categories = this.getBudgetCategories()
-    if (categories.some((c) => c.budgetAmount > 0 || c.spentAmount > 0)) return true
-
-    // Check budget entries
-    const entries = this.getBudgetEntries()
-    if (entries.length > 0) return true
-
-    return false
-  }
-
-  // -------------------- USER PROGRESS MANAGEMENT -------------------- //
-  getUserProgress(): UserProgress {
-    if (typeof window === "undefined") return this.defaultUserProgress
-
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.USER_PROGRESS)
-      const progress = stored ? JSON.parse(stored) : this.defaultUserProgress
-
-      // Ensure modules object exists
-      if (!progress.modules) {
-        progress.modules = {}
-      }
-
-      return progress
-    } catch (error) {
-      console.error("Error loading user progress:", error)
-      return this.defaultUserProgress
-    }
-  }
-
-  saveUserProgress(progress: Partial<UserProgress>): void {
-    if (typeof window === "undefined") return
-
-    try {
-      const current = this.getUserProgress()
-      const updated = { ...current, ...progress }
-
-      // Ensure modules object exists
-      if (!updated.modules) {
-        updated.modules = {}
-      }
-
-      // Save to localStorage
-      localStorage.setItem(this.STORAGE_KEYS.USER_PROGRESS, JSON.stringify(updated))
-      console.log("✅ User progress saved to localStorage")
-
-      // Also save to registered users if signed in
-      const currentUserIdentifier = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
-      if (currentUserIdentifier) {
-        try {
-          const registeredUsers = this.getRegisteredUsers()
-          const userIndex = registeredUsers.findIndex(
-            (user) => user.profile.email === currentUserIdentifier || user.profile.username === currentUserIdentifier,
-          )
-
-          if (userIndex !== -1) {
-            registeredUsers[userIndex].userProgress = updated
-            localStorage.setItem(this.STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers))
-            console.log("✅ User progress saved to registered users")
-          }
-        } catch (error) {
-          console.error("❌ Error saving to registered users:", error)
-        }
-      }
-
-      // Dispatch event to notify other components
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("progressUpdated", { detail: updated }))
-      }
-    } catch (error) {
-      console.error("❌ Error saving user progress:", error)
     }
   }
 
@@ -956,6 +573,217 @@ class UserDataManager {
       progress.totalProgress = Math.min(100, progress.totalProgress + 10)
       this.saveLearningProgress(progress)
     }
+  }
+
+  // User Progress Management
+  getUserProgress(): UserProgress {
+    if (typeof window === "undefined") return this.defaultUserProgress
+
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEYS.USER_PROGRESS)
+      const progress = stored ? JSON.parse(stored) : this.defaultUserProgress
+
+      // Ensure modules object exists
+      if (!progress.modules) {
+        progress.modules = {}
+      }
+
+      return progress
+    } catch (error) {
+      console.error("Error loading user progress:", error)
+      return this.defaultUserProgress
+    }
+  }
+
+  saveUserProgress(progress: Partial<UserProgress>): void {
+    if (typeof window === "undefined") return
+
+    try {
+      const current = this.getUserProgress()
+      const updated = { ...current, ...progress }
+
+      // Ensure modules object exists
+      if (!updated.modules) {
+        updated.modules = {}
+      }
+
+      // Save to localStorage
+      localStorage.setItem(this.STORAGE_KEYS.USER_PROGRESS, JSON.stringify(updated))
+      console.log("✅ User progress saved to localStorage")
+
+      // Also save to registered users if signed in
+      const currentUserIdentifier = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
+      if (currentUserIdentifier) {
+        try {
+          const registeredUsers = this.getRegisteredUsers()
+          const userIndex = registeredUsers.findIndex(
+            (user) => user.profile.email === currentUserIdentifier || user.profile.username === currentUserIdentifier,
+          )
+
+          if (userIndex !== -1) {
+            registeredUsers[userIndex].userProgress = updated
+            localStorage.setItem(this.STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers))
+            console.log("✅ User progress saved to registered users")
+          }
+        } catch (error) {
+          console.error("❌ Error saving to registered users:", error)
+        }
+      }
+
+      // Dispatch event to notify other components
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("progressUpdated", { detail: updated }))
+      }
+    } catch (error) {
+      console.error("❌ Error saving user progress:", error)
+    }
+  }
+
+  // Budget Categories Management
+  private getDefaultBudgetCategories(): BudgetCategory[] {
+    return [
+      {
+        id: "1",
+        name: "Housing",
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: "#0F52B9",
+        type: "expense",
+      },
+      {
+        id: "2",
+        name: "Food & Dining",
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: "#10B981",
+        type: "expense",
+      },
+      {
+        id: "3",
+        name: "Transportation",
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: "#8953A9",
+        type: "expense",
+      },
+      {
+        id: "4",
+        name: "Entertainment",
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: "#EF4444",
+        type: "expense",
+      },
+      {
+        id: "5",
+        name: "Utilities",
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: "#06B6D4",
+        type: "expense",
+      },
+      {
+        id: "6",
+        name: "Healthcare",
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: "#8B5CF6",
+        type: "expense",
+      },
+      { id: "7", name: "Travel", budgetAmount: 0, spentAmount: 0, spendingLimit: 0, color: "#84CC16", type: "expense" },
+    ]
+  }
+
+  getBudgetCategories(): BudgetCategory[] {
+    if (typeof window === "undefined") return this.getDefaultBudgetCategories()
+
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
+      if (stored) {
+        const parsed: BudgetCategory[] = JSON.parse(stored)
+        return parsed.length ? parsed : this.getDefaultBudgetCategories()
+      }
+    } catch (err) {
+      console.error("Error loading budget categories:", err)
+    }
+
+    return this.getDefaultBudgetCategories()
+  }
+
+  saveBudgetCategories(categories: BudgetCategory[]): void {
+    if (typeof window === "undefined") return
+    try {
+      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories", JSON.stringify(categories))
+    } catch (err) {
+      console.error("Error saving budget categories:", err)
+    }
+  }
+
+  updateBudgetCategory(name: string, updates: Partial<BudgetCategory>): void {
+    const cats = this.getBudgetCategories()
+    const idx = cats.findIndex((c) => c.name.toLowerCase() === name.toLowerCase())
+    if (idx === -1) return
+    cats[idx] = { ...cats[idx], ...updates }
+    this.saveBudgetCategories(cats)
+  }
+
+  // Budget Entries Management
+  getBudgetEntries(): BudgetEntry[] {
+    if (typeof window === "undefined") return []
+
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+      return stored ? JSON.parse(stored) : []
+    } catch (err) {
+      console.error("Error loading budget entries:", err)
+      return []
+    }
+  }
+
+  saveBudgetEntries(entries: BudgetEntry[]): void {
+    if (typeof window === "undefined") return
+    try {
+      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries", JSON.stringify(entries))
+    } catch (err) {
+      console.error("Error saving budget entries:", err)
+    }
+  }
+
+  addBudgetEntry(entry: Omit<BudgetEntry, "id">): BudgetEntry {
+    const newEntry: BudgetEntry = { ...entry, id: Date.now().toString() }
+    const all = this.getBudgetEntries()
+    all.push(newEntry)
+    this.saveBudgetEntries(all)
+    return newEntry
+  }
+
+  hasStartedBudgeting(): boolean {
+    const budget = this.getBudgetData()
+
+    // Income or savings entered.
+    if (budget.income > 0 || budget.savings > 0) return true
+
+    // Any expense amount entered.
+    if (Object.values(budget.expenses).some((value) => value > 0)) return true
+
+    // Any goal with a non-zero target/current amount.
+    if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
+
+    // Check budget categories
+    const categories = this.getBudgetCategories()
+    if (categories.some((c) => c.budgetAmount > 0 || c.spentAmount > 0)) return true
+
+    // Check budget entries
+    const entries = this.getBudgetEntries()
+    if (entries.length > 0) return true
+
+    return false
   }
 
   // Enhanced Learning Progress Management
