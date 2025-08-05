@@ -7,32 +7,27 @@ interface UserProfile {
   email: string
   username: string
   password: string
-  age: number
+  age: string
   experience: string
   goals: string[]
   income: string
   expenses: string
   savings: string
   debt: string
-  riskTolerance: "conservative" | "moderate" | "aggressive"
-  timeHorizon: "short" | "medium" | "long"
-  investmentExperience: "beginner" | "intermediate" | "advanced"
+  riskTolerance: string
+  timeHorizon: string
+  investmentExperience: string
+  completedOnboarding: boolean
+  signedUp: boolean
+  signedIn: boolean
+  rememberMe: boolean
 }
 
 interface BudgetData {
   income: number
-  expenses: {
-    housing: number
-    food: number
-    transportation: number
-    utilities: number
-    insurance: number
-    healthcare: number
-    entertainment: number
-    shopping: number
-    other: number
-  }
+  expenses: { [category: string]: number }
   savings: number
+  goals: { name: string; target: number; current: number }[]
 }
 
 interface Goal {
@@ -40,9 +35,10 @@ interface Goal {
   title: string
   targetAmount: number
   currentAmount: number
-  deadline: string
+  targetDate: string
+  description: string
+  priority: "high" | "medium" | "low"
   status: "active" | "completed" | "paused"
-  category: "emergency" | "retirement" | "house" | "vacation" | "education" | "other"
 }
 
 interface BudgetCategory {
@@ -120,31 +116,26 @@ const defaultUserData: UserData = {
     email: "",
     username: "",
     password: "",
-    age: 25,
+    age: "",
     experience: "",
     goals: [],
     income: "",
     expenses: "",
     savings: "",
     debt: "",
-    riskTolerance: "moderate",
-    timeHorizon: "long",
-    investmentExperience: "beginner",
+    riskTolerance: "",
+    timeHorizon: "",
+    investmentExperience: "",
+    completedOnboarding: false,
+    signedUp: false,
+    signedIn: false,
+    rememberMe: false,
   },
   budgetData: {
     income: 0,
-    expenses: {
-      housing: 0,
-      food: 0,
-      transportation: 0,
-      utilities: 0,
-      insurance: 0,
-      healthcare: 0,
-      entertainment: 0,
-      shopping: 0,
-      other: 0,
-    },
+    expenses: {},
     savings: 0,
+    goals: [],
   },
   goals: [],
 }
@@ -174,7 +165,7 @@ class UserDataManager {
     email: "",
     username: "",
     password: "",
-    age: 25,
+    age: "",
     experience: "",
     goals: [],
     income: "",
@@ -184,22 +175,17 @@ class UserDataManager {
     riskTolerance: "",
     timeHorizon: "",
     investmentExperience: "",
+    completedOnboarding: false,
+    signedUp: false,
+    signedIn: false,
+    rememberMe: false,
   }
 
   private defaultBudgetData: BudgetData = {
     income: 0,
-    expenses: {
-      housing: 0,
-      food: 0,
-      transportation: 0,
-      utilities: 0,
-      insurance: 0,
-      healthcare: 0,
-      entertainment: 0,
-      shopping: 0,
-      other: 0,
-    },
+    expenses: {},
     savings: 0,
+    goals: [],
   }
 
   private defaultLearningProgress: LearningProgress = {
@@ -574,111 +560,6 @@ class UserDataManager {
     return { ...this.getUserProfile() }
   }
 
-  // Get budget data
-  getBudgetData(): BudgetData {
-    return { ...this.userData.budgetData }
-  }
-
-  // Get goals
-  getGoals(): Goal[] {
-    return [...this.userData.goals]
-  }
-
-  // Calculate financial metrics
-  getFinancialMetrics() {
-    const { income, expenses, savings } = this.userData.budgetData
-    const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-    const monthlyLeftover = income - totalExpenses
-    const savingsRate = income > 0 ? (monthlyLeftover / income) * 100 : 0
-    const emergencyFundMonths = totalExpenses > 0 ? savings / totalExpenses : 0
-
-    return {
-      totalExpenses,
-      monthlyLeftover,
-      savingsRate,
-      emergencyFundMonths,
-      isEmergencyFundAdequate: emergencyFundMonths >= 6,
-      isInvestmentReady: emergencyFundMonths >= 6 && monthlyLeftover > 0,
-    }
-  }
-
-  // Reset all data (for testing/demo purposes)
-  resetData(): void {
-    this.userData = { ...defaultUserData }
-    this.saveToStorage()
-  }
-
-  // Load sample data for demo
-  loadSampleData(): void {
-    const sampleData: UserData = {
-      isSignedIn: true,
-      profile: {
-        firstName: "Alex",
-        lastName: "Johnson",
-        email: "alex.johnson@example.com",
-        username: "alexjohnson",
-        password: "securepassword123",
-        age: 28,
-        experience: "",
-        goals: [],
-        income: "",
-        expenses: "",
-        savings: "",
-        debt: "",
-        riskTolerance: "moderate",
-        timeHorizon: "long",
-        investmentExperience: "beginner",
-      },
-      budgetData: {
-        income: 5500,
-        expenses: {
-          housing: 1800,
-          food: 600,
-          transportation: 400,
-          utilities: 200,
-          insurance: 300,
-          healthcare: 150,
-          entertainment: 300,
-          shopping: 250,
-          other: 200,
-        },
-        savings: 15000,
-      },
-      goals: [
-        {
-          id: "1",
-          title: "Emergency Fund",
-          targetAmount: 20000,
-          currentAmount: 15000,
-          deadline: "2024-12-31",
-          status: "active",
-          category: "emergency",
-        },
-        {
-          id: "2",
-          title: "House Down Payment",
-          targetAmount: 50000,
-          currentAmount: 12000,
-          deadline: "2026-06-30",
-          status: "active",
-          category: "house",
-        },
-        {
-          id: "3",
-          title: "Retirement Savings",
-          targetAmount: 100000,
-          currentAmount: 25000,
-          deadline: "2030-12-31",
-          status: "active",
-          category: "retirement",
-        },
-      ],
-    }
-
-    this.userData = sampleData
-    this.saveToStorage()
-  }
-
   private getRegisteredUsers(): RegisteredUser[] {
     if (typeof window === "undefined") return []
 
@@ -871,6 +752,54 @@ class UserDataManager {
     return newEntry
   }
 
+  // Budget Data Management
+  getBudgetData(): BudgetData {
+    if (typeof window === "undefined") return this.defaultBudgetData
+
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA)
+      return stored ? JSON.parse(stored) : this.defaultBudgetData
+    } catch (error) {
+      console.error("Error loading budget data:", error)
+      return this.defaultBudgetData
+    }
+  }
+
+  saveBudgetData(budgetData: Partial<BudgetData>): void {
+    if (typeof window === "undefined") return
+
+    try {
+      const currentData = this.getBudgetData()
+      const updatedData = { ...currentData, ...budgetData }
+      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA, JSON.stringify(updatedData))
+    } catch (error) {
+      console.error("Error saving budget data:", error)
+    }
+  }
+
+  hasStartedBudgeting(): boolean {
+    const budget = this.getBudgetData()
+
+    // Income or savings entered.
+    if (budget.income > 0 || budget.savings > 0) return true
+
+    // Any expense amount entered.
+    if (Object.values(budget.expenses).some((value) => value > 0)) return true
+
+    // Any goal with a non-zero target/current amount.
+    if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
+
+    // Check budget categories
+    const categories = this.getBudgetCategories()
+    if (categories.some((c) => c.budgetAmount > 0 || c.spentAmount > 0)) return true
+
+    // Check budget entries
+    const entries = this.getBudgetEntries()
+    if (entries.length > 0) return true
+
+    return false
+  }
+
   // -------------------- USER PROGRESS MANAGEMENT -------------------- //
   getUserProgress(): UserProgress {
     if (typeof window === "undefined") return this.defaultUserProgress
@@ -972,7 +901,7 @@ class UserDataManager {
     const goals = this.getGoals()
     const index = goals.findIndex((goal) => goal.id === id)
     if (index !== -1) {
-      Object.assign(goals[index], updates)
+      goals[index] = { ...goals[index], ...updates }
       this.saveGoals(goals)
     }
   }
@@ -1216,25 +1145,16 @@ export function getUserData() {
         lastName: "",
         email: "",
         username: "",
-        age: 25,
+        age: "",
         riskTolerance: "moderate",
         investmentExperience: "beginner",
-        timeHorizon: "long",
+        timeHorizon: "5-10 years",
       },
       budgetData: {
         income: 0,
-        expenses: {
-          housing: 0,
-          food: 0,
-          transportation: 0,
-          utilities: 0,
-          insurance: 0,
-          healthcare: 0,
-          entertainment: 0,
-          shopping: 0,
-          other: 0,
-        },
+        expenses: {},
         savings: 0,
+        goals: [],
       },
       goals: [],
       budgetCategories: [],
@@ -1278,10 +1198,14 @@ const mockUserData: UserData = {
     lastName: "Johnson",
     email: "alex.johnson@example.com",
     username: "alexjohnson",
-    age: 28,
+    age: "28",
     riskTolerance: "moderate",
     investmentExperience: "beginner",
     timeHorizon: "long",
+    completedOnboarding: false,
+    signedUp: false,
+    signedIn: false,
+    rememberMe: false,
   },
   budgetData: {
     income: 5500,
@@ -1297,6 +1221,7 @@ const mockUserData: UserData = {
       other: 200,
     },
     savings: 15000,
+    goals: [],
   },
   goals: [
     {
@@ -1304,27 +1229,30 @@ const mockUserData: UserData = {
       title: "Emergency Fund",
       targetAmount: 20000,
       currentAmount: 15000,
-      deadline: "2024-12-31",
+      targetDate: "2024-12-31",
+      description: "",
+      priority: "medium",
       status: "active",
-      category: "emergency",
     },
     {
       id: "2",
       title: "House Down Payment",
       targetAmount: 50000,
       currentAmount: 12000,
-      deadline: "2026-06-30",
+      targetDate: "2026-06-30",
+      description: "",
+      priority: "medium",
       status: "active",
-      category: "house",
     },
     {
       id: "3",
       title: "Retirement Savings",
       targetAmount: 100000,
       currentAmount: 25000,
-      deadline: "2030-12-31",
+      targetDate: "2030-12-31",
+      description: "",
+      priority: "medium",
       status: "active",
-      category: "retirement",
     },
   ],
 }
