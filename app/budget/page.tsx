@@ -53,7 +53,6 @@ import {
   Phone,
   Gamepad2,
   Heart,
-  Play,
   LogIn,
   PieChartIcon,
   UserPlus,
@@ -535,78 +534,6 @@ function BudgetDashboardContent() {
     addNotification("Expense Added", `Added $${amount} expense for ${category}: ${description}`, "info")
   }
 
-  const handleRestartTutorial = () => {
-    // Only allow tutorial if user has started budgeting
-    if (!hasStartedBudgeting) {
-      addNotification(
-        "Tutorial Not Available",
-        "Please add your first budget to unlock the tutorial feature.",
-        "warning",
-      )
-      return
-    }
-
-    const budgetTutorialSteps = [
-      {
-        id: "welcome",
-        title: "Welcome to Smart Budget Dashboard! 💰",
-        content:
-          "This is your command center for managing finances with AI-powered insights. Let's explore the key features that will help you take control of your money.",
-        target: "[data-tutorial='budget-header']",
-        position: "bottom" as const,
-      },
-      {
-        id: "overview",
-        title: "Your Financial Overview",
-        content:
-          "These cards show your key budget metrics at a glance. Monitor your total budget, spending, remaining funds, and overall budget health.",
-        target: "[data-tutorial='overview-cards']",
-        position: "bottom" as const,
-      },
-      {
-        id: "charts",
-        title: "Interactive Charts & Visualizations",
-        content:
-          "Explore your spending patterns with dynamic charts. Switch between different views to understand your financial trends better.",
-        target: "[data-tutorial='interactive-charts']",
-        position: "bottom" as const,
-      },
-      {
-        id: "ai-insights",
-        title: "AI-Powered Insights",
-        content:
-          "Our machine learning algorithms analyze your spending patterns and provide personalized suggestions, detect anomalies, and identify opportunities to save money.",
-        target: "[data-tutorial='ai-insights']",
-        position: "bottom" as const,
-      },
-      {
-        id: "categories",
-        title: "Category Tracking",
-        content:
-          "View detailed breakdowns of your spending by category. See which areas you're over or under budget and track trends over time.",
-        target: "[data-tutorial='category-tabs']",
-        position: "top" as const,
-      },
-      {
-        id: "whatif",
-        title: "What-If Scenarios",
-        content:
-          "Test different spending scenarios to see how changes would affect your budget. Perfect for planning and making informed financial decisions.",
-        target: "[data-tutorial='category-tabs']",
-        position: "top" as const,
-      },
-    ]
-
-    // Add success notification when tutorial starts
-    addNotification(
-      "Tutorial Started! 🎓",
-      "Follow the guided tour to learn about all the budget dashboard features.",
-      "success",
-    )
-
-    startTutorial(budgetTutorialSteps)
-  }
-
   const getAIInsights = () => {
     if (!hasStartedBudgeting) return []
 
@@ -794,7 +721,7 @@ function BudgetDashboardContent() {
                 </Link>
               </Button>
               <Button disabled variant="ghost" size="sm" className="text-gray-400 cursor-not-allowed">
-                <Play className="w-4 h-4 mr-1" />
+                <Zap className="w-4 h-4 mr-1" />
                 Tutorial
               </Button>
               <Badge className="bg-gray-100 text-gray-500 border-gray-200">
@@ -948,7 +875,7 @@ function BudgetDashboardContent() {
             </div>
             <div className="flex items-center gap-2">
               <Button disabled variant="ghost" size="sm" className="text-gray-400 cursor-not-allowed">
-                <Play className="w-4 h-4 mr-1" />
+                <Zap className="w-4 h-4 mr-1" />
                 Tutorial
               </Button>
               <Badge className="bg-yellow-100 text-yellow-700 border-yellow-200">
@@ -1142,15 +1069,6 @@ function BudgetDashboardContent() {
             <p className="text-gray-600">AI-powered insights for smarter spending</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleRestartTutorial}
-              className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-            >
-              <Play className="w-4 h-4 mr-1" />
-              Tutorial
-            </Button>
             <Badge className="bg-green-100 text-green-700 border-green-200">
               <Zap className="w-3 h-3 mr-1" />
               Real-time Sync
