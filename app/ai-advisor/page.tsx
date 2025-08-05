@@ -1,7 +1,7 @@
 "use client"
 
 import { MessageCircle, Brain, Zap, CheckCircle, TrendingUp, Shield, Target, DollarSign } from "lucide-react"
-import AIChatComponent from "@/components/ai-chat"
+import AIAdvisor from "@/components/ai-advisor"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
@@ -62,11 +62,11 @@ const AIAdvisorPage = () => {
             <h1 className="text-3xl font-bold text-gray-900">AI Financial Advisor</h1>
             <Badge className="bg-green-100 text-green-800">
               <Zap className="w-3 h-3 mr-1" />
-              Simple & Smart
+              GPT-4 Powered
             </Badge>
           </div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Get personalized financial advice in plain English. No jargon, no confusion - just clear answers to help you
+            Get personalized financial advice powered by GPT-4. No jargon, no confusion - just clear answers to help you
             make better money decisions.
           </p>
         </div>
@@ -74,7 +74,7 @@ const AIAdvisorPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Chat Interface */}
           <div className="lg:col-span-2">
-            <AIChatComponent />
+            <AIAdvisor />
           </div>
 
           {/* Sidebar */}
