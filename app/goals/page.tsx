@@ -108,6 +108,7 @@ function GoalsPage() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
   const [addMoneyDialog, setAddMoneyDialog] = useState<{ open: boolean; goalId: string }>({ open: false, goalId: "" })
   const [moneyAmount, setMoneyAmount] = useState("")
+  const [availableFunds, setAvailableFunds] = useState(0)
   const [newGoal, setNewGoal] = useState({
     title: "",
     description: "",
@@ -140,9 +141,24 @@ function GoalsPage() {
         }
       })
       setGoals(formattedGoals)
+
+      // Load available funds
+      const userData = userDataManager.getUserData()
+      const totalIncome =
+        userData.budgetEntries
+          ?.filter((entry) => entry.type === "income")
+          .reduce((sum, entry) => sum + entry.amount, 0) || 0
+
+      const totalExpenses =
+        userData.budgetEntries
+          ?.filter((entry) => entry.type === "expense")
+          .reduce((sum, entry) => sum + entry.amount, 0) || 0
+
+      setAvailableFunds(totalIncome - totalExpenses)
     } else {
       // Show empty states for non-signed up users
       setGoals([])
+      setAvailableFunds(0)
     }
   }, [])
 
@@ -220,7 +236,7 @@ function GoalsPage() {
 
       toast({
         title: "Goal added!",
-        description: `Added ${quickGoal.title} to your goals. Click "Add Money" to start tracking progress. Money added will be deducted from your available budget.`,
+        description: `Added ${quickGoal.title} to your goals. Click "Add Money" to start tracking progress. Money added will be deducted from your available funds.`,
       })
     } catch (error) {
       console.error("Error adding quick goal:", error)
@@ -292,7 +308,7 @@ function GoalsPage() {
       setIsDialogOpen(false)
       toast({
         title: "Goal created!",
-        description: `Created custom goal: ${goal.title}. Click "Add Money" to start tracking progress. Money added will be deducted from your available budget.`,
+        description: `Created custom goal: ${goal.title}. Click "Add Money" to start tracking progress. Money added will be deducted from your available funds.`,
       })
     } catch (error) {
       console.error("Error adding custom goal:", error)
@@ -310,6 +326,16 @@ function GoalsPage() {
       toast({
         title: "Error",
         description: "Please enter a valid amount.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    // Check if user has enough available funds
+    if (amount > availableFunds) {
+      toast({
+        title: "Insufficient Funds",
+        description: `You only have $${availableFunds.toFixed(2)} available. Please enter a smaller amount or add more income to your budget.`,
         variant: "destructive",
       })
       return
@@ -348,6 +374,10 @@ function GoalsPage() {
         type: "expense",
       })
 
+      // Update available funds
+      const newAvailableFunds = availableFunds - amount
+      setAvailableFunds(newAvailableFunds)
+
       setAddMoneyDialog({ open: false, goalId: "" })
       setMoneyAmount("")
 
@@ -356,7 +386,7 @@ function GoalsPage() {
 
       toast({
         title: "Money added! 💰",
-        description: `Added $${amount} to ${goalTitle}. Total saved: $${newTotal}. This amount has been deducted from your available budget.`,
+        description: `Added $${amount} to ${goalTitle}. Total saved: $${newTotal}. Available funds: $${newAvailableFunds.toFixed(2)}`,
       })
     } catch (error) {
       console.error("Error adding money to goal:", error)
@@ -503,6 +533,27 @@ function GoalsPage() {
           Set realistic financial goals and track your progress. Start small and build healthy saving habits.
         </p>
       </div>
+
+      {/* Available Funds Display */}
+      <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 rounded-lg bg-blue-100">
+                <Wallet className="h-6 w-6 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-blue-900">Available Funds</h3>
+                <p className="text-sm text-blue-700">Money you can allocate to goals</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-3xl font-bold text-blue-600">${availableFunds.toFixed(2)}</p>
+              <p className="text-sm text-blue-700">Ready to save</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Progress Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -751,9 +802,10 @@ function GoalsPage() {
                           onClick={() => setAddMoneyDialog({ open: true, goalId: goal.id })}
                           className="w-full bg-green-600 hover:bg-green-700 text-white"
                           size="sm"
+                          disabled={availableFunds <= 0}
                         >
                           <PlusCircle className="h-4 w-4 mr-2" />
-                          Add Money
+                          {availableFunds <= 0 ? "No Funds Available" : "Add Money"}
                         </Button>
                       </div>
                     )}
@@ -770,7 +822,9 @@ function GoalsPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add Money to Goal</DialogTitle>
-            <DialogDescription>How much would you like to add to your savings goal?</DialogDescription>
+            <DialogDescription>
+              How much would you like to add to your savings goal? Available funds: ${availableFunds.toFixed(2)}
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -779,29 +833,50 @@ function GoalsPage() {
                 id="money-amount"
                 type="number"
                 step="0.01"
+                max={availableFunds}
                 value={moneyAmount}
                 onChange={(e) => setMoneyAmount(e.target.value)}
-                placeholder="Enter amount (e.g., 25.00)"
+                placeholder={`Enter amount (max: $${availableFunds.toFixed(2)})`}
                 className="text-lg"
               />
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("5")}>
+              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("5")} disabled={availableFunds < 5}>
                 $5
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("10")}>
+              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("10")} disabled={availableFunds < 10}>
                 $10
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("25")}>
+              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("25")} disabled={availableFunds < 25}>
                 $25
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("50")}>
+              <Button variant="outline" size="sm" onClick={() => setMoneyAmount("50")} disabled={availableFunds < 50}>
                 $50
               </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMoneyAmount(availableFunds.toString())}
+                disabled={availableFunds <= 0}
+              >
+                All (${availableFunds.toFixed(2)})
+              </Button>
             </div>
+            {availableFunds <= 0 && (
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                <p className="text-sm text-yellow-800">
+                  💡 You don't have any available funds. Add income to your budget or reduce expenses to free up money
+                  for goals.
+                </p>
+              </div>
+            )}
           </div>
           <div className="flex gap-2 mt-4">
-            <Button onClick={addMoneyToGoal} className="flex-1 bg-green-600 hover:bg-green-700">
+            <Button
+              onClick={addMoneyToGoal}
+              className="flex-1 bg-green-600 hover:bg-green-700"
+              disabled={availableFunds <= 0}
+            >
               Add Money
             </Button>
             <Button variant="outline" onClick={() => setAddMoneyDialog({ open: false, goalId: "" })}>
