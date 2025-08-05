@@ -1,93 +1,87 @@
+"use client"
+
+import { Suspense } from "react"
 import AIAdvisor from "@/components/ai-advisor"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Brain, TrendingUp, DollarSign, Target } from "lucide-react"
 
 export default function AIAdvisorPage() {
   return (
-    <div className="container mx-auto p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">AI Financial Advisor</h1>
-          <p className="text-lg text-gray-600">Get personalized financial advice powered by GPT-4</p>
-          <div className="inline-flex items-center gap-2 mt-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center gap-2">
+          <Brain className="h-8 w-8 text-blue-600" />
+          <h1 className="text-3xl font-bold">AI Financial Advisor</h1>
+          <Badge variant="secondary" className="bg-green-100 text-green-800">
             GPT-4 Powered
-          </div>
+          </Badge>
+        </div>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Get personalized financial advice powered by advanced AI. Ask questions about budgeting, saving, investing,
+          and debt management.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                What I Can Help With
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-green-600" />
+                <span className="text-sm">Budget analysis and optimization</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Target className="h-4 w-4 text-blue-600" />
+                <span className="text-sm">Investment recommendations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-purple-600" />
+                <span className="text-sm">Debt management strategies</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Target className="h-4 w-4 text-orange-600" />
+                <span className="text-sm">Goal planning and tracking</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Starters</CardTitle>
+              <CardDescription>Try asking these questions:</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              <div className="p-2 bg-gray-50 rounded">"Analyze my current budget"</div>
+              <div className="p-2 bg-gray-50 rounded">"How should I invest $1000?"</div>
+              <div className="p-2 bg-gray-50 rounded">"Review my financial goals"</div>
+              <div className="p-2 bg-gray-50 rounded">"What's my savings rate?"</div>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
+        <div>
+          <Suspense fallback={<div>Loading AI Advisor...</div>}>
             <AIAdvisor />
-          </div>
-
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold mb-4">What I Can Help With</h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-green-500">💰</span>
-                  <div>
-                    <h4 className="font-medium">Budget Analysis</h4>
-                    <p className="text-sm text-gray-600">Review your income, expenses, and savings rate</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-blue-500">📈</span>
-                  <div>
-                    <h4 className="font-medium">Investment Advice</h4>
-                    <p className="text-sm text-gray-600">
-                      Personalized portfolio recommendations based on your age and risk tolerance
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-purple-500">🎯</span>
-                  <div>
-                    <h4 className="font-medium">Goal Planning</h4>
-                    <p className="text-sm text-gray-600">Strategies to reach your financial goals faster</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-red-500">💳</span>
-                  <div>
-                    <h4 className="font-medium">Debt Management</h4>
-                    <p className="text-sm text-gray-600">Optimal strategies for paying off debt</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
-              <h3 className="text-lg font-semibold mb-4 text-blue-900">Quick Starters</h3>
-              <div className="space-y-2">
-                <button className="w-full text-left p-3 bg-white rounded border hover:bg-gray-50 text-sm">
-                  "Analyze my budget and spending"
-                </button>
-                <button className="w-full text-left p-3 bg-white rounded border hover:bg-gray-50 text-sm">
-                  "How should I invest my savings?"
-                </button>
-                <button className="w-full text-left p-3 bg-white rounded border hover:bg-gray-50 text-sm">
-                  "Review my financial goals"
-                </button>
-                <button className="w-full text-left p-3 bg-white rounded border hover:bg-gray-50 text-sm">
-                  "What's my emergency fund status?"
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-yellow-50 rounded-lg border border-yellow-200 p-4">
-              <div className="flex items-start gap-3">
-                <span className="text-yellow-600">⚠️</span>
-                <div>
-                  <h4 className="font-medium text-yellow-900">Disclaimer</h4>
-                  <p className="text-sm text-yellow-800">
-                    This AI provides educational information only. Always consult with a qualified financial advisor for
-                    personalized advice.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          </Suspense>
         </div>
       </div>
+
+      <Card className="mt-6">
+        <CardContent className="pt-6">
+          <p className="text-xs text-gray-500 text-center">
+            <strong>Disclaimer:</strong> This AI advisor provides educational information and general guidance only. It
+            is not a substitute for professional financial advice. Always consult with a qualified financial advisor for
+            personalized recommendations based on your specific situation.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   )
 }

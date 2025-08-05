@@ -34,6 +34,8 @@ export default function AIAdvisor() {
         budgetEntries: userDataManager.getBudgetEntries(),
       }
 
+      console.log("Sending request to AI advisor API...")
+
       const res = await fetch("/api/ai-advisor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,15 +45,28 @@ export default function AIAdvisor() {
         }),
       })
 
+      console.log("Response status:", res.status)
+
       if (!res.ok) {
+        const errorText = await res.text()
+        console.error("API Error Response:", errorText)
         throw new Error(`HTTP error! status: ${res.status}`)
       }
 
       const data = await res.json()
+      console.log("AI Response:", data)
+
       setMessages([...newMessages, { role: "assistant", content: data.reply }])
     } catch (e) {
       console.error("AI Advisor Error:", e)
-      setMessages([...newMessages, { role: "assistant", content: "Sorry, something went wrong. Please try again." }])
+      setMessages([
+        ...newMessages,
+        {
+          role: "assistant",
+          content:
+            "Sorry, I'm having trouble connecting right now. This might be due to missing OpenAI API configuration. Please try again later.",
+        },
+      ])
     } finally {
       setLoading(false)
     }
@@ -63,7 +78,7 @@ export default function AIAdvisor() {
       <div className="h-64 overflow-y-auto space-y-2 text-sm px-1 mb-2">
         {messages.slice(1).map((msg, i) => (
           <div key={i} className={msg.role === "user" ? "text-right text-blue-700" : "text-left text-gray-700"}>
-            <p className="break-words">{msg.content}</p>
+            <p className="break-words whitespace-pre-wrap">{msg.content}</p>
           </div>
         ))}
         {loading && <p className="text-gray-500 italic">Thinking...</p>}
