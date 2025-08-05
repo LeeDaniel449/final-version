@@ -12,7 +12,7 @@ interface Message {
   content: string
 }
 
-export default function AIAdvisor() {
+export function AIAdvisor() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "system",
@@ -285,3 +285,5 @@ export default function AIAdvisor() {
     </div>
   )
 }
+
+export default AIAdvisor

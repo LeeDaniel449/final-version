@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Bot, Brain, Sparkles, MessageCircle, Zap, TrendingUp, Target, DollarSign, BookOpen } from "lucide-react"
-import AIAdvisor from "@/components/ai-advisor"
+import { AIAdvisor } from "@/components/ai-advisor"
 
 export default function AIAdvisorPage() {
   return (
