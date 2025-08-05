@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getUserData } from "@/lib/user-data"
 
 // Only import OpenAI on the server side
 let OpenAI: any = null
@@ -24,30 +23,71 @@ interface Message {
   content: string
 }
 
-function buildUserContext() {
-  const userData = getUserData()
-
-  if (!userData.isSignedIn) {
-    return "User is not signed in. Provide general financial advice and encourage them to sign up for personalized recommendations."
+function getUserData() {
+  // Mock user data for now - in a real app this would come from a database or session
+  return {
+    isSignedIn: true,
+    profile: {
+      age: 30,
+      riskTolerance: "moderate",
+      investmentExperience: "beginner",
+    },
+    budgetData: {
+      income: 5000,
+      expenses: {
+        housing: 1500,
+        food: 600,
+        transportation: 400,
+        entertainment: 300,
+        healthcare: 200,
+        other: 300,
+      },
+      currentSavings: 10000,
+    },
+    goals: [
+      {
+        name: "Emergency Fund",
+        targetAmount: 18000,
+        currentAmount: 10000,
+        deadline: "2024-12-31",
+        priority: "high",
+      },
+      {
+        name: "House Down Payment",
+        targetAmount: 50000,
+        currentAmount: 5000,
+        deadline: "2026-06-01",
+        priority: "medium",
+      },
+    ],
   }
+}
 
-  const budget = userData.budgetData
-  const goals = userData.goals
-  const profile = userData.profile
+function buildUserContext() {
+  try {
+    const userData = getUserData()
 
-  let context = `User Profile:
+    if (!userData.isSignedIn) {
+      return "User is not signed in. Provide general financial advice and encourage them to sign up for personalized recommendations."
+    }
+
+    const budget = userData.budgetData
+    const goals = userData.goals
+    const profile = userData.profile
+
+    let context = `User Profile:
 - Age: ${profile.age || "Not specified"}
 - Risk Tolerance: ${profile.riskTolerance || "Not specified"}
 - Investment Experience: ${profile.investmentExperience || "Not specified"}
 
 `
 
-  if (budget && budget.income > 0) {
-    const totalExpenses = Object.values(budget.expenses).reduce((sum: number, val: number) => sum + val, 0)
-    const leftover = budget.income - totalExpenses
-    const savingsRate = budget.income > 0 ? ((leftover / budget.income) * 100).toFixed(1) : "0"
+    if (budget && budget.income > 0) {
+      const totalExpenses = Object.values(budget.expenses).reduce((sum: number, val: number) => sum + val, 0)
+      const leftover = budget.income - totalExpenses
+      const savingsRate = budget.income > 0 ? ((leftover / budget.income) * 100).toFixed(1) : "0"
 
-    context += `Budget Analysis:
+      context += `Budget Analysis:
 - Monthly Income: $${budget.income.toLocaleString()}
 - Total Expenses: $${totalExpenses.toLocaleString()}
 - Monthly Leftover: $${leftover.toLocaleString()}
@@ -63,13 +103,13 @@ Expense Breakdown:
 - Other: $${budget.expenses.other || 0}
 
 `
-  }
+    }
 
-  if (goals && goals.length > 0) {
-    context += `Financial Goals:\n`
-    goals.forEach((goal: any, index: number) => {
-      const progress = goal.targetAmount > 0 ? ((goal.currentAmount / goal.targetAmount) * 100).toFixed(1) : "0"
-      context += `${index + 1}. ${goal.name}
+    if (goals && goals.length > 0) {
+      context += `Financial Goals:\n`
+      goals.forEach((goal: any, index: number) => {
+        const progress = goal.targetAmount > 0 ? ((goal.currentAmount / goal.targetAmount) * 100).toFixed(1) : "0"
+        context += `${index + 1}. ${goal.name}
    - Target: $${goal.targetAmount.toLocaleString()}
    - Current: $${goal.currentAmount.toLocaleString()}
    - Progress: ${progress}%
@@ -77,10 +117,14 @@ Expense Breakdown:
    - Priority: ${goal.priority}
 
 `
-    })
-  }
+      })
+    }
 
-  return context
+    return context
+  } catch (error) {
+    console.error("Error building user context:", error)
+    return "Unable to load user data. Providing general financial advice."
+  }
 }
 
 function getSmartFallbackResponse(userMessage: string, userContext: string): string {
@@ -124,7 +168,7 @@ function getSmartFallbackResponse(userMessage: string, userContext: string): str
     let advice = `📈 Investment Guidance:\n\n`
 
     if (userContext.includes("Risk Tolerance")) {
-      const riskMatch = userContext.match(/Risk Tolerance: ([^\\n]+)/)
+      const riskMatch = userContext.match(/Risk Tolerance: ([^\n]+)/)
       const ageMatch = userContext.match(/Age: ([0-9]+)/)
 
       if (riskMatch && ageMatch) {
@@ -160,7 +204,7 @@ function getSmartFallbackResponse(userMessage: string, userContext: string): str
   if (message.includes("save") || message.includes("emergency fund")) {
     let advice = `💰 Savings Strategy:\n\n`
 
-    if (userContext.includes("Monthly Expenses")) {
+    if (userContext.includes("Total Expenses")) {
       const expensesMatch = userContext.match(/Total Expenses: \$([0-9,]+)/)
       if (expensesMatch) {
         const monthlyExpenses = Number.parseInt(expensesMatch[1].replace(/,/g, ""))
@@ -202,23 +246,35 @@ function getSmartFallbackResponse(userMessage: string, userContext: string): str
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages } = await request.json()
+    console.log("AI Advisor API called")
+
+    const body = await request.json()
+    console.log("Request body:", body)
+
+    const { messages } = body
 
     if (!messages || !Array.isArray(messages)) {
+      console.error("Invalid messages format:", messages)
       return NextResponse.json({ error: "Invalid messages format" }, { status: 400 })
     }
 
     const userMessage = messages[messages.length - 1]?.content
     if (!userMessage) {
+      console.error("No user message found")
       return NextResponse.json({ error: "No user message found" }, { status: 400 })
     }
 
+    console.log("User message:", userMessage)
+
     // Build user context
     const userContext = buildUserContext()
+    console.log("User context built successfully")
 
     // Try OpenAI first if available
     if (openai && process.env.OPENAI_API_KEY) {
       try {
+        console.log("Attempting OpenAI API call...")
+
         const systemPrompt = `You are a professional financial advisor with expertise in budgeting, saving, investing, and debt management. 
 
 User Context:
@@ -246,18 +302,30 @@ Keep responses concise but comprehensive. Use bullet points and emojis for reada
           completion.choices[0]?.message?.content ||
           "I apologize, but I could not generate a response. Please try again."
 
+        console.log("OpenAI response received successfully")
         return NextResponse.json({ reply })
       } catch (openaiError) {
         console.error("OpenAI API Error:", openaiError)
         // Fall through to fallback response
       }
+    } else {
+      console.log("OpenAI not available, using fallback")
     }
 
     // Fallback to smart keyword-based responses
+    console.log("Using fallback response system")
     const reply = getSmartFallbackResponse(userMessage, userContext)
+    console.log("Fallback response generated")
+
     return NextResponse.json({ reply })
   } catch (error) {
     console.error("API Error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json(
+      {
+        reply: "Sorry, I'm having trouble right now. Please try again in a moment.",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    )
   }
 }

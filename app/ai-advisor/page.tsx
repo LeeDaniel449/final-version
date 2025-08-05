@@ -30,6 +30,8 @@ export default function AIAdvisorPage() {
     setLoading(true)
 
     try {
+      console.log("Sending message to AI advisor API...")
+
       const response = await fetch("/api/ai-advisor", {
         method: "POST",
         headers: {
@@ -38,11 +40,16 @@ export default function AIAdvisorPage() {
         body: JSON.stringify({ messages: newMessages }),
       })
 
+      console.log("Response status:", response.status)
+
       if (!response.ok) {
+        const errorText = await response.text()
+        console.error("API Error Response:", errorText)
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const data = await response.json()
+      console.log("AI Response received:", data)
 
       if (data.error) {
         throw new Error(data.error)
