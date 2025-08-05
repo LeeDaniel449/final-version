@@ -9,7 +9,7 @@ interface UserProfile {
   password: string
   age: string
   experience: string
-  goals: string[]
+  primaryGoals: string[]
   income: string
   expenses: string
   savings: string
@@ -25,9 +25,18 @@ interface UserProfile {
 
 interface BudgetData {
   income: number
-  expenses: { [category: string]: number }
+  expenses: {
+    housing: number
+    transportation: number
+    food: number
+    utilities: number
+    insurance: number
+    healthcare: number
+    entertainment: number
+    shopping: number
+    other: number
+  }
   savings: number
-  goals: { name: string; target: number; current: number }[]
 }
 
 interface Goal {
@@ -36,24 +45,21 @@ interface Goal {
   targetAmount: number
   currentAmount: number
   targetDate: string
-  description: string
-  priority: "high" | "medium" | "low"
   status: "active" | "completed" | "paused"
+  category: string
 }
 
 interface BudgetCategory {
   id: string
   name: string
-  budgetAmount: number
-  spentAmount: number
-  spendingLimit: number
+  budgeted: number
+  spent: number
   color: string
-  type: "income" | "expense"
 }
 
 interface BudgetEntry {
   id: string
-  category: string
+  categoryId: string
   amount: number
   description: string
   date: string
@@ -75,19 +81,11 @@ interface ModuleProgress {
 }
 
 interface UserProgress {
-  completedModules: string[]
   completedLessons: number
-  totalXP: number
   currentStreak: number
-  lastActiveDate: string
-  achievements: string[]
-  budgetEntries: number
-  budgetCategories: number
-  totalBudgetAmount: number
-  daysActive?: number
-  modules: {
-    [moduleId: string]: ModuleProgress
-  }
+  totalPoints: number
+  level: number
+  badges: string[]
 }
 
 interface RegisteredUser {
@@ -118,7 +116,7 @@ const defaultUserData: UserData = {
     password: "",
     age: "",
     experience: "",
-    goals: [],
+    primaryGoals: [],
     income: "",
     expenses: "",
     savings: "",
@@ -133,9 +131,18 @@ const defaultUserData: UserData = {
   },
   budgetData: {
     income: 0,
-    expenses: {},
+    expenses: {
+      housing: 0,
+      transportation: 0,
+      food: 0,
+      utilities: 0,
+      insurance: 0,
+      healthcare: 0,
+      entertainment: 0,
+      shopping: 0,
+      other: 0,
+    },
     savings: 0,
-    goals: [],
   },
   goals: [],
 }
@@ -157,6 +164,8 @@ class UserDataManager {
     SIGNED_IN: "wealthwise_signed_in",
     REMEMBER_ME: "wealthwise_remember_me",
     USER_PROGRESS: "wealthwise_user_progress",
+    BUDGET_CATEGORIES: "wealthwise_budget_categories",
+    BUDGET_ENTRIES: "wealthwise_budget_entries",
   }
 
   private defaultProfile: UserProfile = {
@@ -167,7 +176,7 @@ class UserDataManager {
     password: "",
     age: "",
     experience: "",
-    goals: [],
+    primaryGoals: [],
     income: "",
     expenses: "",
     savings: "",
@@ -183,9 +192,18 @@ class UserDataManager {
 
   private defaultBudgetData: BudgetData = {
     income: 0,
-    expenses: {},
+    expenses: {
+      housing: 0,
+      transportation: 0,
+      food: 0,
+      utilities: 0,
+      insurance: 0,
+      healthcare: 0,
+      entertainment: 0,
+      shopping: 0,
+      other: 0,
+    },
     savings: 0,
-    goals: [],
   }
 
   private defaultLearningProgress: LearningProgress = {
@@ -196,17 +214,25 @@ class UserDataManager {
   }
 
   private defaultUserProgress: UserProgress = {
-    completedModules: [],
     completedLessons: 0,
-    totalXP: 0,
     currentStreak: 0,
-    lastActiveDate: new Date().toISOString(),
-    achievements: [],
-    budgetEntries: 0,
-    budgetCategories: 0,
-    totalBudgetAmount: 0,
-    modules: {},
+    totalPoints: 0,
+    level: 0,
+    badges: [],
   }
+
+  private defaultBudgetCategories: BudgetCategory[] = [
+    { id: "housing", name: "Housing", budgeted: 0, spent: 0, color: "bg-blue-500" },
+    { id: "food", name: "Food & Dining", budgeted: 0, spent: 0, color: "bg-green-500" },
+    { id: "transportation", name: "Transportation", budgeted: 0, spent: 0, color: "bg-yellow-500" },
+    { id: "entertainment", name: "Entertainment", budgeted: 0, spent: 0, color: "bg-purple-500" },
+    { id: "utilities", name: "Utilities", budgeted: 0, spent: 0, color: "bg-orange-500" },
+    { id: "shopping", name: "Shopping", budgeted: 0, spent: 0, color: "bg-pink-500" },
+    { id: "healthcare", name: "Healthcare", budgeted: 0, spent: 0, color: "bg-red-500" },
+    { id: "insurance", name: "Insurance", budgeted: 0, spent: 0, color: "bg-indigo-500" },
+  ]
+
+  private defaultBudgetEntries: BudgetEntry[] = []
 
   private userData: UserData
   private listeners: Set<() => void> = new Set()
@@ -317,6 +343,8 @@ class UserDataManager {
     localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
     localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
     localStorage.removeItem(this.STORAGE_KEYS.GOALS)
+    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_CATEGORIES)
+    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_ENTRIES)
 
     // Clear remember me if not set
     const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
@@ -596,6 +624,13 @@ class UserDataManager {
     }
     localStorage.setItem(this.STORAGE_KEYS.USER_PROGRESS, JSON.stringify(userProgress))
 
+    // Load budget categories and entries
+    const budgetCategories = user.budgetCategories || this.defaultBudgetCategories
+    localStorage.setItem(this.STORAGE_KEYS.BUDGET_CATEGORIES, JSON.stringify(budgetCategories))
+
+    const budgetEntries = user.budgetEntries || this.defaultBudgetEntries
+    localStorage.setItem(this.STORAGE_KEYS.BUDGET_ENTRIES, JSON.stringify(budgetEntries))
+
     console.log("User data loaded successfully")
   }
 
@@ -618,6 +653,8 @@ class UserDataManager {
         registeredUsers[userIndex].goals = this.getGoals()
         registeredUsers[userIndex].learningProgress = this.getLearningProgress()
         registeredUsers[userIndex].userProgress = this.getUserProgress()
+        registeredUsers[userIndex].budgetCategories = this.getBudgetCategories()
+        registeredUsers[userIndex].budgetEntries = this.getBudgetEntries()
 
         localStorage.setItem(this.STORAGE_KEYS.REGISTERED_USERS, JSON.stringify(registeredUsers))
         console.log("Current user data saved successfully")
@@ -629,63 +666,7 @@ class UserDataManager {
 
   /* ---------- CATEGORY HELPERS ---------- */
   private getDefaultBudgetCategories(): BudgetCategory[] {
-    return [
-      {
-        id: "1",
-        name: "Housing",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#0F52B9",
-        type: "expense",
-      },
-      {
-        id: "2",
-        name: "Food & Dining",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#10B981",
-        type: "expense",
-      },
-      {
-        id: "3",
-        name: "Transportation",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#8953A9",
-        type: "expense",
-      },
-      {
-        id: "4",
-        name: "Entertainment",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#EF4444",
-        type: "expense",
-      },
-      {
-        id: "5",
-        name: "Utilities",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#06B6D4",
-        type: "expense",
-      },
-      {
-        id: "6",
-        name: "Healthcare",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#8B5CF6",
-        type: "expense",
-      },
-      { id: "7", name: "Travel", budgetAmount: 0, spentAmount: 0, spendingLimit: 0, color: "#84CC16", type: "expense" },
-    ]
+    return this.defaultBudgetCategories
   }
 
   /* ---------- CATEGORY CRUD ---------- */
@@ -693,7 +674,7 @@ class UserDataManager {
     if (typeof window === "undefined") return this.getDefaultBudgetCategories()
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
+      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_CATEGORIES)
       if (stored) {
         const parsed: BudgetCategory[] = JSON.parse(stored)
         return parsed.length ? parsed : this.getDefaultBudgetCategories()
@@ -708,15 +689,15 @@ class UserDataManager {
   saveBudgetCategories(categories: BudgetCategory[]): void {
     if (typeof window === "undefined") return
     try {
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories", JSON.stringify(categories))
+      localStorage.setItem(this.STORAGE_KEYS.BUDGET_CATEGORIES, JSON.stringify(categories))
     } catch (err) {
       console.error("Error saving budget categories:", err)
     }
   }
 
-  updateBudgetCategory(name: string, updates: Partial<BudgetCategory>): void {
+  updateBudgetCategory(id: string, updates: Partial<BudgetCategory>): void {
     const cats = this.getBudgetCategories()
-    const idx = cats.findIndex((c) => c.name.toLowerCase() === name.toLowerCase())
+    const idx = cats.findIndex((c) => c.id === id)
     if (idx === -1) return
     cats[idx] = { ...cats[idx], ...updates }
     this.saveBudgetCategories(cats)
@@ -727,7 +708,7 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_ENTRIES)
       return stored ? JSON.parse(stored) : []
     } catch (err) {
       console.error("Error loading budget entries:", err)
@@ -738,7 +719,7 @@ class UserDataManager {
   saveBudgetEntries(entries: BudgetEntry[]): void {
     if (typeof window === "undefined") return
     try {
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries", JSON.stringify(entries))
+      localStorage.setItem(this.STORAGE_KEYS.BUDGET_ENTRIES, JSON.stringify(entries))
     } catch (err) {
       console.error("Error saving budget entries:", err)
     }
@@ -787,11 +768,12 @@ class UserDataManager {
     if (Object.values(budget.expenses).some((value) => value > 0)) return true
 
     // Any goal with a non-zero target/current amount.
-    if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
+    const goals = this.getGoals()
+    if (goals.some((g) => g.targetAmount > 0 || g.currentAmount > 0)) return true
 
     // Check budget categories
     const categories = this.getBudgetCategories()
-    if (categories.some((c) => c.budgetAmount > 0 || c.spentAmount > 0)) return true
+    if (categories.some((c) => c.budgeted > 0 || c.spent > 0)) return true
 
     // Check budget entries
     const entries = this.getBudgetEntries()
@@ -1102,6 +1084,8 @@ class UserDataManager {
       learningProgress: this.getLearningProgress(),
       exportDate: new Date().toISOString(),
       userProgress: this.getUserProgress(),
+      budgetCategories: this.getBudgetCategories(),
+      budgetEntries: this.getBudgetEntries(),
     }
     return JSON.stringify(data, null, 2)
   }
@@ -1115,6 +1099,8 @@ class UserDataManager {
       if (data.goals) this.saveGoals(data.goals)
       if (data.learningProgress) this.saveLearningProgress(data.learningProgress)
       if (data.userProgress) this.saveUserProgress(data.userProgress)
+      if (data.budgetCategories) this.saveBudgetCategories(data.budgetCategories)
+      if (data.budgetEntries) this.saveBudgetEntries(data.budgetEntries)
 
       return { success: true }
     } catch (error) {
@@ -1152,23 +1138,28 @@ export function getUserData() {
       },
       budgetData: {
         income: 0,
-        expenses: {},
+        expenses: {
+          housing: 0,
+          transportation: 0,
+          food: 0,
+          utilities: 0,
+          insurance: 0,
+          healthcare: 0,
+          entertainment: 0,
+          shopping: 0,
+          other: 0,
+        },
         savings: 0,
-        goals: [],
       },
       goals: [],
       budgetCategories: [],
       budgetEntries: [],
       progress: {
-        completedModules: [],
         completedLessons: 0,
-        totalXP: 0,
         currentStreak: 0,
-        lastActiveDate: new Date().toISOString(),
-        achievements: [],
-        budgetEntries: 0,
-        budgetCategories: 0,
-        totalBudgetAmount: 0,
+        totalPoints: 0,
+        level: 0,
+        badges: [],
         modules: {},
       },
     }
@@ -1179,160 +1170,11 @@ export function getUserData() {
     profile: userDataManager.getUserProfile(),
     budgetData: userDataManager.getBudgetData(),
     goals: userDataManager.getGoals(),
+    progress: userDataManager.getUserProgress(),
     budgetCategories: userDataManager.getBudgetCategories(),
     budgetEntries: userDataManager.getBudgetEntries(),
-    progress: userDataManager.getUserProgress(),
   }
 }
 
 // Export types
-export type { UserProfile, BudgetData, Goal, UserProgress }
-
-// Mock user data for demonstration purposes
-// In a real app, this would come from a database or authentication system
-
-const mockUserData: UserData = {
-  isSignedIn: true,
-  profile: {
-    firstName: "Alex",
-    lastName: "Johnson",
-    email: "alex.johnson@example.com",
-    username: "alexjohnson",
-    age: "28",
-    riskTolerance: "moderate",
-    investmentExperience: "beginner",
-    timeHorizon: "long",
-    completedOnboarding: false,
-    signedUp: false,
-    signedIn: false,
-    rememberMe: false,
-  },
-  budgetData: {
-    income: 5500,
-    expenses: {
-      housing: 1800,
-      food: 600,
-      transportation: 400,
-      utilities: 200,
-      insurance: 300,
-      healthcare: 150,
-      entertainment: 300,
-      shopping: 250,
-      other: 200,
-    },
-    savings: 15000,
-    goals: [],
-  },
-  goals: [
-    {
-      id: "1",
-      title: "Emergency Fund",
-      targetAmount: 20000,
-      currentAmount: 15000,
-      targetDate: "2024-12-31",
-      description: "",
-      priority: "medium",
-      status: "active",
-    },
-    {
-      id: "2",
-      title: "House Down Payment",
-      targetAmount: 50000,
-      currentAmount: 12000,
-      targetDate: "2026-06-30",
-      description: "",
-      priority: "medium",
-      status: "active",
-    },
-    {
-      id: "3",
-      title: "Retirement Savings",
-      targetAmount: 100000,
-      currentAmount: 25000,
-      targetDate: "2030-12-31",
-      description: "",
-      priority: "medium",
-      status: "active",
-    },
-  ],
-}
-
-export function updateUserProfile(profile: Partial<UserProfile>): void {
-  // In a real app, this would update the database
-  Object.assign(mockUserData.profile, profile)
-}
-
-export function updateBudgetData(budgetData: Partial<BudgetData>): void {
-  // In a real app, this would update the database
-  Object.assign(mockUserData.budgetData, budgetData)
-}
-
-export function addGoal(goal: Omit<Goal, "id">): void {
-  // In a real app, this would add to the database
-  const newGoal: Goal = {
-    ...goal,
-    id: Date.now().toString(),
-  }
-  mockUserData.goals.push(newGoal)
-}
-
-export function updateGoal(id: string, updates: Partial<Goal>): void {
-  // In a real app, this would update the database
-  const goalIndex = mockUserData.goals.findIndex((g) => g.id === id)
-  if (goalIndex !== -1) {
-    Object.assign(mockUserData.goals[goalIndex], updates)
-  }
-}
-
-export function deleteGoal(id: string): void {
-  // In a real app, this would delete from the database
-  mockUserData.goals = mockUserData.goals.filter((g) => g.id !== id)
-}
-
-// Helper functions for financial calculations
-export function calculateSavingsRate(): number {
-  const { income, expenses } = mockUserData.budgetData
-  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  const monthlyLeftover = income - totalExpenses
-  return income > 0 ? (monthlyLeftover / income) * 100 : 0
-}
-
-export function calculateEmergencyFundMonths(): number {
-  const { expenses, savings } = mockUserData.budgetData
-  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  return totalExpenses > 0 ? savings / totalExpenses : 0
-}
-
-export function getFinancialHealthScore(): {
-  score: number
-  factors: Array<{ name: string; status: "good" | "warning" | "poor"; description: string }>
-} {
-  const savingsRate = calculateSavingsRate()
-  const emergencyMonths = calculateEmergencyFundMonths()
-  const { income, expenses } = mockUserData.budgetData
-  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  const monthlyLeftover = income - totalExpenses
-
-  const factors = [
-    {
-      name: "Emergency Fund",
-      status: emergencyMonths >= 6 ? "good" : emergencyMonths >= 3 ? "warning" : "poor",
-      description: `${emergencyMonths.toFixed(1)} months of expenses saved`,
-    },
-    {
-      name: "Savings Rate",
-      status: savingsRate >= 20 ? "good" : savingsRate >= 10 ? "warning" : "poor",
-      description: `Saving ${savingsRate.toFixed(1)}% of income`,
-    },
-    {
-      name: "Budget Balance",
-      status: monthlyLeftover > 0 ? "good" : monthlyLeftover === 0 ? "warning" : "poor",
-      description: monthlyLeftover > 0 ? `$${monthlyLeftover} monthly surplus` : "Expenses equal or exceed income",
-    },
-  ]
-
-  const goodFactors = factors.filter((f) => f.status === "good").length
-  const score = Math.round((goodFactors / factors.length) * 100)
-
-  return { score, factors }
-}
+export type { UserProfile, BudgetData, Goal, UserProgress, BudgetCategory, BudgetEntry }

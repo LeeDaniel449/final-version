@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { userDataManager } from "@/lib/user-data"
 
 interface Message {
   role: "system" | "user" | "assistant"
@@ -24,16 +23,6 @@ export default function AIAdvisor() {
     setLoading(true)
 
     try {
-      // Get user data for context
-      const userData = {
-        profile: userDataManager.getUserProfile(),
-        budgetData: userDataManager.getBudgetData(),
-        goals: userDataManager.getGoals(),
-        progress: userDataManager.getUserProgress(),
-        budgetCategories: userDataManager.getBudgetCategories(),
-        budgetEntries: userDataManager.getBudgetEntries(),
-      }
-
       console.log("Sending request to AI advisor API...")
 
       const res = await fetch("/api/ai-advisor", {
@@ -41,7 +30,6 @@ export default function AIAdvisor() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: newMessages,
-          userData: userData,
         }),
       })
 
@@ -56,7 +44,11 @@ export default function AIAdvisor() {
       const data = await res.json()
       console.log("AI Response:", data)
 
-      setMessages([...newMessages, { role: "assistant", content: data.reply }])
+      if (data.reply) {
+        setMessages([...newMessages, { role: "assistant", content: data.reply }])
+      } else {
+        throw new Error("No reply received from AI advisor")
+      }
     } catch (e) {
       console.error("AI Advisor Error:", e)
       setMessages([

@@ -1,11 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import OpenAI from "openai"
 import { getUserData } from "@/lib/user-data"
-
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
 
 export async function POST(request: NextRequest) {
   try {
@@ -65,6 +59,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check if OpenAI API key is available
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("❌ OpenAI API key not found")
+      return NextResponse.json(
+        {
+          reply:
+            "I'm sorry, but the AI advisor is not properly configured. The OpenAI API key is missing. Please contact support.",
+          source: "error",
+        },
+        { status: 500 },
+      )
+    }
+
     // Get user data for context
     const userData = getUserData()
     console.log("📊 User data loaded for AI context")
@@ -107,19 +114,16 @@ Guidelines:
 
 Remember: You are providing educational information, not professional financial advice. Users should consult with qualified financial professionals for major financial decisions.`
 
-    // Check if OpenAI API key is available
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("❌ OpenAI API key not found")
-      return NextResponse.json(
-        {
-          reply: "I'm sorry, but the AI advisor is not properly configured. Please contact support or try again later.",
-          source: "error",
-        },
-        { status: 500 },
-      )
-    }
-
     try {
+      console.log("🤖 Initializing OpenAI client...")
+
+      // Dynamic import of OpenAI to avoid initialization issues
+      const { default: OpenAI } = await import("openai")
+
+      const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      })
+
       console.log("🤖 Making OpenAI API call...")
 
       const completion = await openai.chat.completions.create({
@@ -148,10 +152,10 @@ Remember: You are providing educational information, not professional financial 
         source: "openai",
       })
     } catch (openaiError: any) {
-      console.error("❌ OpenAI API Error:", openaiError.message)
+      console.error("❌ OpenAI API Error:", openaiError)
 
       // Return a more specific error message based on the error type
-      let errorMessage = "I'm experiencing technical difficulties. Please try again in a moment."
+      let errorMessage = "I'm experiencing technical difficulties with the AI service. Please try again in a moment."
 
       if (openaiError.code === "insufficient_quota") {
         errorMessage = "The AI service is temporarily unavailable due to quota limits. Please try again later."
@@ -159,6 +163,8 @@ Remember: You are providing educational information, not professional financial 
         errorMessage = "Too many requests. Please wait a moment and try again."
       } else if (openaiError.code === "invalid_api_key") {
         errorMessage = "AI service configuration error. Please contact support."
+      } else if (openaiError.message?.includes("API key")) {
+        errorMessage = "There's an issue with the AI service configuration. Please contact support."
       }
 
       return NextResponse.json(
@@ -166,7 +172,7 @@ Remember: You are providing educational information, not professional financial 
           reply: errorMessage,
           source: "error",
         },
-        { status: 500 },
+        { status: 200 }, // Return 200 to avoid frontend error handling issues
       )
     }
   } catch (error: any) {
@@ -177,7 +183,7 @@ Remember: You are providing educational information, not professional financial 
           "I apologize, but I'm experiencing technical difficulties right now. Please try asking your question again in a moment.",
         source: "error",
       },
-      { status: 500 },
+      { status: 200 }, // Return 200 to avoid frontend error handling issues
     )
   }
 }

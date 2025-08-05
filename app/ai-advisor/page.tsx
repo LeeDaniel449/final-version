@@ -98,11 +98,7 @@ export default function AIAdvisorPage() {
         }),
       })
 
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error("❌ API Error Response:", errorText)
-        throw new Error(`API Error: ${response.status} - ${errorText}`)
-      }
+      console.log("Response status:", response.status)
 
       const data = await response.json()
       console.log("✅ AI response received:", data)
