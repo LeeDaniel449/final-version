@@ -48,7 +48,10 @@ export default function LearningDashboard() {
     const signedUp = userDataManager.isUserSignedUp()
     const signedIn = userDataManager.isUserSignedIn()
     const budgetingStarted = userDataManager.hasStartedBudgeting()
-    setIsUserSignedUp(signedUp)
+
+    console.log("Sign-in status:", { signedUp, signedIn })
+
+    setIsUserSignedUp(signedUp && signedIn) // Only consider signed up if also signed in
     setHasStartedBudgeting(budgetingStarted)
 
     // Only load progress data if user is signed in
@@ -58,6 +61,7 @@ export default function LearningDashboard() {
       setUserProgress({ ...progress })
     } else {
       // Reset progress data when signed out
+      console.log("🚫 User not signed in, resetting progress data")
       setUserProgress({
         completedLessons: 0,
         daysActive: 0,
@@ -130,12 +134,18 @@ export default function LearningDashboard() {
   }, [])
 
   const calculateOverallProgress = () => {
+    if (!userDataManager.isUserSignedIn()) {
+      return 0
+    }
     const progress = userDataManager.calculateOverallLearningProgress()
     console.log("📊 Overall progress calculated:", progress)
     return progress
   }
 
   const getModuleProgress = (moduleId: string) => {
+    if (!userDataManager.isUserSignedIn()) {
+      return 0
+    }
     try {
       const progress = userDataManager.getUserProgress()
       const moduleProgress = progress.modules?.[moduleId]
@@ -162,6 +172,9 @@ export default function LearningDashboard() {
   }
 
   const getCompletedModulesCount = () => {
+    if (!userDataManager.isUserSignedIn()) {
+      return 0
+    }
     const count = userDataManager.getCompletedModulesCount()
     console.log("🏆 Completed modules count:", count)
     return count
@@ -171,7 +184,7 @@ export default function LearningDashboard() {
   const completedModules = getCompletedModulesCount()
 
   // Show the learning dashboard for all signed up users
-  if (!isUserSignedUp || !userDataManager.isUserSignedIn()) {
+  if (!userDataManager.isUserSignedIn()) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
         <div className="max-w-7xl mx-auto space-y-6">
