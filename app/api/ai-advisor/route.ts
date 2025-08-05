@@ -1,18 +1,26 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getUserData } from "@/lib/user-data"
+import OpenAI from "openai"
 
-// Initialize OpenAI client on server side only
-let openai: any = null
-if (process.env.OPENAI_API_KEY) {
-  try {
-    const { OpenAI } = require("openai")
-    openai = new OpenAI({
+interface Message {
+  role: "user" | "assistant" | "system"
+  content: string
+}
+
+interface RequestBody {
+  messages: Message[]
+  userData?: any
+  useOpenAI?: boolean
+}
+
+// Initialize OpenAI client only on server side
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     })
-    console.log("✅ OpenAI client initialized successfully")
-  } catch (error) {
-    console.error("❌ Failed to initialize OpenAI:", error)
-  }
+  : null
+
+if (openai) {
+  console.log("✅ OpenAI client initialized successfully")
 } else {
   console.log("⚠️ No OpenAI API key found, using fallback system only")
 }
@@ -368,7 +376,7 @@ export async function POST(request: NextRequest) {
     console.log("🚀 AI Advisor API called")
 
     // Parse request body with validation
-    let body
+    let body: RequestBody
     try {
       body = await request.json()
     } catch (parseError) {
@@ -382,7 +390,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { messages, useOpenAI = true } = body
+    const { messages, userData, useOpenAI = true } = body
 
     // Validate messages
     if (!Array.isArray(messages) || messages.length === 0) {
@@ -406,30 +414,43 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user data for context
-    const userData = getUserData()
+    // Use provided userData or create default structure
+    const userDataForContext = userData || {
+      profile: {
+        firstName: "User",
+        lastName: "",
+        age: "25",
+        riskTolerance: "moderate",
+        investmentExperience: "beginner",
+        timeHorizon: "long-term",
+      },
+      budgetData: { income: 0, expenses: {}, savings: 0 },
+      goals: [],
+      progress: { completedLessons: 0, currentStreak: 0 },
+    }
+
     console.log("📊 User data loaded for AI context")
 
     // Build user context for AI
     const userContext = `
 User Profile:
-- Name: ${userData.profile.firstName} ${userData.profile.lastName}
-- Age: ${userData.profile.age}
-- Risk Tolerance: ${userData.profile.riskTolerance}
-- Investment Experience: ${userData.profile.investmentExperience}
-- Time Horizon: ${userData.profile.timeHorizon}
+- Name: ${userDataForContext.profile.firstName} ${userDataForContext.profile.lastName}
+- Age: ${userDataForContext.profile.age}
+- Risk Tolerance: ${userDataForContext.profile.riskTolerance}
+- Investment Experience: ${userDataForContext.profile.investmentExperience}
+- Time Horizon: ${userDataForContext.profile.timeHorizon}
 
 Financial Situation:
-- Monthly Income: $${userData.budgetData.income?.toLocaleString() || "0"}
-- Monthly Expenses: $${Object.values(userData.budgetData.expenses || {})
+- Monthly Income: $${userDataForContext.budgetData.income?.toLocaleString() || "0"}
+- Monthly Expenses: $${Object.values(userDataForContext.budgetData.expenses || {})
       .reduce((sum: number, exp: number) => sum + exp, 0)
       .toLocaleString()}
-- Savings: $${userData.budgetData.savings?.toLocaleString() || "0"}
-- Active Goals: ${userData.goals?.length || 0}
+- Savings: $${userDataForContext.budgetData.savings?.toLocaleString() || "0"}
+- Active Goals: ${userDataForContext.goals?.length || 0}
 
 Learning Progress:
-- Completed Lessons: ${userData.progress?.completedLessons || 0}
-- Current Streak: ${userData.progress?.currentStreak || 0} days
+- Completed Lessons: ${userDataForContext.progress?.completedLessons || 0}
+- Current Streak: ${userDataForContext.progress?.currentStreak || 0} days
 `
 
     // Try OpenAI if available and requested
@@ -485,7 +506,7 @@ Remember: You are providing educational information, not professional financial 
     }
 
     // Use intelligent fallback system
-    const fallbackReply = generateIntelligentResponse(lastMessage.content, userData)
+    const fallbackReply = generateIntelligentResponse(lastMessage.content, userDataForContext)
 
     console.log("✅ Intelligent fallback response generated")
     return NextResponse.json({
