@@ -35,7 +35,7 @@ const AIChatComponent = () => {
       id: "welcome",
       role: "assistant",
       content:
-        "Hi! I'm your AI financial advisor. I can analyze your personal budget, review your goals, and give you tailored advice on budgeting, saving, debt management, and investing. What would you like to know about?",
+        "Hi! I'm your AI financial advisor powered by GPT-4. I can analyze your personal budget, review your goals, and give you tailored advice on budgeting, saving, debt management, and investing. What would you like to know about?",
     },
   ])
   const [input, setInput] = useState("")
@@ -154,7 +154,7 @@ const AIChatComponent = () => {
         {
           id: Date.now().toString(),
           role: "assistant",
-          content: "Sorry, I'm having trouble responding right now. Could you try asking again?",
+          content: "Sorry, I'm having trouble connecting to the AI service right now. Please try again in a moment.",
         },
       ])
     } finally {
@@ -183,7 +183,7 @@ const AIChatComponent = () => {
             AI Financial Advisor
             <Badge variant="outline" className="ml-auto">
               <Zap className="w-3 h-3 mr-1" />
-              {hasUserData ? "Personalized" : "Smart & Simple"}
+              {hasUserData ? "GPT-4 Powered" : "AI Powered"}
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -197,14 +197,14 @@ const AIChatComponent = () => {
                   <h3 className="text-lg font-semibold mb-2">Hi! I'm your AI financial advisor</h3>
                   <p className="text-gray-600 mb-6">
                     {hasUserData
-                      ? "I can analyze your personal budget, review your goals, and give you tailored financial advice."
-                      : "I can help with budgeting, saving, debt management, and investing. Add your financial data for personalized advice!"}
+                      ? "Powered by GPT-4, I can analyze your personal budget, review your goals, and give you expert financial advice."
+                      : "Powered by GPT-4, I can help with budgeting, saving, debt management, and investing. Add your financial data for personalized advice!"}
                   </p>
 
                   {hasUserData && (
                     <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
                       <p className="text-sm text-green-800">
-                        ✅ I can see your financial data and provide personalized recommendations!
+                        ✅ I can see your financial data and provide personalized AI-powered recommendations!
                       </p>
                     </div>
                   )}
@@ -294,8 +294,8 @@ const AIChatComponent = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={
                   hasUserData
-                    ? "Ask about your budget, goals, or get personalized advice..."
-                    : "Ask about budgeting, saving, debt, investing, or personal finance..."
+                    ? "Ask GPT-4 about your budget, goals, or get personalized advice..."
+                    : "Ask GPT-4 about budgeting, saving, debt, investing, or personal finance..."
                 }
                 className="flex-1"
                 disabled={isLoading}
