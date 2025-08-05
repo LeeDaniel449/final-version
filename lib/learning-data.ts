@@ -2209,6 +2209,801 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
       // Additional lessons would continue here...
     ],
     // Additional modules would continue here...
+    taxes: [
+      {
+        title: "Understanding the Tax System",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "How Federal and State Taxes Work",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The U.S. tax system is progressive, meaning higher earners pay higher tax rates. Understanding how taxes work helps you make better financial decisions, maximize deductions, and plan for tax efficiency throughout the year.",
+          },
+          {
+            type: "list",
+            content: "Types of taxes you pay:",
+            items: [
+              "Federal income tax: Progressive rates from 10% to 37%",
+              "State income tax: Varies by state (0% to 13.3%)",
+              "FICA taxes: Social Security (6.2%) and Medicare (1.45%)",
+              "Property taxes: Based on real estate value",
+              "Sales taxes: State and local taxes on purchases",
+              "Capital gains taxes: On investment profits",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Marginal vs. effective tax rate:",
+            formula: "Effective Rate = Total Tax Paid ÷ Total Income",
+            variables: {
+              "Marginal Rate": "Tax rate on your last dollar earned",
+              "Effective Rate": "Average tax rate on all income",
+              "Tax Brackets": "Income ranges with different rates",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Single filer earning $60,000: First $10,275 taxed at 10% ($1,028), next $31,350 at 12% ($3,762), remaining $18,375 at 22% ($4,043). Total tax: $8,833. Effective rate: 14.7%, but marginal rate is 22%.",
+          },
+          {
+            type: "list",
+            content: "Tax filing status options:",
+            items: [
+              "Single: Unmarried individuals",
+              "Married Filing Jointly: Combined income and deductions",
+              "Married Filing Separately: Separate returns for spouses",
+              "Head of Household: Unmarried with qualifying dependents",
+              "Qualifying Widow(er): Recently widowed with dependents",
+            ],
+          },
+          {
+            type: "list",
+            content: "Standard vs. itemized deductions:",
+            items: [
+              "Standard deduction 2023: $13,850 (single), $27,700 (married)",
+              "Itemized deductions: Mortgage interest, state taxes, charity",
+              "Choose whichever is higher",
+              "Most taxpayers use standard deduction",
+              "Track itemizable expenses throughout the year",
+              "Consider bunching deductions in alternating years",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Keep detailed records of all potentially deductible expenses throughout the year. Even if you take the standard deduction, you'll be prepared if your itemized deductions exceed the standard amount.",
+          },
+        ],
+        keyTakeaways: [
+          "The U.S. uses a progressive tax system with marginal tax brackets",
+          "Your effective tax rate is lower than your marginal rate",
+          "Choose between standard and itemized deductions based on which is higher",
+          "Understanding tax basics helps with year-round planning",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the difference between marginal and effective tax rates?",
+              options: [
+                "There is no difference",
+                "Marginal is the rate on your last dollar earned, effective is your average rate",
+                "Effective is always higher than marginal",
+                "Marginal applies to state taxes, effective to federal",
+              ],
+              correctAnswer: "Marginal is the rate on your last dollar earned, effective is your average rate",
+              explanation:
+                "Your marginal tax rate is the percentage you pay on your last dollar of income, while your effective rate is your total tax divided by total income.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tax-Advantaged Accounts",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Maximizing Tax-Deferred and Tax-Free Growth",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tax-advantaged accounts are powerful tools for building wealth while reducing your tax burden. Understanding the different types and their rules helps you optimize your tax strategy and retirement planning.",
+          },
+          {
+            type: "list",
+            content: "Types of tax-advantaged accounts:",
+            items: [
+              "401(k)/403(b): Employer-sponsored retirement plans",
+              "Traditional IRA: Tax-deductible contributions, taxed in retirement",
+              "Roth IRA: After-tax contributions, tax-free growth and withdrawals",
+              "HSA: Triple tax advantage for healthcare expenses",
+              "529 Plans: Tax-free growth for education expenses",
+              "FSA/Dependent Care: Pre-tax dollars for specific expenses",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Tax savings from 401(k) contributions:",
+            formula: "Tax Savings = Contribution Amount × Marginal Tax Rate",
+            variables: {
+              "Contribution Amount": "How much you contribute pre-tax",
+              "Marginal Tax Rate": "Your top tax bracket percentage",
+              "Net Cost": "Contribution - Tax Savings",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Sarah earns $75,000 (22% tax bracket) and contributes $6,000 to her 401(k). Tax savings: $6,000 × 22% = $1,320. Her net cost is only $4,680 for a $6,000 retirement contribution.",
+          },
+          {
+            type: "list",
+            content: "2023 contribution limits:",
+            items: [
+              "401(k): $22,500 ($30,000 if 50+)",
+              "IRA (Traditional/Roth): $6,500 ($7,500 if 50+)",
+              "HSA: $3,850 individual, $7,750 family ($1,000 catch-up if 55+)",
+              "529 Plans: $17,000 annual gift tax exclusion per beneficiary",
+              "FSA: $3,050 for healthcare, $5,000 for dependent care",
+            ],
+          },
+          {
+            type: "list",
+            content: "Traditional vs. Roth comparison:",
+            items: [
+              "Traditional: Tax deduction now, pay taxes in retirement",
+              "Roth: No deduction now, tax-free in retirement",
+              "Choose Traditional if: Higher tax bracket now than in retirement",
+              "Choose Roth if: Lower tax bracket now than expected in retirement",
+              "Consider Roth for: Young people, tax diversification",
+              "Income limits apply to Roth IRA contributions",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Tax Strategy Success: By maxing out his 401(k), HSA, and backdoor Roth IRA, high-earner Mike reduced his taxable income by $35,000 annually, saving $8,750 in taxes while building $35,000+ in retirement wealth each year.",
+          },
+          {
+            type: "tip",
+            content:
+              "Prioritize accounts in this order: 401(k) to employer match, HSA max, Roth IRA max, remaining 401(k) space, then taxable accounts. This optimizes both tax savings and flexibility.",
+          },
+        ],
+        keyTakeaways: [
+          "Tax-advantaged accounts provide immediate tax savings or tax-free growth",
+          "Maximize employer 401(k) matches first for guaranteed returns",
+          "Choose Traditional vs. Roth based on current vs. future tax rates",
+          "HSAs offer triple tax advantages when used for healthcare",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of a Roth IRA over a Traditional IRA?",
+              options: [
+                "Higher contribution limits",
+                "Tax-free withdrawals in retirement",
+                "Immediate tax deduction",
+                "No income restrictions",
+              ],
+              correctAnswer: "Tax-free withdrawals in retirement",
+              explanation:
+                "Roth IRAs provide tax-free growth and withdrawals in retirement, while Traditional IRAs are taxed upon withdrawal.",
+            },
+          ],
+        },
+      },
+      // Continue with remaining tax lessons...
+    ],
+    insurance: [
+      {
+        title: "Insurance Fundamentals",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Financial Foundation",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Insurance is a contract that transfers financial risk from you to an insurance company in exchange for premium payments. Proper insurance coverage protects your wealth and family from catastrophic financial losses that could derail your financial goals.",
+          },
+          {
+            type: "list",
+            content: "Types of insurance coverage:",
+            items: [
+              "Health insurance: Medical expenses and healthcare costs",
+              "Life insurance: Income replacement for dependents",
+              "Disability insurance: Income protection if unable to work",
+              "Auto insurance: Vehicle damage and liability protection",
+              "Homeowners/Renters: Property damage and liability coverage",
+              "Umbrella insurance: Additional liability protection",
+            ],
+          },
+          {
+            type: "list",
+            content: "How insurance works:",
+            items: [
+              "Risk pooling: Many people pay premiums to cover few claims",
+              "Premiums: Regular payments to maintain coverage",
+              "Deductibles: Amount you pay before insurance kicks in",
+              "Coverage limits: Maximum amount insurance will pay",
+              "Exclusions: What's not covered by the policy",
+              "Claims process: How to get paid when losses occur",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Insurance cost-benefit analysis:",
+            formula: "Expected Value = (Probability of Loss × Loss Amount) - Premium Cost",
+            variables: {
+              "Probability of Loss": "Likelihood of needing to file a claim",
+              "Loss Amount": "Potential financial impact without insurance",
+              "Premium Cost": "Annual cost of insurance coverage",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Home insurance example: 1% chance of $200,000 loss per year. Expected loss: $2,000. If premium is $1,200, you're paying $1,200 to avoid potential $200,000 loss - good value for risk transfer.",
+          },
+          {
+            type: "list",
+            content: "Insurance priority framework:",
+            items: [
+              "Essential: Health, auto (if required), renters/homeowners",
+              "Important: Life (if dependents), disability income",
+              "Valuable: Umbrella liability, increased coverage limits",
+              "Optional: Extended warranties, travel insurance",
+              "Avoid: Credit life, mortgage protection, most warranties",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Insurance Success Story: When David was diagnosed with cancer at 35, his disability insurance replaced 60% of his $80,000 salary for 18 months, allowing his family to maintain their lifestyle while he recovered.",
+          },
+          {
+            type: "tip",
+            content:
+              "Buy insurance for catastrophic losses you can't afford, not small losses you can handle. Higher deductibles lower premiums and make financial sense for most people.",
+          },
+        ],
+        keyTakeaways: [
+          "Insurance transfers financial risk from you to insurance companies",
+          "Focus on protecting against catastrophic losses you can't afford",
+          "Higher deductibles typically provide better value",
+          "Prioritize essential coverage before optional policies",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the primary purpose of insurance?",
+              options: [
+                "To make money from claims",
+                "To transfer financial risk you can't afford",
+                "To get the lowest possible premiums",
+                "To cover all possible expenses",
+              ],
+              correctAnswer: "To transfer financial risk you can't afford",
+              explanation:
+                "Insurance's main purpose is to transfer the financial risk of large, unaffordable losses from you to the insurance company.",
+            },
+          ],
+        },
+      },
+      // Continue with remaining insurance lessons...
+    ],
+    loans: [
+      {
+        title: "Understanding Loan Types and Terms",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Navigating the World of Borrowing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Loans allow you to access money now in exchange for paying it back with interest over time. Understanding different loan types, terms, and costs helps you make smart borrowing decisions and avoid expensive debt traps.",
+          },
+          {
+            type: "list",
+            content: "Common types of loans:",
+            items: [
+              "Auto loans: Secured by the vehicle, typically 3-7 years",
+              "Personal loans: Unsecured, fixed payments, 2-7 years",
+              "Student loans: Education financing, federal and private options",
+              "Mortgages: Home loans, typically 15-30 years",
+              "Home equity loans: Secured by home equity",
+              "Credit cards: Revolving credit with variable payments",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key loan terms to understand:",
+            items: [
+              "Principal: The amount you borrow",
+              "Interest rate: Cost of borrowing, expressed as APR",
+              "Term: Length of time to repay the loan",
+              "Monthly payment: Fixed amount due each month",
+              "Collateral: Asset securing the loan (if applicable)",
+              "Prepayment penalties: Fees for paying off early",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Loan payment calculation:",
+            formula: "Monthly Payment = P × [r(1+r)^n] / [(1+r)^n - 1]",
+            variables: {
+              P: "Principal loan amount",
+              r: "Monthly interest rate (annual rate ÷ 12)",
+              n: "Total number of payments (years × 12)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "$20,000 auto loan at 6% APR for 5 years: Monthly payment = $386.66. Total paid = $23,199. Total interest = $3,199. The longer the term, the more interest you pay overall.",
+          },
+          {
+            type: "list",
+            content: "Secured vs. unsecured loans:",
+            items: [
+              "Secured: Backed by collateral (auto, home, savings)",
+              "Secured benefits: Lower interest rates, higher loan amounts",
+              "Secured risks: Can lose collateral if you default",
+              "Unsecured: No collateral required (personal loans, credit cards)",
+              "Unsecured benefits: No risk of losing assets",
+              "Unsecured drawbacks: Higher rates, stricter qualification",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Smart Borrowing: Instead of a 7-year auto loan at 8%, Maria chose a 4-year loan at 5.5%. Higher monthly payment ($469 vs. $398) but saved $3,200 in total interest and owned her car 3 years sooner.",
+          },
+          {
+            type: "warning",
+            content:
+              "Beware of predatory lending practices: extremely high interest rates, excessive fees, pressure to sign quickly, or loans that seem too good to be true.",
+          },
+          {
+            type: "tip",
+            content:
+              "Shop around with multiple lenders before accepting any loan. Even a 1% difference in interest rate can save thousands over the life of the loan.",
+          },
+        ],
+        keyTakeaways: [
+          "Different loan types serve different purposes with varying terms",
+          "Secured loans typically offer better rates than unsecured loans",
+          "Shorter loan terms mean higher payments but less total interest",
+          "Always shop around and compare offers from multiple lenders",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of a secured loan over an unsecured loan?",
+              options: [
+                "No risk of losing assets",
+                "Lower interest rates",
+                "No credit check required",
+                "Unlimited borrowing amounts",
+              ],
+              correctAnswer: "Lower interest rates",
+              explanation:
+                "Secured loans typically offer lower interest rates because the collateral reduces the lender's risk.",
+            },
+          ],
+        },
+      },
+      // Continue with remaining loan lessons...
+    ],
+    mortgages: [
+      {
+        title: "Mortgage Basics and Types",
+        duration: "9 min",
+        points: 27,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Home Financing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A mortgage is a loan secured by real estate that allows you to purchase a home without paying the full price upfront. Understanding mortgage types, terms, and the qualification process is crucial for making one of the largest financial decisions of your life.",
+          },
+          {
+            type: "list",
+            content: "Common mortgage types:",
+            items: [
+              "Conventional loans: Not government-backed, typically 20% down",
+              "FHA loans: Government-backed, as little as 3.5% down",
+              "VA loans: For veterans, no down payment required",
+              "USDA loans: For rural areas, no down payment",
+              "Jumbo loans: For expensive homes above conforming limits",
+              "ARM vs. Fixed: Adjustable vs. fixed interest rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Mortgage terms and components:",
+            items: [
+              "Principal: The loan amount borrowed",
+              "Interest: Cost of borrowing the money",
+              "Taxes: Property taxes collected in escrow",
+              "Insurance: Homeowners insurance and PMI if applicable",
+              "PITI: Principal, Interest, Taxes, Insurance (total payment)",
+              "Escrow: Account for taxes and insurance",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Mortgage affordability calculation:",
+            formula: "Max Housing Payment = Gross Monthly Income × 0.28",
+            variables: {
+              "Gross Monthly Income": "Before-tax monthly income",
+              "28% Rule": "Housing shouldn't exceed 28% of gross income",
+              "36% Rule": "Total debt shouldn't exceed 36% of gross income",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "$6,000 monthly gross income: Max housing payment = $1,680. If property taxes and insurance = $400, max principal and interest = $1,280. At 7% rate, this supports about a $190,000 mortgage.",
+          },
+          {
+            type: "list",
+            content: "Down payment considerations:",
+            items: [
+              "20% down: Avoids PMI, better rates, lower monthly payments",
+              "Less than 20%: Requires PMI, higher monthly costs",
+              "FHA: 3.5% minimum, MIP required",
+              "VA/USDA: 0% down options for qualified buyers",
+              "Down payment assistance: State and local programs available",
+              "Gift funds: Family can help with down payment",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "First-Time Buyer Success: Using an FHA loan with 3.5% down, teacher Sarah bought a $250,000 home with $8,750 down payment. PMI added $200/month, but she was able to buy 3 years sooner than saving for 20% down.",
+          },
+          {
+            type: "tip",
+            content:
+              "Get pre-approved before house hunting to know your budget and show sellers you're a serious buyer. Pre-approval is more thorough than pre-qualification.",
+          },
+        ],
+        keyTakeaways: [
+          "Different mortgage types serve different buyer situations",
+          "20% down payment avoids PMI but isn't always required",
+          "Housing costs should generally not exceed 28% of gross income",
+          "Pre-approval helps determine your realistic budget",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does PMI stand for and when is it required?",
+              options: [
+                "Personal Mortgage Insurance, always required",
+                "Private Mortgage Insurance, when down payment is less than 20%",
+                "Property Management Insurance, for rental properties",
+                "Primary Mortgage Interest, part of all loans",
+              ],
+              correctAnswer: "Private Mortgage Insurance, when down payment is less than 20%",
+              explanation:
+                "PMI (Private Mortgage Insurance) is required on conventional loans when you put down less than 20%, protecting the lender if you default.",
+            },
+          ],
+        },
+      },
+      // Continue with remaining mortgage lessons...
+    ],
+    hsa: [
+      {
+        title: "HSA Triple Tax Advantage",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "The Ultimate Tax-Advantaged Account",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Health Savings Accounts (HSAs) offer a unique triple tax advantage: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses. When used strategically, HSAs can serve as powerful retirement accounts.",
+          },
+          {
+            type: "list",
+            content: "HSA triple tax advantage:",
+            items: [
+              "Tax-deductible contributions: Reduce current year taxes",
+              "Tax-free growth: Investments grow without tax consequences",
+              "Tax-free withdrawals: For qualified medical expenses",
+              "No required minimum distributions: Unlike 401(k)s and IRAs",
+              "Portable: Stays with you when changing jobs",
+              "After 65: Can withdraw for any purpose (taxed like traditional IRA)",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA eligibility requirements:",
+            items: [
+              "Must have High Deductible Health Plan (HDHP)",
+              "2023 HDHP minimums: $1,500 individual, $3,000 family",
+              "2023 HDHP maximums: $7,500 individual, $15,000 family",
+              "Cannot have other health coverage (with exceptions)",
+              "Cannot be claimed as dependent on someone else's taxes",
+              "Cannot be enrolled in Medicare",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "HSA contribution limits and tax savings:",
+            formula: "Tax Savings = HSA Contribution × Marginal Tax Rate",
+            variables: {
+              "2023 Limits": "$3,850 individual, $7,750 family",
+              "Catch-up": "$1,000 additional if 55 or older",
+              "Marginal Tax Rate": "Your top tax bracket percentage",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "High earner in 32% tax bracket maxing family HSA ($7,750): Tax savings = $7,750 × 32% = $2,480. Net cost of contribution is only $5,270 for $7,750 in retirement savings.",
+          },
+          {
+            type: "list",
+            content: "HSA investment strategies:",
+            items: [
+              "Keep 3-6 months of deductible in cash for immediate needs",
+              "Invest remaining balance for long-term growth",
+              "Use low-cost index funds like other retirement accounts",
+              "Don't withdraw for current medical expenses if possible",
+              "Save receipts for future reimbursement (no time limit)",
+              "Let investments compound tax-free for decades",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "HSA Retirement Strategy: Doctor Mike maxed his HSA for 20 years, paying medical expenses out-of-pocket and investing HSA funds. At retirement, his HSA was worth $400,000 - all available tax-free for healthcare or taxable for other expenses.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you can afford it, pay medical expenses out-of-pocket and let your HSA investments grow. You can reimburse yourself years later using saved receipts.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs offer unique triple tax advantages unavailable elsewhere",
+          "Requires High Deductible Health Plan enrollment",
+          "Can serve as powerful retirement account after age 65",
+          "Investment growth is completely tax-free for medical expenses",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What makes HSAs unique compared to other retirement accounts?",
+              options: [
+                "Higher contribution limits",
+                "Triple tax advantage",
+                "No investment options",
+                "Required minimum distributions",
+              ],
+              correctAnswer: "Triple tax advantage",
+              explanation:
+                "HSAs are the only accounts offering tax-deductible contributions, tax-free growth, AND tax-free withdrawals (for qualified expenses).",
+            },
+          ],
+        },
+      },
+      // Continue with remaining HSA lessons...
+    ],
+    "estate-planning": [
+      {
+        title: "Estate Planning Essentials",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Legacy and Loved Ones",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate planning ensures your assets are distributed according to your wishes and your loved ones are protected after your death. It's not just for the wealthy - everyone needs basic estate planning documents to avoid probate complications and family disputes.",
+          },
+          {
+            type: "list",
+            content: "Essential estate planning documents:",
+            items: [
+              "Will: Directs distribution of assets and names guardians",
+              "Durable Power of Attorney: Financial decisions if incapacitated",
+              "Healthcare Power of Attorney: Medical decisions if unable",
+              "Living Will/Advance Directive: End-of-life care preferences",
+              "HIPAA Authorization: Allows access to medical information",
+              "Beneficiary designations: On retirement accounts and insurance",
+            ],
+          },
+          {
+            type: "list",
+            content: "What happens without estate planning:",
+            items: [
+              "State intestacy laws determine asset distribution",
+              "Court appoints guardian for minor children",
+              "Probate process becomes longer and more expensive",
+              "Family disputes over assets and decisions",
+              "No guidance for medical decisions if incapacitated",
+              "Potential tax inefficiencies",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Without a will, John's $500,000 estate went through 18-month probate costing $25,000 in legal fees. His assets were distributed by state law, not his wishes, and his young children's inheritance was tied up in court-supervised accounts.",
+          },
+          {
+            type: "list",
+            content: "Trust basics:",
+            items: [
+              "Revocable trust: Can be changed, avoids probate",
+              "Irrevocable trust: Cannot be changed, potential tax benefits",
+              "Testamentary trust: Created by will, for minor children",
+              "Special needs trust: Protects disabled beneficiaries",
+              "Charitable trust: Provides tax benefits for giving",
+              "Trust costs vs. benefits analysis needed",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Estate Planning Success: By creating a revocable trust and updating beneficiaries, Sarah ensured her $800,000 estate passed directly to her children without probate, saving $30,000 in costs and 12 months of delays.",
+          },
+          {
+            type: "tip",
+            content:
+              "Review and update your estate plan every 3-5 years or after major life events like marriage, divorce, births, deaths, or significant asset changes.",
+          },
+        ],
+        keyTakeaways: [
+          "Everyone needs basic estate planning documents, not just the wealthy",
+          "Proper planning avoids probate delays and reduces costs",
+          "Regular updates ensure plans reflect current wishes and circumstances",
+          "Beneficiary designations override will instructions",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important estate planning document for most people?",
+              options: ["Revocable trust", "Will", "Power of attorney", "Living will"],
+              correctAnswer: "Will",
+              explanation:
+                "A will is the foundation of estate planning, directing asset distribution and naming guardians for minor children.",
+            },
+          ],
+        },
+      },
+      // Continue with remaining estate planning lessons...
+    ],
+    "financial-advisors": [
+      {
+        title: "When to Hire a Financial Advisor",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Determining if You Need Professional Help",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Financial advisors can provide valuable guidance, but they're not necessary for everyone. Understanding when professional help is worth the cost, what services advisors provide, and how to choose the right one can help you make an informed decision.",
+          },
+          {
+            type: "list",
+            content: "Signs you might need a financial advisor:",
+            items: [
+              "Complex financial situation with multiple income sources",
+              "Significant assets requiring sophisticated planning",
+              "Major life transitions (inheritance, divorce, retirement)",
+              "Lack of time or interest in managing investments",
+              "Need for objective, professional perspective",
+              "Tax planning beyond basic strategies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Services financial advisors provide:",
+            items: [
+              "Investment management and portfolio construction",
+              "Retirement planning and withdrawal strategies",
+              "Tax planning and optimization",
+              "Estate planning coordination",
+              "Insurance needs analysis",
+              "Financial planning and goal setting",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of financial advisors:",
+            items: [
+              "Fee-only: Paid directly by clients, no commissions",
+              "Commission-based: Paid by selling financial products",
+              "Fee-based: Combination of fees and commissions",
+              "Robo-advisors: Automated investment management",
+              "CFP: Certified Financial Planner designation",
+              "Fiduciary: Legally required to act in client's best interest",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Advisor cost analysis:",
+            formula: "Annual Cost = Assets × Fee Percentage",
+            variables: {
+              "Typical Fees": "0.5% to 2% of assets under management",
+              "Break-even": "Value added must exceed fees paid",
+              "DIY Alternative": "Low-cost index funds (0.03-0.20%)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "$500,000 portfolio with 1% advisor fee costs $5,000 annually. If advisor helps you avoid major mistakes, optimize taxes, and stay disciplined during market volatility, the value could exceed the cost.",
+          },
+          {
+            type: "case-study",
+            content:
+              "Advisor Value: During 2008 crisis, advisor helped client stay invested and rebalance into stocks at low prices. This discipline added $200,000 to portfolio value over 10 years, far exceeding $50,000 in advisor fees.",
+          },
+          {
+            type: "tip",
+            content:
+              "Look for fee-only, fiduciary advisors with relevant credentials (CFP, CFA). Interview multiple advisors and understand exactly what services you'll receive for the fees charged.",
+          },
+        ],
+        keyTakeaways: [
+          "Advisors can add value but aren't necessary for everyone",
+          "Fee-only, fiduciary advisors have fewer conflicts of interest",
+          "Consider advisor costs vs. potential value added",
+          "Complex situations benefit most from professional guidance",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the key advantage of working with a fiduciary financial advisor?",
+              options: [
+                "They charge lower fees",
+                "They are legally required to act in your best interest",
+                "They guarantee investment returns",
+                "They only work with wealthy clients",
+              ],
+              correctAnswer: "They are legally required to act in your best interest",
+              explanation:
+                "Fiduciary advisors are legally bound to act in their clients' best interests, while non-fiduciary advisors only need to recommend 'suitable' investments.",
+            },
+          ],
+        },
+      },
+      // Continue with remaining financial advisor lessons...
+    ],
   }
 
   const moduleContent = lessons[moduleId]
