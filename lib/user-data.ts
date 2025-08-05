@@ -30,13 +30,13 @@ interface BudgetData {
   goals: { name: string; target: number; current: number }[]
 }
 
-interface Goal {
+interface GoalData {
   id: string
   title: string
-  targetAmount: number
-  currentAmount: number
-  targetDate: string
-  description: string
+  target: number
+  current: number
+  deadline: string
+  category: string
   priority: "high" | "medium" | "low"
   status: "active" | "completed" | "paused"
 }
@@ -93,58 +93,12 @@ interface UserProgress {
 interface RegisteredUser {
   profile: UserProfile
   budgetData: BudgetData
-  goals: Goal[]
+  goals: GoalData[]
   learningProgress: LearningProgress
   userProgress: UserProgress
   createdAt: string
   lastSignIn: string
 }
-
-interface UserData {
-  isSignedIn: boolean
-  profile: UserProfile
-  budgetData: BudgetData
-  goals: Goal[]
-}
-
-// Default user data structure
-const defaultUserData: UserData = {
-  isSignedIn: false,
-  profile: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    username: "",
-    password: "",
-    age: "",
-    experience: "",
-    goals: [],
-    income: "",
-    expenses: "",
-    savings: "",
-    debt: "",
-    riskTolerance: "",
-    timeHorizon: "",
-    investmentExperience: "",
-    completedOnboarding: false,
-    signedUp: false,
-    signedIn: false,
-    rememberMe: false,
-  },
-  budgetData: {
-    income: 0,
-    expenses: {},
-    savings: 0,
-    goals: [],
-  },
-  goals: [],
-}
-
-// Storage key for localStorage
-const STORAGE_KEY = "financial_app_user_data"
-
-// Event name for user data changes
-const USER_DATA_CHANGED_EVENT = "userDataChanged"
 
 class UserDataManager {
   private readonly STORAGE_KEYS = {
@@ -206,178 +160,6 @@ class UserDataManager {
     budgetCategories: 0,
     totalBudgetAmount: 0,
     modules: {},
-  }
-
-  private userData: UserData
-  private listeners: Set<() => void> = new Set()
-
-  constructor() {
-    this.userData = this.loadFromStorage()
-  }
-
-  // Load user data from localStorage
-  private loadFromStorage(): UserData {
-    if (typeof window === "undefined") {
-      return { ...defaultUserData }
-    }
-
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        const parsed = JSON.parse(stored)
-        // Merge with default data to ensure all properties exist
-        return {
-          ...defaultUserData,
-          ...parsed,
-          profile: { ...defaultUserData.profile, ...parsed.profile },
-          budgetData: {
-            ...defaultUserData.budgetData,
-            ...parsed.budgetData,
-            expenses: { ...defaultUserData.budgetData.expenses, ...parsed.budgetData?.expenses },
-          },
-          goals: parsed.goals || [],
-        }
-      }
-    } catch (error) {
-      console.error("Error loading user data from storage:", error)
-    }
-
-    return { ...defaultUserData }
-  }
-
-  // Save user data to localStorage
-  private saveToStorage(): void {
-    if (typeof window === "undefined") return
-
-    try {
-      this.userData.lastUpdated = new Date().toISOString()
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.userData))
-      this.notifyListeners()
-      // Dispatch custom event for components that don't use the manager directly
-      window.dispatchEvent(
-        new CustomEvent(USER_DATA_CHANGED_EVENT, {
-          detail: this.userData,
-        }),
-      )
-    } catch (error) {
-      console.error("Error saving user data to storage:", error)
-    }
-  }
-
-  // Notify all listeners of data changes
-  private notifyListeners(): void {
-    this.listeners.forEach((listener) => {
-      try {
-        listener()
-      } catch (error) {
-        console.error("Error in user data listener:", error)
-      }
-    })
-  }
-
-  // Subscribe to user data changes
-  subscribe(listener: () => void): () => void {
-    this.listeners.add(listener)
-    return () => {
-      this.listeners.delete(listener)
-    }
-  }
-
-  // Check if user is signed in
-  isUserSignedIn(): boolean {
-    if (typeof window === "undefined") return false
-    return localStorage.getItem(this.STORAGE_KEYS.SIGNED_IN) === "true"
-  }
-
-  // Get current user data
-  getUserData(): UserData {
-    return { ...this.userData }
-  }
-
-  // Sign in user
-  signIn(profile: Partial<UserProfile>): void {
-    this.userData.isSignedIn = true
-    this.userData.profile = { ...this.userData.profile, ...profile }
-    this.saveToStorage()
-  }
-
-  // Sign out user
-  signOut(): void {
-    if (typeof window === "undefined") return
-
-    // Save current user data before signing out
-    this.saveCurrentUserData()
-
-    // Clear sign-in status and current session data
-    this.setUserSignedIn(false)
-    localStorage.removeItem(this.STORAGE_KEYS.CURRENT_USER)
-
-    // Clear current session progress data (but keep it saved for the user)
-    localStorage.removeItem(this.STORAGE_KEYS.USER_PROGRESS)
-    localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
-    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
-    localStorage.removeItem(this.STORAGE_KEYS.GOALS)
-
-    // Clear remember me if not set
-    const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
-    if (!rememberMe) {
-      localStorage.removeItem(this.STORAGE_KEYS.REMEMBER_ME)
-      // Also clear the user profile if not remembering
-      localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
-    }
-
-    console.log("User signed out and session data cleared")
-  }
-
-  isUserSignedUp(): boolean {
-    if (typeof window === "undefined") return false
-
-    // 1) Active session?
-    if (this.isUserSignedIn()) return true
-
-    // 2) Cached profile flag?
-    const profile = this.getUserProfile()
-    if (profile.signedUp) return true
-
-    // 3) Stored in the registry?
-    const identifier = profile.email || profile.username
-    if (!identifier) return false
-
-    const registeredUsers = this.getRegisteredUsers()
-    return registeredUsers.some((u) => u.profile.email === identifier || u.profile.username === identifier)
-  }
-
-  // Update user profile
-  updateProfile(updates: Partial<UserProfile>): void {
-    this.userData.profile = { ...this.userData.profile, ...updates }
-    this.saveToStorage()
-  }
-
-  // Update budget data
-  updateBudgetData(updates: Partial<BudgetData>): void {
-    this.userData.budgetData = {
-      ...this.userData.budgetData,
-      ...updates,
-      expenses: { ...this.userData.budgetData.expenses, ...updates.expenses },
-    }
-    this.saveToStorage()
-  }
-
-  // Add or update a goal
-  updateGoal(goal: Goal): void {
-    const existingIndex = this.userData.goals.findIndex((g) => g.id === goal.id)
-    if (existingIndex >= 0) {
-      this.userData.goals[existingIndex] = goal
-    } else {
-      this.userData.goals.push(goal)
-    }
-    this.saveToStorage()
-  }
-
-  // Remove a goal
-  removeGoal(goalId: string): void {
-    this.userData.goals = this.userData.goals.filter((g) => g.id !== goalId)
-    this.saveToStorage()
   }
 
   // User Profile Management
@@ -538,6 +320,11 @@ class UserDataManager {
     }
   }
 
+  isUserSignedIn(): boolean {
+    if (typeof window === "undefined") return false
+    return localStorage.getItem(this.STORAGE_KEYS.SIGNED_IN) === "true"
+  }
+
   setUserSignedIn(signedIn: boolean): void {
     if (typeof window === "undefined") return
     localStorage.setItem(this.STORAGE_KEYS.SIGNED_IN, signedIn.toString())
@@ -555,11 +342,52 @@ class UserDataManager {
     localStorage.setItem(this.STORAGE_KEYS.REMEMBER_ME, remember.toString())
   }
 
-  // Get user profile
-  getProfile(): UserProfile {
-    return { ...this.getUserProfile() }
+  signOut(): void {
+    if (typeof window === "undefined") return
+
+    // Save current user data before signing out
+    this.saveCurrentUserData()
+
+    // Clear sign-in status and current session data
+    this.setUserSignedIn(false)
+    localStorage.removeItem(this.STORAGE_KEYS.CURRENT_USER)
+
+    // Clear current session progress data (but keep it saved for the user)
+    localStorage.removeItem(this.STORAGE_KEYS.USER_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
+    localStorage.removeItem(this.STORAGE_KEYS.GOALS)
+
+    // Clear remember me if not set
+    const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
+    if (!rememberMe) {
+      localStorage.removeItem(this.STORAGE_KEYS.REMEMBER_ME)
+      // Also clear the user profile if not remembering
+      localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
+    }
+
+    console.log("User signed out and session data cleared")
   }
 
+  isUserSignedUp(): boolean {
+    if (typeof window === "undefined") return false
+
+    // 1) Active session?
+    if (this.isUserSignedIn()) return true
+
+    // 2) Cached profile flag?
+    const profile = this.getUserProfile()
+    if (profile.signedUp) return true
+
+    // 3) Stored in the registry?
+    const identifier = profile.email || profile.username
+    if (!identifier) return false
+
+    const registeredUsers = this.getRegisteredUsers()
+    return registeredUsers.some((u) => u.profile.email === identifier || u.profile.username === identifier)
+  }
+
+  // Helper Methods
   private getRegisteredUsers(): RegisteredUser[] {
     if (typeof window === "undefined") return []
 
@@ -789,14 +617,6 @@ class UserDataManager {
     // Any goal with a non-zero target/current amount.
     if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
 
-    // Check budget categories
-    const categories = this.getBudgetCategories()
-    if (categories.some((c) => c.budgetAmount > 0 || c.spentAmount > 0)) return true
-
-    // Check budget entries
-    const entries = this.getBudgetEntries()
-    if (entries.length > 0) return true
-
     return false
   }
 
@@ -865,7 +685,7 @@ class UserDataManager {
   }
 
   // Goals Management
-  getGoals(): Goal[] {
+  getGoals(): GoalData[] {
     if (typeof window === "undefined") return []
 
     try {
@@ -877,7 +697,7 @@ class UserDataManager {
     }
   }
 
-  saveGoals(goals: Goal[]): void {
+  saveGoals(goals: GoalData[]): void {
     if (typeof window === "undefined") return
 
     try {
@@ -887,9 +707,9 @@ class UserDataManager {
     }
   }
 
-  addGoal(goal: Omit<Goal, "id">): void {
+  addGoal(goal: Omit<GoalData, "id">): void {
     const goals = this.getGoals()
-    const newGoal: Goal = {
+    const newGoal: GoalData = {
       ...goal,
       id: Date.now().toString(),
     }
@@ -897,7 +717,7 @@ class UserDataManager {
     this.saveGoals(goals)
   }
 
-  updateGoal(id: string, updates: Partial<Goal>): void {
+  updateGoal(id: string, updates: Partial<GoalData>): void {
     const goals = this.getGoals()
     const index = goals.findIndex((goal) => goal.id === id)
     if (index !== -1) {
@@ -1183,156 +1003,4 @@ export function getUserData() {
     budgetEntries: userDataManager.getBudgetEntries(),
     progress: userDataManager.getUserProgress(),
   }
-}
-
-// Export types
-export type { UserProfile, BudgetData, Goal, UserProgress }
-
-// Mock user data for demonstration purposes
-// In a real app, this would come from a database or authentication system
-
-const mockUserData: UserData = {
-  isSignedIn: true,
-  profile: {
-    firstName: "Alex",
-    lastName: "Johnson",
-    email: "alex.johnson@example.com",
-    username: "alexjohnson",
-    age: "28",
-    riskTolerance: "moderate",
-    investmentExperience: "beginner",
-    timeHorizon: "long",
-    completedOnboarding: false,
-    signedUp: false,
-    signedIn: false,
-    rememberMe: false,
-  },
-  budgetData: {
-    income: 5500,
-    expenses: {
-      housing: 1800,
-      food: 600,
-      transportation: 400,
-      utilities: 200,
-      insurance: 300,
-      healthcare: 150,
-      entertainment: 300,
-      shopping: 250,
-      other: 200,
-    },
-    savings: 15000,
-    goals: [],
-  },
-  goals: [
-    {
-      id: "1",
-      title: "Emergency Fund",
-      targetAmount: 20000,
-      currentAmount: 15000,
-      targetDate: "2024-12-31",
-      description: "",
-      priority: "medium",
-      status: "active",
-    },
-    {
-      id: "2",
-      title: "House Down Payment",
-      targetAmount: 50000,
-      currentAmount: 12000,
-      targetDate: "2026-06-30",
-      description: "",
-      priority: "medium",
-      status: "active",
-    },
-    {
-      id: "3",
-      title: "Retirement Savings",
-      targetAmount: 100000,
-      currentAmount: 25000,
-      targetDate: "2030-12-31",
-      description: "",
-      priority: "medium",
-      status: "active",
-    },
-  ],
-}
-
-export function updateUserProfile(profile: Partial<UserProfile>): void {
-  // In a real app, this would update the database
-  Object.assign(mockUserData.profile, profile)
-}
-
-export function updateBudgetData(budgetData: Partial<BudgetData>): void {
-  // In a real app, this would update the database
-  Object.assign(mockUserData.budgetData, budgetData)
-}
-
-export function addGoal(goal: Omit<Goal, "id">): void {
-  // In a real app, this would add to the database
-  const newGoal: Goal = {
-    ...goal,
-    id: Date.now().toString(),
-  }
-  mockUserData.goals.push(newGoal)
-}
-
-export function updateGoal(id: string, updates: Partial<Goal>): void {
-  // In a real app, this would update the database
-  const goalIndex = mockUserData.goals.findIndex((g) => g.id === id)
-  if (goalIndex !== -1) {
-    Object.assign(mockUserData.goals[goalIndex], updates)
-  }
-}
-
-export function deleteGoal(id: string): void {
-  // In a real app, this would delete from the database
-  mockUserData.goals = mockUserData.goals.filter((g) => g.id !== id)
-}
-
-// Helper functions for financial calculations
-export function calculateSavingsRate(): number {
-  const { income, expenses } = mockUserData.budgetData
-  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  const monthlyLeftover = income - totalExpenses
-  return income > 0 ? (monthlyLeftover / income) * 100 : 0
-}
-
-export function calculateEmergencyFundMonths(): number {
-  const { expenses, savings } = mockUserData.budgetData
-  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  return totalExpenses > 0 ? savings / totalExpenses : 0
-}
-
-export function getFinancialHealthScore(): {
-  score: number
-  factors: Array<{ name: string; status: "good" | "warning" | "poor"; description: string }>
-} {
-  const savingsRate = calculateSavingsRate()
-  const emergencyMonths = calculateEmergencyFundMonths()
-  const { income, expenses } = mockUserData.budgetData
-  const totalExpenses = Object.values(expenses).reduce((sum, expense) => sum + expense, 0)
-  const monthlyLeftover = income - totalExpenses
-
-  const factors = [
-    {
-      name: "Emergency Fund",
-      status: emergencyMonths >= 6 ? "good" : emergencyMonths >= 3 ? "warning" : "poor",
-      description: `${emergencyMonths.toFixed(1)} months of expenses saved`,
-    },
-    {
-      name: "Savings Rate",
-      status: savingsRate >= 20 ? "good" : savingsRate >= 10 ? "warning" : "poor",
-      description: `Saving ${savingsRate.toFixed(1)}% of income`,
-    },
-    {
-      name: "Budget Balance",
-      status: monthlyLeftover > 0 ? "good" : monthlyLeftover === 0 ? "warning" : "poor",
-      description: monthlyLeftover > 0 ? `$${monthlyLeftover} monthly surplus` : "Expenses equal or exceed income",
-    },
-  ]
-
-  const goodFactors = factors.filter((f) => f.status === "good").length
-  const score = Math.round((goodFactors / factors.length) * 100)
-
-  return { score, factors }
 }

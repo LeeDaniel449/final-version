@@ -2,184 +2,193 @@ import { type NextRequest, NextResponse } from "next/server"
 import OpenAI from "openai"
 
 interface Message {
-  role: "user" | "assistant" | "system"
+  role: "user" | "assistant"
   content: string
 }
 
-interface RequestBody {
-  messages: Message[]
+interface UserData {
+  profile?: any
+  budgetData?: any
+  goals?: any
+  progress?: any
+  budgetCategories?: any
+  budgetEntries?: any
 }
 
-// Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    console.log("Chat API called")
+    const { messages, userData } = await req.json()
 
-    const body: RequestBody = await request.json()
-    console.log("Request body received:", JSON.stringify(body, null, 2))
+    // Build context from user data
+    const userContext = buildUserContext(userData)
 
-    const { messages } = body
+    // Create system prompt with user context
+    const systemPrompt = createSystemPrompt(userContext)
 
-    if (!messages || !Array.isArray(messages)) {
-      console.error("Invalid messages format:", messages)
-      return NextResponse.json({ error: "Invalid messages format. Expected array of messages." }, { status: 400 })
-    }
+    // Convert messages to OpenAI format
+    const openaiMessages = [
+      { role: "system" as const, content: systemPrompt },
+      ...messages.map((msg: Message) => ({
+        role: msg.role as "user" | "assistant",
+        content: msg.content,
+      })),
+    ]
 
-    if (messages.length === 0) {
-      console.error("No messages provided")
-      return NextResponse.json({ error: "No messages provided" }, { status: 400 })
-    }
-
-    // Get the latest user message
-    const userMessage = messages[messages.length - 1]
-    if (!userMessage || userMessage.role !== "user") {
-      console.error("No user message found or invalid message role:", userMessage)
-      return NextResponse.json({ error: "No valid user message found" }, { status: 400 })
-    }
-
-    console.log("Processing user message:", userMessage.content)
-
-    let reply: string
-
-    // Try to use OpenAI if API key is available
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        console.log("Using OpenAI GPT-4 for response generation...")
-
-        const systemPrompt = `You are a helpful AI assistant for a financial literacy application. You can help users with general questions about the app, navigation, features, and basic financial concepts.
-
-Keep responses concise and helpful. If users ask complex financial questions, direct them to the AI Financial Advisor feature for personalized advice.
-
-Available app features:
-- Budget tracking and management
-- Goal setting and tracking
-- Learning modules for financial education
-- AI Financial Advisor for personalized advice
-- Portfolio simulation and analysis
-
-Be friendly, professional, and encouraging about financial literacy and learning.`
-
-        const completion = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [
-            { role: "system", content: systemPrompt },
-            ...messages.slice(-5), // Include last 5 messages for context
-          ],
-          max_tokens: 800,
-          temperature: 0.7,
-        })
-
-        reply =
-          completion.choices[0]?.message?.content ||
-          "I apologize, but I couldn't generate a response. Please try again."
-
-        console.log("OpenAI response generated successfully")
-      } catch (openaiError) {
-        console.error("OpenAI API Error:", openaiError)
-        console.log("Falling back to simple response...")
-        reply = generateSimpleResponse(userMessage.content)
-      }
-    } else {
-      console.log("No OpenAI API key found, using simple response")
-      reply = generateSimpleResponse(userMessage.content)
-    }
-
-    return NextResponse.json({
-      reply,
-      timestamp: new Date().toISOString(),
-      source: process.env.OPENAI_API_KEY ? "openai" : "fallback",
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: openaiMessages,
+      temperature: 0.7,
+      max_tokens: 1000,
     })
+
+    const assistantMessage = response.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response."
+
+    return new NextResponse(
+      JSON.stringify({
+        id: Date.now().toString(),
+        role: "assistant",
+        content: assistantMessage,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    )
   } catch (error) {
     console.error("Chat API Error:", error)
-
-    return NextResponse.json(
-      {
-        reply: "I'm having trouble processing your request right now. Please try again in a moment.",
-        error: "Service temporarily unavailable",
-        timestamp: new Date().toISOString(),
-        source: "error_fallback",
-      },
-      { status: 200 }, // Return 200 so the UI can display the message
-    )
+    return new NextResponse("Error processing chat", { status: 500 })
   }
 }
 
-function generateSimpleResponse(userMessage: string): string {
-  const message = userMessage.toLowerCase()
+function buildUserContext(userData?: UserData): string {
+  if (!userData) return "No user data available."
 
-  if (message.includes("help") || message.includes("how")) {
-    return `I'm here to help! This financial literacy app has several features:
+  let context = "USER FINANCIAL DATA:\n\n"
 
-🏠 **Dashboard** - Overview of your financial health
-📊 **Budget** - Track income and expenses
-🎯 **Goals** - Set and monitor financial objectives
-📚 **Learning** - Educational modules on finance
-🤖 **AI Advisor** - Get personalized financial advice
-📈 **Portfolio** - Investment simulation and analysis
+  // Budget Information
+  if (userData.budgetData?.income) {
+    const income = userData.budgetData.income
+    const expenses = userData.budgetData.expenses || {}
+    const savings = userData.budgetData.savings || 0
+    const totalExpenses = Object.values(expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0)
+    const monthlyLeftover = income - totalExpenses
+    const savingsRate = income > 0 ? ((savings / income) * 100).toFixed(1) : "0"
+    const emergencyFundMonths = totalExpenses > 0 ? (savings / totalExpenses).toFixed(1) : "0"
 
-What would you like to know more about?`
+    context += `BUDGET:\n`
+    context += `- Monthly Income: $${income.toLocaleString()}\n`
+    context += `- Total Monthly Expenses: $${totalExpenses.toLocaleString()}\n`
+    context += `- Current Savings: $${savings.toLocaleString()}\n`
+    context += `- Monthly Leftover: $${monthlyLeftover.toLocaleString()}\n`
+    context += `- Savings Rate: ${savingsRate}%\n`
+    context += `- Emergency Fund Coverage: ${emergencyFundMonths} months\n\n`
+
+    if (Object.keys(expenses).length > 0) {
+      context += `EXPENSE BREAKDOWN:\n`
+      Object.entries(expenses).forEach(([category, amount]) => {
+        context += `- ${category}: $${(amount as number).toLocaleString()}\n`
+      })
+      context += `\n`
+    }
   }
 
-  if (message.includes("budget")) {
-    return `The Budget feature helps you track your income and expenses. You can:
-
-• Add income sources
-• Categorize expenses
-• Set spending limits
-• View spending trends
-• Get insights on your financial habits
-
-Visit the Budget page to get started!`
+  // Goals Information
+  if (userData.goals && userData.goals.length > 0) {
+    context += `FINANCIAL GOALS:\n`
+    userData.goals.forEach((goal: any, index: number) => {
+      const progress = ((goal.current / goal.target) * 100).toFixed(1)
+      const remaining = goal.target - goal.current
+      context += `${index + 1}. ${goal.title}\n`
+      context += `   - Target: $${goal.target.toLocaleString()}\n`
+      context += `   - Current: $${goal.current.toLocaleString()}\n`
+      context += `   - Progress: ${progress}%\n`
+      context += `   - Remaining: $${remaining.toLocaleString()}\n`
+      if (goal.deadline) {
+        context += `   - Deadline: ${goal.deadline}\n`
+      }
+      if (goal.priority) {
+        context += `   - Priority: ${goal.priority}\n`
+      }
+      context += `\n`
+    })
   }
 
-  if (message.includes("goal")) {
-    return `The Goals feature helps you plan for the future. You can:
-
-• Set financial targets (emergency fund, vacation, etc.)
-• Track progress toward your goals
-• Get recommendations on how much to save
-• Set deadlines and priorities
-
-Check out the Goals page to start planning!`
+  // Profile Information
+  if (userData.profile) {
+    context += `USER PROFILE:\n`
+    if (userData.profile.age) {
+      context += `- Age: ${userData.profile.age}\n`
+    }
+    if (userData.profile.experience) {
+      context += `- Investment Experience: ${userData.profile.experience}\n`
+    }
+    if (userData.profile.riskTolerance) {
+      context += `- Risk Tolerance: ${userData.profile.riskTolerance}\n`
+    }
+    if (userData.profile.timeHorizon) {
+      context += `- Investment Time Horizon: ${userData.profile.timeHorizon}\n`
+    }
+    context += `\n`
   }
 
-  if (message.includes("learn") || message.includes("education")) {
-    return `Our Learning modules cover essential financial topics:
-
-📚 **Available Topics:**
-• Budgeting basics
-• Saving strategies
-• Investment fundamentals
-• Debt management
-• Retirement planning
-
-Each module includes interactive lessons and quizzes. Start learning today!`
+  // Budget Categories
+  if (userData.budgetCategories && userData.budgetCategories.length > 0) {
+    const expenseCategories = userData.budgetCategories.filter(
+      (cat: any) => cat.type === "expense" && cat.spentAmount > 0,
+    )
+    if (expenseCategories.length > 0) {
+      context += `DETAILED SPENDING BY CATEGORY:\n`
+      expenseCategories
+        .sort((a: any, b: any) => b.spentAmount - a.spentAmount)
+        .forEach((cat: any) => {
+          const percentOfBudget = cat.budgetAmount > 0 ? ((cat.spentAmount / cat.budgetAmount) * 100).toFixed(1) : "N/A"
+          context += `- ${cat.name}: $${cat.spentAmount.toLocaleString()} spent / $${cat.budgetAmount.toLocaleString()} budgeted (${percentOfBudget}%)\n`
+        })
+      context += `\n`
+    }
   }
 
-  if (message.includes("advisor") || message.includes("advice")) {
-    return `The AI Financial Advisor provides personalized advice based on your financial situation. It can help with:
+  return context
+}
 
-💡 **Personalized Guidance:**
-• Budget analysis and optimization
-• Investment recommendations
-• Debt payoff strategies
-• Goal planning assistance
+function createSystemPrompt(userContext: string): string {
+  return `You are an expert AI financial advisor. You provide personalized, practical financial advice based on the user's actual financial data.
 
-Visit the AI Advisor page for detailed financial guidance!`
-  }
+${userContext}
 
-  return `Hello! I'm here to help you navigate this financial literacy app. 
+INSTRUCTIONS:
+1. Always use the user's actual financial data when providing advice
+2. Be specific with numbers and calculations based on their real situation
+3. Prioritize advice based on their financial health (emergency fund first, then debt, then investing)
+4. Consider their age, risk tolerance, and goals when making recommendations
+5. Provide actionable, step-by-step advice
+6. Use a friendly, encouraging tone while being professional
+7. If they don't have certain data, suggest they add it to get better advice
 
-You can ask me about:
-• How to use different features
-• General financial concepts
-• App navigation and tips
+FINANCIAL ADVICE PRIORITIES:
+1. Emergency Fund (3-6 months of expenses)
+2. High-interest debt payoff (>7% interest)
+3. Employer 401k match (free money)
+4. Additional debt payoff vs investing (depends on interest rates)
+5. Long-term investing in diversified index funds
+6. Specific goal saving (house, vacation, etc.)
 
-For personalized financial advice, I recommend using the AI Financial Advisor feature.
+INVESTMENT RECOMMENDATIONS:
+- Age-based stock allocation: roughly (100 - age)% in stocks
+- Low-cost index funds: VTI (total market), VOO (S&P 500), BND (bonds)
+- Dollar-cost averaging for consistent investing
+- Tax-advantaged accounts first (401k, IRA)
 
-What would you like to know?`
+BUDGETING ADVICE:
+- 50/30/20 rule: 50% needs, 30% wants, 20% savings/debt
+- Track spending to identify areas for improvement
+- Automate savings and investments
+- Review and adjust monthly
+
+Always provide specific, actionable advice based on their actual financial situation. If you need more information to give better advice, ask for it.`
 }
