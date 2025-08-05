@@ -3248,4 +3248,1620 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           {
             type: "warning",
             content:
-              \"Avoid credit repair companies that promise
+              "Avoid credit repair companies that promise quick fixes. Building good credit takes time, and there are no legitimate shortcuts to establishing a positive credit history.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic payments for at least the minimum amount due on all credit accounts. Payment history is the most important factor, and even one missed payment can significantly damage your score.",
+          },
+        ],
+        keyTakeaways: [
+          "Secured credit cards are often the best starting point for building credit",
+          "Authorized user status can help establish credit history quickly",
+          "Perfect payment history and low utilization are crucial for good scores",
+          "Building good credit takes 6-12 months of consistent responsible use",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the best first credit product for someone with no credit history?",
+              options: [
+                "An unsecured rewards credit card",
+                "A secured credit card",
+                "A personal loan",
+                "A store credit card with high interest",
+              ],
+              correctAnswer: "A secured credit card",
+              explanation:
+                "Secured credit cards are designed for people with no credit history. The security deposit reduces risk for the lender, making approval more likely while helping you build credit.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Improving Your Credit Score",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Strategic Credit Score Optimization",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Improving your credit score requires understanding which factors have the biggest impact and implementing targeted strategies. Small changes can lead to significant score improvements over time, potentially saving thousands in interest costs.",
+          },
+          {
+            type: "list",
+            content: "Quick credit score improvement strategies (30-60 days):",
+            items: [
+              "Pay down credit card balances to reduce utilization",
+              "Pay off small balances completely",
+              "Request credit limit increases on existing cards",
+              "Become an authorized user on someone's excellent account",
+              "Dispute errors on credit reports",
+              "Pay bills before statement closing dates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Medium-term improvements (3-6 months):",
+            items: [
+              "Establish consistent on-time payment history",
+              "Diversify credit mix (add installment loan if you only have cards)",
+              "Keep old accounts open to maintain credit history length",
+              "Negotiate with creditors to remove late payments (goodwill letters)",
+              "Set up automatic payments to prevent future missed payments",
+              "Monitor credit reports monthly for new errors",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Credit utilization optimization strategy:",
+            formula: "Target Balance = (Desired Utilization %) × Credit Limit",
+            variables: {
+              "Desired Utilization": "Ideally 1-10% for best scores",
+              "Credit Limit": "Total available credit across all cards",
+              "Current Utilization": "Current balances ÷ total limits",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Score Improvement Plan: Jake had a 620 score with 85% credit utilization. He paid down balances to 15% utilization (+40 points), disputed an error (+15 points), and became an authorized user (+25 points). New score: 700 in 4 months.",
+          },
+          {
+            type: "list",
+            content: "Advanced credit optimization techniques:",
+            items: [
+              "Multiple payment strategy: Pay before and after statement dates",
+              "Balance transfer to reduce utilization on individual cards",
+              "Product change requests: Upgrade cards instead of applying new",
+              "Timing credit applications: Space out hard inquiries",
+              "Credit line reallocation: Move limits between cards with same issuer",
+              "Micro-utilization: Keep small balances on some cards",
+            ],
+          },
+          {
+            type: "list",
+            content: "Dealing with negative marks:",
+            items: [
+              "Late payments: Goodwill letters to request removal",
+              "Collections: Pay-for-delete negotiations",
+              "Charge-offs: Settlement negotiations with removal requests",
+              "Bankruptcies: Wait for automatic removal (7-10 years)",
+              "Hard inquiries: Dispute unauthorized or duplicate inquiries",
+              "Closed accounts: Generally leave alone (still help credit age)",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Credit Repair Success: After a divorce, Maria's score dropped to 580. She used a secured card, paid down debt, disputed errors, and negotiated goodwill removals. Her score improved to 740 over 18 months, qualifying her for a mortgage.",
+          },
+          {
+            type: "list",
+            content: "Long-term credit health strategies:",
+            items: [
+              "Maintain accounts for years to build credit age",
+              "Keep utilization consistently low (not just at statement time)",
+              "Diversify credit types responsibly",
+              "Monitor credit regularly for identity theft",
+              "Understand how major life events affect credit",
+              "Plan credit applications strategically around major purchases",
+            ],
+          },
+          {
+            type: "list",
+            content: "What NOT to do when improving credit:",
+            items: [
+              "Don't close old credit cards (reduces available credit and history)",
+              "Don't apply for multiple cards in short periods",
+              "Don't pay for credit repair services (do it yourself)",
+              "Don't ignore credit reports (errors are common)",
+              "Don't max out cards even if you pay them off",
+              "Don't co-sign loans unless you can afford the payments",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be wary of credit repair companies that guarantee specific score increases or promise to remove accurate negative information. Focus on legitimate strategies that build long-term credit health.",
+          },
+          {
+            type: "tip",
+            content:
+              "The fastest way to improve your credit score is to pay down credit card balances. Even a 10-point reduction in utilization can increase your score by 20-30 points within 30 days.",
+          },
+        ],
+        keyTakeaways: [
+          "Credit utilization reduction provides the fastest score improvements",
+          "Consistent on-time payments are crucial for long-term credit health",
+          "Disputing errors and negotiating removals can boost scores significantly",
+          "Patience and persistence are key - meaningful improvements take time",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the fastest way to improve your credit score?",
+              options: [
+                "Apply for more credit cards",
+                "Close old credit accounts",
+                "Pay down credit card balances to reduce utilization",
+                "Take out a personal loan",
+              ],
+              correctAnswer: "Pay down credit card balances to reduce utilization",
+              explanation:
+                "Reducing credit utilization can improve your score within 30 days as it's the second most important factor (30% of your score) and updates monthly when creditors report balances.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit Cards: Choosing and Using Wisely",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Mastering Credit Card Strategy",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit cards can be powerful financial tools when used responsibly, offering rewards, purchase protection, and credit building opportunities. However, they can also lead to debt if mismanaged. Here's how to choose and use credit cards strategically.",
+          },
+          {
+            type: "list",
+            content: "Types of credit cards:",
+            items: [
+              "Rewards cards: Cash back, travel points, or category bonuses",
+              "Balance transfer cards: 0% APR for transferring existing debt",
+              "Secured cards: Require deposit, good for building credit",
+              "Student cards: Designed for college students with limited history",
+              "Business cards: For business expenses with different rewards",
+              "Store cards: Retailer-specific with limited use but easy approval",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key features to compare:",
+            items: [
+              "Annual Percentage Rate (APR): Interest charged on balances",
+              "Annual fee: Yearly cost for having the card",
+              "Rewards rate: Percentage back or points per dollar spent",
+              "Sign-up bonus: Initial reward for meeting spending requirements",
+              "Foreign transaction fees: Charges for international purchases",
+              "Credit limit: Maximum amount you can borrow",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Credit card rewards value calculation:",
+            formula: "Annual Rewards = (Annual Spending × Rewards Rate) - Annual Fee",
+            variables: {
+              "Annual Spending": "Total yearly spending on the card",
+              "Rewards Rate": "Percentage back (e.g., 0.02 for 2%)",
+              "Annual Fee": "Yearly cost of the card",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Card Comparison: Card A has 2% cash back with $95 annual fee. Card B has 1.5% cash back with no fee. If you spend $6,000/year: Card A = $120 rewards - $95 fee = $25 net. Card B = $90 rewards - $0 fee = $90 net. Card B is better.",
+          },
+          {
+            type: "list",
+            content: "Credit card best practices:",
+            items: [
+              "Pay the full statement balance every month to avoid interest",
+              "Set up autopay for at least the minimum payment",
+              "Keep utilization below 30%, ideally below 10%",
+              "Use cards for planned purchases you can afford",
+              "Take advantage of purchase protection and extended warranties",
+              "Monitor statements for fraud and errors",
+            ],
+          },
+          {
+            type: "list",
+            content: "Rewards optimization strategies:",
+            items: [
+              "Use category cards for bonus spending (5% on gas, groceries, etc.)",
+              "Rotate quarterly bonus categories when available",
+              "Use general rewards cards for non-category spending",
+              "Take advantage of sign-up bonuses with planned large purchases",
+              "Consider business cards for higher rewards and limits",
+              "Redeem rewards regularly to avoid losing value",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Rewards Strategy: David uses a 5% gas card, 3% grocery card, and 2% everything else card. His annual spending of $30,000 earns $750 in rewards compared to $300 with a single 1% card - $450 more per year.",
+          },
+          {
+            type: "list",
+            content: "Credit card mistakes to avoid:",
+            items: [
+              "Carrying balances and paying interest (negates rewards)",
+              "Making only minimum payments",
+              "Applying for too many cards in short periods",
+              "Using cards for purchases you can't afford",
+              "Ignoring annual fees vs. rewards earned",
+              "Not reading terms and conditions",
+              "Using cash advances (very high fees and interest)",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to consider closing credit cards:",
+            items: [
+              "High annual fee with low usage and no retention offers",
+              "Duplicate cards with better alternatives available",
+              "Temptation to overspend is too strong",
+              "Card issuer changes terms unfavorably",
+              "Identity theft concerns with specific accounts",
+              "Simplifying finances in retirement",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never carry credit card debt to earn rewards. Interest charges will always exceed rewards earned. Only use credit cards if you can pay the full balance every month.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up account alerts for all credit cards to notify you of transactions, payment due dates, and high balances. This helps prevent fraud and missed payments.",
+          },
+        ],
+        keyTakeaways: [
+          "Choose credit cards based on your spending patterns and financial goals",
+          "Always pay the full statement balance to avoid interest charges",
+          "Rewards are only valuable if you don't carry debt",
+          "Monitor accounts regularly for fraud and errors",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When does it make sense to pay an annual fee for a credit card?",
+              options: [
+                "Never, annual fees are always bad",
+                "When the rewards earned exceed the annual fee",
+                "Only for premium status and perks",
+                "When you have excellent credit",
+              ],
+              correctAnswer: "When the rewards earned exceed the annual fee",
+              explanation:
+                "An annual fee can be worthwhile if the additional rewards, benefits, or sign-up bonus exceed the fee amount based on your spending patterns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Managing Credit Utilization",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Optimizing Your Credit Utilization Ratio",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit utilization is the second most important factor in your credit score, accounting for 30% of your FICO score. Understanding how to manage utilization across individual cards and overall can significantly impact your creditworthiness.",
+          },
+          {
+            type: "calculation",
+            content: "Credit utilization calculations:",
+            formula: "Overall Utilization = Total Balances ÷ Total Credit Limits × 100",
+            variables: {
+              "Total Balances": "Sum of all credit card balances",
+              "Total Credit Limits": "Sum of all credit card limits",
+              "Individual Utilization": "Balance ÷ Limit for each card",
+            },
+          },
+          {
+            type: "list",
+            content: "Credit utilization thresholds and score impact:",
+            items: [
+              "0% utilization: Good, but 1-9% is often better for scores",
+              "1-9% utilization: Optimal range for highest credit scores",
+              "10-29% utilization: Good, minimal negative impact",
+              "30-49% utilization: Fair, noticeable score reduction",
+              "50-69% utilization: Poor, significant score damage",
+              "70%+ utilization: Very poor, major score impact",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Utilization Impact: Sarah has $10,000 total credit limits. At 5% utilization ($500 balance), her score is 780. At 35% utilization ($3,500 balance), her score drops to 720 - a 60-point difference just from utilization.",
+          },
+          {
+            type: "list",
+            content: "Strategies to lower credit utilization:",
+            items: [
+              "Pay down existing balances before statement dates",
+              "Make multiple payments per month",
+              "Request credit limit increases on existing cards",
+              "Open new credit cards (carefully, considering hard inquiries)",
+              "Use balance transfers to spread debt across cards",
+              "Pay before statement closing to report lower balances",
+            ],
+          },
+          {
+            type: "list",
+            content: "Advanced utilization management techniques:",
+            items: [
+              "Statement date optimization: Pay before statements close",
+              "Multiple payment strategy: Pay twice monthly",
+              "Limit increase timing: Request increases every 6-12 months",
+              "Balance spreading: Keep individual cards under 30%",
+              "Micro-utilization: Keep small balances on some cards",
+              "Credit line reallocation: Move limits between cards with same issuer",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Utilization Optimization: Mark had 45% utilization across 3 cards. He requested limit increases (+$5,000), made bi-weekly payments, and paid before statement dates. His utilization dropped to 15% and his score increased 40 points in 2 months.",
+          },
+          {
+            type: "list",
+            content: "Individual vs. overall utilization:",
+            items: [
+              "Both individual card and overall utilization matter",
+              "Avoid maxing out any single card, even if overall is low",
+              "Spread balances across multiple cards if carrying debt",
+              "Some scoring models penalize high individual utilization more",
+              "Keep individual cards under 30%, ideally under 10%",
+              "Zero balances on some cards can help overall profile",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common utilization mistakes:",
+            items: [
+              "Only looking at overall utilization, ignoring individual cards",
+              "Paying after statement dates (high balances still report)",
+              "Closing cards to 'clean up' credit (reduces available credit)",
+              "Not requesting limit increases due to fear of hard inquiries",
+              "Assuming 0% utilization is always best",
+              "Not understanding when balances are reported to bureaus",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set up account alerts when balances reach 20% of your credit limit. This gives you time to make payments before hitting the 30% threshold that can hurt your score.",
+          },
+        ],
+        keyTakeaways: [
+          "Keep overall utilization below 30%, ideally below 10%",
+          "Individual card utilization matters as much as overall utilization",
+          "Pay before statement dates to report lower balances",
+          "Request credit limit increases to improve utilization ratios",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the ideal credit utilization ratio for the highest credit scores?",
+              options: ["0%", "1-9%", "10-20%", "25-30%"],
+              correctAnswer: "1-9%",
+              explanation:
+                "While 0% utilization is good, credit scoring models often favor 1-9% utilization as it shows you use credit responsibly while maintaining low balances.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit Monitoring and Identity Protection",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Credit and Identity",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit monitoring and identity protection are essential in today's digital world. Regular monitoring helps you catch errors, fraud, and identity theft early, while protection strategies can prevent problems before they occur.",
+          },
+          {
+            type: "list",
+            content: "Types of credit monitoring:",
+            items: [
+              "Free services: Credit Karma, Credit Sesame, bank-provided monitoring",
+              "Paid services: myFICO, Experian, TransUnion, Equifax premium",
+              "Identity theft protection: LifeLock, IdentityGuard, ID Watchdog",
+              "Bank/credit card monitoring: Alerts for account activity",
+              "Government resources: AnnualCreditReport.com for free reports",
+              "DIY monitoring: Regular manual checks of reports and scores",
+            ],
+          },
+          {
+            type: "list",
+            content: "What to monitor regularly:",
+            items: [
+              "Credit scores from all three bureaus",
+              "New accounts or credit inquiries",
+              "Changes in credit limits or account status",
+              "Personal information accuracy (address, employment)",
+              "Public records (bankruptcies, liens, judgments)",
+              "Collection accounts or charge-offs",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Early Detection Success: Lisa's credit monitoring alerted her to a new credit card opened in her name. She immediately contacted the issuer and credit bureaus, preventing $5,000 in fraudulent charges and protecting her credit score.",
+          },
+          {
+            type: "list",
+            content: "Credit freeze vs. fraud alert:",
+            items: [
+              "Credit freeze: Completely blocks access to credit reports",
+              "Fraud alert: Requires extra verification for new credit",
+              "Freeze pros: Maximum protection, free at all bureaus",
+              "Freeze cons: Must unfreeze for legitimate credit applications",
+              "Alert pros: Easier for legitimate credit, automatic renewal",
+              "Alert cons: Less protection, creditors may ignore alerts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Identity theft red flags:",
+            items: [
+              "Unexpected credit score drops",
+              "Bills for accounts you didn't open",
+              "Missing mail or redirected mail",
+              "Calls from debt collectors about unknown debts",
+              "Denied credit applications for unknown reasons",
+              "Unfamiliar addresses or employers on credit reports",
+            ],
+          },
+          {
+            type: "list",
+            content: "Steps to take if identity theft occurs:",
+            items: [
+              "Place fraud alerts with all three credit bureaus",
+              "File police report and get report number",
+              "Contact creditors for fraudulent accounts immediately",
+              "File complaint with FTC at IdentityTheft.gov",
+              "Document everything with dates, names, and reference numbers",
+              "Consider credit freeze to prevent further damage",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Identity Theft Recovery: After discovering fraudulent accounts, Tom placed credit freezes, filed police reports, and disputed all fraudulent items. The process took 6 months, but his credit was fully restored and the perpetrator was caught.",
+          },
+          {
+            type: "list",
+            content: "Prevention strategies:",
+            items: [
+              "Use strong, unique passwords for financial accounts",
+              "Enable two-factor authentication when available",
+              "Monitor bank and credit card statements regularly",
+              "Shred documents containing personal information",
+              "Be cautious with personal information on social media",
+              "Use secure networks for financial transactions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing monitoring services:",
+            items: [
+              "Consider your risk level and budget",
+              "Look for services monitoring all three bureaus",
+              "Evaluate alert types and response times",
+              "Check if identity theft insurance is included",
+              "Read reviews and compare features",
+              "Start with free services before paying for premium",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be skeptical of companies that contact you about credit monitoring or identity theft. Legitimate services don't use high-pressure sales tactics or guarantee specific outcomes.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up a calendar reminder to check your credit reports from all three bureaus every four months. This gives you free monitoring throughout the year using AnnualCreditReport.com.",
+          },
+        ],
+        keyTakeaways: [
+          "Regular credit monitoring helps catch errors and fraud early",
+          "Credit freezes provide the strongest protection against identity theft",
+          "Free monitoring services are available and often sufficient",
+          "Quick action is crucial if identity theft occurs",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the strongest protection against identity theft?",
+              options: [
+                "Fraud alerts on your credit reports",
+                "Credit monitoring services",
+                "Credit freezes at all three bureaus",
+                "Identity theft insurance",
+              ],
+              correctAnswer: "Credit freezes at all three bureaus",
+              explanation:
+                "Credit freezes completely block access to your credit reports, preventing new accounts from being opened without your explicit permission to unfreeze.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit and Major Life Events",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Managing Credit Through Life Changes",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Major life events can significantly impact your credit profile and financial needs. Understanding how to manage credit during these transitions helps you maintain good credit while adapting to new circumstances.",
+          },
+          {
+            type: "list",
+            content: "Life events that affect credit:",
+            items: [
+              "Marriage: Combining finances and credit profiles",
+              "Divorce: Separating joint accounts and responsibilities",
+              "Job loss: Potential payment difficulties and income changes",
+              "Home buying: Major credit inquiry and debt-to-income impact",
+              "Starting a business: Personal credit affects business lending",
+              "Retirement: Fixed income and changing credit needs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Marriage and credit considerations:",
+            items: [
+              "Credit scores remain individual (no joint credit scores)",
+              "Joint accounts affect both spouses' credit reports",
+              "Authorized user status can help spouse with poor credit",
+              "Consider keeping some individual accounts open",
+              "Plan major purchases around both credit profiles",
+              "Communicate about existing debts and credit goals",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Marriage Credit Strategy: Sarah (780 score) and Mike (620 score) got married. They kept individual cards, added each other as authorized users, and applied for their mortgage using Sarah's credit for better rates while Mike improved his score.",
+          },
+          {
+            type: "list",
+            content: "Divorce and credit protection:",
+            items: [
+              "Remove ex-spouse as authorized user immediately",
+              "Close joint credit accounts or convert to individual",
+              "Refinance joint loans to remove one party",
+              "Monitor credit reports for unauthorized activity",
+              "Update beneficiaries on credit accounts",
+              "Consider credit freeze during contentious divorces",
+            ],
+          },
+          {
+            type: "list",
+            content: "Job loss credit management:",
+            items: [
+              "Contact creditors immediately to discuss hardship options",
+              "Prioritize secured debt (mortgage, car) over unsecured",
+              "Use emergency fund before missing payments",
+              "Consider balance transfers to reduce interest costs",
+              "Avoid closing credit cards (reduces available credit)",
+              "Document all communications with creditors",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Job Loss Recovery: When Tom lost his job, he immediately contacted all creditors, negotiated payment deferrals, and used his emergency fund strategically. He maintained his credit score and avoided long-term damage during his 4-month job search.",
+          },
+          {
+            type: "list",
+            content: "Home buying credit preparation:",
+            items: [
+              "Check credit reports 6+ months before applying",
+              "Avoid new credit applications during mortgage process",
+              "Pay down credit card balances to improve debt-to-income",
+              "Don't close accounts (can hurt credit utilization)",
+              "Save for down payment without touching retirement accounts",
+              "Get pre-approved to understand your buying power",
+            ],
+          },
+          {
+            type: "list",
+            content: "Business ownership credit considerations:",
+            items: [
+              "Personal credit affects business loan approvals",
+              "Consider business credit cards to separate expenses",
+              "Build business credit profile separate from personal",
+              "Understand personal guarantees on business loans",
+              "Monitor both personal and business credit reports",
+              "Plan for irregular income's impact on credit utilization",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement credit planning:",
+            items: [
+              "Maintain some credit accounts for credit history",
+              "Consider no-annual-fee cards for retirement",
+              "Plan for reduced income's impact on credit applications",
+              "Pay off high-interest debt before retiring",
+              "Understand how Social Security affects credit applications",
+              "Consider downsizing credit needs to match fixed income",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never ignore credit obligations during life transitions. Communication with creditors and proactive management prevent long-term credit damage that can take years to repair.",
+          },
+          {
+            type: "tip",
+            content:
+              "Create a credit transition plan before major life events. Having a strategy in place helps you make better decisions during stressful times and protects your long-term financial health.",
+          },
+        ],
+        keyTakeaways: [
+          "Major life events require proactive credit management strategies",
+          "Communication with creditors during hardships can prevent credit damage",
+          "Joint accounts affect both parties' credit reports",
+          "Planning ahead for life changes protects your credit profile",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do first if you lose your job and are worried about making credit payments?",
+              options: [
+                "Immediately close all credit cards",
+                "Contact creditors to discuss hardship options",
+                "Apply for new credit cards for emergency funds",
+                "Stop making all payments until you find work",
+              ],
+              correctAnswer: "Contact creditors to discuss hardship options",
+              explanation:
+                "Proactive communication with creditors can lead to payment deferrals, reduced payments, or other hardship programs that help you avoid missed payments and credit damage.",
+            },
+          ],
+        },
+      },
+    ],
+    "debt-management": [
+      {
+        title: "Understanding Different Types of Debt",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "The Complete Debt Landscape",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Not all debt is created equal. Understanding the different types of debt, their characteristics, and how they impact your financial health is crucial for making informed borrowing decisions and creating effective payoff strategies.",
+          },
+          {
+            type: "list",
+            content: "Secured vs. Unsecured Debt:",
+            items: [
+              "Secured debt: Backed by collateral (home, car, etc.)",
+              "Lower interest rates due to reduced lender risk",
+              "Collateral can be repossessed if payments are missed",
+              "Examples: Mortgages, auto loans, home equity loans",
+              "Unsecured debt: No collateral backing the loan",
+              "Higher interest rates due to increased lender risk",
+              "Examples: Credit cards, personal loans, student loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "Good Debt vs. Bad Debt:",
+            items: [
+              "Good debt: Helps build wealth or increase income potential",
+              "Mortgages: Build equity and provide tax benefits",
+              "Student loans: Invest in education and earning potential",
+              "Business loans: Generate income and build assets",
+              "Bad debt: Depreciating assets or consumption",
+              "Credit card debt: High interest, no asset backing",
+              "Auto loans: Depreciating asset, though sometimes necessary",
+              "Payday loans: Extremely high interest, predatory terms",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Debt-to-Income Ratio Calculation:",
+            formula: "DTI = (Total Monthly Debt Payments ÷ Gross Monthly Income) × 100",
+            variables: {
+              "Total Monthly Debt Payments": "All minimum debt payments",
+              "Gross Monthly Income": "Income before taxes",
+              "Good DTI": "Below 36% total, below 28% for housing",
+              "Concerning DTI": "Above 40%",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Debt Portfolio Analysis: Sarah has a $1,500 mortgage (good debt building equity), $300 student loan (good debt from education), $200 car payment (necessary but depreciating), and $150 credit card minimum (bad debt from consumption). Total: $2,150 monthly on $6,000 income = 36% DTI.",
+          },
+          {
+            type: "list",
+            content: "Common types of consumer debt:",
+            items: [
+              "Credit cards: Revolving credit, variable rates (15-25% APR)",
+              "Personal loans: Fixed payments, fixed rates (6-36% APR)",
+              "Auto loans: Secured by vehicle (3-10% APR)",
+              "Student loans: Federal (3-6% APR) vs. Private (4-12% APR)",
+              "Home equity loans/HELOC: Secured by home (4-8% APR)",
+              "Payday loans: Short-term, extremely high cost (400%+ APR)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Debt characteristics to evaluate:",
+            items: [
+              "Interest rate (APR): Total cost of borrowing",
+              "Payment terms: Length and flexibility of repayment",
+              "Fees: Origination, late payment, prepayment penalties",
+              "Tax implications: Deductible interest vs. non-deductible",
+              "Collateral requirements: What you risk losing",
+              "Credit impact: How it affects your credit score",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Debt Prioritization: Mark had $5,000 in credit cards (22% APR), $15,000 student loans (4% APR), and $200,000 mortgage (3.5% APR). He focused extra payments on credit cards first due to high interest, while maintaining minimums on the lower-rate 'good debt.'",
+          },
+          {
+            type: "list",
+            content: "Red flags in debt products:",
+            items: [
+              "Extremely high interest rates (over 30% APR)",
+              "Prepayment penalties that discourage early payoff",
+              "Variable rates that can increase significantly",
+              "Balloon payments requiring large final payments",
+              "No clear payoff timeline or amortization schedule",
+              "Aggressive sales tactics or pressure to sign immediately",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid payday loans, title loans, and other predatory lending products. These often trap borrowers in cycles of debt with extremely high costs and aggressive collection practices.",
+          },
+          {
+            type: "tip",
+            content:
+              "Before taking on any new debt, calculate the total cost over the life of the loan, not just the monthly payment. A longer loan term might have lower payments but much higher total interest costs.",
+          },
+        ],
+        keyTakeaways: [
+          "Secured debt typically has lower rates but puts collateral at risk",
+          "Good debt builds wealth; bad debt finances consumption",
+          "Interest rates and terms vary dramatically between debt types",
+          "Debt-to-income ratio is a key measure of financial health",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of the following is typically considered 'good debt'?",
+              options: [
+                "Credit card debt for vacation expenses",
+                "A mortgage on your primary residence",
+                "A payday loan for emergency expenses",
+                "An auto loan for a luxury car",
+              ],
+              correctAnswer: "A mortgage on your primary residence",
+              explanation:
+                "A mortgage is considered good debt because it helps you build equity in an appreciating asset (your home) and often provides tax benefits through deductible interest.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Debt Avalanche vs. Debt Snowball Methods",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Strategic Debt Payoff Methods",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The debt avalanche and debt snowball are two proven strategies for paying off multiple debts. Each has distinct advantages and works better for different personality types and financial situations. Understanding both helps you choose the right approach.",
+          },
+          {
+            type: "list",
+            content: "Debt Avalanche Method:",
+            items: [
+              "Pay minimums on all debts",
+              "Put extra money toward highest interest rate debt first",
+              "Once highest rate debt is paid off, move to next highest",
+              "Mathematically optimal - saves the most money",
+              "Best for disciplined people motivated by numbers",
+              "Can take longer to see initial progress",
+            ],
+          },
+          {
+            type: "list",
+            content: "Debt Snowball Method:",
+            items: [
+              "Pay minimums on all debts",
+              "Put extra money toward smallest balance first",
+              "Once smallest debt is paid off, move to next smallest",
+              "Provides quick psychological wins",
+              "Best for people motivated by visible progress",
+              "May cost more in total interest over time",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Comparing payoff methods:",
+            formula: "Total Interest = Sum of (Balance × Rate × Time) for each debt",
+            variables: {
+              Balance: "Outstanding amount owed",
+              Rate: "Annual interest rate",
+              Time: "Years to pay off",
+              "Avalanche": "Usually results in lower total interest",
+              "Snowball": "May result in higher total interest but faster motivation",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Method Comparison: $2,000 credit card (24% APR), $5,000 personal loan (12% APR), $1,500 store card (18% APR). Avalanche order: Credit card → Store card → Personal loan. Snowball order: Store card → Credit card → Personal loan.",
+          },
+          {
+            type: "case-study",
+            content:
+              "Real-World Results: Twin sisters with identical $25,000 debt loads. Amy used avalanche method, saved $2,100 in interest over 3 years. Beth used snowball, paid $1,800 more in interest but stayed motivated and finished 2 months faster due to consistency.",
+          },
+          {
+            type: "list",
+            content: "Hybrid approaches:",
+            items: [
+              "Avalanche with small debt exception: Pay off debts under $500 first",
+              "Snowball with high-rate exception: Tackle rates over 25% first",
+              "Emotional debt first: Pay off debts causing the most stress",
+              "Time-based hybrid: Switch methods after achieving early wins",
+              "Balance-adjusted avalanche: Consider both rate and balance size",
+              "Seasonal approach: Use tax refunds/bonuses for largest impact",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing the right method for you:",
+            items: [
+              "Avalanche if: You're motivated by math and saving money",
+              "Avalanche if: You have discipline and long-term focus",
+              "Snowball if: You need quick wins to stay motivated",
+              "Snowball if: You've failed at debt payoff before",
+              "Hybrid if: You want to balance math and psychology",
+              "Consider your personality and past financial behavior",
+            ],
+          },
+          {
+            type: "list",
+            content: "Maximizing either method:",
+            items: [
+              "List all debts with balances, rates, and minimum payments",
+              "Find extra money through budgeting and expense reduction",
+              "Automate minimum payments to avoid late fees",
+              "Put any windfall money toward debt payoff",
+              "Track progress visually with charts or apps",
+              "Celebrate milestones to maintain motivation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common mistakes with both methods:",
+            items: [
+              "Not making minimum payments on all debts",
+              "Adding new debt while paying off existing debt",
+              "Switching methods frequently without giving one a chance",
+              "Not having a plan for extra payments",
+              "Ignoring the psychological aspects of debt payoff",
+              "Stopping the plan when motivation wanes",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "The best debt payoff method is the one you'll actually stick with. If you're unsure, try the snowball method first for quick wins, then switch to avalanche once you build momentum and confidence.",
+          },
+        ],
+        keyTakeaways: [
+          "Debt avalanche saves more money by targeting highest interest rates first",
+          "Debt snowball provides quicker psychological wins by eliminating small debts",
+          "Hybrid approaches can balance mathematical optimization with motivation",
+          "The best method is the one you'll consistently follow",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the primary advantage of the debt avalanche method?",
+              options: [
+                "It provides quick psychological wins",
+                "It's easier to understand and follow",
+                "It saves the most money in total interest",
+                "It works better for people with many small debts",
+              ],
+              correctAnswer: "It saves the most money in total interest",
+              explanation:
+                "The debt avalanche method is mathematically optimal because it targets the highest interest rate debts first, minimizing the total amount of interest paid over time.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Creating a Debt Payoff Plan",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Building Your Debt Freedom Roadmap",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A successful debt payoff plan requires more than just choosing avalanche or snowball. You need a comprehensive strategy that includes budgeting, timeline planning, motivation systems, and contingency plans for setbacks.",
+          },
+          {
+            type: "list",
+            content: "Step 1: Complete debt inventory:",
+            items: [
+              "List every debt with current balance",
+              "Record interest rates (APR) for each debt",
+              "Note minimum monthly payments",
+              "Include account numbers and contact information",
+              "Calculate total debt amount",
+              "Identify secured vs. unsecured debts",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Debt payoff timeline calculation:",
+            formula: "Months to Payoff = -log(1 - (Balance × Rate/12) / Payment) / log(1 + Rate/12)",
+            variables: {
+              Balance: "Current debt balance",
+              Rate: "Annual interest rate (as decimal)",
+              Payment: "Monthly payment amount",
+              Result: "Number of months to pay off debt",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Debt Inventory Example: Credit Card A: $3,500 balance, 22% APR, $105 minimum. Credit Card B: $1,200 balance, 18% APR, $36 minimum. Personal Loan: $8,000 balance, 12% APR, $200 minimum. Total debt: $12,700, Total minimums: $341/month.",
+          },
+          {
+            type: "list",
+            content: "Step 2: Analyze your budget for extra payments:",
+            items: [
+              "Review monthly income and expenses",
+              "Identify areas to cut spending temporarily",
+              "Look for ways to increase income",
+              "Calculate available money for extra debt payments",
+              "Set realistic but aggressive payment goals",
+              "Plan for irregular income or expenses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Step 3: Choose and implement your strategy:",
+            items: [
+              "Select avalanche, snowball, or hybrid method",
+              "Create payment schedule and timeline",
+              "Set up automatic payments for minimums",
+              "Plan how to allocate extra payments",
+              "Create visual tracking system",
+              "Set milestone rewards and celebrations",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Complete Plan Example: Maria had $18,000 in debt across 4 accounts. She found $400/month extra through budgeting, chose debt avalanche, and created a 3.5-year payoff plan. She automated minimums, tracked progress monthly, and celebrated each debt elimination.",
+          },
+          {
+            type: "list",
+            content: "Step 4: Build motivation and accountability systems:",
+            items: [
+              "Share goals with supportive friends or family",
+              "Join online debt payoff communities",
+              "Create visual progress charts or thermometers",
+              "Set up milestone rewards (non-debt creating)",
+              "Track multiple metrics (balance, payments made, interest saved)",
+              "Plan how to handle setbacks and maintain motivation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Step 5: Plan for obstacles and setbacks:",
+            items: [
+              "Build small emergency fund ($1,000) before aggressive payoff",
+              "Plan for irregular expenses that might derail progress",
+              "Have strategies for income loss or reduction",
+              "Know when to pause debt payoff for true emergencies",
+              "Prepare mentally for the length of the journey",
+              "Have backup plans if primary strategy isn't working",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tools and resources for debt payoff:",
+            items: [
+              "Debt payoff calculators and apps",
+              "Spreadsheet templates for tracking",
+              "Automatic payment systems",
+              "Budgeting apps that track debt progress",
+              "Online communities and support groups",
+              "Financial counseling services (often free)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Monitoring and adjusting your plan:",
+            items: [
+              "Review progress monthly",
+              "Adjust timeline based on actual results",
+              "Celebrate milestones and victories",
+              "Modify strategy if life circumstances change",
+              "Track total interest saved",
+              "Plan for life after debt payoff",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't sacrifice your emergency fund or retirement contributions for debt payoff unless the debt is extremely high interest (over 25% APR). Balance debt payoff with other financial priorities.",
+          },
+          {
+            type: "tip",
+            content:
+              "Create a 'debt thermometer' visual showing your progress. Color in sections as you pay off debt - this simple visual can provide powerful motivation during difficult months.",
+          },
+        ],
+        keyTakeaways: [
+          "A complete debt inventory is the foundation of any payoff plan",
+          "Find extra payment money through budgeting and income increases",
+          "Build motivation systems and plan for obstacles",
+          "Regular monitoring and adjustment keep you on track",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be your first step when creating a debt payoff plan?",
+              options: [
+                "Choose between avalanche and snowball methods",
+                "Create a complete inventory of all your debts",
+                "Cut all discretionary spending immediately",
+                "Apply for a debt consolidation loan",
+              ],
+              correctAnswer: "Create a complete inventory of all your debts",
+              explanation:
+                "You can't create an effective payoff strategy without knowing exactly what you owe, the interest rates, and minimum payments for each debt. This inventory is the foundation of your plan.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Debt Consolidation Options",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Simplifying and Reducing Your Debt Burden",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Debt consolidation can simplify payments and potentially reduce interest costs by combining multiple debts into a single payment. However, consolidation isn't always the best solution and requires careful evaluation of terms, costs, and your ability to avoid accumulating new debt.",
+          },
+          {
+            type: "list",
+            content: "Types of debt consolidation:",
+            items: [
+              "Personal loans: Unsecured loans to pay off multiple debts",
+              "Balance transfer credit cards: 0% or low APR promotional rates",
+              "Home equity loans/HELOC: Use home equity to pay off debt",
+              "401(k) loans: Borrow from retirement savings",
+              "Debt management plans: Work with credit counseling agency",
+              "Debt settlement: Negotiate reduced payoffs (damages credit)",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Consolidation savings calculation:",
+            formula: "Monthly Savings = Current Total Payments - New Consolidated Payment",
+            variables: {
+              "Current Total Payments": "Sum of all current minimum payments",
+              "New Consolidated Payment": "Payment on consolidation loan",
+              "Interest Savings": "Difference in total interest over loan life",
+              "Break-even Point": "When savings exceed consolidation costs",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Consolidation Example: $15,000 across 3 credit cards averaging 20% APR with $450 total minimums. Personal loan at 12% APR for $15,000 = $334 monthly payment. Monthly savings: $116, plus significant interest savings over time.",
+          },
+          {
+            type: "list",
+            content: "Personal loan consolidation:",
+            items: [
+              "Pros: Fixed rate, fixed payment, clear payoff date",
+              "Pros: Often lower rates than credit cards",
+              "Cons: May require good credit for best rates",
+              "Cons: Origination fees (1-8% of loan amount)",
+              "Best for: People with good credit and high-rate debt",
+              "Typical rates: 6-36% APR depending on credit",
+            ],
+          },
+          {
+            type: "list",
+            content: "Balance transfer credit cards:",
+            items: [
+              "Pros: 0% APR promotional periods (12-21 months)",
+              "Pros: Can provide significant interest savings",
+              "Cons: Balance transfer fees (3-5% of amount)",
+              "Cons: High rates after promotional period ends",
+              "Best for: People who can pay off debt during 0% period",
+              "Requires: Good credit and disciplined payoff plan",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Balance Transfer Success: Jake transferred $8,000 in credit card debt to a 0% APR card for 18 months. With a 3% transfer fee ($240), he saved over $2,000 in interest by paying off the debt during the promotional period.",
+          },
+          {
+            type: "list",
+            content: "Home equity consolidation:",
+            items: [
+              "Pros: Lowest interest rates, tax-deductible interest",
+              "Pros: Large borrowing capacity",
+              "Cons: Home is collateral - risk of foreclosure",
+              "Cons: Closing costs and fees",
+              "Best for: Homeowners with significant equity",
+              "Warning: Don't use home equity for consumption debt",
+            ],
+          },
+          {
+            type: "list",
+            content: "When consolidation makes sense:",
+            items: [
+              "You qualify for significantly lower interest rates",
+              "You can simplify multiple payments into one",
+              "You have a plan to avoid accumulating new debt",
+              "The total cost (including fees) is lower than current debt",
+              "You're committed to paying off the consolidated debt",
+              "You have stable income to make the new payments",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to avoid consolidation:",
+            items: [
+              "You haven't addressed the spending habits that created debt",
+              "The new loan has higher total costs than current debt",
+              "You're considering risky options like 401(k) loans",
+              "You're likely to accumulate new debt on paid-off cards",
+              "The consolidation loan has variable rates that could increase",
+              "You're using secured debt to pay off unsecured debt",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Consolidation only works if you change the behaviors that created the debt. Many people consolidate debt only to accumulate new debt on the paid-off credit cards, making their situation worse.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you consolidate credit card debt, consider closing the paid-off cards or reducing their credit limits to prevent the temptation to accumulate new debt.",
+          },
+        ],
+        keyTakeaways: [
+          "Consolidation can reduce rates and simplify payments",
+          "Balance transfer cards offer temporary 0% rates for qualified borrowers",
+          "Home equity options have low rates but put your home at risk",
+          "Success requires changing spending habits, not just moving debt around",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the biggest risk of debt consolidation?",
+              options: [
+                "Higher interest rates on the new loan",
+                "Accumulating new debt on paid-off credit cards",
+                "Longer repayment terms",
+                "Balance transfer fees",
+              ],
+              correctAnswer: "Accumulating new debt on paid-off credit cards",
+              explanation:
+                "The biggest risk is that people consolidate debt but don't change their spending habits, leading to new debt accumulation on the paid-off credit cards while still owing the consolidation loan.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Negotiating with Creditors",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Working with Creditors to Find Solutions",
+          },
+          {
+            type: "paragraph",
+            content:
+              "When facing financial hardship, negotiating with creditors can provide relief through modified payment plans, reduced interest rates, or other accommodations. Creditors often prefer working with you rather than dealing with defaults and collections.",
+          },
+          {
+            type: "list",
+            content: "When to contact creditors:",
+            items: [
+              "Before you miss any payments (proactive approach)",
+              "When you anticipate income reduction or job loss",
+              "After a major life event (medical emergency, divorce)",
+              "When current payments are unsustainable",
+              "If you're considering bankruptcy",
+              "When you have a lump sum available for settlement",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of hardship programs:",
+            items: [
+              "Payment deferrals: Temporary pause on payments",
+              "Reduced payment plans: Lower monthly payments",
+              "Interest rate reductions: Temporary or permanent rate cuts",
+              "Fee waivers: Elimination of late fees or penalties",
+              "Extended payment terms: Longer repayment period",
+              "Principal reductions: Rare, but possible in extreme cases",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Negotiation Success: After job loss, Tom contacted his credit card company before missing payments. They offered a 6-month hardship program with 50% reduced payments and 0% interest, giving him time to find new employment.",
+          },
+          {
+            type: "list",
+            content: "Preparation for creditor negotiations:",
+            items: [
+              "Gather all account information and payment history",
+              "Document your financial hardship with specific details",
+              "Calculate what you can realistically afford to pay",
+              "Research the creditor's typical hardship programs",
+              "Prepare a specific proposal or request",
+              "Have alternative proposals ready if first is rejected",
+            ],
+          },
+          {
+            type: "list",
+            content: "Negotiation strategies and tips:",
+            items: [
+              "Be honest about your situation and provide documentation",
+              "Emphasize your desire to pay and avoid default",
+              "Ask to speak with the hardship or retention department",
+              "Be persistent but polite - you may need multiple calls",
+              "Get any agreement in writing before making payments",
+              "Keep detailed records of all communications",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Medical Debt Negotiation: After a $25,000 hospital bill, Sarah negotiated a payment plan of $200/month with no interest. When she received an inheritance, she negotiated a lump-sum settlement for $15,000, saving $10,000.",
+          },
+          {
+            type: "list",
+            content: "What creditors want to hear:",
+            items: [
+              "Specific reasons for your financial hardship",
+              "Your commitment to paying what you owe",
+              "A realistic timeline for when your situation will improve",
+              "Specific payment amounts you can afford",
+              "Documentation supporting your hardship claims",
+              "Your preference to work with them rather than default",
+            ],
+          },
+          {
+            type: "list",
+            content: "Settlement negotiations:",
+            items: [
+              "Typically only available for severely delinquent accounts",
+              "May require lump-sum payment of reduced amount",
+              "Can significantly damage your credit score",
+              "May result in taxable income for forgiven debt",
+              "Should be last resort before bankruptcy",
+              "Get settlement terms in writing before paying",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common negotiation mistakes:",
+            items: [
+              "Waiting until after missing payments to contact creditors",
+              "Not getting agreements in writing",
+              "Agreeing to payments you can't actually afford",
+              "Not understanding the credit impact of settlements",
+              "Failing to follow through on negotiated agreements",
+              "Not keeping detailed records of conversations",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be cautious of debt settlement companies that charge fees to negotiate on your behalf. You can negotiate directly with creditors for free, and many settlement companies make situations worse.",
+          },
+          {
+            type: "tip",
+            content:
+              "Call creditors during business hours on weekdays when you're more likely to reach experienced representatives who have authority to approve hardship programs.",
+          },
+        ],
+        keyTakeaways: [
+          "Contact creditors before missing payments for best negotiation outcomes",
+          "Hardship programs can provide temporary relief during financial difficulties",
+          "Be prepared with documentation and realistic payment proposals",
+          "Get all agreements in writing before making any payments",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When is the best time to contact creditors about payment difficulties?",
+              options: [
+                "After missing several payments",
+                "Before you miss any payments",
+                "Only when accounts go to collections",
+                "After consulting with a debt settlement company",
+              ],
+              correctAnswer: "Before you miss any payments",
+              explanation:
+                "Contacting creditors proactively, before missing payments, shows good faith and makes them more likely to work with you on hardship programs or modified payment plans.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Avoiding Debt Traps and Predatory Lending",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Yourself from Dangerous Debt Products",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Predatory lenders target vulnerable consumers with high-cost, high-risk debt products that can trap borrowers in cycles of debt. Understanding these products and their alternatives helps you avoid financial traps that can take years to escape.",
+          },
+          {
+            type: "list",
+            content: "Common predatory lending products:",
+            items: [
+              "Payday loans: Short-term, extremely high-cost loans",
+              "Title loans: Secured by vehicle title, risk losing car",
+              "Rent-to-own agreements: Extremely high effective interest rates",
+              "Cash advances: High fees and immediate interest charges",
+              "Subprime credit cards: High fees and rates for poor credit",
+              "Installment loans: High-rate loans marketed to poor credit borrowers",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "True cost of payday loans:",
+            formula: "APR = (Fee ÷ Loan Amount) × (365 ÷ Loan Term) × 100",
+            variables: {
+              Fee: "Cost to borrow (e.g., $15 per $100)",
+              "Loan Amount": "Amount borrowed",
+              "Loan Term": "Days until repayment",
+              "Typical APR": "300-400% for payday loans",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Payday Loan Trap: $300 loan with $45 fee due in 14 days = 391% APR. If you can't repay, you pay another $45 to roll over. After 6 rollovers, you've paid $315 in fees on a $300 loan and still owe the principal.",
+          },
+          {
+            type: "list",
+            content: "Red flags of predatory lending:",
+            items: [
+              "Extremely high interest rates or fees",
+              "Pressure to sign immediately without time to review",
+              "No credit check or 'guaranteed approval' claims",
+              "Balloon payments or unaffordable payment schedules",
+              "Encouragement to lie on applications",
+              "Aggressive sales tactics or door-to-door solicitation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternatives to predatory loans:",
+            items: [
+              "Credit union small-dollar loans (PALs)",
+              "Payment plans with creditors or service providers",
+              "Employer paycheck advances",
+              "Borrowing from family or friends",
+              "Community assistance programs",
+              "Selling items or taking on extra work",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Payday Loan Escape: Maria was trapped in a payday loan cycle, paying $50 every two weeks on a $300 loan. She contacted a credit union, got a $500 PAL at 18% APR, paid off the payday loan, and saved over $1,000 annually.",
+          },
+          {
+            type: "list",
+            content: "Credit card debt traps to avoid:",
+            items: [
+              "Making only minimum payments on high balances",
+              "Cash advances with immediate interest and high fees",
+              "Balance transfer offers with high post-promotional rates",
+              "Store cards with deferred interest promotions",
+              "Credit limit increases that encourage more spending",
+              "Multiple cards from the same issuer (shared limits)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Building emergency alternatives:",
+            items: [
+              "Start with $25-50 emergency fund",
+              "Use automatic savings to build gradually",
+              "Keep emergency fund in separate account",
+              "Consider credit union membership for better loan options",
+              "Build relationships with family/friends for emergency help",
+              "Develop multiple income streams for stability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Legal protections and resources:",
+            items: [
+              "Truth in Lending Act requires disclosure of loan terms",
+              "Fair Debt Collection Practices Act limits collector behavior",
+              "State laws may cap interest rates or regulate lenders",
+              "Consumer Financial Protection Bureau accepts complaints",
+              "Legal aid societies provide free legal assistance",
+              "Credit counseling agencies offer free debt advice",
+            ],
+          },
+          {
+            type: "list",
+            content: "Escaping existing debt traps:",
+            items: [
+              "Stop the cycle - don't renew or roll over loans",
+              "Seek help from nonprofit credit counseling",
+              "Consider debt management plans",
+              "Look into local emergency assistance programs",
+              "Negotiate payment plans with original creditors",
+              "Consult with bankruptcy attorney if situation is severe",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never use one high-cost loan to pay off another. This creates a dangerous cycle that becomes increasingly difficult to escape and can lead to financial ruin.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you're considering a payday loan, try asking your employer for a paycheck advance first. Many employers will advance a portion of earned wages at no cost.",
+          },
+        ],
+        keyTakeaways: [
+          "Predatory loans have extremely high costs and can trap borrowers in debt cycles",
+          "Always calculate the true APR of any loan before borrowing",
+          "Build emergency savings and explore alternatives before using high-cost loans",
+          "Legal protections exist, and free help is available through nonprofit agencies",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the typical APR range for payday loans?",
+              options: ["25-50%", "75-150%", "200-300%", "300-400%"],
+              correctAnswer: "300-400%",
+              explanation:
+                "Payday loans typically have APRs of 300-400% or higher when fees are calculated on an annual basis, making them one of the most expensive forms of credit available.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building Wealth After Debt Freedom",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Transitioning from Debt Payoff to Wealth Building",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Achieving debt freedom is a major milestone, but it's just the beginning of your wealth-building journey. The discipline and habits you developed during debt payoff can be redirected toward building assets and achieving financial independence.",
+          },
+          {
+            type: "list",
+            content: "Immediate steps after debt payoff:",
+            items: [
+              "Celebrate your achievement - you've accomplished something major!",
+              "Redirect debt payments to emergency fund completion",
+              "Increase retirement contributions significantly",
+              "Review and update your budget for new priorities",
+              "Consider increasing insurance coverage",
+              "Set new financial goals beyond debt elimination",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Wealth building acceleration:",
+            formula: "Monthly Wealth Building = Former Debt Payments + Additional Savings",
+            variables: {
+              "Former Debt Payments": "Money previously going to debt",
+              "Additional Savings": "Extra money from lifestyle optimization",
+              "Wealth Building Rate": "Percentage of income going to assets",
+              "Time to FI": "Years to financial independence",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Post-Debt Transition: Sarah was paying $800/month toward debt. After payoff, she allocated $400 to emergency fund completion, $300 to retirement investing, and $100 to a vacation fund. Her wealth building accelerated dramatically.",
+          },
+          {
+            type: "list",
+            content: "Priority order for post-debt money:",
+            items: [
+              "Complete emergency fund (3-6 months expenses)",
+              "Maximize employer 401(k) match if not already\
