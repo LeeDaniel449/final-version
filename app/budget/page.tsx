@@ -1988,10 +1988,26 @@ function BudgetDashboardContent() {
                                           budgetAmount: newBudget,
                                         })
                                         loadUserData()
+
+                                        // Close the dialog
+                                        const dialog = input.closest('[role="dialog"]') as HTMLElement
+                                        if (dialog) {
+                                          const closeButton = dialog.querySelector(
+                                            "[data-radix-collection-item]",
+                                          ) as HTMLButtonElement
+                                          if (closeButton) closeButton.click()
+                                        }
+
                                         addNotification(
                                           "Budget Updated! 💰",
-                                          `Updated budget for ${category.name} to $${newBudget}. Available income: $${(availableIncome - budgetDifference).toLocaleString()}`,
+                                          `Updated budget for ${category.name} to $${newBudget.toLocaleString()}. Available income: $${(availableIncome - budgetDifference).toLocaleString()}`,
                                           "success",
+                                        )
+                                      } else {
+                                        addNotification(
+                                          "Invalid Amount",
+                                          "Please enter a valid budget amount greater than 0.",
+                                          "warning",
                                         )
                                       }
                                     }}
