@@ -1,116 +1,142 @@
 "use client"
 
-import { useState } from "react"
-import { userDataManager } from "@/lib/user-data"
+import type React from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Bot, User, Settings, Zap, Brain } from "lucide-react"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import { Send, Bot, User, Sparkles, Brain, AlertCircle } from "lucide-react"
 
 interface Message {
-  role: "system" | "user" | "assistant"
+  id: string
   content: string
+  sender: "user" | "ai"
+  timestamp: Date
+  source?: "openai" | "smart_ai" | "error"
 }
 
-export default function AIAdvisor() {
+const quickStarters = [
+  "How's my budget looking?",
+  "Should I invest my savings?",
+  "Help me plan for retirement",
+  "How can I pay off debt faster?",
+  "What are good financial goals?",
+  "Am I saving enough money?",
+]
+
+export function AIAdvisor() {
   const [messages, setMessages] = useState<Message[]>([
-    { role: "system", content: "You are a helpful financial advisor." },
+    {
+      id: "welcome",
+      content:
+        "Hello! I'm your AI financial advisor. I can help you with budgeting, investing, debt management, and achieving your financial goals. What would you like to discuss today?",
+      sender: "ai",
+      timestamp: new Date(),
+      source: "smart_ai",
+    },
   ])
-  const [input, setInput] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [inputMessage, setInputMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const [useOpenAI, setUseOpenAI] = useState(true)
-  const [lastResponseSource, setLastResponseSource] = useState<string>("")
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Quick starter questions
-  const quickStarters = [
-    "How should I prioritize my financial goals?",
-    "What's the best way to invest my surplus money?",
-    "Should I pay off debt or invest first?",
-    "How can I improve my savings rate?",
-    "Is my emergency fund adequate?",
-  ]
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
-  const sendMessage = async (messageText?: string) => {
-    const messageToSend = messageText || input.trim()
-    if (!messageToSend) return
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
-    const newMessages = [...messages, { role: "user" as const, content: messageToSend }]
-    setMessages(newMessages)
-    setInput("")
-    setLoading(true)
+  const sendMessage = async (message: string) => {
+    if (!message.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: message,
+      sender: "user",
+      timestamp: new Date(),
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setInputMessage("")
+    setIsLoading(true)
 
     try {
-      // Get user data for context
-      const userData = {
-        profile: userDataManager.getUserProfile(),
-        budgetData: userDataManager.getBudgetData(),
-        goals: userDataManager.getGoals(),
-        progress: userDataManager.getUserProgress(),
-        budgetCategories: userDataManager.getBudgetCategories(),
-        budgetEntries: userDataManager.getBudgetEntries(),
-      }
-
-      console.log("Sending request to AI advisor API...")
-
-      const res = await fetch("/api/ai-advisor", {
+      const response = await fetch("/api/ai-advisor", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          messages: newMessages,
-          userData: userData,
-          useOpenAI: useOpenAI,
+          message,
+          useOpenAI,
         }),
       })
 
-      console.log("Response status:", res.status)
-
-      if (!res.ok) {
-        const errorText = await res.text()
-        console.error("API Error Response:", errorText)
-        throw new Error(`HTTP error! status: ${res.status}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      const data = await res.json()
-      console.log("AI Response:", data)
+      const data = await response.json()
 
-      setLastResponseSource(data.source || "unknown")
-      setMessages([...newMessages, { role: "assistant", content: data.reply }])
-    } catch (e) {
-      console.error("AI Advisor Error:", e)
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content:
-            "Sorry, I'm having trouble connecting right now. This might be due to a temporary service issue. Please try again in a moment, or explore the learning modules and budgeting tools while I get back online!",
-        },
-      ])
-      setLastResponseSource("error")
+      const aiMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: data.response,
+        sender: "ai",
+        timestamp: new Date(),
+        source: data.source,
+      }
+
+      setMessages((prev) => [...prev, aiMessage])
+    } catch (error) {
+      console.error("Error sending message:", error)
+
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content:
+          "I apologize, but I'm having trouble connecting right now. Please check your internet connection and try again.",
+        sender: "ai",
+        timestamp: new Date(),
+        source: "error",
+      }
+
+      setMessages((prev) => [...prev, errorMessage])
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
-  const getSourceBadge = () => {
-    switch (lastResponseSource) {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    sendMessage(inputMessage)
+  }
+
+  const handleQuickStart = (question: string) => {
+    sendMessage(question)
+  }
+
+  const getSourceBadge = (source?: string) => {
+    switch (source) {
       case "openai":
         return (
-          <Badge variant="default" className="text-xs">
-            <Bot className="w-3 h-3 mr-1" />
-            OpenAI
+          <Badge variant="default" className="ml-2 bg-green-100 text-green-800 border-green-200">
+            🤖 OpenAI
           </Badge>
         )
-      case "intelligent_fallback":
+      case "smart_ai":
         return (
-          <Badge variant="secondary" className="text-xs">
-            <Brain className="w-3 h-3 mr-1" />
-            Smart AI
+          <Badge variant="secondary" className="ml-2 bg-blue-100 text-blue-800 border-blue-200">
+            🧠 Smart AI
           </Badge>
         )
       case "error":
         return (
-          <Badge variant="destructive" className="text-xs">
-            Error
+          <Badge variant="destructive" className="ml-2">
+            ❌ Error
           </Badge>
         )
       default:
@@ -119,97 +145,111 @@ export default function AIAdvisor() {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            <Bot className="w-5 h-5 text-blue-600" />
-            AI Financial Advisor
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            {getSourceBadge()}
-            <Button variant="outline" size="sm" onClick={() => setUseOpenAI(!useOpenAI)} className="text-xs">
-              <Settings className="w-3 h-3 mr-1" />
-              {useOpenAI ? "OpenAI" : "Smart AI"}
-            </Button>
+    <div className="flex flex-col h-[600px] max-w-4xl mx-auto">
+      {/* Header with AI Mode Toggle */}
+      <Card className="mb-4">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Bot className="h-5 w-5" />
+              AI Financial Advisor
+            </CardTitle>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="ai-mode" className="text-sm font-medium">
+                {useOpenAI ? "OpenAI Mode" : "Smart AI Mode"}
+              </Label>
+              <Switch id="ai-mode" checked={useOpenAI} onCheckedChange={setUseOpenAI} />
+            </div>
           </div>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Get personalized financial advice based on your profile and goals
-        </p>
-      </CardHeader>
+        </CardHeader>
+      </Card>
 
-      <CardContent className="space-y-4">
-        {/* Quick Starters */}
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-muted-foreground">Quick Questions:</p>
+      {/* Quick Starters */}
+      <Card className="mb-4">
+        <CardContent className="pt-4">
           <div className="flex flex-wrap gap-2">
+            <span className="text-sm font-medium text-muted-foreground mb-2 w-full">Quick starters:</span>
             {quickStarters.map((question, index) => (
               <Button
                 key={index}
                 variant="outline"
                 size="sm"
-                className="text-xs h-8 bg-transparent"
-                onClick={() => sendMessage(question)}
-                disabled={loading}
+                onClick={() => handleQuickStart(question)}
+                disabled={isLoading}
+                className="text-xs"
               >
-                <Zap className="w-3 h-3 mr-1" />
                 {question}
               </Button>
             ))}
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Chat Messages */}
-        <div className="h-80 overflow-y-auto space-y-3 p-3 bg-muted/30 rounded-lg">
-          {messages.slice(1).map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+      {/* Messages */}
+      <Card className="flex-1 flex flex-col">
+        <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+          {messages.map((message) => (
+            <div key={message.id} className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}>
               <div
-                className={`max-w-[80%] p-3 rounded-lg ${
-                  msg.role === "user" ? "bg-blue-600 text-white" : "bg-white border shadow-sm"
+                className={`max-w-[80%] rounded-lg p-3 ${
+                  message.sender === "user" ? "bg-primary text-primary-foreground" : "bg-muted"
                 }`}
               >
                 <div className="flex items-start gap-2">
-                  {msg.role === "assistant" && <Bot className="w-4 h-4 mt-0.5 text-blue-600" />}
-                  {msg.role === "user" && <User className="w-4 h-4 mt-0.5" />}
-                  <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
+                  {message.sender === "ai" && (
+                    <div className="flex-shrink-0 mt-1">
+                      {message.source === "error" ? (
+                        <AlertCircle className="h-4 w-4 text-red-500" />
+                      ) : message.source === "openai" ? (
+                        <Sparkles className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <Brain className="h-4 w-4 text-blue-600" />
+                      )}
+                    </div>
+                  )}
+                  {message.sender === "user" && <User className="h-4 w-4 flex-shrink-0 mt-1" />}
+                  <div className="flex-1">
+                    <div className="whitespace-pre-wrap text-sm">{message.content}</div>
+                    <div className="flex items-center justify-between mt-2">
+                      <div className="text-xs opacity-70">{message.timestamp.toLocaleTimeString()}</div>
+                      {message.sender === "ai" && getSourceBadge(message.source)}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
-          {loading && (
+          {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-white border shadow-sm p-3 rounded-lg">
+              <div className="bg-muted rounded-lg p-3 max-w-[80%]">
                 <div className="flex items-center gap-2">
-                  <Bot className="w-4 h-4 text-blue-600" />
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-sm text-muted-foreground">Thinking...</span>
+                  <div className="animate-spin">
+                    {useOpenAI ? <Sparkles className="h-4 w-4" /> : <Brain className="h-4 w-4" />}
+                  </div>
+                  <span className="text-sm">{useOpenAI ? "OpenAI is thinking..." : "Smart AI is analyzing..."}</span>
                 </div>
               </div>
             </div>
           )}
-        </div>
+          <div ref={messagesEndRef} />
+        </CardContent>
 
-        {/* Input Area */}
-        <div className="flex gap-2">
-          <input
-            className="flex-1 px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage()}
-            placeholder="Ask about budgeting, investing, debt management..."
-            disabled={loading}
-          />
-          <Button onClick={() => sendMessage()} disabled={loading || !input.trim()} size="sm">
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Send"}
-          </Button>
+        {/* Input */}
+        <div className="border-t p-4">
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <Input
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              placeholder="Ask me about your finances..."
+              disabled={isLoading}
+              className="flex-1"
+            />
+            <Button type="submit" disabled={isLoading || !inputMessage.trim()}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </form>
         </div>
-
-        {/* Mode Indicator */}
-        <div className="text-xs text-muted-foreground text-center">
-          Currently using: {useOpenAI ? "OpenAI GPT-4 with intelligent fallback" : "Smart AI system only"}
-        </div>
-      </CardContent>
-    </Card>
+      </Card>
+    </div>
   )
 }
