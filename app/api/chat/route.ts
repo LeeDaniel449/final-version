@@ -10,6 +10,8 @@ interface UserData {
   budgetData?: any
   goals?: any
   progress?: any
+  budgetCategories?: any
+  budgetEntries?: any
 }
 
 export async function POST(req: NextRequest) {
@@ -43,6 +45,17 @@ export async function POST(req: NextRequest) {
 function analyzeConversation(messages: Message[], userData?: UserData) {
   const allText = messages.map((m) => m.content.toLowerCase()).join(" ")
 
+  // Calculate user's financial metrics
+  const totalExpenses = userData?.budgetData?.expenses
+    ? Object.values(userData.budgetData.expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0)
+    : 0
+
+  const monthlyLeftover = (userData?.budgetData?.income || 0) - totalExpenses
+  const savingsRate =
+    userData?.budgetData?.income > 0 ? ((userData?.budgetData?.savings || 0) / userData.budgetData.income) * 100 : 0
+
+  const emergencyFundMonths = totalExpenses > 0 ? (userData?.budgetData?.savings || 0) / totalExpenses : 0
+
   return {
     hasEmergencyFund: allText.includes("emergency fund") || allText.includes("savings account"),
     investmentAmount: extractAmount(allText),
@@ -52,6 +65,8 @@ function analyzeConversation(messages: Message[], userData?: UserData) {
     experience: extractExperience(allText),
     concerns: extractConcerns(allText),
     previousTopics: extractTopics(messages),
+
+    // User's actual financial data
     userIncome: userData?.budgetData?.income || 0,
     userExpenses: userData?.budgetData?.expenses || {},
     userSavings: userData?.budgetData?.savings || 0,
@@ -59,7 +74,28 @@ function analyzeConversation(messages: Message[], userData?: UserData) {
     userAge: userData?.profile?.age || null,
     userExperience: userData?.profile?.experience || null,
     userRiskTolerance: userData?.profile?.riskTolerance || null,
+
+    // Calculated metrics
+    totalExpenses,
+    monthlyLeftover,
+    savingsRate,
+    emergencyFundMonths,
+    hasPositiveCashFlow: monthlyLeftover > 0,
+    needsEmergencyFund: emergencyFundMonths < 3,
+
+    // Budget categories analysis
+    budgetCategories: userData?.budgetCategories || [],
+    budgetEntries: userData?.budgetEntries || [],
+    topExpenseCategories: getTopExpenseCategories(userData?.budgetCategories || []),
   }
+}
+
+function getTopExpenseCategories(categories: any[]): string[] {
+  return categories
+    .filter((cat) => cat.type === "expense" && cat.spentAmount > 0)
+    .sort((a, b) => b.spentAmount - a.spentAmount)
+    .slice(0, 3)
+    .map((cat) => cat.name)
 }
 
 function extractAmount(text: string): number | null {
@@ -141,9 +177,24 @@ function generateContextualResponse(
   const input = userInput.toLowerCase()
   const lastAssistantMessage = conversationHistory.filter((m) => m.role === "assistant").pop()?.content || ""
 
-  // Personalized responses using user data
-  if (userData && (input.includes("my") || input.includes("personal") || input.includes("should i"))) {
-    return generatePersonalizedResponse(input, context, userData)
+  // Prioritize personalized responses using user data
+  if (userData && hasUserData(userData)) {
+    // Check for specific personal finance questions
+    if (input.includes("my budget") || input.includes("analyze") || input.includes("review")) {
+      return generateBudgetAnalysis(context, userData)
+    }
+
+    if (input.includes("my goal") || input.includes("goals")) {
+      return generateGoalAnalysis(context, userData)
+    }
+
+    if (input.includes("should i") || input.includes("what should") || input.includes("recommend")) {
+      return generatePersonalizedRecommendation(input, context, userData)
+    }
+
+    if (input.includes("how much") && (input.includes("save") || input.includes("invest"))) {
+      return generateSavingsAdvice(context, userData)
+    }
   }
 
   // Handle follow-up responses based on previous AI questions
@@ -165,73 +216,221 @@ function generateContextualResponse(
     }
   }
 
-  // Budgeting questions
+  // Topic-specific responses
   if (input.includes("budget") || input.includes("spending") || input.includes("track money")) {
     return generateBudgetingAdvice(input, context, userData)
   }
 
-  // Debt management questions
   if (input.includes("debt") || input.includes("credit card") || input.includes("pay off")) {
     return generateDebtAdvice(input, context, userData)
   }
 
-  // Saving questions
   if (input.includes("save") || input.includes("saving") || input.includes("how much")) {
     return generateSavingAdvice(input, context, userData)
   }
 
-  // Investment questions
   if (input.includes("invest") || input.includes("stock") || input.includes("fund")) {
     return generateInvestmentAdvice(input, context, userData)
   }
 
-  // Continue with existing logic for other cases
+  // Fallback to general responses
   return generateSimpleResponse(userInput, context, userData)
 }
 
-function generatePersonalizedResponse(input: string, context: any, userData: UserData): string {
-  const { profile, budgetData, goals } = userData
+function hasUserData(userData: UserData): boolean {
+  return !!(userData?.budgetData?.income || userData?.goals?.length || userData?.profile?.age)
+}
 
-  // Personal budget analysis
-  if (input.includes("budget") || input.includes("spending")) {
-    if (budgetData?.income && budgetData?.expenses) {
-      const totalExpenses = Object.values(budgetData.expenses).reduce(
-        (sum: number, expense: any) => sum + (expense || 0),
-        0,
-      )
-      const leftover = budgetData.income - totalExpenses
-      const savingsRate = budgetData.income > 0 ? (((budgetData.savings || 0) / budgetData.income) * 100).toFixed(1) : 0
+function generateBudgetAnalysis(context: any, userData: UserData): string {
+  const { userIncome, totalExpenses, monthlyLeftover, savingsRate, emergencyFundMonths, topExpenseCategories } = context
 
-      return `Based on your budget data, you have $${budgetData.income.toLocaleString()} monthly income and $${totalExpenses.toLocaleString()} in expenses, leaving $${leftover.toLocaleString()}. Your current savings rate is ${savingsRate}%. ${leftover > 0 ? "Great job having money left over! Consider increasing your savings or investments." : "Your expenses are close to your income. Let's look at ways to optimize your spending."}`
+  if (!userIncome) {
+    return "I'd love to analyze your budget, but I don't see any income data yet. Head over to the Budget section to add your financial information, then I can give you personalized advice!"
+  }
+
+  let analysis = `📊 **Budget Analysis:**\n\n`
+  analysis += `• Monthly Income: $${userIncome.toLocaleString()}\n`
+  analysis += `• Total Expenses: $${totalExpenses.toLocaleString()}\n`
+  analysis += `• Monthly Leftover: $${monthlyLeftover.toLocaleString()}\n`
+  analysis += `• Savings Rate: ${savingsRate.toFixed(1)}%\n\n`
+
+  // Provide specific feedback
+  if (savingsRate >= 20) {
+    analysis += `🎉 Excellent savings rate! You're saving ${savingsRate.toFixed(1)}% of your income, which is above the recommended 20%.`
+  } else if (savingsRate >= 10) {
+    analysis += `👍 Good savings rate at ${savingsRate.toFixed(1)}%. Try to gradually increase to 20% if possible.`
+  } else {
+    analysis += `⚠️ Your savings rate of ${savingsRate.toFixed(1)}% could be improved. Aim for at least 20% of your income.`
+  }
+
+  if (topExpenseCategories.length > 0) {
+    analysis += `\n\n💰 **Top Expense Categories:** ${topExpenseCategories.join(", ")}`
+    analysis += `\n\nConsider reviewing these categories for potential savings opportunities.`
+  }
+
+  // Emergency fund assessment
+  if (emergencyFundMonths >= 6) {
+    analysis += `\n\n🛡️ Great emergency fund! You have ${emergencyFundMonths.toFixed(1)} months of expenses saved.`
+  } else if (emergencyFundMonths >= 3) {
+    analysis += `\n\n🛡️ Good emergency fund coverage at ${emergencyFundMonths.toFixed(1)} months. Consider building to 6 months.`
+  } else {
+    analysis += `\n\n⚠️ Emergency fund needs attention. You have ${emergencyFundMonths.toFixed(1)} months of expenses saved. Aim for 3-6 months.`
+  }
+
+  return analysis
+}
+
+function generateGoalAnalysis(context: any, userData: UserData): string {
+  const goals = userData?.goals || []
+
+  if (goals.length === 0) {
+    return "I don't see any financial goals set up yet. Head to the Goals section to add some targets, then I can help you create a plan to achieve them!"
+  }
+
+  let analysis = `🎯 **Goal Analysis:**\n\n`
+
+  goals.forEach((goal: any, index: number) => {
+    const progress = (goal.current / goal.target) * 100
+    const remaining = goal.target - goal.current
+    const monthsToDeadline = goal.deadline
+      ? Math.ceil((new Date(goal.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 30))
+      : null
+
+    analysis += `${index + 1}. **${goal.title}**\n`
+    analysis += `   Progress: $${goal.current.toLocaleString()}/$${goal.target.toLocaleString()} (${progress.toFixed(1)}%)\n`
+    analysis += `   Remaining: $${remaining.toLocaleString()}\n`
+
+    if (monthsToDeadline && monthsToDeadline > 0) {
+      const monthlyNeeded = remaining / monthsToDeadline
+      analysis += `   Monthly needed: $${monthlyNeeded.toLocaleString()} for ${monthsToDeadline} months\n`
+
+      if (context.monthlyLeftover >= monthlyNeeded) {
+        analysis += `   ✅ Achievable with your current cash flow!\n`
+      } else {
+        analysis += `   ⚠️ May need to adjust timeline or increase income/reduce expenses\n`
+      }
+    }
+    analysis += `\n`
+  })
+
+  // Provide strategic advice
+  const highPriorityGoals = goals.filter((g: any) => g.priority === "high")
+  if (highPriorityGoals.length > 0) {
+    analysis += `🔥 **Focus on high-priority goals first:** ${highPriorityGoals.map((g: any) => g.title).join(", ")}`
+  }
+
+  return analysis
+}
+
+function generatePersonalizedRecommendation(input: string, context: any, userData: UserData): string {
+  const { userIncome, monthlyLeftover, emergencyFundMonths, savingsRate } = context
+
+  if (!userIncome) {
+    return "I'd love to give you personalized recommendations! Please add your budget information first so I can analyze your situation."
+  }
+
+  let recommendations = `💡 **Personalized Recommendations:**\n\n`
+
+  // Priority 1: Emergency Fund
+  if (emergencyFundMonths < 3) {
+    recommendations += `1. **Build Emergency Fund (Priority #1)**\n`
+    recommendations += `   You need $${(context.totalExpenses * 3 - (userData?.budgetData?.savings || 0)).toLocaleString()} more for a 3-month emergency fund.\n`
+    recommendations += `   Save $${Math.ceil((context.totalExpenses * 3 - (userData?.budgetData?.savings || 0)) / 6).toLocaleString()}/month for 6 months.\n\n`
+  }
+
+  // Priority 2: Debt (if mentioned in conversation or high expenses)
+  if (input.includes("debt") || context.totalExpenses > userIncome * 0.8) {
+    recommendations += `2. **Address High-Interest Debt**\n`
+    recommendations += `   Pay minimums on all debts, then attack highest interest rate debt first.\n`
+    recommendations += `   Consider debt consolidation if you have multiple high-interest debts.\n\n`
+  }
+
+  // Priority 3: Increase Savings Rate
+  if (savingsRate < 20 && monthlyLeftover > 0) {
+    const additionalSavings = userIncome * 0.2 - (userData?.budgetData?.savings || 0)
+    if (additionalSavings > 0) {
+      recommendations += `3. **Increase Savings Rate**\n`
+      recommendations += `   Try to save an additional $${additionalSavings.toLocaleString()}/month to reach 20% savings rate.\n`
+      recommendations += `   Automate transfers to make it easier.\n\n`
     }
   }
 
-  // Personal investment advice
-  if (input.includes("invest") && budgetData?.savings) {
-    const emergencyFund = budgetData.expenses
-      ? Object.values(budgetData.expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0) * 3
-      : 0
-    const availableToInvest = Math.max(0, budgetData.savings - emergencyFund)
+  // Priority 4: Investment Strategy
+  if (emergencyFundMonths >= 3 && monthlyLeftover > 0) {
+    const age = userData?.profile?.age ? Number.parseInt(userData.profile.age) : 30
+    const stockAllocation = Math.min(90, 100 - age)
 
-    if (availableToInvest > 0) {
-      return `Looking at your savings of $${budgetData.savings.toLocaleString()}, after keeping $${emergencyFund.toLocaleString()} for emergencies, you could potentially invest $${availableToInvest.toLocaleString()}. ${profile?.riskTolerance === "low" ? "Given your conservative risk tolerance, consider starting with 60% stocks (VTI) and 40% bonds (BND)." : profile?.riskTolerance === "high" ? "With your higher risk tolerance, you could go 90% stocks (VTI) and 10% bonds." : "A balanced 80% stocks (VTI) and 20% bonds (BND) portfolio would work well for you."}`
-    } else {
-      return `Based on your current savings of $${budgetData.savings.toLocaleString()}, I'd recommend building your emergency fund first before investing. Aim for 3-6 months of expenses (about $${emergencyFund.toLocaleString()}) in a high-yield savings account.`
+    recommendations += `4. **Start Investing**\n`
+    recommendations += `   With your emergency fund in place, consider investing $${Math.floor(monthlyLeftover * 0.8).toLocaleString()}/month.\n`
+    recommendations += `   Suggested allocation: ${stockAllocation}% stocks (VTI), ${100 - stockAllocation}% bonds (BND)\n`
+    recommendations += `   Start with a target-date fund if you prefer simplicity.\n\n`
+  }
+
+  // Goal-specific advice
+  const goals = userData?.goals || []
+  if (goals.length > 0) {
+    const urgentGoals = goals.filter((g: any) => {
+      const deadline = new Date(g.deadline)
+      const monthsLeft = (deadline.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 30)
+      return monthsLeft <= 24 && monthsLeft > 0
+    })
+
+    if (urgentGoals.length > 0) {
+      recommendations += `5. **Urgent Goals (< 2 years)**\n`
+      urgentGoals.forEach((goal: any) => {
+        recommendations += `   ${goal.title}: Keep in high-yield savings, don't invest short-term money.\n`
+      })
     }
   }
 
-  // Personal goal advice
-  if (input.includes("goal") && goals?.length > 0) {
-    const activeGoals = goals.filter((g: any) => g.status === "active")
-    if (activeGoals.length > 0) {
-      const goalSummary = activeGoals
-        .map((g: any) => `${g.title}: $${g.current.toLocaleString()}/$${g.target.toLocaleString()}`)
-        .join(", ")
-      return `Looking at your active goals (${goalSummary}), here's my advice: ${generateGoalSpecificAdvice(activeGoals[0])}`
-    }
+  return recommendations
+}
+
+function generateSavingsAdvice(context: any, userData: UserData): string {
+  const { userIncome, monthlyLeftover, emergencyFundMonths } = context
+
+  if (!userIncome) {
+    return "I'd love to give you savings advice! Please add your income and expense information first."
   }
 
-  return "I'd love to give you personalized advice! Could you tell me more about your specific financial situation or goals?"
+  const recommendedSavings = userIncome * 0.2
+  const currentSavings = userData?.budgetData?.savings || 0
+
+  let advice = `💰 **Savings Strategy:**\n\n`
+  advice += `With your $${userIncome.toLocaleString()} monthly income, aim to save at least 20% ($${recommendedSavings.toLocaleString()}/month).\n\n`
+
+  if (emergencyFundMonths < 3) {
+    advice += `🚨 **Priority: Emergency Fund**\n`
+    advice += `Build 3-6 months of expenses ($${(context.totalExpenses * 3).toLocaleString()}) in a high-yield savings account first.\n`
+    advice += `You currently have $${currentSavings.toLocaleString()} saved.\n\n`
+  } else {
+    advice += `✅ **Good Emergency Fund**\n`
+    advice += `You have ${emergencyFundMonths.toFixed(1)} months of expenses saved. Now you can focus on other goals!\n\n`
+  }
+
+  if (monthlyLeftover > 0) {
+    advice += `💡 **Monthly Action Plan:**\n`
+    advice += `• Available to save: $${monthlyLeftover.toLocaleString()}/month\n`
+
+    if (emergencyFundMonths < 6) {
+      const emergencyNeed = Math.max(0, context.totalExpenses * 6 - currentSavings)
+      const monthsToFullEmergency = Math.ceil(emergencyNeed / monthlyLeftover)
+      advice += `• Emergency fund: $${Math.min(monthlyLeftover, emergencyNeed).toLocaleString()}/month for ${monthsToFullEmergency} months\n`
+    }
+
+    const leftForGoals =
+      emergencyFundMonths >= 3
+        ? monthlyLeftover
+        : Math.max(0, monthlyLeftover - (context.totalExpenses * 3 - currentSavings) / 6)
+    if (leftForGoals > 0) {
+      advice += `• Available for goals/investing: $${leftForGoals.toLocaleString()}/month\n`
+    }
+  } else {
+    advice += `⚠️ **Budget Optimization Needed**\n`
+    advice += `Your expenses equal your income. Look for ways to reduce spending or increase income to free up money for savings.`
+  }
+
+  return advice
 }
 
 function generateBudgetingAdvice(input: string, context: any, userData?: UserData): string {
@@ -321,21 +520,6 @@ function generateInvestmentAdvice(input: string, context: any, userData?: UserDa
   }
 
   return "Investing grows wealth over time through compound interest. Start with broad market index funds - they're diversified, low-cost, and historically return 7-10% annually. The key is time in the market, not timing the market. Invest consistently, ignore short-term volatility, and let compound growth work its magic."
-}
-
-function generateGoalSpecificAdvice(goal: any): string {
-  const progress = goal.current / goal.target
-  const remaining = goal.target - goal.current
-
-  if (goal.category === "house" || goal.title.toLowerCase().includes("house")) {
-    return `For your house goal, you need $${remaining.toLocaleString()} more. Keep this in a high-yield savings account since you'll need it within a few years. Don't invest house down payment money in stocks - too risky for short-term goals.`
-  }
-
-  if (goal.category === "retirement" || goal.title.toLowerCase().includes("retirement")) {
-    return `For retirement, you're ${(progress * 100).toFixed(1)}% there! This is perfect for long-term investing in index funds. Consider maxing out your 401k and IRA contributions. Time is your biggest advantage for retirement savings.`
-  }
-
-  return `You're ${(progress * 100).toFixed(1)}% toward your ${goal.title} goal. Keep up the great work! Consider automating your savings to reach it faster.`
 }
 
 function generateSimpleResponse(userInput: string, context: any, userData?: UserData): string {

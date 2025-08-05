@@ -35,7 +35,7 @@ const AIChatComponent = () => {
       id: "welcome",
       role: "assistant",
       content:
-        "Hi! I'm your AI financial advisor. I can help you with budgeting, saving, debt management, and investing. I'll use your personal data from the app to give you tailored advice. What would you like to know about?",
+        "Hi! I'm your AI financial advisor. I can analyze your personal budget, review your goals, and give you tailored advice on budgeting, saving, debt management, and investing. What would you like to know about?",
     },
   ])
   const [input, setInput] = useState("")
@@ -51,16 +51,32 @@ const AIChatComponent = () => {
     scrollToBottom()
   }, [messages])
 
+  // Get user data for context
+  const userData = {
+    profile: userDataManager.getUserProfile(),
+    budgetData: userDataManager.getBudgetData(),
+    goals: userDataManager.getGoals(),
+    progress: userDataManager.getUserProgress(),
+    budgetCategories: userDataManager.getBudgetCategories(),
+    budgetEntries: userDataManager.getBudgetEntries(),
+  }
+
+  const hasUserData = !!(userData.budgetData.income || userData.goals.length || userData.profile.age)
+
   const quickStarters = [
     {
       icon: <DollarSign className="w-4 h-4" />,
-      text: "Analyze my budget",
-      message: "Can you analyze my current budget and spending patterns? What improvements can I make?",
+      text: hasUserData ? "Analyze my budget" : "Help me create a budget",
+      message: hasUserData
+        ? "Can you analyze my current budget and spending patterns? What improvements can I make?"
+        : "I want to create a budget but don't know where to start. Can you help me?",
     },
     {
       icon: <PiggyBank className="w-4 h-4" />,
-      text: "How much should I save?",
-      message: "Based on my income and expenses, how much should I be saving each month?",
+      text: hasUserData ? "Review my savings strategy" : "How much should I save?",
+      message: hasUserData
+        ? "Based on my income and expenses, am I saving enough? What's my savings rate?"
+        : "How much of my income should I be saving each month?",
     },
     {
       icon: <CreditCard className="w-4 h-4" />,
@@ -69,18 +85,24 @@ const AIChatComponent = () => {
     },
     {
       icon: <TrendingUp className="w-4 h-4" />,
-      text: "Investment advice",
-      message: "Should I start investing? What's the best approach for my situation?",
+      text: hasUserData ? "Should I start investing?" : "Investment basics",
+      message: hasUserData
+        ? "Based on my financial situation, should I start investing? What's the best approach?"
+        : "I'm new to investing. Can you explain the basics and how to get started?",
     },
     {
       icon: <Target className="w-4 h-4" />,
-      text: "Review my goals",
-      message: "Can you help me review my financial goals and create a plan to achieve them?",
+      text: hasUserData ? "Review my goals" : "Help me set financial goals",
+      message: hasUserData
+        ? "Can you help me review my financial goals and create a plan to achieve them?"
+        : "I want to set some financial goals but don't know what's realistic. Can you help?",
     },
     {
       icon: <Shield className="w-4 h-4" />,
-      text: "Emergency fund guidance",
-      message: "Do I have enough in my emergency fund? How much should I aim for?",
+      text: hasUserData ? "Check my emergency fund" : "Do I need an emergency fund?",
+      message: hasUserData
+        ? "Do I have enough in my emergency fund? How does it compare to my expenses?"
+        : "Everyone talks about emergency funds. Do I really need one and how much?",
     },
   ]
 
@@ -100,14 +122,6 @@ const AIChatComponent = () => {
     setShowSuggestions(false)
 
     try {
-      // Gather user data for personalized responses
-      const userData = {
-        profile: userDataManager.getUserProfile(),
-        budgetData: userDataManager.getBudgetData(),
-        goals: userDataManager.getGoals(),
-        progress: userDataManager.getUserProgress(),
-      }
-
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -169,7 +183,7 @@ const AIChatComponent = () => {
             AI Financial Advisor
             <Badge variant="outline" className="ml-auto">
               <Zap className="w-3 h-3 mr-1" />
-              Personalized & Smart
+              {hasUserData ? "Personalized" : "Smart & Simple"}
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -182,9 +196,18 @@ const AIChatComponent = () => {
                   <Bot className="w-12 h-12 text-brand-blue mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Hi! I'm your AI financial advisor</h3>
                   <p className="text-gray-600 mb-6">
-                    I can help with budgeting, saving, debt management, and investing. I'll use your personal data to
-                    give you tailored advice.
+                    {hasUserData
+                      ? "I can analyze your personal budget, review your goals, and give you tailored financial advice."
+                      : "I can help with budgeting, saving, debt management, and investing. Add your financial data for personalized advice!"}
                   </p>
+
+                  {hasUserData && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                      <p className="text-sm text-green-800">
+                        ✅ I can see your financial data and provide personalized recommendations!
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -192,7 +215,7 @@ const AIChatComponent = () => {
                     <Button
                       key={index}
                       variant="outline"
-                      className="h-auto p-4 text-left justify-start bg-transparent"
+                      className="h-auto p-4 text-left justify-start bg-transparent hover:bg-gray-50"
                       onClick={() => handleQuickStart(starter.message)}
                     >
                       <div className="flex items-center gap-3">
@@ -204,7 +227,9 @@ const AIChatComponent = () => {
                 </div>
 
                 <div className="text-center text-sm text-gray-500 mt-6">
-                  Or ask me anything about budgeting, saving, debt management, or investing!
+                  {hasUserData
+                    ? "Ask me anything about your finances - I have access to your budget and goals!"
+                    : "Or ask me anything about budgeting, saving, debt management, or investing!"}
                 </div>
               </div>
             )}
@@ -267,7 +292,11 @@ const AIChatComponent = () => {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about budgeting, saving, debt, investing, or your personal finances..."
+                placeholder={
+                  hasUserData
+                    ? "Ask about your budget, goals, or get personalized advice..."
+                    : "Ask about budgeting, saving, debt, investing, or personal finance..."
+                }
                 className="flex-1"
                 disabled={isLoading}
               />
@@ -282,7 +311,11 @@ const AIChatComponent = () => {
 
             <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
               <Lightbulb className="w-3 h-3" />
-              <span>Try: "Should I pay off debt or invest?" or "How's my budget looking?"</span>
+              <span>
+                {hasUserData
+                  ? 'Try: "How\'s my budget looking?" or "Should I invest my savings?"'
+                  : 'Try: "Should I pay off debt or invest?" or "How much should I save?"'}
+              </span>
             </div>
           </div>
         </CardContent>
