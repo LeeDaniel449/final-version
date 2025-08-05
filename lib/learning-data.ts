@@ -4,9 +4,11 @@ export interface LessonContent {
   points: number
   videoUrl?: string
   content: Array<{
-    type: "heading" | "paragraph" | "list" | "example" | "tip" | "chart"
+    type: "heading" | "paragraph" | "list" | "example" | "tip" | "chart" | "case-study" | "calculation" | "warning"
     content: string
     items?: string[]
+    formula?: string
+    variables?: Record<string, string>
   }>
   keyTakeaways?: string[]
   quiz?: {
@@ -14,6 +16,17 @@ export interface LessonContent {
       question: string
       options: string[]
       correctAnswer: string
+      explanation: string
+    }>
+  }
+  practiceExercise?: {
+    title: string
+    scenario: string
+    questions: Array<{
+      question: string
+      type: "input" | "select" | "calculate"
+      options?: string[]
+      correctAnswer: string | number
       explanation: string
     }>
   }
@@ -31,6 +44,8 @@ export interface LearningModule {
   icon: any
   color: string
   completed: boolean
+  category: string
+  prerequisites?: string[]
 }
 
 export const learningModules: LearningModule[] = [
@@ -38,118 +53,211 @@ export const learningModules: LearningModule[] = [
     id: "basics",
     title: "Money Management Basics",
     description: "Learn the fundamentals of managing your money and building good financial habits",
-    duration: "15 min",
+    duration: "45 min",
     difficulty: "Beginner",
-    progress: 100,
-    lessons: 5,
-    points: 50,
+    progress: 0,
+    lessons: 8,
+    points: 120,
     icon: null,
     color: "bg-blue-500",
-    completed: true,
+    completed: false,
+    category: "Fundamentals",
   },
   {
     id: "budgeting",
     title: "Budgeting Mastery",
     description: "Create and manage budgets that actually work for your lifestyle and goals",
-    duration: "22 min",
+    duration: "55 min",
     difficulty: "Beginner",
-    progress: 60,
-    lessons: 6,
-    points: 85,
+    progress: 0,
+    lessons: 9,
+    points: 135,
     icon: null,
     color: "bg-green-500",
     completed: false,
+    category: "Fundamentals",
   },
   {
-    id: "saving",
-    title: "Smart Saving Strategies",
-    description: "Master the art of saving money with practical techniques and automation",
-    duration: "25 min",
+    id: "saving-emergency-funds",
+    title: "Saving & Emergency Funds",
+    description: "Master the art of saving money and building financial security through emergency funds",
+    duration: "50 min",
     difficulty: "Beginner",
     progress: 0,
-    lessons: 6,
-    points: 90,
+    lessons: 8,
+    points: 120,
     icon: null,
     color: "bg-purple-500",
     completed: false,
+    category: "Fundamentals",
   },
   {
-    id: "debt-management",
-    title: "Debt Management & Payoff",
-    description: "Learn proven strategies to pay off debt faster and avoid future debt traps",
-    duration: "30 min",
+    id: "credit-scores",
+    title: "Credit Scores & Reports",
+    description: "Understand credit scores, improve your credit, and leverage credit responsibly",
+    duration: "40 min",
     difficulty: "Intermediate",
     progress: 0,
     lessons: 7,
     points: 105,
     icon: null,
-    color: "bg-red-500",
+    color: "bg-indigo-500",
     completed: false,
+    category: "Credit & Debt",
   },
   {
-    id: "bill-negotiation",
-    title: "Negotiating Bills & Expenses",
-    description: "Discover how to lower your monthly bills through negotiation and smart shopping",
-    duration: "25 min",
+    id: "debt-management",
+    title: "Debt Management & Payoff",
+    description: "Learn proven strategies to pay off debt faster and avoid future debt traps",
+    duration: "60 min",
     difficulty: "Intermediate",
     progress: 0,
-    lessons: 6,
-    points: 90,
+    lessons: 10,
+    points: 150,
     icon: null,
-    color: "bg-orange-500",
+    color: "bg-red-500",
     completed: false,
+    category: "Credit & Debt",
   },
   {
-    id: "investing",
-    title: "Investment Fundamentals",
-    description: "Build wealth through smart investing with index funds and diversification",
-    duration: "30 min",
+    id: "loans",
+    title: "Loans (Auto, Student, Personal)",
+    description: "Navigate different types of loans and make smart borrowing decisions",
+    duration: "45 min",
     difficulty: "Intermediate",
     progress: 0,
     lessons: 8,
     points: 120,
     icon: null,
-    color: "bg-indigo-500",
+    color: "bg-orange-500",
     completed: false,
+    category: "Credit & Debt",
   },
   {
-    id: "emergency-fund",
-    title: "Emergency Fund Building",
-    description: "Create a financial safety net to protect yourself from unexpected expenses",
-    duration: "15 min",
-    difficulty: "Beginner",
+    id: "mortgages",
+    title: "Mortgages & Home Buying",
+    description: "Everything you need to know about mortgages and the home buying process",
+    duration: "70 min",
+    difficulty: "Advanced",
     progress: 0,
-    lessons: 4,
-    points: 60,
+    lessons: 12,
+    points: 180,
     icon: null,
     color: "bg-teal-500",
     completed: false,
+    category: "Major Purchases",
   },
   {
-    id: "financial-goals",
-    title: "Setting Financial Goals",
-    description: "Learn to set and achieve realistic financial goals that motivate you",
-    duration: "12 min",
-    difficulty: "Beginner",
+    id: "investing",
+    title: "Investment Fundamentals",
+    description: "Build wealth through smart investing with index funds and diversification",
+    duration: "65 min",
+    difficulty: "Intermediate",
     progress: 0,
-    lessons: 3,
-    points: 45,
+    lessons: 11,
+    points: 165,
     icon: null,
-    color: "bg-pink-500",
+    color: "bg-indigo-600",
     completed: false,
+    category: "Investing",
+  },
+  {
+    id: "retirement-planning",
+    title: "Retirement Planning (401k, IRA, Roth IRA)",
+    description: "Secure your financial future with comprehensive retirement planning strategies",
+    duration: "80 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 14,
+    points: 210,
+    icon: null,
+    color: "bg-emerald-600",
+    completed: false,
+    category: "Retirement",
+  },
+  {
+    id: "hsa",
+    title: "Health Savings Accounts (HSA)",
+    description: "Maximize the triple tax advantage of HSAs for healthcare and retirement",
+    duration: "30 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 6,
+    points: 90,
+    icon: null,
+    color: "bg-cyan-500",
+    completed: false,
+    category: "Tax-Advantaged Accounts",
+  },
+  {
+    id: "insurance",
+    title: "Insurance (Life, Health, Auto, Home)",
+    description: "Protect your wealth and family with the right insurance coverage",
+    duration: "55 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 9,
+    points: 135,
+    icon: null,
+    color: "bg-slate-600",
+    completed: false,
+    category: "Protection",
+  },
+  {
+    id: "taxes",
+    title: "Tax Planning & Filing",
+    description: "Navigate the tax system, maximize deductions, and plan for tax efficiency",
+    duration: "60 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 10,
+    points: 150,
+    icon: null,
+    color: "bg-amber-600",
+    completed: false,
+    category: "Tax Planning",
+  },
+  {
+    id: "estate-planning",
+    title: "Estate Planning Basics",
+    description: "Protect your legacy and ensure your wishes are carried out",
+    duration: "45 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 8,
+    points: 120,
+    icon: null,
+    color: "bg-stone-600",
+    completed: false,
+    category: "Advanced Planning",
+  },
+  {
+    id: "financial-advisors",
+    title: "Working with Financial Advisors",
+    description: "Learn when and how to work with financial professionals",
+    duration: "35 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 6,
+    points: 90,
+    icon: null,
+    color: "bg-violet-600",
+    completed: false,
+    category: "Professional Help",
   },
   {
     id: "sustainable-impact-investing",
     title: "Sustainable & Impact Investing",
     description: "Align your investments with your values while building wealth responsibly",
-    duration: "25 min",
-    difficulty: "Beginner",
+    duration: "40 min",
+    difficulty: "Advanced",
     progress: 0,
-    lessons: 5,
-    points: 90,
+    lessons: 7,
+    points: 105,
     icon: null,
     color: "bg-emerald-700",
     completed: false,
+    category: "Advanced Investing",
   },
 ]
 
@@ -159,4293 +267,1948 @@ export function getModuleById(moduleId: string): LearningModule | null {
 
 export function getLessonContent(moduleId: string, lessonIndex: number): LessonContent | null {
   const lessons: Record<string, LessonContent[]> = {
-    "sustainable-impact-investing": [
+    "saving-emergency-funds": [
       {
-        title: "What is ESG Investing?",
-        duration: "5 min",
-        points: 18,
-        content: [
-          {
-            type: "heading",
-            content: "Environmental, Social, and Governance Criteria",
-          },
-          {
-            type: "paragraph",
-            content:
-              "ESG investing considers Environmental, Social, and Governance factors alongside financial returns. This approach allows you to align your investments with your values while still building wealth for the future.",
-          },
-          {
-            type: "list",
-            content: "Environmental factors include:",
-            items: [
-              "Climate change and carbon emissions",
-              "Renewable energy and clean technology",
-              "Water and waste management",
-              "Pollution prevention and control",
-              "Sustainable resource use",
-              "Biodiversity and ecosystem protection",
-            ],
-          },
-          {
-            type: "list",
-            content: "Social factors include:",
-            items: [
-              "Employee treatment and labor practices",
-              "Diversity, equity, and inclusion",
-              "Community relations and impact",
-              "Product safety and quality",
-              "Data protection and privacy",
-              "Human rights and supply chain ethics",
-            ],
-          },
-          {
-            type: "list",
-            content: "Governance factors include:",
-            items: [
-              "Board composition and independence",
-              "Executive compensation practices",
-              "Transparency and disclosure",
-              "Anti-corruption policies",
-              "Shareholder rights",
-              "Risk management practices",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "A company like Patagonia scores well on ESG: Environmental (sustainable materials, carbon neutrality goals), Social (fair labor practices, activism), and Governance (transparent reporting, stakeholder engagement).",
-          },
-          {
-            type: "tip",
-            content:
-              "ESG investing doesn't mean sacrificing returns. Many studies show that companies with strong ESG practices often outperform their peers over the long term.",
-          },
-        ],
-        keyTakeaways: [
-          "ESG considers environmental, social, and governance factors",
-          "You can align investments with personal values",
-          "Strong ESG practices often correlate with better long-term performance",
-          "ESG investing covers a broad range of sustainability issues",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What does ESG stand for in investing?",
-              options: [
-                "Economic, Social, Growth",
-                "Environmental, Social, Governance",
-                "Ethical, Sustainable, Green",
-                "Energy, Solar, Gas",
-              ],
-              correctAnswer: "Environmental, Social, Governance",
-              explanation:
-                "ESG stands for Environmental, Social, and Governance - the three main criteria used to evaluate sustainable and responsible investments.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Impact Investing vs ESG Investing",
-        duration: "4 min",
-        points: 16,
-        content: [
-          {
-            type: "heading",
-            content: "Understanding Different Approaches to Sustainable Investing",
-          },
-          {
-            type: "paragraph",
-            content:
-              "While ESG and impact investing both consider sustainability, they have different goals and approaches. Understanding these differences helps you choose the right strategy for your values and financial goals.",
-          },
-          {
-            type: "list",
-            content: "ESG investing characteristics:",
-            items: [
-              "Integrates ESG factors into traditional investment analysis",
-              "Primary goal is competitive financial returns",
-              "Avoids companies with poor ESG practices",
-              "Uses ESG data to identify risks and opportunities",
-              "Broad market exposure with ESG screening",
-              "Suitable for most investment portfolios",
-            ],
-          },
-          {
-            type: "list",
-            content: "Impact investing characteristics:",
-            items: [
-              "Intentionally seeks positive social/environmental impact",
-              "Measures and reports on impact outcomes",
-              "May accept lower financial returns for greater impact",
-              "Targets specific problems or solutions",
-              "Often involves direct investment in impact-focused companies",
-              "Requires more research and due diligence",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "ESG example: Investing in an ESG-screened S&P 500 fund that excludes tobacco and weapons companies. Impact example: Investing in a fund focused specifically on clean water solutions in developing countries.",
-          },
-          {
-            type: "list",
-            content: "Sustainable investing spectrum:",
-            items: [
-              "Negative screening: Excluding harmful industries",
-              "ESG integration: Considering ESG factors in analysis",
-              "Thematic investing: Focusing on sustainability themes",
-              "Impact investing: Targeting measurable positive outcomes",
-              "Shareholder advocacy: Using ownership to drive change",
-              "Community investing: Supporting underserved communities",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "You can combine approaches - use ESG funds for your core portfolio and allocate a smaller portion to specific impact investments that align with causes you care about most.",
-          },
-        ],
-        keyTakeaways: [
-          "ESG focuses on risk management and competitive returns",
-          "Impact investing prioritizes measurable positive outcomes",
-          "Both approaches can be part of a sustainable portfolio",
-          "Choose based on your priorities and risk tolerance",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main difference between ESG and impact investing?",
-              options: [
-                "ESG is only for stocks, impact is only for bonds",
-                "ESG focuses on returns, impact focuses on measurable outcomes",
-                "ESG is riskier than impact investing",
-                "There is no difference between them",
-              ],
-              correctAnswer: "ESG focuses on returns, impact focuses on measurable outcomes",
-              explanation:
-                "ESG investing primarily seeks competitive returns while considering sustainability factors, while impact investing specifically targets measurable positive social or environmental outcomes.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Green Bonds and Climate Investing",
-        duration: "5 min",
+        title: "The Psychology of Saving Money",
+        duration: "7 min",
         points: 20,
         content: [
           {
             type: "heading",
-            content: "Financing the Transition to a Sustainable Economy",
+            content: "Understanding Why Saving is Psychologically Difficult",
           },
           {
             type: "paragraph",
             content:
-              "Green bonds and climate-focused investments are rapidly growing sectors that allow investors to directly fund environmental solutions while earning returns. These investments are crucial for financing the transition to a low-carbon economy.",
+              "Saving money goes against our evolutionary programming. Our brains are wired for immediate survival, not long-term financial planning. Understanding these psychological barriers is the first step to overcoming them.",
           },
           {
             type: "list",
-            content: "What are green bonds:",
+            content: "Psychological barriers to saving:",
             items: [
-              "Bonds specifically earmarked for environmental projects",
-              "Proceeds fund renewable energy, energy efficiency, clean transportation",
-              "Same credit risk as regular bonds from the same issuer",
-              "Growing market with increasing standardization",
-              "Available from governments, corporations, and municipalities",
-              "Often come with impact reporting requirements",
+              "Present bias: We overvalue immediate rewards vs. future benefits",
+              "Hyperbolic discounting: Future rewards feel less valuable",
+              "Loss aversion: Saving feels like losing money we could spend now",
+              "Social comparison: Pressure to keep up with others' spending",
+              "Optimism bias: Believing we'll earn more or spend less in the future",
+              "Mental accounting: Treating different money sources differently",
             ],
           },
           {
+            type: "case-study",
+            content:
+              "Research Study: Stanford's famous marshmallow experiment showed that children who could delay gratification (wait for a second marshmallow) had better life outcomes decades later, including higher SAT scores, lower BMI, and reduced substance abuse rates.",
+          },
+          {
             type: "list",
-            content: "Types of climate investments:",
+            content: "Cognitive biases that hurt saving:",
             items: [
-              "Renewable energy projects (solar, wind, hydro)",
-              "Energy storage and grid modernization",
-              "Electric vehicle and charging infrastructure",
-              "Green building and energy efficiency",
-              "Sustainable agriculture and forestry",
-              "Water management and conservation",
+              "Anchoring: Focusing too much on initial spending amounts",
+              "Availability heuristic: Overestimating rare but memorable expenses",
+              "Confirmation bias: Seeking information that justifies spending",
+              "Sunk cost fallacy: Continuing bad financial habits because we've already invested",
+              "Planning fallacy: Underestimating future expenses and overestimating income",
             ],
           },
           {
             type: "example",
             content:
-              "Apple issued $2.5 billion in green bonds to fund renewable energy projects, energy-efficient buildings, and recycling programs. Investors receive regular bond payments while supporting environmental initiatives.",
+              "Sarah knows she should save $200/month but consistently spends it on small purchases. Her brain treats each $20 expense as insignificant, but doesn't connect that 10 such purchases equal her entire savings goal.",
           },
           {
             type: "list",
-            content: "Climate investment opportunities:",
+            content: "Strategies to overcome psychological barriers:",
             items: [
-              "Green bond funds and ETFs",
-              "Clean energy stocks and funds",
-              "ESG-focused real estate investment trusts (REITs)",
-              "Sustainable infrastructure funds",
-              "Carbon credit investments",
-              "Climate-focused venture capital funds",
-            ],
-          },
-          {
-            type: "list",
-            content: "Evaluating green investments:",
-            items: [
-              "Verify legitimate environmental use of proceeds",
-              "Look for third-party certification (Climate Bonds Initiative)",
-              "Review impact reporting and transparency",
-              "Assess financial strength of issuer",
-              "Consider liquidity and market conditions",
-              "Understand any premium or discount to market rates",
+              "Automate savings to remove decision-making",
+              "Use separate accounts to create mental barriers",
+              "Set up visual progress tracking",
+              "Create implementation intentions ('If X happens, then I will Y')",
+              "Use commitment devices (telling others about your goals)",
+              "Reframe saving as 'paying your future self'",
+              "Start with tiny amounts to build the habit",
             ],
           },
           {
             type: "tip",
             content:
-              "Start with diversified green bond funds or clean energy ETFs rather than individual securities. This provides exposure to the theme while reducing single-investment risk.",
+              "The 'pay yourself first' principle works because it treats savings like a non-negotiable bill. When savings happens automatically before you see the money, your brain adapts to the lower available amount.",
           },
         ],
         keyTakeaways: [
-          "Green bonds fund specific environmental projects",
-          "Climate investing covers renewable energy, efficiency, and more",
-          "These investments support the transition to a sustainable economy",
-          "Diversified funds offer easier access than individual securities",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What makes a bond 'green'?",
-              options: [
-                "It's printed on green paper",
-                "Proceeds are earmarked for environmental projects",
-                "It has a higher interest rate",
-                "It's only available to environmental companies",
-              ],
-              correctAnswer: "Proceeds are earmarked for environmental projects",
-              explanation:
-                "Green bonds are specifically designated to fund environmental projects like renewable energy, energy efficiency, and clean transportation.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Socially Responsible Investing (SRI)",
-        duration: "4 min",
-        points: 16,
-        content: [
-          {
-            type: "heading",
-            content: "Aligning Investments with Personal Values",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Socially Responsible Investing (SRI) allows you to exclude investments that conflict with your values while seeking competitive returns. This approach has evolved from simple exclusions to sophisticated strategies that promote positive change.",
-          },
-          {
-            type: "list",
-            content: "Common SRI exclusions:",
-            items: [
-              "Tobacco and alcohol companies",
-              "Weapons and defense contractors",
-              "Fossil fuel companies",
-              "Companies with poor labor practices",
-              "Gambling and adult entertainment",
-              "Companies involved in human rights violations",
-            ],
-          },
-          {
-            type: "list",
-            content: "Positive screening criteria:",
-            items: [
-              "Companies with strong environmental records",
-              "Businesses promoting diversity and inclusion",
-              "Organizations with ethical supply chains",
-              "Companies investing in employee development",
-              "Businesses contributing to community development",
-              "Organizations with transparent governance",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "The Vanguard ESG U.S. Stock ETF excludes companies involved in adult entertainment, alcohol, tobacco, weapons, fossil fuels, and gambling, while overweighting companies with strong ESG characteristics.",
-          },
-          {
-            type: "list",
-            content: "SRI investment options:",
-            items: [
-              "ESG-screened index funds",
-              "Socially responsible mutual funds",
-              "Faith-based investment funds",
-              "Community development financial institutions (CDFIs)",
-              "Shareholder advocacy funds",
-              "Direct investment in social enterprises",
-            ],
-          },
-          {
-            type: "list",
-            content: "Benefits and considerations:",
-            items: [
-              "Alignment with personal values and beliefs",
-              "Potential for competitive long-term returns",
-              "Support for positive social and environmental change",
-              "May have slightly higher fees than traditional funds",
-              "Could result in less diversification",
-              "Performance may vary from broad market indices",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Define your values clearly before choosing SRI investments. What matters most to you - environmental issues, social justice, corporate governance, or specific exclusions?",
-          },
-        ],
-        keyTakeaways: [
-          "SRI excludes investments that conflict with your values",
-          "Positive screening focuses on companies doing good",
-          "Many SRI options are available across asset classes",
-          "Performance can be competitive with traditional investing",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main goal of Socially Responsible Investing?",
-              options: [
-                "To maximize returns at any cost",
-                "To align investments with personal values",
-                "To only invest in government bonds",
-                "To avoid all risk",
-              ],
-              correctAnswer: "To align investments with personal values",
-              explanation:
-                "SRI's primary goal is to align investment choices with personal values and beliefs while still seeking competitive financial returns.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Building a Sustainable Portfolio",
-        duration: "6 min",
-        points: 22,
-        content: [
-          {
-            type: "heading",
-            content: "Creating a Diversified ESG Investment Strategy",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Building a sustainable portfolio requires balancing your values with sound investment principles. You can create a well-diversified, ESG-focused portfolio that aligns with your beliefs while pursuing your financial goals.",
-          },
-          {
-            type: "list",
-            content: "Core sustainable portfolio components:",
-            items: [
-              "ESG-screened broad market index funds",
-              "International ESG funds for global diversification",
-              "Green bonds or sustainable fixed income",
-              "Clean energy and climate solution funds",
-              "Sustainable real estate investment trusts (REITs)",
-              "Small allocation to specific impact investments",
-            ],
-          },
-          {
-            type: "list",
-            content: "Sample sustainable portfolio allocation:",
-            items: [
-              "40% - ESG U.S. Total Stock Market Fund",
-              "20% - International ESG Developed Markets Fund",
-              "10% - Emerging Markets ESG Fund",
-              "20% - Green Bonds or ESG Fixed Income Fund",
-              "5% - Clean Energy/Climate Solutions Fund",
-              "5% - Sustainable REITs or Impact Investments",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Sarah builds her sustainable portfolio with 70% ESG equity funds (split between U.S. and international), 25% green bonds, and 5% in a clean energy fund. This gives her broad diversification while aligning with her environmental values.",
-          },
-          {
-            type: "list",
-            content: "Key considerations for sustainable portfolios:",
-            items: [
-              "Maintain proper diversification across asset classes",
-              "Consider expense ratios and fees",
-              "Review ESG methodology and screening criteria",
-              "Understand any tracking error vs. broad market",
-              "Rebalance regularly to maintain target allocation",
-              "Monitor impact reporting and outcomes",
-            ],
-          },
-          {
-            type: "list",
-            content: "Common sustainable portfolio mistakes:",
-            items: [
-              "Over-concentrating in one ESG theme",
-              "Ignoring traditional diversification principles",
-              "Paying excessive fees for ESG labeling",
-              "Not understanding what's actually excluded",
-              "Expecting immediate outperformance",
-              "Neglecting to rebalance regularly",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Start with a simple three-fund ESG portfolio: 60% ESG U.S. stocks, 20% ESG international stocks, and 20% green bonds. This provides broad diversification while aligning with sustainable values.",
-          },
-        ],
-        keyTakeaways: [
-          "Sustainable portfolios can be well-diversified and competitive",
-          "Balance values alignment with sound investment principles",
-          "Use core ESG funds with smaller thematic allocations",
-          "Regular rebalancing maintains your target allocation",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the most important principle when building a sustainable portfolio?",
-              options: [
-                "Only invest in the greenest companies",
-                "Balance values alignment with diversification",
-                "Avoid all traditional investments",
-                "Focus only on maximum returns",
-              ],
-              correctAnswer: "Balance values alignment with diversification",
-              explanation:
-                "The key to successful sustainable investing is balancing your values with sound investment principles like diversification to build long-term wealth responsibly.",
-            },
-          ],
-        },
-      },
-    ],
-    basics: [
-      {
-        title: "Understanding Money Flow",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          {
-            type: "heading",
-            content: "How Money Moves In and Out of Your Life",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Money flows through your life like water through pipes. Understanding this flow is the first step to taking control of your finances.",
-          },
-          {
-            type: "list",
-            content: "Money comes in from:",
-            items: [
-              "Job or work income",
-              "Allowance from parents",
-              "Side hustles or part-time work",
-              "Gifts or birthday money",
-              "Selling items you no longer need",
-            ],
-          },
-          {
-            type: "list",
-            content: "Money goes out for:",
-            items: [
-              "Basic needs (food, clothing, transportation)",
-              "Fun activities (movies, games, hanging out)",
-              "School supplies and materials",
-              "Savings for future goals",
-              "Unexpected expenses",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "If you earn $100 from a part-time job and spend $80 on various things, you have $20 left over. This leftover money can be saved or spent on something special.",
-          },
-          {
-            type: "tip",
-            content:
-              "Track your money flow for one week. Write down every dollar that comes in and goes out. You'll be surprised by what you discover!",
-          },
-        ],
-        keyTakeaways: [
-          "Money flows in from various sources like work and gifts",
-          "Money flows out for needs, wants, and savings",
-          "Understanding your money flow helps you make better decisions",
-          "Tracking money flow reveals spending patterns",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the first step to taking control of your finances?",
-              options: [
-                "Getting a credit card",
-                "Understanding how money flows in and out of your life",
-                "Investing in stocks",
-                "Getting a high-paying job",
-              ],
-              correctAnswer: "Understanding how money flows in and out of your life",
-              explanation:
-                "Understanding your money flow helps you see where your money comes from and where it goes, which is essential for financial control.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Needs vs Wants",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          {
-            type: "heading",
-            content: "Learning to Tell the Difference",
-          },
-          {
-            type: "paragraph",
-            content:
-              "One of the most important money skills is knowing the difference between what you need and what you want. This helps you make smart spending decisions.",
-          },
-          {
-            type: "list",
-            content: "Needs are things you must have:",
-            items: [
-              "Food and water",
-              "Safe place to live",
-              "Basic clothing",
-              "Transportation to school/work",
-              "Healthcare when sick",
-            ],
-          },
-          {
-            type: "list",
-            content: "Wants are things you'd like to have:",
-            items: [
-              "Latest smartphone or gadgets",
-              "Designer clothes or shoes",
-              "Eating out at restaurants",
-              "Entertainment and games",
-              "Luxury items and upgrades",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "You need a phone to stay connected, but you want the newest iPhone. A basic phone meets your need, while the iPhone is a want that costs much more.",
-          },
-          {
-            type: "tip",
-            content:
-              "Before buying something, ask yourself: 'Do I need this or do I want this?' Wait 24 hours before buying wants to see if you still really want them.",
-          },
-        ],
-        keyTakeaways: [
-          "Needs are essential for survival and basic functioning",
-          "Wants are nice to have but not necessary",
-          "Always cover needs before spending on wants",
-          "The 24-hour rule helps avoid impulse purchases",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Which of these is a 'need' rather than a 'want'?",
-              options: [
-                "Designer sneakers",
-                "Basic food for nutrition",
-                "Gaming console",
-                "Premium streaming subscriptions",
-              ],
-              correctAnswer: "Basic food for nutrition",
-              explanation:
-                "Food is essential for survival, making it a need. The other options are wants that enhance life but aren't necessary.",
-            },
-          ],
-        },
-      },
-      {
-        title: "The Power of Small Amounts",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          {
-            type: "heading",
-            content: "How Small Money Adds Up Big",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Small amounts of money might not seem important, but they can add up to surprising totals over time. This works for both spending and saving.",
-          },
-          {
-            type: "example",
-            content:
-              "Buying a $3 coffee every school day costs $15 per week, $60 per month, and $540 per school year. That's enough for a nice vacation or emergency fund!",
-          },
-          {
-            type: "list",
-            content: "Small daily expenses that add up:",
-            items: [
-              "Snacks and drinks from vending machines",
-              "Coffee or energy drinks",
-              "App purchases and subscriptions",
-              "Convenience store items",
-              "Impulse purchases under $10",
-            ],
-          },
-          {
-            type: "list",
-            content: "Small savings that grow big:",
-            items: [
-              "Saving loose change in a jar",
-              "Setting aside $1-2 per day",
-              "Keeping birthday money instead of spending it",
-              "Saving money from not buying small items",
-              "Putting away found money or refunds",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Try the 'latte factor' challenge: identify one small daily expense you can cut and save that money instead. You'll be amazed at how much you accumulate!",
-          },
-        ],
-        keyTakeaways: [
-          "Small amounts of money add up to large totals over time",
-          "Daily expenses can cost hundreds per year",
-          "Small savings can build substantial emergency funds",
-          "Being aware of small expenses helps control spending",
-        ],
-        quiz: {
-          questions: [
-            {
-              question:
-                "If you spend $5 every weekday on snacks, how much do you spend per month (assuming 20 weekdays)?",
-              options: ["$50", "$75", "$100", "$125"],
-              correctAnswer: "$100",
-              explanation: "$5 × 20 weekdays = $100 per month. Small daily expenses really add up!",
-            },
-          ],
-        },
-      },
-      {
-        title: "Building Good Money Habits",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          {
-            type: "heading",
-            content: "Creating Habits That Build Wealth",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Good money habits are like brushing your teeth - they become automatic and protect you over time. Start building these habits now while you're young.",
-          },
-          {
-            type: "list",
-            content: "Essential money habits to develop:",
-            items: [
-              "Track where your money goes",
-              "Save something from every dollar you receive",
-              "Think before you buy anything",
-              "Compare prices before making purchases",
-              "Set aside money for goals and emergencies",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Sarah started saving $5 from every $20 she received. After one year, she had saved over $200 without even noticing because it became a habit.",
-          },
-          {
-            type: "list",
-            content: "How to build new money habits:",
-            items: [
-              "Start small - even $1 saved is progress",
-              "Be consistent - do it every time",
-              "Make it easy - use apps or automatic transfers",
-              "Track your progress - celebrate small wins",
-              "Don't give up if you miss a day - just restart",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Pick one money habit to focus on for the next 30 days. Once it becomes automatic, add another habit. Building habits slowly makes them stick better.",
-          },
-        ],
-        keyTakeaways: [
-          "Good money habits become automatic over time",
-          "Start with small, manageable habits",
-          "Consistency is more important than perfection",
-          "Young people have time to benefit from compound habits",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the most important factor in building good money habits?",
-              options: [
-                "Starting with large amounts",
-                "Being perfect every day",
-                "Consistency over time",
-                "Having a high income",
-              ],
-              correctAnswer: "Consistency over time",
-              explanation:
-                "Consistency is key to building lasting habits. Small, consistent actions compound over time to create significant results.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Your Money Mindset",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          {
-            type: "heading",
-            content: "How You Think About Money Matters",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Your mindset about money affects every financial decision you make. Developing a healthy money mindset early will serve you for life.",
-          },
-          {
-            type: "list",
-            content: "Healthy money mindset beliefs:",
-            items: [
-              "Money is a tool to help achieve your goals",
-              "You can learn to manage money well",
-              "Saving money gives you freedom and choices",
-              "It's okay to spend on things you value",
-              "Everyone makes money mistakes - learn from them",
-            ],
-          },
-          {
-            type: "list",
-            content: "Unhealthy money mindset beliefs:",
-            items: [
-              "Money is evil or bad",
-              "I'm not good with money",
-              "Rich people are greedy",
-              "I deserve to buy whatever I want",
-              "Money problems will solve themselves",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Instead of thinking 'I can't afford it,' try thinking 'How can I afford it?' This shifts your mind to finding solutions rather than giving up.",
-          },
-          {
-            type: "tip",
-            content:
-              "Pay attention to what you tell yourself about money. Replace negative thoughts with positive, growth-oriented ones. Your future self will thank you!",
-          },
-        ],
-        keyTakeaways: [
-          "Your money mindset affects all your financial decisions",
-          "Healthy mindsets focus on learning and growth",
-          "Money is a neutral tool - how you use it matters",
-          "You can change your money mindset with practice",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Which mindset is healthiest when facing a financial challenge?",
-              options: [
-                "I'm just not good with money",
-                "Money problems will solve themselves",
-                "How can I learn to handle this better?",
-                "Rich people have all the luck",
-              ],
-              correctAnswer: "How can I learn to handle this better?",
-              explanation:
-                "A growth mindset focuses on learning and improvement, which leads to better financial outcomes over time.",
-            },
-          ],
-        },
-      },
-    ],
-    budgeting: [
-      {
-        title: "Why Budgeting Works",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "The Foundation of Financial Success",
-          },
-          {
-            type: "paragraph",
-            content:
-              "A budget is simply a plan for your money. It tells your money where to go instead of wondering where it went. Budgeting is the foundation that makes all other financial goals possible.",
-          },
-          {
-            type: "list",
-            content: "Benefits of budgeting:",
-            items: [
-              "Reduces financial stress and anxiety",
-              "Helps you reach your goals faster",
-              "Prevents overspending and debt",
-              "Shows you where your money really goes",
-              "Gives you control over your finances",
-              "Helps you prepare for emergencies",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Without a budget, Jake spent $200 on random purchases and couldn't afford his $150 car payment. With a budget, he allocated money for his car first, then had $50 for fun spending.",
-          },
-          {
-            type: "list",
-            content: "Common budgeting myths:",
-            items: [
-              "Myth: Budgets are restrictive and no fun",
-              "Truth: Budgets give you permission to spend on what matters",
-              "Myth: You need to track every penny",
-              "Truth: Focus on the big categories that matter most",
-              "Myth: Budgets are only for people with money problems",
-              "Truth: Wealthy people budget to stay wealthy",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Think of a budget as giving yourself permission to spend, not restricting yourself. You're deciding in advance how to use your money for maximum happiness and success.",
-          },
-        ],
-        keyTakeaways: [
-          "Budgets are plans that give your money purpose",
-          "Budgeting reduces stress and increases control",
-          "Budgets enable spending on what matters most",
-          "Everyone benefits from budgeting, regardless of income level",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main purpose of a budget?",
-              options: [
-                "To restrict all spending",
-                "To tell your money where to go",
-                "To make you feel guilty about purchases",
-                "To track every single penny",
-              ],
-              correctAnswer: "To tell your money where to go",
-              explanation:
-                "A budget is a plan that directs your money toward your priorities and goals, rather than letting it disappear on random purchases.",
-            },
-          ],
-        },
-      },
-      {
-        title: "The 50/30/20 Rule",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "A Simple Framework for Budgeting Success",
-          },
-          {
-            type: "paragraph",
-            content:
-              "The 50/30/20 rule is a simple budgeting framework that divides your after-tax income into three categories. It's perfect for beginners and provides a balanced approach to spending and saving.",
-          },
-          {
-            type: "list",
-            content: "The 50/30/20 breakdown:",
-            items: [
-              "50% for Needs: Essential expenses you can't avoid",
-              "30% for Wants: Fun and lifestyle spending",
-              "20% for Savings & Debt: Future you and debt payoff",
-            ],
-          },
-          {
-            type: "list",
-            content: "Needs (50% of income):",
-            items: [
-              "Rent or housing costs",
-              "Utilities (electricity, water, internet)",
-              "Groceries and basic food",
-              "Transportation (car payment, gas, public transit)",
-              "Insurance (health, car, renters)",
-              "Minimum debt payments",
-            ],
-          },
-          {
-            type: "list",
-            content: "Wants (30% of income):",
-            items: [
-              "Dining out and entertainment",
-              "Hobbies and recreation",
-              "Shopping for non-essentials",
-              "Subscriptions (streaming, gym, apps)",
-              "Travel and vacations",
-              "Upgrades to nicer versions of needs",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "On a $3,000 monthly income: $1,500 for needs, $900 for wants, $600 for savings and extra debt payments. This ensures you cover essentials while still enjoying life and building wealth.",
-          },
-          {
-            type: "list",
-            content: "Savings & Debt (20% of income):",
-            items: [
-              "Emergency fund contributions",
-              "Retirement savings (401k, IRA)",
-              "Extra debt payments beyond minimums",
-              "Short-term goal savings (vacation, car)",
-              "Long-term investments",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "If you can't fit your needs into 50%, look for ways to reduce housing costs or transportation expenses. These are usually the biggest budget items you can control.",
-          },
-        ],
-        keyTakeaways: [
-          "50/30/20 provides a balanced approach to budgeting",
-          "50% for needs ensures you cover essential expenses",
-          "30% for wants allows for enjoyment and lifestyle",
-          "20% for savings and debt builds your financial future",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "In the 50/30/20 rule, what percentage should go to wants?",
-              options: ["20%", "30%", "50%", "40%"],
-              correctAnswer: "30%",
-              explanation:
-                "The 50/30/20 rule allocates 30% of after-tax income to wants, allowing for entertainment, hobbies, and lifestyle spending while maintaining financial balance.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Zero-Based Budgeting",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Give Every Dollar a Job",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Zero-based budgeting means your income minus your expenses equals zero. Every dollar gets assigned a purpose before the month begins. This method ensures no money slips through the cracks.",
-          },
-          {
-            type: "list",
-            content: "How zero-based budgeting works:",
-            items: [
-              "List your total monthly income",
-              "List all your expenses and savings goals",
-              "Assign every dollar to a category",
-              "Income - Expenses = $0",
-              "Adjust categories until you reach zero",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "$2,500 income. Expenses: Rent $800, Food $300, Car $250, Insurance $100, Savings $400, Fun $350, Miscellaneous $300. Total: $2,500. Every dollar has a job!",
-          },
-          {
-            type: "list",
-            content: "Benefits of zero-based budgeting:",
-            items: [
-              "Prevents money from disappearing",
-              "Forces intentional spending decisions",
-              "Helps identify unnecessary expenses",
-              "Ensures savings goals are prioritized",
-              "Provides complete financial awareness",
-            ],
-          },
-          {
-            type: "list",
-            content: "Common zero-based budget categories:",
-            items: [
-              "Housing (rent, utilities, maintenance)",
-              "Transportation (car payment, gas, insurance)",
-              "Food (groceries, dining out)",
-              "Personal (clothing, haircuts, phone)",
-              "Entertainment (movies, hobbies, subscriptions)",
-              "Savings (emergency fund, retirement, goals)",
-            ],
-          },
-          {
-            type: "list",
-            content: "Tips for zero-based success:",
-            items: [
-              "Start with last month's expenses as a baseline",
-              "Include a 'miscellaneous' category for unexpected items",
-              "Review and adjust weekly during your first month",
-              "Use budgeting apps to track spending in real-time",
-              "Don't be perfect - adjust as you learn your patterns",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "If you have money left over after assigning all expenses, put it toward your highest priority goal - usually emergency fund or debt payoff.",
-          },
-        ],
-        keyTakeaways: [
-          "Zero-based budgeting assigns every dollar a purpose",
-          "Income minus expenses should equal zero",
-          "This method prevents money from being wasted",
-          "Adjust categories as you learn your spending patterns",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "In zero-based budgeting, what should income minus expenses equal?",
-              options: ["$100", "$0", "10% of income", "Whatever is left over"],
-              correctAnswer: "$0",
-              explanation:
-                "Zero-based budgeting assigns every dollar a purpose, so income minus all planned expenses and savings should equal zero.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Tracking Your Spending",
-        duration: "3 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Knowledge is Power in Budgeting",
-          },
-          {
-            type: "paragraph",
-            content:
-              "You can't manage what you don't measure. Tracking your spending shows you exactly where your money goes and helps you make informed decisions about your budget.",
-          },
-          {
-            type: "list",
-            content: "Methods for tracking spending:",
-            items: [
-              "Budgeting apps (Mint, YNAB, EveryDollar)",
-              "Bank and credit card statements",
-              "Spreadsheets (Excel, Google Sheets)",
-              "Pen and paper notebook",
-              "Receipt collection and categorization",
-              "Photo apps for receipt capture",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to track:",
-            items: [
-              "Fixed expenses (rent, insurance, subscriptions)",
-              "Variable expenses (groceries, gas, entertainment)",
-              "Irregular expenses (car maintenance, gifts)",
-              "Cash spending (often forgotten)",
-              "Small purchases (they add up quickly)",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Maria thought she spent $200 on food monthly. After tracking for a month, she discovered she actually spent $350 - $150 on groceries and $200 on dining out. This awareness helped her adjust her budget.",
-          },
-          {
-            type: "list",
-            content: "Benefits of spending tracking:",
-            items: [
-              "Reveals spending patterns and habits",
-              "Identifies areas to cut back",
-              "Shows if you're sticking to your budget",
-              "Helps you make data-driven financial decisions",
-              "Prevents budget leaks and overspending",
-            ],
-          },
-          {
-            type: "list",
-            content: "Making tracking easier:",
-            items: [
-              "Use apps that connect to your bank accounts",
-              "Set up automatic categorization rules",
-              "Review spending weekly, not daily",
-              "Focus on major categories, not every penny",
-              "Take photos of receipts immediately",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Track your spending for at least one full month before creating your budget. This gives you realistic numbers to work with instead of guessing.",
-          },
-        ],
-        keyTakeaways: [
-          "Tracking spending reveals where your money actually goes",
-          "Use whatever method you'll actually stick with",
-          "Focus on major categories rather than every penny",
-          "Track for a full month before finalizing your budget",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Why is tracking spending important for budgeting?",
-              options: [
-                "To make you feel guilty about purchases",
-                "To reveal where your money actually goes",
-                "To complicate your financial life",
-                "To impress others with your organization",
-              ],
-              correctAnswer: "To reveal where your money actually goes",
-              explanation:
-                "Tracking spending provides the real data you need to create an accurate budget and identify areas for improvement.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Budgeting for Irregular Expenses",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Planning for the Unexpected",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Irregular expenses are costs that don't happen every month but are predictable over time. Planning for these prevents them from derailing your budget when they occur.",
-          },
-          {
-            type: "list",
-            content: "Common irregular expenses:",
-            items: [
-              "Car maintenance and repairs",
-              "Medical and dental expenses",
-              "Holiday and birthday gifts",
-              "Annual insurance premiums",
-              "Home maintenance and repairs",
-              "Clothing and seasonal items",
-              "Vacation and travel costs",
-              "Professional development and education",
-            ],
-          },
-          {
-            type: "list",
-            content: "How to budget for irregular expenses:",
-            items: [
-              "Estimate annual cost for each category",
-              "Divide by 12 to get monthly savings amount",
-              "Set aside money each month in separate savings",
-              "Use high-yield savings or money market accounts",
-              "Track what you've saved for each category",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Car maintenance costs $1,200 per year on average. Save $100 per month in a 'car fund.' When you need $400 for new tires, the money is already there without impacting your regular budget.",
-          },
-          {
-            type: "list",
-            content: "Sinking funds strategy:",
-            items: [
-              "Create separate savings 'buckets' for each irregular expense",
-              "Automate transfers to these funds monthly",
-              "Use online banks with multiple savings accounts",
-              "Label each account clearly (Car Fund, Gift Fund, etc.)",
-              "Only use the money for its intended purpose",
-            ],
-          },
-          {
-            type: "list",
-            content: "Benefits of planning irregular expenses:",
-            items: [
-              "Prevents budget emergencies",
-              "Reduces financial stress",
-              "Avoids credit card debt",
-              "Allows for better financial planning",
-              "Gives you control over timing of purchases",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Start with the most important irregular expenses first - car maintenance and medical costs. Add other categories as your budget allows.",
-          },
-        ],
-        keyTakeaways: [
-          "Irregular expenses are predictable over time",
-          "Save monthly for annual or occasional costs",
-          "Sinking funds prevent budget emergencies",
-          "Start with the most critical irregular expenses first",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the best way to handle irregular expenses?",
-              options: [
-                "Put them on credit cards when they happen",
-                "Save monthly for them in advance",
-                "Ignore them until they occur",
-                "Borrow money from family",
-              ],
-              correctAnswer: "Save monthly for them in advance",
-              explanation:
-                "Saving monthly for irregular expenses (sinking funds) prevents them from becoming financial emergencies and keeps your budget on track.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Budget Adjustments and Reviews",
-        duration: "3 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Making Your Budget Work for Real Life",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Your budget is a living document that should change as your life changes. Regular reviews and adjustments ensure your budget stays realistic and effective.",
-          },
-          {
-            type: "list",
-            content: "When to review your budget:",
-            items: [
-              "Monthly: Check if you stayed on track",
-              "When income changes (raise, new job, loss of income)",
-              "When major expenses change (move, new car payment)",
-              "When life circumstances change (marriage, baby, school)",
-              "When you consistently overspend in a category",
-              "At least quarterly for overall assessment",
-            ],
-          },
-          {
-            type: "list",
-            content: "Signs your budget needs adjustment:",
-            items: [
-              "Consistently overspending in certain categories",
-              "Having money left over with no purpose",
-              "Feeling restricted or deprived",
-              "Unable to stick to the budget for weeks",
-              "Major life changes affecting income or expenses",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Tom budgeted $200 for groceries but consistently spent $280. Instead of feeling guilty, he adjusted his grocery budget to $250 and reduced his entertainment budget by $50.",
-          },
-          {
-            type: "list",
-            content: "How to make budget adjustments:",
-            items: [
-              "Identify which categories are consistently over or under",
-              "Look for patterns in your overspending",
-              "Adjust amounts based on actual spending data",
-              "Move money between categories as needed",
-              "Don't increase total spending without increasing income",
-            ],
-          },
-          {
-            type: "list",
-            content: "Monthly budget review questions:",
-            items: [
-              "Which categories did I overspend in?",
-              "Which categories had money left over?",
-              "What unexpected expenses came up?",
-              "What worked well this month?",
-              "What changes do I need to make next month?",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Don't abandon your budget if you overspend one month. Instead, learn from it and adjust. The goal is progress, not perfection.",
-          },
-        ],
-        keyTakeaways: [
-          "Budgets should be reviewed and adjusted regularly",
-          "Consistent overspending signals need for adjustment",
-          "Life changes require budget changes",
-          "Focus on progress, not perfection",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "How often should you review your budget?",
-              options: [
-                "Once a year",
-                "Only when you overspend",
-                "Monthly, and when major changes occur",
-                "Never - set it and forget it",
-              ],
-              correctAnswer: "Monthly, and when major changes occur",
-              explanation:
-                "Regular monthly reviews help you stay on track, while major life changes require immediate budget adjustments to remain realistic.",
-            },
-          ],
-        },
-      },
-    ],
-    saving: [
-      {
-        title: "The Psychology of Saving",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Understanding Why Saving is Hard",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Saving money goes against our natural instincts. Our brains are wired to prioritize immediate rewards over future benefits. Understanding this psychology helps you develop strategies to overcome these mental barriers.",
-          },
-          {
-            type: "list",
-            content: "Why saving feels difficult:",
-            items: [
-              "Instant gratification bias - we want rewards now",
-              "Present bias - future benefits feel less real",
-              "Social pressure to spend and keep up with others",
-              "Advertising designed to trigger spending impulses",
-              "Lack of visible progress in early stages",
-              "Fear of missing out on experiences",
-            ],
-          },
-          {
-            type: "list",
-            content: "Mental tricks to make saving easier:",
-            items: [
-              "Pay yourself first - save before spending",
-              "Automate savings so it happens without thinking",
-              "Make saving visible with charts or apps",
-              "Set specific, meaningful goals for your savings",
-              "Celebrate small wins and milestones",
-              "Find free or low-cost alternatives for entertainment",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Instead of saving 'whatever is left over' (usually nothing), Maya automatically transfers $100 to savings on payday. She never sees the money, so she doesn't miss it.",
-          },
-          {
-            type: "list",
-            content: "Reframe your thinking about saving:",
-            items: [
-              "Saving is paying your future self",
-              "Saving buys you freedom and options",
-              "Saving reduces stress and anxiety",
-              "Saving allows you to help others",
-              "Saving is self-care, not self-denial",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Start with saving just 1% of your income. Once that feels normal, increase to 2%, then 3%. Gradual increases feel less painful than jumping to 10% immediately.",
-          },
-        ],
-        keyTakeaways: [
-          "Our brains naturally prefer immediate rewards over future benefits",
+          "Our brains are wired for immediate gratification, making saving difficult",
+          "Cognitive biases consistently work against long-term financial planning",
           "Automation removes willpower from the saving equation",
-          "Reframing saving as self-care makes it more appealing",
-          "Start small and gradually increase your saving rate",
+          "Small psychological tricks can have massive impacts on saving success",
         ],
         quiz: {
           questions: [
             {
-              question: "What is the most effective way to overcome the psychology that makes saving difficult?",
+              question: "What is 'present bias' in the context of saving money?",
               options: [
-                "Rely on willpower and discipline",
-                "Save whatever is left over each month",
-                "Automate your savings",
-                "Only save when you feel motivated",
+                "Preferring to save money in the present moment",
+                "Overvaluing immediate rewards compared to future benefits",
+                "Being biased toward present-day investment options",
+                "Focusing only on current expenses",
               ],
-              correctAnswer: "Automate your savings",
+              correctAnswer: "Overvaluing immediate rewards compared to future benefits",
               explanation:
-                "Automation removes the psychological barriers and decision fatigue that make saving difficult, ensuring it happens consistently without relying on willpower.",
+                "Present bias is the tendency to give stronger weight to payoffs that are closer to the present time, making it harder to save for future goals.",
             },
           ],
         },
       },
       {
-        title: "Automating Your Savings",
-        duration: "4 min",
-        points: 15,
+        title: "Setting Up Automatic Savings Systems",
+        duration: "6 min",
+        points: 18,
         content: [
           {
             type: "heading",
-            content: "Set It and Forget It Wealth Building",
+            content: "Building Bulletproof Savings Automation",
           },
           {
             type: "paragraph",
             content:
-              "Automation is the secret weapon of successful savers. By setting up automatic transfers, you remove emotions and decision-making from saving, making it as reliable as paying your rent.",
+              "Automation is the most powerful tool for consistent saving. By removing human decision-making from the process, you eliminate the daily choice between saving and spending. Here's how to build a comprehensive automated savings system.",
           },
           {
             type: "list",
             content: "Types of savings automation:",
             items: [
-              "Automatic transfers from checking to savings",
-              "Direct deposit splitting between accounts",
-              "Employer 401(k) contributions",
-              "Round-up apps that save spare change",
-              "Automatic investment contributions",
-              "High-yield savings account transfers",
+              "Direct deposit splitting: Automatically divide paycheck between accounts",
+              "Scheduled transfers: Move money on specific dates",
+              "Round-up programs: Save spare change from purchases",
+              "Percentage-based saving: Save a fixed percentage of all income",
+              "Goal-based automation: Automatic transfers toward specific targets",
+              "Employer-sponsored programs: 401(k), HSA, and other workplace savings",
             ],
           },
           {
-            type: "list",
-            content: "How to set up savings automation:",
-            items: [
-              "Choose a specific amount and frequency",
-              "Schedule transfers for right after payday",
-              "Use separate accounts for different goals",
-              "Start small and increase over time",
-              "Set up multiple automated savings streams",
-              "Review and adjust quarterly",
-            ],
+            type: "calculation",
+            content: "Calculating your automated savings capacity:",
+            formula: "Monthly Savings = (Monthly Income - Fixed Expenses) × Savings Rate",
+            variables: {
+              "Monthly Income": "Total after-tax income per month",
+              "Fixed Expenses": "Rent, utilities, minimum debt payments, etc.",
+              "Savings Rate": "Percentage you want to save (start with 10-20%)",
+            },
           },
           {
             type: "example",
             content:
-              "Alex sets up three automatic transfers: $200 to emergency fund, $150 to vacation fund, and $100 to car replacement fund. Every payday, $450 is automatically saved before he can spend it.",
+              "Mike earns $4,000/month after taxes. His fixed expenses are $2,800. Available for savings/discretionary: $1,200. If he wants to save 20% of income ($800), he can automate $600 to savings and keep $600 for variable expenses.",
           },
           {
             type: "list",
-            content: "Benefits of automated saving:",
+            content: "Step-by-step automation setup:",
             items: [
-              "Removes temptation to spend the money",
-              "Creates consistent saving habits",
-              "Reduces decision fatigue",
-              "Makes saving feel effortless",
-              "Helps you reach goals faster",
-              "Builds wealth without thinking about it",
+              "Step 1: Calculate your target savings amount",
+              "Step 2: Open separate high-yield savings accounts for different goals",
+              "Step 3: Set up direct deposit to split your paycheck",
+              "Step 4: Schedule automatic transfers for any remaining amounts",
+              "Step 5: Set up round-up programs for spare change",
+              "Step 6: Automate increases (save raises, bonuses automatically)",
             ],
           },
           {
             type: "list",
-            content: "Automation tools and apps:",
+            content: "Advanced automation strategies:",
             items: [
-              "Bank automatic transfers",
-              "Acorns (round-up investing)",
-              "Digit (AI-powered saving)",
-              "YNAB (budgeting with automation)",
-              "Employer payroll splitting",
-              "Investment account auto-contributions",
+              "Bi-weekly savings: Save every two weeks instead of monthly",
+              "Seasonal adjustments: Save more during high-income periods",
+              "Windfall automation: Automatically save tax refunds, bonuses",
+              "Expense-triggered saving: Save money when you avoid planned expenses",
+              "Micro-investing: Automatically invest small amounts regularly",
+              "Debt-to-savings flip: Redirect debt payments to savings after payoff",
             ],
+          },
+          {
+            type: "warning",
+            content:
+              "Common automation mistakes: Setting amounts too high initially, not leaving enough for emergencies, forgetting to adjust for life changes, and not monitoring automated systems regularly.",
           },
           {
             type: "tip",
             content:
-              "Treat your automated savings like a bill that must be paid. If you can afford your rent, you can afford to pay your future self.",
+              "Start with automating just 1% of your income, then increase by 1% every month until you reach your target. This gradual approach prevents lifestyle shock and builds sustainable habits.",
           },
         ],
         keyTakeaways: [
-          "Automation makes saving effortless and consistent",
-          "Set up transfers right after payday for best results",
-          "Use separate accounts for different savings goals",
+          "Automation removes willpower and decision fatigue from saving",
+          "Direct deposit splitting is the most effective automation method",
           "Start small and gradually increase automated amounts",
+          "Multiple automation methods can work together for maximum impact",
         ],
         quiz: {
           questions: [
             {
-              question: "When is the best time to schedule automatic savings transfers?",
+              question: "What is the most effective way to automate savings?",
               options: [
-                "At the end of the month",
-                "Right after payday",
-                "When you remember to do it",
-                "Only when you have extra money",
+                "Setting up monthly reminders to transfer money",
+                "Using direct deposit to split your paycheck between accounts",
+                "Manually transferring money whenever you remember",
+                "Saving whatever is left over at the end of the month",
               ],
-              correctAnswer: "Right after payday",
+              correctAnswer: "Using direct deposit to split your paycheck between accounts",
               explanation:
-                "Scheduling transfers right after payday ensures the money is saved before you have a chance to spend it on other things.",
+                "Direct deposit splitting happens before you ever see the money, making it the most effective form of automation because it removes all temptation and decision-making.",
             },
           ],
         },
       },
       {
-        title: "High-Yield Savings Accounts",
-        duration: "4 min",
-        points: 15,
+        title: "High-Yield Savings Accounts Deep Dive",
+        duration: "8 min",
+        points: 22,
         content: [
           {
             type: "heading",
-            content: "Making Your Money Work Harder",
+            content: "Maximizing Your Savings Account Returns",
           },
           {
             type: "paragraph",
             content:
-              "Not all savings accounts are created equal. High-yield savings accounts can earn 10-20 times more interest than traditional bank accounts, helping your money grow faster while staying safe and accessible.",
+              "Not all savings accounts are created equal. High-yield savings accounts can earn 50-100 times more than traditional bank accounts. Understanding how to find, evaluate, and maximize these accounts is crucial for building wealth.",
           },
           {
-            type: "list",
-            content: "Benefits of high-yield savings accounts:",
-            items: [
-              "Higher interest rates (often 4-5% vs 0.01%)",
-              "FDIC insured up to $250,000",
-              "No risk of losing money",
-              "Easy online access to funds",
-              "Often no minimum balance requirements",
-              "Compound interest helps money grow faster",
-            ],
+            type: "calculation",
+            content: "The power of compound interest in high-yield accounts:",
+            formula: "Future Value = Present Value × (1 + Interest Rate)^Years",
+            variables: {
+              "Present Value": "Your initial deposit",
+              "Interest Rate": "Annual percentage yield (APY)",
+              Years: "Time money stays in account",
+            },
           },
           {
             type: "example",
             content:
-              "$10,000 in a traditional bank account earning 0.01% makes $1 per year. The same amount in a high-yield account earning 4% makes $400 per year - that's $399 more for doing nothing!",
+              "$10,000 in different account types over 10 years: Traditional savings (0.01% APY) = $10,010. High-yield savings (4.5% APY) = $15,530. The difference: $5,520 in free money just for choosing the right account.",
           },
           {
             type: "list",
-            content: "Where to find high-yield savings accounts:",
+            content: "What makes an account 'high-yield':",
             items: [
-              "Online banks (Ally, Marcus, Capital One 360)",
-              "Credit unions",
-              "Community banks",
-              "Fintech companies (SoFi, CIT Bank)",
-              "Money market accounts",
-              "Compare rates on Bankrate or NerdWallet",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to look for in a high-yield account:",
-            items: [
-              "Competitive interest rate (check current market rates)",
-              "FDIC or NCUA insurance",
+              "APY significantly above national average (currently 4-5% vs 0.01%)",
+              "Compound interest calculated daily and paid monthly",
               "No monthly maintenance fees",
-              "Low or no minimum balance",
-              "Easy online and mobile access",
-              "Good customer service ratings",
+              "FDIC insurance up to $250,000 per depositor",
+              "Easy online access and mobile banking",
+              "Competitive rates that adjust with market conditions",
             ],
           },
           {
             type: "list",
-            content: "Maximizing your high-yield savings:",
+            content: "Where to find high-yield accounts:",
             items: [
-              "Shop around for the best rates regularly",
-              "Consider multiple accounts for different goals",
-              "Set up automatic transfers to maximize deposits",
-              "Don't chase rates that require high minimums",
-              "Keep some money in checking for daily expenses",
+              "Online banks: Ally, Marcus by Goldman Sachs, Capital One 360",
+              "Credit unions: Often offer competitive rates to members",
+              "Fintech companies: SoFi, CIT Bank, American Express Personal Savings",
+              "Traditional banks' online divisions: Chase You Invest, Bank of America",
+              "Money market accounts: Higher minimums but often higher rates",
+              "Rate comparison sites: Bankrate, NerdWallet, DepositAccounts",
             ],
+          },
+          {
+            type: "list",
+            content: "Key features to evaluate:",
+            items: [
+              "Annual Percentage Yield (APY) - the most important factor",
+              "Minimum balance requirements",
+              "Monthly maintenance fees",
+              "ATM access and fee reimbursements",
+              "Mobile app quality and features",
+              "Customer service availability and quality",
+              "Rate stability and history",
+              "Additional perks (overdraft protection, etc.)",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Rate Shopping Strategy: Lisa researches rates quarterly and switches banks when she finds rates 0.5% higher. Over 5 years with $25,000 saved, this strategy earned her an extra $2,100 compared to staying with her original 2% account.",
+          },
+          {
+            type: "list",
+            content: "Advanced high-yield strategies:",
+            items: [
+              "CD laddering: Stagger certificate of deposit maturity dates",
+              "Rate chasing: Moving money to highest rates (consider effort vs. reward)",
+              "Account bonuses: Earning sign-up bonuses for new accounts",
+              "Multiple accounts: Using different banks for different goals",
+              "I Bonds: Treasury inflation-protected securities for inflation hedge",
+              "Money market funds: Slightly higher risk but potentially higher returns",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Beware of promotional rates that drop significantly after an introductory period. Always read the fine print and understand when rates might change.",
           },
           {
             type: "tip",
             content:
-              "Interest rates change over time. Review your savings account rates annually and be willing to switch if you find significantly better rates elsewhere.",
+              "Set a calendar reminder to review your savings account rates every 6 months. The savings account market is competitive and rates change frequently.",
           },
         ],
         keyTakeaways: [
-          "High-yield accounts earn significantly more than traditional savings",
-          "Online banks typically offer the best rates",
-          "FDIC insurance keeps your money safe",
-          "Shop around and compare rates regularly",
+          "High-yield accounts can earn 50-100x more than traditional savings",
+          "Compound interest makes small rate differences significant over time",
+          "Online banks typically offer the highest rates due to lower overhead",
+          "Regular rate shopping can significantly boost your returns",
         ],
         quiz: {
           questions: [
             {
-              question: "How much more can a high-yield savings account earn compared to a traditional bank account?",
-              options: ["About the same", "2-3 times more", "10-20 times more", "100 times more"],
-              correctAnswer: "10-20 times more",
-              explanation:
-                "High-yield savings accounts typically earn 10-20 times more interest than traditional bank accounts, making them a much better choice for growing your savings.",
-            },
-          ],
-        },
-      },
-      {
-        title: "The 52-Week Savings Challenge",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "A Fun Way to Build Your Savings Habit",
-          },
-          {
-            type: "paragraph",
-            content:
-              "The 52-week savings challenge is a popular method that makes saving feel like a game. You save an increasing amount each week, building both your savings account and your saving habit gradually.",
-          },
-          {
-            type: "list",
-            content: "How the traditional 52-week challenge works:",
-            items: [
-              "Week 1: Save $1",
-              "Week 2: Save $2",
-              "Week 3: Save $3",
-              "Continue increasing by $1 each week",
-              "Week 52: Save $52",
-              "Total saved: $1,378 by year end",
-            ],
-          },
-          {
-            type: "list",
-            content: "Variations of the challenge:",
-            items: [
-              "Reverse challenge: Start with $52, end with $1",
-              "Double challenge: Save $2, $4, $6, etc. (Total: $2,756)",
-              "Bi-weekly challenge: Save every two weeks instead",
-              "Custom amounts: Adjust numbers to fit your budget",
-              "Round number challenge: $5, $10, $15, etc.",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Sarah chose the reverse challenge, starting with $52 in January when she had holiday money, then decreasing amounts as the year progressed and other expenses increased.",
-          },
-          {
-            type: "list",
-            content: "Benefits of the 52-week challenge:",
-            items: [
-              "Makes saving feel like a game",
-              "Builds consistent saving habits",
-              "Provides visible progress tracking",
-              "Flexible and customizable",
-              "Great for beginners",
-              "Creates momentum and motivation",
-            ],
-          },
-          {
-            type: "list",
-            content: "Tips for success:",
-            items: [
-              "Use a separate savings account for the challenge",
-              "Set up automatic transfers if possible",
-              "Track your progress visually with a chart",
-              "Adjust amounts if needed - consistency matters more",
-              "Celebrate milestones along the way",
-              "Find an accountability partner",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to do with your challenge savings:",
-            items: [
-              "Start or boost your emergency fund",
-              "Save for a specific goal (vacation, car)",
-              "Invest in a retirement account",
-              "Use as a down payment fund",
-              "Create multiple sinking funds",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "If the traditional amounts don't fit your budget, create your own version. The key is consistency, not the specific dollar amounts.",
-          },
-        ],
-        keyTakeaways: [
-          "The 52-week challenge makes saving feel like a game",
-          "Multiple variations allow customization to your budget",
-          "Consistency is more important than specific amounts",
-          "Visual tracking helps maintain motivation",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "How much money do you save in the traditional 52-week savings challenge?",
-              options: ["$1,000", "$1,378", "$1,500", "$2,000"],
-              correctAnswer: "$1,378",
-              explanation:
-                "The traditional 52-week challenge, where you save $1 the first week and increase by $1 each week, results in total savings of $1,378.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Saving for Multiple Goals",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Juggling Different Financial Priorities",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Most people have multiple financial goals at once - emergency fund, vacation, car, house down payment. Learning to save for multiple goals simultaneously helps you make progress on all fronts without feeling overwhelmed.",
-          },
-          {
-            type: "list",
-            content: "Common multiple savings goals:",
-            items: [
-              "Emergency fund (3-6 months expenses)",
-              "Vacation or travel fund",
-              "Car down payment or replacement",
-              "House down payment",
-              "Wedding expenses",
-              "Holiday and gift fund",
-              "Professional development or education",
-              "Home improvement projects",
-            ],
-          },
-          {
-            type: "list",
-            content: "Strategies for multiple goal saving:",
-            items: [
-              "Prioritize goals by importance and timeline",
-              "Use separate savings accounts for each goal",
-              "Allocate percentages of savings to each goal",
-              "Focus on one goal at a time if budget is tight",
-              "Use windfalls (tax refunds, bonuses) strategically",
-              "Adjust allocations as goals are achieved",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Mike saves $500 monthly: $200 to emergency fund (priority), $150 to vacation fund (6 months away), $100 to car fund (2 years away), $50 to gift fund (ongoing).",
-          },
-          {
-            type: "list",
-            content: "Goal prioritization framework:",
-            items: [
-              "Tier 1: Emergency fund and debt payoff",
-              "Tier 2: Short-term needs (car repairs, etc.)",
-              "Tier 3: Medium-term goals (vacation, wedding)",
-              "Tier 4: Long-term goals (house, retirement)",
-              "Adjust based on your specific situation",
-            ],
-          },
-          {
-            type: "list",
-            content: "Tools for managing multiple goals:",
-            items: [
-              "High-yield savings with sub-accounts",
-              "Multiple savings accounts at different banks",
-              "Budgeting apps with goal tracking",
-              "Spreadsheets with progress tracking",
-              "Visual charts or thermometers",
-              "Automatic transfers to each goal",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Don't spread your savings too thin across too many goals. Focus on 3-4 main goals at a time for better progress and motivation.",
-          },
-        ],
-        keyTakeaways: [
-          "Most people have multiple financial goals simultaneously",
-          "Prioritize goals by importance and timeline",
-          "Use separate accounts to track progress clearly",
-          "Don't spread savings too thin across too many goals",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should be your first priority when saving for multiple goals?",
-              options: ["Vacation fund", "Emergency fund", "Car down payment", "Wedding expenses"],
-              correctAnswer: "Emergency fund",
-              explanation:
-                "Emergency fund should be the top priority as it protects you from going into debt when unexpected expenses occur, enabling you to continue working toward other goals.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Overcoming Savings Obstacles",
-        duration: "5 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Breaking Through Common Barriers",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Everyone faces obstacles when trying to save money. The key is recognizing these barriers and developing specific strategies to overcome them. Most savings obstacles are mental, not mathematical.",
-          },
-          {
-            type: "list",
-            content: "Common savings obstacles:",
-            items: [
-              "Living paycheck to paycheck",
-              "Unexpected expenses derailing progress",
-              "Social pressure to spend",
-              "Lack of clear goals or motivation",
-              "Perfectionism (all-or-nothing thinking)",
-              "Comparing yourself to others",
-              "Fear of missing out on experiences",
-            ],
-          },
-          {
-            type: "list",
-            content: "Strategies for low-income saving:",
-            items: [
-              "Start with just $1-5 per week",
-              "Save windfalls (tax refunds, gifts, rebates)",
-              "Use the envelope method for cash spending",
-              "Find free entertainment alternatives",
-              "Sell items you no longer need",
-              "Look for ways to increase income",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Lisa felt she couldn't save on her tight budget. She started saving just $5 per week by bringing lunch from home twice a week instead of buying it. After a year, she had $260 saved.",
-          },
-          {
-            type: "list",
-            content: "Dealing with setbacks:",
-            items: [
-              "Expect setbacks - they're normal",
-              "Don't abandon your goals after one bad month",
-              "Adjust your savings amount if needed",
-              "Focus on getting back on track quickly",
-              "Learn from what caused the setback",
-              "Celebrate small wins and progress",
-            ],
-          },
-          {
-            type: "list",
-            content: "Overcoming social pressure:",
-            items: [
-              "Be honest with friends about your financial goals",
-              "Suggest free or low-cost activities",
-              "Remember that true friends will support your goals",
-              "Find accountability partners with similar goals",
-              "Practice saying no to expensive activities",
-              "Focus on experiences that align with your values",
-            ],
-          },
-          {
-            type: "list",
-            content: "Building motivation:",
-            items: [
-              "Write down specific reasons for saving",
-              "Visual reminders of your goals",
-              "Track progress regularly",
-              "Celebrate milestones",
-              "Connect with your future self",
-              "Remember that small amounts add up",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "If you can't save money, focus on not going further into debt. Sometimes maintaining your current position is progress when facing financial challenges.",
-          },
-        ],
-        keyTakeaways: [
-          "Most savings obstacles are mental, not mathematical",
-          "Start small if money is tight - any amount counts",
-          "Expect setbacks and have a plan to recover",
-          "Social pressure can be overcome with clear communication",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should you do if you experience a setback in your savings plan?",
+              question: "What is the most important factor when choosing a high-yield savings account?",
               options: [
-                "Give up on saving entirely",
-                "Feel guilty and ashamed",
-                "Learn from it and get back on track",
-                "Wait until next year to start over",
+                "The bank's physical branch locations",
+                "The annual percentage yield (APY)",
+                "The minimum opening deposit",
+                "The bank's advertising budget",
               ],
-              correctAnswer: "Learn from it and get back on track",
+              correctAnswer: "The annual percentage yield (APY)",
               explanation:
-                "Setbacks are normal in any financial journey. The key is to learn from what caused the setback and quickly return to your savings plan rather than abandoning it entirely.",
-            },
-          ],
-        },
-      },
-    ],
-    "debt-management": [
-      {
-        title: "Understanding Different Types of Debt",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Good Debt vs Bad Debt: Know the Difference",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Not all debt is created equal. Understanding the difference between good debt and bad debt is crucial for making smart financial decisions and building wealth over time.",
-          },
-          {
-            type: "list",
-            content: "Good debt typically:",
-            items: [
-              "Helps you build wealth or increase income over time",
-              "Has tax advantages or deductions",
-              "Has relatively low interest rates",
-              "Appreciates in value or generates income",
-              "Examples: mortgages, student loans, business loans",
-            ],
-          },
-          {
-            type: "list",
-            content: "Bad debt typically:",
-            items: [
-              "Decreases in value over time",
-              "Has high interest rates",
-              "Provides no tax benefits",
-              "Is used for consumption rather than investment",
-              "Examples: credit cards, payday loans, car loans",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "A mortgage at 4% interest that helps you build equity in a home is good debt. A credit card at 24% interest used for vacation expenses is bad debt.",
-          },
-          {
-            type: "tip",
-            content:
-              "Focus on paying off bad debt first, especially high-interest credit cards. Good debt can often be managed with minimum payments while you build wealth elsewhere.",
-          },
-        ],
-        keyTakeaways: [
-          "Good debt helps build wealth, bad debt drains it",
-          "Interest rates and tax benefits distinguish debt types",
-          "Prioritize paying off bad debt first",
-          "Some debt can be a tool for building wealth",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Which of these is typically considered 'good debt'?",
-              options: ["Credit card debt", "Payday loan", "Mortgage", "Store financing"],
-              correctAnswer: "Mortgage",
-              explanation:
-                "A mortgage is good debt because it helps you build equity in an appreciating asset (your home) and typically has low interest rates and tax benefits.",
+                "APY is the most important factor because it directly determines how much your money will grow over time. Small differences in APY compound to large differences in earnings.",
             },
           ],
         },
       },
       {
-        title: "The Debt Snowball Method",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Building Momentum by Starting Small",
-          },
-          {
-            type: "paragraph",
-            content:
-              "The debt snowball method focuses on paying off your smallest debts first, regardless of interest rate. This creates psychological wins and momentum that helps you stay motivated throughout your debt payoff journey.",
-          },
-          {
-            type: "list",
-            content: "How the debt snowball works:",
-            items: [
-              "List all debts from smallest to largest balance",
-              "Pay minimums on all debts",
-              "Put any extra money toward the smallest debt",
-              "Once smallest is paid off, roll that payment to the next smallest",
-              "Repeat until all debts are eliminated",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Sarah has: Credit Card A ($500), Credit Card B ($1,200), Car Loan ($8,000). She pays minimums on B and the car, puts extra $200/month toward A. Once A is paid off, she puts $200 + A's minimum toward B.",
-          },
-          {
-            type: "list",
-            content: "Benefits of the debt snowball:",
-            items: [
-              "Quick wins build motivation and confidence",
-              "Simplifies your financial life faster",
-              "Creates visible progress early on",
-              "Builds strong debt-payoff habits",
-              "Reduces number of monthly payments quickly",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "The debt snowball is about psychology, not math. If you need motivation and quick wins, this method can be more effective than focusing on interest rates alone.",
-          },
-        ],
-        keyTakeaways: [
-          "Pay smallest debts first for psychological wins",
-          "Roll payments from paid-off debts to the next smallest",
-          "Motivation often matters more than mathematical optimization",
-          "Quick wins build momentum for long-term success",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "In the debt snowball method, which debt do you focus on first?",
-              options: ["Highest interest rate", "Largest balance", "Smallest balance", "Newest debt"],
-              correctAnswer: "Smallest balance",
-              explanation:
-                "The debt snowball method prioritizes the smallest balance first to create quick wins and build momentum, regardless of interest rates.",
-            },
-          ],
-        },
-      },
-      {
-        title: "The Debt Avalanche Method",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Mathematically Optimal Debt Elimination",
-          },
-          {
-            type: "paragraph",
-            content:
-              "The debt avalanche method focuses on paying off debts with the highest interest rates first. This approach saves the most money in interest payments over time, making it the mathematically optimal debt payoff strategy.",
-          },
-          {
-            type: "list",
-            content: "How the debt avalanche works:",
-            items: [
-              "List all debts from highest to lowest interest rate",
-              "Pay minimums on all debts",
-              "Put any extra money toward the highest interest rate debt",
-              "Once highest rate is paid off, move to the next highest",
-              "Continue until all debts are eliminated",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Mike has: Credit Card (22% APR, $3,000), Personal Loan (12% APR, $5,000), Car Loan (6% APR, $10,000). He focuses extra payments on the credit card first, despite it not being the largest balance.",
-          },
-          {
-            type: "list",
-            content: "Benefits of the debt avalanche:",
-            items: [
-              "Saves the most money in interest payments",
-              "Mathematically optimal approach",
-              "Reduces total payoff time",
-              "More efficient use of extra payments",
-              "Better for disciplined, math-focused individuals",
-            ],
-          },
-          {
-            type: "list",
-            content: "Challenges of the debt avalanche:",
-            items: [
-              "May take longer to see first debt eliminated",
-              "Requires more discipline and patience",
-              "Less immediate psychological gratification",
-              "Can be discouraging if highest-rate debt is large",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Choose debt avalanche if you're motivated by saving money and can stay disciplined without needing frequent wins. Combine with debt snowball psychology by celebrating interest saved.",
-          },
-        ],
-        keyTakeaways: [
-          "Focus on highest interest rate debts first",
-          "Saves the most money in total interest paid",
-          "Requires discipline but is mathematically optimal",
-          "Best for people motivated by long-term savings",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main advantage of the debt avalanche method?",
-              options: [
-                "Quick psychological wins",
-                "Saves the most money in interest",
-                "Easiest to follow",
-                "Eliminates most debts quickly",
-              ],
-              correctAnswer: "Saves the most money in interest",
-              explanation:
-                "The debt avalanche method saves the most money in total interest payments by targeting the highest interest rate debts first, making it mathematically optimal.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Debt Consolidation Strategies",
-        duration: "5 min",
+        title: "Emergency Fund Sizing and Strategy",
+        duration: "7 min",
         points: 20,
         content: [
           {
             type: "heading",
-            content: "Simplifying Multiple Debts into One Payment",
+            content: "Right-Sizing Your Financial Safety Net",
           },
           {
             type: "paragraph",
             content:
-              "Debt consolidation combines multiple debts into a single loan or payment, potentially with a lower interest rate. This can simplify your finances and save money, but it's important to understand the pros and cons.",
+              "The traditional advice of '3-6 months of expenses' for emergency funds is overly simplistic. Your ideal emergency fund size depends on your unique situation, risk factors, and financial goals. Here's how to calculate the right amount for you.",
+          },
+          {
+            type: "calculation",
+            content: "Emergency fund calculation framework:",
+            formula: "Emergency Fund = Essential Monthly Expenses × Months × Risk Multiplier",
+            variables: {
+              "Essential Monthly Expenses": "Housing, utilities, food, insurance, minimum debt payments",
+              Months: "Base recommendation (3-6 months)",
+              "Risk Multiplier": "1.0-2.0 based on your risk factors",
+            },
           },
           {
             type: "list",
-            content: "Common debt consolidation methods:",
+            content: "Factors that increase your emergency fund need:",
             items: [
-              "Personal loans from banks or credit unions",
-              "Balance transfer credit cards with 0% intro APR",
-              "Home equity loans or lines of credit",
-              "Debt management plans through credit counseling",
-              "401(k) loans (use with extreme caution)",
+              "Self-employment or irregular income (+50-100%)",
+              "Single income household (+25-50%)",
+              "Job in declining industry or economic uncertainty (+25%)",
+              "Health issues or family medical history (+25%)",
+              "Older home or car requiring frequent repairs (+15%)",
+              "High-deductible insurance plans (+$5,000-$10,000)",
+              "Dependents (children, elderly parents) (+25% per dependent)",
+              "Limited family/friend support network (+25%)",
             ],
           },
           {
             type: "list",
-            content: "Benefits of debt consolidation:",
+            content: "Factors that may reduce your emergency fund need:",
             items: [
-              "Single monthly payment simplifies budgeting",
-              "Potentially lower interest rates",
-              "Fixed payment schedule and payoff date",
-              "May improve credit score over time",
-              "Reduces stress from managing multiple payments",
-            ],
-          },
-          {
-            type: "list",
-            content: "Risks and considerations:",
-            items: [
-              "May extend repayment period",
-              "Fees and closing costs can add up",
-              "Risk of running up new debt on cleared cards",
-              "May require collateral (home equity loans)",
-              "Doesn't address underlying spending habits",
+              "Dual income household with stable jobs (-25%)",
+              "Government job with strong security (-15%)",
+              "Excellent disability insurance coverage (-15%)",
+              "Strong family support network (-10%)",
+              "Multiple income streams (-20%)",
+              "Significant liquid investments that can be accessed (-25%)",
             ],
           },
           {
             type: "example",
             content:
-              "Lisa has $15,000 in credit card debt across 4 cards averaging 20% APR. She gets a personal loan at 12% APR to pay them off, saving $1,200 per year in interest while having just one payment.",
-          },
-          {
-            type: "tip",
-            content:
-              "Only consolidate debt if you get a lower interest rate and commit to not running up new debt. Cut up the credit cards or remove them from your wallet to avoid temptation.",
-          },
-        ],
-        keyTakeaways: [
-          "Consolidation can simplify payments and reduce interest",
-          "Only beneficial if you get a lower interest rate",
-          "Must address spending habits to avoid new debt",
-          "Consider fees and terms carefully before consolidating",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "When does debt consolidation make the most sense?",
-              options: [
-                "When you want more credit cards",
-                "When you get a lower interest rate",
-                "When you want to spend more",
-                "When you have good debt",
-              ],
-              correctAnswer: "When you get a lower interest rate",
-              explanation:
-                "Debt consolidation is most beneficial when you can secure a lower interest rate than your current debts, saving money and simplifying payments.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Negotiating with Creditors",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Working with Creditors to Find Solutions",
-          },
-          {
-            type: "paragraph",
-            content:
-              "If you're struggling with debt payments, creditors are often willing to work with you to find a solution. They'd rather receive some payment than none at all, making negotiation a valuable tool in debt management.",
+              "Sarah's calculation: Essential expenses $3,500/month. She's self-employed (+100%) with health issues (+25%) but has a working spouse (-25%). Her emergency fund target: $3,500 × 6 × 2.0 = $42,000.",
           },
           {
             type: "list",
-            content: "What you can negotiate:",
+            content: "Emergency fund tiers strategy:",
             items: [
-              "Lower interest rates",
-              "Reduced monthly payments",
-              "Payment plans or deferrals",
-              "Waived fees and penalties",
-              "Settlement for less than full amount",
-              "Removal of negative credit reporting",
+              "Tier 1: $1,000 starter emergency fund (immediate priority)",
+              "Tier 2: 1 month of essential expenses",
+              "Tier 3: 3 months of essential expenses (minimum target)",
+              "Tier 4: 6 months of essential expenses (standard target)",
+              "Tier 5: 12+ months for high-risk situations",
             ],
           },
           {
             type: "list",
-            content: "How to negotiate effectively:",
+            content: "What qualifies as a true emergency:",
             items: [
-              "Call before you miss payments",
-              "Be honest about your financial situation",
-              "Have a specific proposal ready",
-              "Ask to speak with a supervisor if needed",
-              "Get any agreement in writing",
-              "Keep detailed records of all conversations",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "John lost his job and called his credit card company before missing a payment. They agreed to reduce his minimum payment by 50% for 6 months and waived late fees, giving him time to find new employment.",
-          },
-          {
-            type: "list",
-            content: "Hardship programs often include:",
-            items: [
-              "Temporary payment reductions",
-              "Interest rate reductions",
-              "Fee waivers",
-              "Extended payment terms",
-              "Skip-payment options",
-              "Forbearance periods",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Be proactive and contact creditors as soon as you anticipate problems. They're more willing to help customers who communicate early rather than those who simply stop paying.",
-          },
-        ],
-        keyTakeaways: [
-          "Creditors often prefer negotiation to non-payment",
-          "Contact creditors before missing payments",
-          "Be honest and have a specific proposal ready",
-          "Get all agreements in writing",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "When is the best time to contact creditors about payment difficulties?",
-              options: [
-                "After missing several payments",
-                "Before missing any payments",
-                "Only when threatened with collections",
-                "Never - just stop paying",
-              ],
-              correctAnswer: "Before missing any payments",
-              explanation:
-                "Contacting creditors before missing payments shows good faith and makes them more willing to work with you on a solution.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Avoiding Debt Traps",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Recognizing and Avoiding Predatory Lending",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Some types of debt are designed to trap borrowers in cycles of debt. Learning to recognize and avoid these predatory lending practices can save you thousands of dollars and years of financial stress.",
-          },
-          {
-            type: "list",
-            content: "Common debt traps to avoid:",
-            items: [
-              "Payday loans with 400%+ APR",
-              "Title loans that risk your car",
-              "Rent-to-own agreements",
-              "Store credit cards with deferred interest",
-              "Cash advances from credit cards",
-              "Buy-here-pay-here car lots",
-            ],
-          },
-          {
-            type: "list",
-            content: "Warning signs of predatory lending:",
-            items: [
-              "Extremely high interest rates or fees",
-              "Pressure to sign immediately",
-              "No credit check required",
-              "Balloon payments or variable rates",
-              "Prepayment penalties",
-              "Loan flipping or refinancing pressure",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "A $300 payday loan with $45 fee due in 2 weeks equals 391% APR. If rolled over multiple times, the fees can exceed the original loan amount within months.",
-          },
-          {
-            type: "list",
-            content: "Better alternatives to consider:",
-            items: [
-              "Credit union personal loans",
-              "Payment plans with service providers",
-              "Borrowing from family or friends",
-              "Side gigs for extra income",
-              "Community assistance programs",
-              "Employer paycheck advances",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "If you're considering a payday loan or similar high-cost debt, first explore all other options. The temporary relief isn't worth the long-term financial damage.",
-          },
-        ],
-        keyTakeaways: [
-          "Payday loans and similar products create debt cycles",
-          "High fees and interest rates are warning signs",
-          "Always explore alternatives before high-cost borrowing",
-          "Predatory lenders target desperate borrowers",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is a major warning sign of predatory lending?",
-              options: [
-                "Low interest rates",
-                "Extremely high interest rates or fees",
-                "Long repayment terms",
-                "Credit check required",
-              ],
-              correctAnswer: "Extremely high interest rates or fees",
-              explanation:
-                "Extremely high interest rates or fees are a major red flag for predatory lending, often trapping borrowers in cycles of debt.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Building a Debt-Free Lifestyle",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Maintaining Financial Freedom After Debt Payoff",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Paying off debt is just the beginning. Building a truly debt-free lifestyle requires changing habits, mindsets, and systems to ensure you never fall back into the debt trap.",
-          },
-          {
-            type: "list",
-            content: "Habits for staying debt-free:",
-            items: [
-              "Live below your means consistently",
-              "Build and maintain an emergency fund",
-              "Use cash or debit for discretionary spending",
-              "Plan and save for large purchases",
-              "Regularly review and adjust your budget",
-              "Avoid lifestyle inflation as income grows",
-            ],
-          },
-          {
-            type: "list",
-            content: "Mindset shifts for debt-free living:",
-            items: [
-              "Delayed gratification becomes natural",
-              "Focus on experiences over possessions",
-              "Pride in financial independence",
-              "Confidence in handling financial challenges",
-              "Generosity becomes possible",
-              "Long-term thinking in all decisions",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "After paying off $30,000 in debt, Maria continued living on her debt-payoff budget but redirected those payments to savings and investments, building $50,000 in wealth within 3 years.",
-          },
-          {
-            type: "list",
-            content: "Systems to prevent future debt:",
-            items: [
-              "Automatic savings transfers",
-              "Sinking funds for irregular expenses",
-              "Regular financial check-ins",
-              "Accountability partners or groups",
-              "Clear financial goals and tracking",
-              "Emergency fund as first line of defense",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "When you pay off debt, don't increase your lifestyle immediately. Continue living on your debt-payoff budget and redirect those payments to savings and investments.",
-          },
-        ],
-        keyTakeaways: [
-          "Debt freedom requires ongoing habit changes",
-          "Emergency funds prevent future debt needs",
-          "Continue debt-payoff budget habits for wealth building",
-          "Focus on systems that prevent debt accumulation",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should you do with the money you were using for debt payments after becoming debt-free?",
-              options: [
-                "Increase lifestyle spending immediately",
-                "Redirect to savings and investments",
-                "Take on new debt for wants",
-                "Stop budgeting entirely",
-              ],
-              correctAnswer: "Redirect to savings and investments",
-              explanation:
-                "Redirecting former debt payments to savings and investments helps build wealth and prevents lifestyle inflation that could lead back to debt.",
-            },
-          ],
-        },
-      },
-    ],
-    "bill-negotiation": [
-      {
-        title: "Understanding Your Bills",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Know What You're Paying For",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Before you can negotiate your bills, you need to understand exactly what you're paying for. Many bills contain fees, charges, and services you might not need or could get for less elsewhere.",
-          },
-          {
-            type: "list",
-            content: "Common bills you can negotiate:",
-            items: [
-              "Cell phone and internet services",
-              "Cable and streaming subscriptions",
-              "Insurance premiums (auto, home, health)",
-              "Credit card interest rates and fees",
-              "Bank fees and charges",
-              "Utility bills and service charges",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to look for on your bills:",
-            items: [
-              "Base service costs vs. add-on fees",
-              "Promotional rates that have expired",
-              "Services you don't use or need",
-              "Automatic increases or rate changes",
-              "Bundled services that might cost more",
-              "Hidden fees and surcharges",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Tom's cable bill showed $89/month for internet, but included $25 in fees for premium channels he never watched and equipment he didn't need.",
-          },
-          {
-            type: "tip",
-            content:
-              "Spend 30 minutes reviewing each major bill line by line. You'll often find charges you forgot about or services you can eliminate.",
-          },
-        ],
-        keyTakeaways: [
-          "Review bills line by line to understand all charges",
-          "Look for services you don't use or need",
-          "Identify promotional rates that have expired",
-          "Understand the difference between base costs and fees",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the first step in negotiating your bills?",
-              options: [
-                "Call customer service immediately",
-                "Understand what you're currently paying for",
-                "Threaten to cancel service",
-                "Compare with competitors",
-              ],
-              correctAnswer: "Understand what you're currently paying for",
-              explanation:
-                "You need to understand your current bills and charges before you can effectively negotiate or know what to ask for.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Research and Preparation",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Arm Yourself with Information",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Successful bill negotiation requires preparation. Companies are more likely to work with you when you're informed about their competitors, current promotions, and your value as a customer.",
-          },
-          {
-            type: "list",
-            content: "Research before calling:",
-            items: [
-              "Competitor pricing and promotions",
-              "Your payment history and loyalty",
-              "Current promotions for new customers",
-              "Industry average prices",
-              "Your account status and usage patterns",
-              "Recent rate increases or policy changes",
-            ],
-          },
-          {
-            type: "list",
-            content: "Information to gather:",
-            items: [
-              "How long you've been a customer",
-              "Your payment history (on-time vs. late)",
-              "Competitor offers and pricing",
-              "Current promotions available",
-              "Your usage patterns and needs",
-              "Any service issues or complaints",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Before calling her internet provider, Sarah found that competitors offered similar service for $20 less per month and that her company was offering new customers a $30/month discount for 12 months.",
-          },
-          {
-            type: "list",
-            content: "Best times to negotiate:",
-            items: [
-              "End of month/quarter when reps have quotas",
-              "When promotional rates are expiring",
-              "After experiencing service problems",
-              "When competitors launch new promotions",
-              "During slow business periods",
-              "When you're a long-term customer",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Write down key points before calling: your research, desired outcome, and minimum acceptable offer. This keeps you focused during the conversation.",
-          },
-        ],
-        keyTakeaways: [
-          "Research competitor pricing before negotiating",
-          "Know your value as a customer",
-          "Time your calls strategically",
-          "Prepare key points and desired outcomes",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What information is most important to have before negotiating bills?",
-              options: [
-                "Your social security number",
-                "Competitor pricing and offers",
-                "Your credit score",
-                "Your income level",
-              ],
-              correctAnswer: "Competitor pricing and offers",
-              explanation:
-                "Knowing what competitors offer gives you leverage in negotiations and shows the company you've done your research.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Negotiation Tactics That Work",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Proven Strategies for Successful Negotiations",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Effective bill negotiation is part art, part science. The right approach, tone, and timing can save you hundreds of dollars per year on your regular expenses.",
-          },
-          {
-            type: "list",
-            content: "Effective negotiation strategies:",
-            items: [
-              "Be polite but persistent",
-              "Ask to speak with retention department",
-              "Mention competitor offers specifically",
-              "Be prepared to walk away",
-              "Ask 'What can you do to help me?'",
-              "Request supervisor if needed",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to say that works:",
-            items: [
-              "'I've been a loyal customer for X years...'",
-              "'I found a better offer with [competitor]...'",
-              "'What promotions do you have available?'",
-              "'I'm considering canceling unless we can work something out'",
-              "'Can you match this competitor's price?'",
-              "'What's the best you can do for me?'",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Mike called his cell phone company: 'I've been a customer for 5 years with perfect payment history. T-Mobile is offering the same plan for $40 less. Can you match that or I'll need to switch?' They matched the price immediately.",
-          },
-          {
-            type: "list",
-            content: "What NOT to do:",
-            items: [
-              "Don't be rude or aggressive",
-              "Don't accept the first 'no'",
-              "Don't negotiate without research",
-              "Don't make empty threats",
-              "Don't settle for small concessions too quickly",
-              "Don't forget to get agreements in writing",
-            ],
-          },
-          {
-            type: "list",
-            content: "If they say no:",
-            items: [
-              "Ask to speak with a supervisor",
-              "Call back and try a different representative",
-              "Ask about future promotions or callbacks",
-              "Consider actually canceling and switching",
-              "Try the retention/cancellation department",
-              "Be willing to compromise on a middle ground",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "The retention department has more authority to offer discounts than regular customer service. Always ask to be transferred there for the best deals.",
-          },
-        ],
-        keyTakeaways: [
-          "Be polite but persistent in negotiations",
-          "Mention specific competitor offers",
-          "Ask for the retention department",
-          "Be prepared to actually walk away",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Which department typically has the most authority to offer discounts?",
-              options: ["Billing department", "Technical support", "Retention department", "New customer sales"],
-              correctAnswer: "Retention department",
-              explanation:
-                "The retention department is specifically designed to keep customers from leaving and typically has more authority to offer discounts and promotions.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Negotiating Specific Services",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Service-Specific Negotiation Strategies",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Different types of services require different negotiation approaches. Understanding the specific tactics that work for each industry can significantly improve your success rate.",
-          },
-          {
-            type: "list",
-            content: "Cell phone negotiations:",
-            items: [
-              "Mention competitor promotions specifically",
-              "Ask about loyalty discounts",
-              "Negotiate data overages and fees",
-              "Request free phone upgrades",
-              "Ask for bill credits for service issues",
-              "Consider switching to prepaid plans",
-            ],
-          },
-          {
-            type: "list",
-            content: "Internet/Cable negotiations:",
-            items: [
-              "Unbundle services you don't need",
-              "Ask for new customer pricing",
-              "Negotiate equipment rental fees",
-              "Request speed upgrades at same price",
-              "Ask about promotional rates",
-              "Consider cord-cutting alternatives",
-            ],
-          },
-          {
-            type: "list",
-            content: "Insurance negotiations:",
-            items: [
-              "Shop quotes from multiple companies",
-              "Ask about all available discounts",
-              "Increase deductibles to lower premiums",
-              "Bundle policies for discounts",
-              "Review coverage annually",
-              "Maintain good credit and driving record",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Lisa called her auto insurance company with quotes from three competitors. They not only matched the lower price but found additional discounts she qualified for, saving her $400 annually.",
-          },
-          {
-            type: "list",
-            content: "Credit card negotiations:",
-            items: [
-              "Request lower interest rates",
-              "Ask for annual fee waivers",
-              "Negotiate payment plans if struggling",
-              "Request late fee removals",
-              "Ask for credit limit increases",
-              "Mention competitor card offers",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "For insurance, get quotes from at least 3 companies annually. Rates change frequently, and loyalty doesn't always pay in insurance.",
-          },
-        ],
-        keyTakeaways: [
-          "Each service type requires specific negotiation tactics",
-          "Insurance should be shopped annually",
-          "Unbundling services often saves money",
-          "Loyalty discounts exist but must be requested",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "How often should you shop for new insurance quotes?",
-              options: ["Every 5 years", "Only when rates increase", "Annually", "Never if you're satisfied"],
-              correctAnswer: "Annually",
-              explanation:
-                "Insurance rates change frequently, and shopping annually ensures you're getting the best available rate, even if you're satisfied with your current service.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Alternative Cost-Cutting Strategies",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Beyond Negotiation: Other Ways to Cut Bills",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Sometimes negotiation isn't enough or isn't possible. Having alternative strategies to reduce your bills ensures you can lower expenses even when companies won't budge on pricing.",
-          },
-          {
-            type: "list",
-            content: "Service alternatives to consider:",
-            items: [
-              "Streaming services instead of cable",
-              "Prepaid cell plans instead of contracts",
-              "Generic brands instead of name brands",
-              "DIY services instead of professional",
-              "Public transportation instead of car ownership",
-              "Library services instead of subscriptions",
-            ],
-          },
-          {
-            type: "list",
-            content: "Timing strategies:",
-            items: [
-              "Buy insurance 6 months in advance",
-              "Shop utilities during off-peak seasons",
-              "Time major purchases for sales periods",
-              "Renew subscriptions during promotional periods",
-              "Switch services during competitor price wars",
-              "Cancel and re-subscribe for new customer rates",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Instead of paying $120/month for cable, David switched to $15 Netflix, $12 Hulu, and $8 Disney+, saving $85 monthly while getting more content he actually watches.",
-          },
-          {
-            type: "list",
-            content: "Sharing and group strategies:",
-            items: [
-              "Family plans for cell phones",
-              "Shared streaming service accounts",
-              "Group buying for bulk discounts",
-              "Neighborhood internet sharing",
-              "Car sharing instead of ownership",
-              "Tool libraries and sharing groups",
-            ],
-          },
-          {
-            type: "list",
-            content: "Elimination strategies:",
-            items: [
-              "Cancel unused subscriptions",
-              "Eliminate redundant services",
-              "Downgrade to basic plans",
-              "Remove premium add-ons",
-              "Switch to free alternatives",
-              "Reduce frequency of services",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Audit your subscriptions monthly. Many people pay for services they forgot about or no longer use. A simple cancellation can save hundreds per year.",
-          },
-        ],
-        keyTakeaways: [
-          "Consider alternatives when negotiation fails",
-          "Timing purchases and renewals saves money",
-          "Sharing costs with others reduces individual expenses",
-          "Regular subscription audits prevent waste",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's a simple way to reduce monthly expenses without negotiating?",
-              options: ["Get a second job", "Cancel unused subscriptions", "Move to a cheaper city", "Sell your car"],
-              correctAnswer: "Cancel unused subscriptions",
-              explanation:
-                "Canceling unused subscriptions is the simplest way to immediately reduce monthly expenses without major lifestyle changes or negotiations.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Tracking Your Savings Success",
-        duration: "3 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Measuring and Maintaining Your Bill Reductions",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Successfully negotiating lower bills is just the beginning. Tracking your savings and maintaining those reductions over time ensures you continue to benefit from your efforts.",
-          },
-          {
-            type: "list",
-            content: "Track your negotiation wins:",
-            items: [
-              "Document old vs. new rates",
-              "Calculate monthly and annual savings",
-              "Note expiration dates of promotional rates",
-              "Keep records of agreements",
-              "Set reminders for future negotiations",
-              "Track cumulative savings over time",
-            ],
-          },
-          {
-            type: "list",
-            content: "Maintain your savings:",
-            items: [
-              "Set calendar reminders before promotions expire",
-              "Monitor bills for unexpected increases",
-              "Re-negotiate annually or when rates change",
-              "Continue shopping competitors regularly",
-              "Review and adjust services as needs change",
-              "Stay informed about new options and technologies",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "After negotiating all her bills, Maria saved $150/month ($1,800/year). She set up automatic transfers to move this savings to her emergency fund, turning bill negotiation into wealth building.",
-          },
-          {
-            type: "list",
-            content: "What to do with bill savings:",
-            items: [
-              "Add to emergency fund",
-              "Increase retirement contributions",
-              "Pay down debt faster",
-              "Save for specific goals",
-              "Invest in index funds",
-              "Build sinking funds for future expenses",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Automatically transfer your bill savings to a separate account so you don't accidentally spend them. This turns expense reduction into wealth building.",
-          },
-        ],
-        keyTakeaways: [
-          "Document and track all negotiation successes",
-          "Set reminders for when promotional rates expire",
-          "Automatically save the money you're no longer spending",
-          "Continue monitoring and re-negotiating regularly",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should you do with the money saved from bill negotiations?",
-              options: [
-                "Spend it on entertainment",
-                "Automatically save or invest it",
-                "Use it for more bills",
-                "Keep it in checking account",
-              ],
-              correctAnswer: "Automatically save or invest it",
-              explanation:
-                "Automatically saving or investing bill savings ensures the money goes toward building wealth rather than being spent on other things.",
-            },
-          ],
-        },
-      },
-    ],
-    investing: [
-      {
-        title: "Why Investing Matters",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Building Wealth Through Time and Compound Growth",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Investing is how you make your money work for you instead of just working for money. While saving preserves your wealth, investing grows it over time through the power of compound returns.",
-          },
-          {
-            type: "list",
-            content: "Why investing beats saving alone:",
-            items: [
-              "Inflation erodes cash value over time",
-              "Investment returns typically beat inflation",
-              "Compound growth accelerates wealth building",
-              "Passive income potential",
-              "Long-term wealth preservation",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "$10,000 in a savings account at 1% grows to $10,100 in a year. The same amount invested earning 7% annually becomes $19,672 after 10 years, while savings only reaches $11,046.",
-          },
-          {
-            type: "list",
-            content: "The cost of waiting to invest:",
-            items: [
-              "Lost compound growth opportunities",
-              "Inflation reduces purchasing power",
-              "Less time for market volatility to smooth out",
-              "Higher required savings rate later",
-              "Missed dollar-cost averaging benefits",
-              "Delayed financial independence",
-            ],
-          },
-          {
-            type: "list",
-            content: "Common investing fears and realities:",
-            items: [
-              "Fear: 'I might lose money' - Reality: Diversified long-term investing has positive returns",
-              "Fear: 'It's too complicated' - Reality: Simple index funds work for most people",
-              "Fear: 'I need a lot of money' - Reality: You can start with $1",
-              "Fear: 'I need perfect timing' - Reality: Time in market beats timing the market",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Start investing even small amounts immediately. A 25-year-old investing $100/month until retirement will have more wealth than a 35-year-old investing $200/month.",
-          },
-        ],
-        keyTakeaways: [
-          "Investing grows wealth while saving only preserves it",
-          "Compound growth accelerates over time",
-          "Starting early is more important than starting big",
-          "Long-term investing reduces risk through time",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main advantage of investing over just saving money?",
-              options: [
-                "Guaranteed returns",
-                "No risk involved",
-                "Compound growth over time",
-                "Immediate access to funds",
-              ],
-              correctAnswer: "Compound growth over time",
-              explanation:
-                "Investing allows your money to grow through compound returns over time, significantly outpacing savings accounts and inflation.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Investment Account Types",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Choosing the Right Account for Your Goals",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Different investment accounts serve different purposes and have different tax advantages. Understanding these accounts helps you optimize your investment strategy and minimize taxes.",
-          },
-          {
-            type: "list",
-            content: "Retirement accounts (tax-advantaged):",
-            items: [
-              "401(k): Employer-sponsored, often with matching",
-              "Traditional IRA: Tax deduction now, pay taxes later",
-              "Roth IRA: Pay taxes now, tax-free growth and withdrawals",
-              "SEP-IRA: For self-employed individuals",
-              "HSA: Triple tax advantage for health expenses",
-            ],
-          },
-          {
-            type: "list",
-            content: "Taxable investment accounts:",
-            items: [
-              "Individual brokerage accounts",
-              "Joint accounts for couples",
-              "No contribution limits",
-              "More flexibility for withdrawals",
-              "Pay taxes on gains and dividends",
-              "Good for goals before retirement",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Sarah contributes to her 401(k) up to the company match (free money), then maxes her Roth IRA ($6,000), then uses a taxable account for her house down payment savings.",
-          },
-          {
-            type: "list",
-            content: "Account selection strategy:",
-            items: [
-              "Step 1: 401(k) up to company match",
-              "Step 2: Max Roth IRA if eligible",
-              "Step 3: Max 401(k) contribution",
-              "Step 4: Taxable accounts for additional investing",
-              "Step 5: Consider HSA if available",
-              "Adjust based on income and tax situation",
-            ],
-          },
-          {
-            type: "list",
-            content: "Key account features to compare:",
-            items: [
-              "Contribution limits and deadlines",
-              "Tax treatment of contributions and withdrawals",
-              "Early withdrawal penalties and exceptions",
-              "Required minimum distributions",
-              "Investment options available",
-              "Fees and expense ratios",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Always get the full 401(k) match from your employer first - it's free money with an immediate 100% return on investment.",
-          },
-        ],
-        keyTakeaways: [
-          "Different accounts serve different purposes",
-          "Always get full employer 401(k) match first",
-          "Roth accounts provide tax-free growth",
-          "Taxable accounts offer more flexibility",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should be your first investment priority?",
-              options: [
-                "Maxing out Roth IRA",
-                "Opening a taxable account",
-                "Getting full employer 401(k) match",
-                "Buying individual stocks",
-              ],
-              correctAnswer: "Getting full employer 401(k) match",
-              explanation:
-                "Employer 401(k) matching is free money with an immediate 100% return, making it the highest priority for new investors.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Understanding Risk and Return",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "The Fundamental Relationship in Investing",
-          },
-          {
-            type: "paragraph",
-            content:
-              "All investing involves a trade-off between risk and potential return. Understanding this relationship helps you make informed decisions about your investment strategy and set realistic expectations.",
-          },
-          {
-            type: "list",
-            content: "Risk-return spectrum (low to high risk):",
-            items: [
-              "Savings accounts: 0-1% return, virtually no risk",
-              "Government bonds: 2-4% return, very low risk",
-              "Corporate bonds: 3-6% return, low to moderate risk",
-              "Stock market index funds: 6-10% average, moderate risk",
-              "Individual stocks: Highly variable, high risk",
-              "Cryptocurrency: Extremely variable, very high risk",
-            ],
-          },
-          {
-            type: "list",
-            content: "Types of investment risk:",
-            items: [
-              "Market risk: Overall market declines",
-              "Inflation risk: Purchasing power erosion",
-              "Interest rate risk: Bond values fluctuate",
-              "Company risk: Individual business failure",
-              "Liquidity risk: Difficulty selling investments",
-              "Currency risk: Foreign exchange fluctuations",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "During 2008, the S&P 500 fell 37%, but over the following decade it averaged 13.6% annual returns. Short-term volatility vs. long-term growth.",
-          },
-          {
-            type: "list",
-            content: "Managing investment risk:",
-            items: [
-              "Diversification across asset classes",
-              "Long-term investment horizon",
-              "Dollar-cost averaging",
-              "Regular rebalancing",
-              "Age-appropriate asset allocation",
-              "Emergency fund for short-term needs",
-            ],
-          },
-          {
-            type: "list",
-            content: "Risk tolerance factors:",
-            items: [
-              "Age and time horizon",
-              "Financial goals and timeline",
-              "Income stability",
-              "Emergency fund size",
-              "Emotional comfort with volatility",
-              "Overall financial situation",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Your risk tolerance should match your time horizon. Money needed in 5 years should be in lower-risk investments than money for retirement in 30 years.",
-          },
-        ],
-        keyTakeaways: [
-          "Higher potential returns come with higher risk",
-          "Diversification helps manage risk",
-          "Time horizon should determine risk level",
-          "Short-term volatility is normal in long-term investing",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the best way to manage investment risk?",
-              options: [
-                "Avoid all risky investments",
-                "Put everything in one safe investment",
-                "Diversify across different asset types",
-                "Try to time the market perfectly",
-              ],
-              correctAnswer: "Diversify across different asset types",
-              explanation:
-                "Diversification across different asset types helps reduce risk while maintaining growth potential, as different investments perform well at different times.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Index Funds: The Simple Solution",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Instant Diversification with Low Costs",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Index funds are the perfect investment for most people. They provide instant diversification, low costs, and market-matching returns without requiring you to pick individual stocks or time the market.",
-          },
-          {
-            type: "list",
-            content: "What index funds are:",
-            items: [
-              "Funds that track a market index (like S&P 500)",
-              "Own hundreds or thousands of stocks automatically",
-              "Passively managed with very low fees",
-              "Provide instant diversification",
-              "Match market performance over time",
-              "Available for stocks, bonds, and international markets",
-            ],
-          },
-          {
-            type: "list",
-            content: "Benefits of index fund investing:",
-            items: [
-              "Low expense ratios (often under 0.1%)",
-              "Instant diversification reduces risk",
-              "No need to research individual stocks",
-              "Consistently outperform most active funds",
-              "Simple to understand and implement",
-              "Available in all account types",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "The Vanguard S&P 500 Index Fund (VFIAX) owns all 500 companies in the S&P 500, costs just 0.04% annually, and has averaged about 10% returns over decades.",
-          },
-          {
-            type: "list",
-            content: "Popular index fund categories:",
-            items: [
-              "Total Stock Market: Entire US stock market",
-              "S&P 500: 500 largest US companies",
-              "International: Foreign developed markets",
-              "Emerging Markets: Developing countries",
-              "Bond Index: Government and corporate bonds",
-              "Target Date: Automatically adjusts over time",
-            ],
-          },
-          {
-            type: "list",
-            content: "Simple index fund portfolios:",
-            items: [
-              "Three-fund: US stocks, international stocks, bonds",
-              "Two-fund: Total stock market, total bond market",
-              "Target date fund: All-in-one solution",
-              "Age in bonds: Stock/bond allocation by age",
-              "Adjust based on risk tolerance and timeline",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "A simple portfolio of 70% total stock market index and 30% total bond market index works well for most investors and requires minimal maintenance.",
-          },
-        ],
-        keyTakeaways: [
-          "Index funds provide instant diversification at low cost",
-          "They consistently outperform most actively managed funds",
-          "Simple portfolios with 2-3 index funds work well",
-          "Target date funds offer complete automation",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main advantage of index funds over individual stocks?",
-              options: [
-                "Higher returns guaranteed",
-                "Instant diversification",
-                "No risk involved",
-                "Daily trading opportunities",
-              ],
-              correctAnswer: "Instant diversification",
-              explanation:
-                "Index funds provide instant diversification across hundreds or thousands of stocks, reducing the risk of any single company affecting your entire investment.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Dollar-Cost Averaging",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Investing Consistently Regardless of Market Conditions",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Dollar-cost averaging means investing a fixed amount regularly, regardless of market conditions. This strategy removes emotion and timing from investing while potentially reducing your average cost per share.",
-          },
-          {
-            type: "list",
-            content: "How dollar-cost averaging works:",
-            items: [
-              "Invest the same amount on a regular schedule",
-              "Buy more shares when prices are low",
-              "Buy fewer shares when prices are high",
-              "Average cost per share smooths out over time",
-              "Removes need to time the market",
-              "Builds consistent investing habits",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Investing $500 monthly: When shares cost $50, you buy 10 shares. When they cost $25, you buy 20 shares. Your average cost is $33.33 per share, better than the $37.50 average price.",
-          },
-          {
-            type: "list",
-            content: "Benefits of dollar-cost averaging:",
-            items: [
-              "Reduces impact of market volatility",
-              "Eliminates need to time the market",
-              "Builds disciplined investing habits",
-              "Works well with automatic investing",
-              "Reduces emotional investing decisions",
-              "Potentially lowers average cost basis",
-            ],
-          },
-          {
-            type: "list",
-            content: "Setting up dollar-cost averaging:",
-            items: [
-              "Choose a fixed amount you can invest regularly",
-              "Set up automatic transfers from checking",
-              "Pick a consistent schedule (weekly, monthly)",
-              "Invest regardless of market news or feelings",
-              "Increase amount when income grows",
-              "Stay consistent through market ups and downs",
-            ],
-          },
-          {
-            type: "list",
-            content: "Dollar-cost averaging vs. lump sum:",
-            items: [
-              "Lump sum often performs better mathematically",
-              "Dollar-cost averaging reduces emotional stress",
-              "Most people don't have large lump sums available",
-              "Regular investing fits most people's cash flow",
-              "Both strategies work well long-term",
-              "Choose based on your situation and comfort",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Set up automatic investing so dollar-cost averaging happens without you having to think about it. Automation removes emotion and ensures consistency.",
-          },
-        ],
-        keyTakeaways: [
-          "Invest the same amount regularly regardless of market conditions",
-          "Potentially reduces average cost per share over time",
-          "Removes emotion and timing from investing",
-          "Works best when automated",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main benefit of dollar-cost averaging?",
-              options: [
-                "Guarantees higher returns",
-                "Eliminates all investment risk",
-                "Removes need to time the market",
-                "Only works in bull markets",
-              ],
-              correctAnswer: "Removes need to time the market",
-              explanation:
-                "Dollar-cost averaging removes the need to time the market by investing consistently regardless of market conditions, reducing the impact of volatility over time.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Rebalancing Your Portfolio",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Maintaining Your Target Asset Allocation",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Rebalancing means adjusting your portfolio back to your target allocation when market movements cause it to drift. This disciplined approach helps you buy low and sell high automatically.",
-          },
-          {
-            type: "list",
-            content: "Why portfolios need rebalancing:",
-            items: [
-              "Different investments grow at different rates",
-              "Market movements change your allocation",
-              "Risk level changes without rebalancing",
-              "Some assets become overweighted",
-              "Original strategy gets diluted over time",
-              "Emotional biases can creep in",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Your target is 70% stocks, 30% bonds. After a good stock year, you're at 80% stocks, 20% bonds. Rebalancing sells some stocks and buys bonds to get back to 70/30.",
-          },
-          {
-            type: "list",
-            content: "When to rebalance:",
-            items: [
-              "Calendar rebalancing: Set schedule (quarterly, annually)",
-              "Threshold rebalancing: When allocation drifts 5-10%",
-              "Combination approach: Check quarterly, rebalance if needed",
-              "During major market movements",
-              "When adding new money to accounts",
-              "During life changes affecting risk tolerance",
-            ],
-          },
-          {
-            type: "list",
-            content: "How to rebalance efficiently:",
-            items: [
-              "Use new contributions to buy underweighted assets",
-              "Rebalance within tax-advantaged accounts first",
-              "Consider tax implications in taxable accounts",
-              "Use dividend reinvestment strategically",
-              "Rebalance across all accounts together",
-              "Keep transaction costs low",
-            ],
-          },
-          {
-            type: "list",
-            content: "Rebalancing benefits:",
-            items: [
-              "Maintains your desired risk level",
-              "Forces you to buy low and sell high",
-              "Prevents any single asset from dominating",
-              "Keeps emotions out of investment decisions",
-              "Maintains diversification benefits",
-              "Sticks to your long-term strategy",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Rebalance annually or when your allocation drifts more than 5-10% from targets. More frequent rebalancing usually isn't worth the effort and costs.",
-          },
-        ],
-        keyTakeaways: [
-          "Rebalancing maintains your target asset allocation",
-          "It forces you to buy low and sell high",
-          "Annual rebalancing is sufficient for most investors",
-          "Use new contributions to rebalance efficiently",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main purpose of rebalancing your investment portfolio?",
-              options: [
-                "To maximize returns",
-                "To maintain your target asset allocation",
-                "To time the market",
-                "To avoid all losses",
-              ],
-              correctAnswer: "To maintain your target asset allocation",
-              explanation:
-                "Rebalancing maintains your target asset allocation, ensuring your portfolio's risk level stays consistent with your goals and timeline.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Common Investing Mistakes",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Avoiding Costly Investment Errors",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Even experienced investors make mistakes that can cost them thousands of dollars and years of progress. Learning about common pitfalls helps you avoid them and stay on track toward your financial goals.",
-          },
-          {
-            type: "list",
-            content: "Emotional investing mistakes:",
-            items: [
-              "Panic selling during market downturns",
-              "FOMO buying during market peaks",
-              "Trying to time the market",
-              "Chasing last year's hot investments",
-              "Checking accounts too frequently",
-              "Making decisions based on news headlines",
-            ],
-          },
-          {
-            type: "list",
-            content: "Strategy mistakes:",
-            items: [
-              "Not diversifying enough",
-              "Paying high fees for actively managed funds",
-              "Not taking advantage of employer match",
-              "Waiting for the 'perfect' time to start",
-              "Not increasing contributions with income",
-              "Ignoring tax-advantaged accounts",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "During the 2008 financial crisis, investors who panic-sold missed the recovery. Those who stayed invested or bought more during the downturn saw significant gains in the following years.",
-          },
-          {
-            type: "list",
-            content: "How to avoid common mistakes:",
-            items: [
-              "Create an investment plan and stick to it",
-              "Automate investments to remove emotion",
-              "Focus on low-cost index funds",
-              "Don't check accounts daily",
-              "Increase contributions regularly",
-              "Stay educated but avoid information overload",
-            ],
-          },
-          {
-            type: "list",
-            content: "Red flags to watch for:",
-            items: [
-              "Promises of guaranteed high returns",
-              "Pressure to invest immediately",
-              "Complex investments you don't understand",
-              "High fees and commissions",
-              "Get-rich-quick schemes",
-              "Advice from unqualified sources",
-            ],
-          },
-          {
-            type: "list",
-            content: "Building good investing habits:",
-            items: [
-              "Start early, even with small amounts",
-              "Invest consistently regardless of market conditions",
-              "Keep costs low with index funds",
-              "Maintain appropriate diversification",
-              "Rebalance periodically",
-              "Stay focused on long-term goals",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "The biggest investing mistake is not starting. Even a imperfect investment plan that you start today is better than a perfect plan you never implement.",
-          },
-        ],
-        keyTakeaways: [
-          "Emotional decisions are the biggest investing mistakes",
-          "Automation helps avoid timing and emotional errors",
-          "High fees can significantly reduce long-term returns",
-          "Starting early is more important than perfect timing",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is often considered the biggest investing mistake?",
-              options: [
-                "Choosing the wrong stocks",
-                "Not starting to invest",
-                "Not checking accounts daily",
-                "Investing in bonds",
-              ],
-              correctAnswer: "Not starting to invest",
-              explanation:
-                "The biggest investing mistake is not starting at all. Time and compound growth are more important than perfect investment selection or timing.",
-            },
-          ],
-        },
-      },
-    ],
-    "emergency-fund": [
-      {
-        title: "Why You Need an Emergency Fund",
-        duration: "3 min",
-        points: 10,
-        content: [
-          {
-            type: "heading",
-            content: "Your Financial Safety Net",
-          },
-          {
-            type: "paragraph",
-            content:
-              "An emergency fund is money set aside specifically for unexpected expenses or financial emergencies. It's your first line of defense against going into debt when life throws you a curveball.",
-          },
-          {
-            type: "list",
-            content: "What qualifies as an emergency:",
-            items: [
-              "Job loss or reduced income",
-              "Major medical expenses",
-              "Car repairs or replacement",
-              "Home repairs (roof, HVAC, plumbing)",
+              "Job loss or significant income reduction",
+              "Major medical expenses not covered by insurance",
+              "Essential home repairs (roof, HVAC, plumbing)",
+              "Car repairs needed for work transportation",
               "Family emergencies requiring travel",
-              "Unexpected tax bills",
+              "Unexpected tax bills or legal expenses",
             ],
           },
           {
             type: "list",
             content: "What is NOT an emergency:",
             items: [
-              "Vacations or travel",
-              "Holiday gifts",
-              "Sale items you want to buy",
-              "Regular car maintenance",
-              "Annual insurance premiums",
-              "Predictable seasonal expenses",
+              "Vacations or travel opportunities",
+              "Holiday gifts or celebrations",
+              "Sale items or 'good deals'",
+              "Regular maintenance (oil changes, annual insurance)",
+              "Predictable expenses (back-to-school, seasonal)",
+              "Investment opportunities",
             ],
           },
           {
-            type: "example",
+            type: "case-study",
             content:
-              "Sarah's car needed a $1,200 transmission repair. With her emergency fund, she paid cash and continued her normal budget. Without it, she would have used credit cards and paid interest for months.",
-          },
-          {
-            type: "list",
-            content: "Benefits of having an emergency fund:",
-            items: [
-              "Prevents debt accumulation during crises",
-              "Reduces financial stress and anxiety",
-              "Provides peace of mind",
-              "Allows you to take calculated risks",
-              "Prevents disruption of long-term financial goals",
-              "Gives you time to make good decisions",
-            ],
+              "Emergency Fund in Action: When Tom lost his job, his 8-month emergency fund allowed him to be selective in his job search, ultimately landing a position with 30% higher pay. Without the fund, he would have taken the first offer out of desperation.",
           },
           {
             type: "tip",
             content:
-              "Think of your emergency fund as insurance you pay yourself. It's not an investment - it's protection that allows your other financial strategies to work.",
+              "Keep your emergency fund in a separate high-yield savings account with a different bank than your checking account. This creates a psychological barrier that prevents casual spending.",
           },
         ],
         keyTakeaways: [
-          "Emergency funds prevent debt during unexpected expenses",
-          "True emergencies are unpredictable and necessary",
-          "Emergency funds provide peace of mind and financial stability",
-          "They protect your other financial goals from disruption",
+          "Emergency fund size should be personalized based on your risk factors",
+          "Essential expenses, not total spending, should determine the target",
+          "Build in tiers, starting with $1,000 then expanding gradually",
+          "True emergencies are unpredictable and necessary expenses",
         ],
         quiz: {
           questions: [
             {
-              question: "Which of these is a true financial emergency?",
+              question: "Which factor would most increase your emergency fund target?",
               options: [
-                "A vacation you want to take",
-                "Unexpected job loss",
-                "Holiday shopping",
-                "A sale on electronics",
+                "Having a working spouse",
+                "Being self-employed with irregular income",
+                "Living in a new home",
+                "Having excellent health insurance",
               ],
-              correctAnswer: "Unexpected job loss",
+              correctAnswer: "Being self-employed with irregular income",
               explanation:
-                "Job loss is a true emergency because it's unpredictable, necessary to address, and can significantly impact your financial stability.",
+                "Self-employment with irregular income significantly increases financial uncertainty and the likelihood of income disruption, requiring a larger emergency fund for protection.",
             },
           ],
         },
       },
       {
-        title: "How Much to Save",
-        duration: "4 min",
-        points: 15,
+        title: "Advanced Saving Strategies",
+        duration: "6 min",
+        points: 18,
         content: [
           {
             type: "heading",
-            content: "Determining Your Emergency Fund Target",
+            content: "Beyond Basic Saving: Advanced Techniques for Wealth Building",
           },
           {
             type: "paragraph",
             content:
-              "The right emergency fund size depends on your personal situation, job stability, and monthly expenses. Most experts recommend 3-6 months of expenses, but your target might be different.",
+              "Once you've mastered basic saving habits, advanced strategies can accelerate your wealth building. These techniques leverage psychology, tax advantages, and compound growth to maximize your savings potential.",
           },
           {
             type: "list",
-            content: "Standard emergency fund guidelines:",
+            content: "The savings rate ladder strategy:",
             items: [
-              "3 months of expenses: Stable job, dual income household",
-              "6 months of expenses: Single income, less stable job",
-              "9-12 months: Self-employed, commission-based income",
-              "Start with $1,000 minimum for beginners",
-              "Adjust based on your specific situation",
-              "Consider both essential and total monthly expenses",
+              "Start with 1% of income saved automatically",
+              "Increase by 1% every month until you reach 20%+",
+              "Use raises and bonuses to boost savings rate",
+              "Track your progress and celebrate milestones",
+              "Adjust lifestyle gradually to accommodate higher savings",
+              "Aim for 50%+ savings rate for early retirement",
             ],
           },
           {
-            type: "list",
-            content: "Factors that increase your target:",
-            items: [
-              "Irregular or seasonal income",
-              "Self-employment or freelance work",
-              "Single income household",
-              "Health issues or chronic conditions",
-              "Older home or car requiring more repairs",
-              "Industry prone to layoffs",
-            ],
+            type: "calculation",
+            content: "Time to financial independence calculation:",
+            formula: "Years to FI = ln(1 + (FI Number / Annual Savings)) / ln(1 + Investment Return)",
+            variables: {
+              "FI Number": "25x your annual expenses (4% withdrawal rule)",
+              "Annual Savings": "How much you save per year",
+              "Investment Return": "Expected annual return (typically 7-8%)",
+            },
           },
           {
             type: "example",
             content:
-              "Mike spends $4,000/month total but only $2,800 on essentials (housing, food, utilities, insurance). His emergency fund target is $8,400-$16,800 based on essential expenses.",
+              "If you need $1M for financial independence and save $50,000/year with 7% returns, you'll reach FI in approximately 14 years. Increase savings to $75,000/year and you'll reach it in 11 years.",
           },
           {
             type: "list",
-            content: "Calculating your target amount:",
+            content: "Tax-advantaged saving strategies:",
             items: [
-              "List all essential monthly expenses",
-              "Include: housing, utilities, food, insurance, minimum debt payments",
-              "Exclude: entertainment, dining out, subscriptions",
-              "Multiply by 3-6 months (or more if needed)",
-              "Start with a smaller goal if the full amount feels overwhelming",
-              "Increase target as your situation changes",
+              "Max out 401(k) contributions ($22,500 in 2023, $30,000 if 50+)",
+              "Contribute to Roth IRA ($6,000 in 2023, $7,000 if 50+)",
+              "Use HSA as retirement account (triple tax advantage)",
+              "Take advantage of employer matches (free money)",
+              "Consider backdoor Roth conversions if income is too high",
+              "Use dependent care FSA for childcare expenses",
             ],
           },
           {
             type: "list",
-            content: "Starter emergency fund approach:",
+            content: "Behavioral saving hacks:",
             items: [
-              "Begin with $500-$1,000 goal",
-              "Focus on this before other financial goals",
-              "Build quickly with intense effort",
-              "Then work on debt payoff",
-              "Return to build full emergency fund",
-              "This prevents new debt during debt payoff",
+              "Save all windfalls (tax refunds, bonuses, gifts)",
+              "Use the 'pay yourself first' principle",
+              "Implement spending delays (24-hour rule for purchases)",
+              "Create artificial scarcity (hide money from yourself)",
+              "Use envelope method for discretionary spending",
+              "Gamify saving with challenges and rewards",
             ],
+          },
+          {
+            type: "list",
+            content: "Geographic arbitrage strategies:",
+            items: [
+              "Live in lower cost-of-living areas while earning higher wages",
+              "Work remotely from cheaper locations",
+              "House hacking (rent out rooms to reduce housing costs)",
+              "Consider international locations for retirement",
+              "Take advantage of state tax differences",
+              "Time major purchases around sales tax holidays",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Advanced Saver Profile: Maria saves 60% of her $80,000 income by living in a low-cost area, house hacking, maxing out all tax-advantaged accounts, and automating everything. She's on track to retire in 12 years at age 40.",
+          },
+          {
+            type: "list",
+            content: "Income optimization for saving:",
+            items: [
+              "Negotiate salary increases annually",
+              "Develop multiple income streams",
+              "Invest in skills that increase earning potential",
+              "Start a side business for additional income",
+              "Optimize tax withholdings to avoid large refunds",
+              "Consider job changes for significant pay increases",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't sacrifice your health, relationships, or current happiness for extreme saving. Find a sustainable balance that allows you to enjoy life while building wealth.",
           },
           {
             type: "tip",
             content:
-              "Base your emergency fund on essential expenses, not your total spending. In an emergency, you'll cut non-essential spending first.",
+              "The most powerful advanced saving strategy is increasing your income while keeping expenses constant. A $10,000 raise can become $10,000 in additional annual savings if you don't inflate your lifestyle.",
           },
         ],
         keyTakeaways: [
-          "3-6 months of essential expenses is the standard target",
-          "Adjust based on job stability and personal situation",
-          "Start with $1,000 if the full amount feels overwhelming",
-          "Base calculations on essential expenses, not total spending",
+          "Advanced strategies can dramatically accelerate wealth building",
+          "Tax-advantaged accounts provide powerful saving opportunities",
+          "Behavioral hacks help overcome psychological barriers to saving",
+          "Income optimization is often more powerful than expense cutting",
         ],
         quiz: {
           questions: [
             {
-              question: "How should you calculate your emergency fund target?",
+              question: "What is the most powerful advanced saving strategy?",
               options: [
-                "Based on your total monthly spending",
-                "Based on essential monthly expenses",
-                "Based on your monthly income",
-                "Based on your debt payments",
+                "Cutting all discretionary expenses",
+                "Moving to the cheapest possible location",
+                "Increasing income while keeping expenses constant",
+                "Investing in high-risk, high-return investments",
               ],
-              correctAnswer: "Based on essential monthly expenses",
+              correctAnswer: "Increasing income while keeping expenses constant",
               explanation:
-                "Emergency funds should be based on essential expenses because you'll cut non-essential spending during a true emergency.",
+                "Increasing income while avoiding lifestyle inflation allows you to save 100% of the income increase, which is often more impactful than cutting expenses.",
             },
           ],
         },
       },
       {
-        title: "Where to Keep Your Emergency Fund",
-        duration: "4 min",
-        points: 15,
+        title: "Sinking Funds and Goal-Based Saving",
+        duration: "5 min",
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Balancing Accessibility and Growth",
+            content: "Strategic Saving for Predictable Expenses",
           },
           {
             type: "paragraph",
             content:
-              "Your emergency fund needs to be easily accessible when you need it, but you also want it to earn some return while it sits there. The key is finding the right balance between liquidity and yield.",
+              "Sinking funds are savings accounts for predictable but irregular expenses. By saving small amounts regularly for these expenses, you avoid budget emergencies and reduce financial stress. This strategy transforms large, unexpected bills into manageable monthly savings goals.",
           },
           {
             type: "list",
-            content: "Best places for emergency funds:",
+            content: "Common sinking fund categories:",
             items: [
-              "High-yield savings accounts",
-              "Money market accounts",
-              "Short-term CDs (3-6 months)",
-              "Treasury bills or I-bonds",
-              "Online bank savings accounts",
-              "Credit union share accounts",
+              "Car maintenance and repairs ($100-200/month)",
+              "Home maintenance and improvements ($50-150/month)",
+              "Holiday and gift expenses ($50-100/month)",
+              "Annual insurance premiums ($25-100/month)",
+              "Medical and dental expenses ($25-75/month)",
+              "Vacation and travel ($100-300/month)",
+              "Technology replacements ($25-50/month)",
+              "Professional development ($25-100/month)",
             ],
           },
           {
-            type: "list",
-            content: "What to look for in emergency fund accounts:",
-            items: [
-              "FDIC or NCUA insurance",
-              "Easy access to funds (online, ATM, transfer)",
-              "Competitive interest rates",
-              "No monthly fees",
-              "Low or no minimum balance",
-              "No penalties for withdrawals",
-            ],
+            type: "calculation",
+            content: "Sinking fund calculation method:",
+            formula: "Monthly Savings = Annual Expected Cost ÷ 12 months",
+            variables: {
+              "Annual Expected Cost": "Estimated yearly expense for category",
+              "Monthly Savings": "Amount to save each month",
+            },
           },
           {
             type: "example",
             content:
-              "Lisa keeps her $15,000 emergency fund in a high-yield savings account earning 4% APY. It's FDIC insured, accessible within 24 hours, and earns $600 per year while waiting for emergencies.",
+              "Car expenses: $600 for maintenance, $400 for repairs, $200 for registration/inspection = $1,200 annually. Monthly sinking fund: $1,200 ÷ 12 = $100/month.",
           },
           {
             type: "list",
-            content: "Where NOT to keep emergency funds:",
+            content: "Setting up sinking funds:",
             items: [
-              "Stock market investments (too volatile)",
-              "Long-term CDs (penalties for early withdrawal)",
-              "Retirement accounts (penalties and taxes)",
-              "Cryptocurrency (too volatile and risky)",
-              "Under your mattress (no growth, not insured)",
-              "Regular checking account (too easy to spend)",
+              "Use separate high-yield savings accounts for each fund",
+              "Label accounts clearly (Car Fund, Vacation Fund, etc.)",
+              "Automate monthly transfers to each fund",
+              "Track balances and adjust amounts as needed",
+              "Only use funds for their designated purpose",
+              "Replenish funds after using them",
             ],
           },
           {
             type: "list",
-            content: "Emergency fund account strategies:",
+            content: "Goal-based saving strategies:",
             items: [
-              "Keep in separate account from regular savings",
-              "Use online banks for higher interest rates",
-              "Consider laddering short-term CDs",
-              "Keep small amount in checking for immediate access",
-              "Review rates annually and switch if needed",
-              "Don't chase rates that require high minimums",
+              "SMART goals: Specific, Measurable, Achievable, Relevant, Time-bound",
+              "Visual tracking: Charts, apps, or thermometers showing progress",
+              "Milestone rewards: Celebrate reaching 25%, 50%, 75% of goal",
+              "Deadline pressure: Set specific dates for achieving goals",
+              "Accountability partners: Share goals with friends or family",
+              "Regular reviews: Monthly check-ins on progress",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Sinking Fund Success: The Johnson family saves $300/month across 6 sinking funds. When their HVAC system failed ($3,500), their home maintenance fund covered it without touching their emergency fund or going into debt.",
+          },
+          {
+            type: "list",
+            content: "Advanced sinking fund strategies:",
+            items: [
+              "Seasonal adjustments: Save more during high-income months",
+              "Percentage-based funding: Allocate percentage of income to each fund",
+              "Overflow strategy: Excess from one fund flows to others",
+              "Investment sinking funds: For longer-term goals (3+ years)",
+              "Shared family funds: Multiple people contributing to same goals",
+              "Business sinking funds: For self-employed irregular expenses",
             ],
           },
           {
             type: "tip",
             content:
-              "Keep your emergency fund in a separate account from your regular savings to avoid accidentally spending it on non-emergencies.",
+              "Start with just 2-3 sinking funds for your most common irregular expenses. Once these become habit, gradually add more categories as needed.",
           },
         ],
         keyTakeaways: [
-          "Emergency funds need to be liquid and accessible",
-          "High-yield savings accounts are usually the best option",
-          "FDIC insurance protects your emergency fund",
-          "Keep emergency funds separate from other savings",
+          "Sinking funds prevent irregular expenses from becoming emergencies",
+          "Calculate monthly amounts by dividing annual costs by 12",
+          "Use separate accounts and automation for best results",
+          "Goal-based saving increases motivation and success rates",
         ],
         quiz: {
           questions: [
             {
-              question: "What is the most important feature for an emergency fund account?",
+              question: "What is the primary purpose of a sinking fund?",
               options: [
-                "Highest possible returns",
-                "Easy access to funds",
-                "Long-term growth potential",
-                "Tax advantages",
+                "To earn the highest possible investment returns",
+                "To save for predictable but irregular expenses",
+                "To replace your emergency fund",
+                "To hide money from yourself",
               ],
-              correctAnswer: "Easy access to funds",
+              correctAnswer: "To save for predictable but irregular expenses",
               explanation:
-                "Emergency funds must be easily accessible when needed, making liquidity more important than maximizing returns.",
+                "Sinking funds are specifically designed to save for expenses you know will happen but don't occur monthly, preventing them from disrupting your budget.",
             },
           ],
         },
       },
       {
-        title: "Building Your Fund Quickly",
-        duration: "4 min",
-        points: 15,
+        title: "Saving Challenges and Motivation",
+        duration: "5 min",
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Strategies to Reach Your Goal Faster",
+            content: "Gamifying Your Savings Journey",
           },
           {
             type: "paragraph",
             content:
-              "Building an emergency fund can feel overwhelming, but with the right strategies, you can reach your goal faster than you think. The key is combining multiple approaches and staying focused on the priority.",
+              "Saving money can feel boring and restrictive. Savings challenges and gamification techniques make the process engaging and fun while building strong financial habits. These strategies leverage psychology to maintain motivation over the long term.",
           },
           {
             type: "list",
-            content: "Quick emergency fund building strategies:",
+            content: "Popular savings challenges:",
             items: [
-              "Use tax refunds and bonuses",
-              "Sell items you no longer need",
-              "Take on temporary side work",
-              "Cut expenses temporarily",
-              "Use cash-back rewards and rebates",
-              "Save all unexpected money (gifts, found money)",
+              "52-week challenge: Save $1 week 1, $2 week 2, etc. ($1,378 total)",
+              "Reverse 52-week: Start with $52, decrease by $1 weekly",
+              "365-day penny challenge: Save 1¢ day 1, 2¢ day 2, etc. ($667 total)",
+              "No-spend challenges: Avoid discretionary spending for set periods",
+              "Round-up challenge: Save all spare change from purchases",
+              "Weather savings: Save $1 for every degree of temperature",
             ],
           },
           {
             type: "list",
-            content: "Expense cutting for emergency fund:",
+            content: "Custom challenge ideas:",
             items: [
-              "Cancel subscriptions temporarily",
-              "Eat out less and cook more",
-              "Find free entertainment options",
-              "Negotiate bills to lower payments",
-              "Use coupons and shop sales",
-              "Delay non-essential purchases",
+              "Save your age in dollars weekly (25-year-old saves $25/week)",
+              "Bi-weekly challenge: Save every two weeks instead of weekly",
+              "Percentage challenge: Save increasing percentages of income",
+              "Habit stacking: Save money every time you do a daily habit",
+              "Social media challenge: Save $1 for every like/share",
+              "Fitness challenge: Save money for every workout completed",
             ],
           },
           {
             type: "example",
             content:
-              "Tom needed $6,000 for his emergency fund. He used his $2,000 tax refund, sold $1,000 worth of unused items, and saved $500/month by cutting expenses. He reached his goal in 6 months.",
+              "Mike created a custom challenge: Save $5 every time he brings lunch to work instead of buying it. Over a year, this saved him $1,200 while also improving his health and building good habits.",
           },
           {
             type: "list",
-            content: "Side income ideas for emergency fund:",
+            content: "Gamification techniques:",
             items: [
-              "Freelance work in your skill area",
-              "Gig economy jobs (rideshare, delivery)",
-              "Sell handmade items or services",
-              "Rent out space or belongings",
-              "Seasonal work (tax prep, retail)",
-              "Online tutoring or consulting",
+              "Visual progress tracking: Charts, apps, or physical containers",
+              "Level system: Bronze, silver, gold savings levels",
+              "Achievement badges: Unlock rewards for hitting milestones",
+              "Leaderboards: Compete with friends or family members",
+              "Streaks: Track consecutive days/weeks of successful saving",
+              "Rewards system: Treat yourself for reaching goals",
             ],
           },
           {
             type: "list",
-            content: "Automation strategies:",
+            content: "Maintaining long-term motivation:",
             items: [
-              "Automatic transfers on payday",
-              "Direct deposit splitting",
-              "Round-up apps that save spare change",
-              "Automatic savings from checking account",
-              "Save all raises and bonuses",
-              "Use separate account to avoid temptation",
+              "Connect savings to meaningful goals and values",
+              "Celebrate small wins and milestones regularly",
+              "Find accountability partners or saving groups",
+              "Track multiple metrics (amount saved, days consistent, etc.)",
+              "Adjust challenges when they become too easy or hard",
+              "Share your progress on social media for external motivation",
             ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Challenge Success Story: Lisa used the 52-week challenge but modified it to match her irregular income. She saved more during high-earning weeks and less during low weeks, still reaching her $1,378 goal while maintaining flexibility.",
+          },
+          {
+            type: "list",
+            content: "Overcoming challenge obstacles:",
+            items: [
+              "Missing a week: Don't quit, just get back on track",
+              "Challenge too difficult: Reduce amounts but maintain consistency",
+              "Lost motivation: Remember your 'why' and visualize goals",
+              "Unexpected expenses: Use sinking funds, not challenge money",
+              "Peer pressure to spend: Find supportive community",
+              "Perfectionism: Progress over perfection mindset",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't let challenges become more important than your overall financial health. If a challenge is causing stress or preventing you from paying bills, adjust or pause it.",
           },
           {
             type: "tip",
             content:
-              "Treat building your emergency fund like a financial emergency itself. Focus intensely on this goal before other financial priorities.",
+              "Combine multiple small challenges rather than one large one. Save $20/week through the 52-week challenge AND round up purchases AND do no-spend weekends for maximum impact.",
           },
         ],
         keyTakeaways: [
-          "Use windfalls and bonuses to jumpstart your fund",
-          "Combine expense cutting with income increases",
-          "Automate savings to build consistently",
-          "Treat emergency fund building as a top priority",
+          "Savings challenges make building wealth fun and engaging",
+          "Gamification techniques leverage psychology to maintain motivation",
+          "Customize challenges to fit your income and lifestyle",
+          "Consistency matters more than perfection in any challenge",
         ],
         quiz: {
           questions: [
             {
-              question: "What's the most effective way to build an emergency fund quickly?",
+              question: "What should you do if you miss a week in a savings challenge?",
               options: [
-                "Only cut expenses",
-                "Only increase income",
-                "Combine multiple strategies",
-                "Wait for a big windfall",
+                "Give up and start over next year",
+                "Double the amount the following week",
+                "Get back on track without giving up",
+                "Switch to a different challenge immediately",
               ],
-              correctAnswer: "Combine multiple strategies",
+              correctAnswer: "Get back on track without giving up",
               explanation:
-                "Combining expense reduction, income increases, windfalls, and automation is the most effective way to build an emergency fund quickly.",
+                "Missing a week doesn't negate all your previous progress. The key is to resume the challenge and maintain the overall habit of regular saving.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Emergency Fund Optimization and Alternatives",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Advanced Emergency Fund Strategies",
+          },
+          {
+            type: "paragraph",
+            content:
+              "While traditional emergency funds sit in savings accounts, advanced strategies can help you optimize returns while maintaining accessibility. These approaches balance liquidity needs with growth potential for more sophisticated savers.",
+          },
+          {
+            type: "list",
+            content: "Emergency fund optimization strategies:",
+            items: [
+              "Tiered approach: Keep 1 month in checking, 2-3 months in high-yield savings, remainder in CDs",
+              "CD laddering: Stagger certificate maturities for regular access",
+              "Money market funds: Slightly higher returns with daily liquidity",
+              "I Bonds: Inflation-protected with 1-year lock-up period",
+              "Roth IRA contributions: Can withdraw contributions penalty-free",
+              "Taxable investment account: For portion beyond 6 months expenses",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Optimized emergency fund allocation example:",
+            formula: "Total EF = Immediate Access + Short-term + Medium-term",
+            variables: {
+              "Immediate Access": "1 month expenses in checking/savings (0-4% APY)",
+              "Short-term": "2-3 months in high-yield savings (4-5% APY)",
+              "Medium-term": "3+ months in CDs or conservative investments (4-6% APY)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Sarah's $30,000 emergency fund: $5,000 in high-yield savings (immediate access), $10,000 in 6-month CDs (higher rate), $15,000 in conservative investment account (growth potential with some risk).",
+          },
+          {
+            type: "list",
+            content: "Alternative emergency fund sources:",
+            items: [
+              "Home equity line of credit (HELOC): Access to home equity",
+              "Credit cards: Last resort but available for true emergencies",
+              "Roth IRA: Contributions can be withdrawn penalty-free",
+              "Cash value life insurance: Borrow against policy value",
+              "Taxable investment accounts: Liquid but subject to market risk",
+              "Family/friend network: Informal borrowing arrangements",
+            ],
+          },
+          {
+            type: "list",
+            content: "Pros and cons of alternatives:",
+            items: [
+              "HELOC: Pro - Low rates, large amounts. Con - Secured by home, variable rates",
+              "Credit cards: Pro - Immediate access. Con - High interest rates",
+              "Roth IRA: Pro - Tax-free growth. Con - Limited annual contributions",
+              "Investments: Pro - Growth potential. Con - Market risk, potential losses",
+              "Family loans: Pro - Flexible terms. Con - Relationship strain risk",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Hybrid Approach: Tech worker David keeps 3 months expenses in savings and relies on his stable job, excellent disability insurance, and $50,000 HELOC for additional security. This allows him to invest more aggressively.",
+          },
+          {
+            type: "list",
+            content: "When to consider alternatives:",
+            items: [
+              "Very stable employment with excellent benefits",
+              "Significant liquid investment accounts",
+              "Access to low-cost credit (HELOC, low-rate cards)",
+              "High opportunity cost of cash (high-income earners)",
+              "Dual-income household with job security",
+              "Excellent insurance coverage (disability, health)",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never rely solely on credit or investments for emergency funds. Market crashes often coincide with job losses, and credit can be reduced or eliminated when you need it most.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start with a traditional emergency fund, then gradually optimize as your financial situation becomes more stable and sophisticated. Always maintain at least 1-2 months of expenses in immediately accessible cash.",
+          },
+        ],
+        keyTakeaways: [
+          "Emergency funds can be optimized for better returns while maintaining access",
+          "Tiered approaches balance liquidity needs with growth potential",
+          "Alternative sources can supplement but not replace traditional emergency funds",
+          "Optimization strategies work best for financially stable individuals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main risk of relying too heavily on investment accounts for emergency funds?",
+              options: [
+                "Investment accounts have high fees",
+                "You can't access the money quickly enough",
+                "Market downturns often coincide with personal financial emergencies",
+                "Investment returns are taxed at higher rates",
+              ],
+              correctAnswer: "Market downturns often coincide with personal financial emergencies",
+              explanation:
+                "Economic downturns that cause job losses also cause investment values to decline, potentially forcing you to sell investments at a loss when you need the money most.",
             },
           ],
         },
       },
     ],
-    "financial-goals": [
+    "credit-scores": [
       {
-        title: "The Power of Clear Financial Goals",
-        duration: "4 min",
-        points: 15,
+        title: "Understanding Credit Scores and Reports",
+        duration: "8 min",
+        points: 24,
         content: [
           {
             type: "heading",
-            content: "Why Specific Goals Drive Success",
+            content: "The Complete Guide to Credit Scores",
           },
           {
             type: "paragraph",
             content:
-              "Clear, specific financial goals are the foundation of financial success. They provide direction, motivation, and a way to measure progress. Without goals, money tends to disappear on random purchases instead of building wealth.",
+              "Your credit score is a three-digit number that represents your creditworthiness to lenders. Understanding how credit scores work, what affects them, and how to monitor them is crucial for accessing favorable loan terms and financial opportunities.",
           },
           {
             type: "list",
-            content: "Benefits of setting financial goals:",
+            content: "Credit score ranges and meanings:",
             items: [
-              "Provides clear direction for your money",
-              "Motivates you to save and invest",
-              "Helps prioritize spending decisions",
-              "Creates accountability and tracking",
-              "Builds momentum through small wins",
-              "Turns abstract dreams into concrete plans",
+              "800-850: Exceptional credit - Best rates and terms available",
+              "740-799: Very good credit - Access to favorable rates",
+              "670-739: Good credit - Most loans available at reasonable rates",
+              "580-669: Fair credit - Limited options, higher rates",
+              "300-579: Poor credit - Difficult to qualify, very high rates",
             ],
+          },
+          {
+            type: "list",
+            content: "FICO Score factors and weightings:",
+            items: [
+              "Payment history (35%): On-time payments vs. late/missed payments",
+              "Credit utilization (30%): Amount owed vs. available credit",
+              "Length of credit history (15%): Age of accounts and credit history",
+              "Credit mix (10%): Variety of credit types (cards, loans, mortgage)",
+              "New credit (10%): Recent credit inquiries and new accounts",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Credit utilization calculation:",
+            formula: "Utilization Ratio = Total Credit Card Balances ÷ Total Credit Limits × 100",
+            variables: {
+              "Total Credit Card Balances": "Sum of all outstanding balances",
+              "Total Credit Limits": "Sum of all credit card limits",
+              "Target Ratio": "Below 30%, ideally below 10%",
+            },
           },
           {
             type: "example",
             content:
-              "Instead of 'I want to save money,' Maria set a goal: 'Save $15,000 for a house down payment by December 2025.' This specific goal helped her save $625 monthly and reach her target.",
+              "Sarah has three credit cards: Card A ($500 balance, $2,000 limit), Card B ($0 balance, $3,000 limit), Card C ($300 balance, $5,000 limit). Total utilization: $800 ÷ $10,000 = 8% (excellent).",
           },
           {
             type: "list",
-            content: "Common financial goals by category:",
+            content: "Difference between credit scores and reports:",
             items: [
-              "Emergency fund: 3-6 months of expenses",
-              "Debt payoff: Specific amounts and timelines",
-              "Major purchases: Car, house, wedding",
-              "Experiences: Vacation, education, hobbies",
-              "Long-term wealth: Retirement, financial independence",
-              "Giving: Charity, family support",
+              "Credit report: Detailed history of credit accounts and payments",
+              "Credit score: Numerical summary based on report information",
+              "Multiple scoring models: FICO, VantageScore, industry-specific",
+              "Three credit bureaus: Experian, Equifax, TransUnion",
+              "Scores can vary between bureaus due to different data",
+              "Reports updated monthly by creditors",
             ],
           },
           {
             type: "list",
-            content: "Why vague goals fail:",
+            content: "What's included in credit reports:",
             items: [
-              "No clear target to aim for",
-              "Difficult to measure progress",
-              "Easy to postpone or abandon",
-              "Lack of urgency or deadline",
-              "No specific action steps",
-              "Competing priorities without clear ranking",
+              "Personal information: Name, address, SSN, employment",
+              "Credit accounts: Cards, loans, mortgages with payment history",
+              "Public records: Bankruptcies, tax liens, judgments",
+              "Credit inquiries: Hard and soft pulls from lenders",
+              "Collections: Accounts sent to collection agencies",
+              "Account status: Open, closed, current, delinquent",
             ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Credit Score Impact: When Tom applied for a mortgage, his 720 credit score qualified him for a 6.5% rate. His friend with a 640 score got 7.8%. On a $300,000 loan, this 1.3% difference costs $78,000 more in interest over 30 years.",
+          },
+          {
+            type: "list",
+            content: "How to access your credit information:",
+            items: [
+              "Free annual reports: AnnualCreditReport.com (official site)",
+              "Credit monitoring services: Credit Karma, Credit Sesame",
+              "Bank/credit card free scores: Many provide monthly FICO scores",
+              "Paid services: myFICO.com for official FICO scores",
+              "Credit freezes: Prevent new accounts from being opened",
+              "Fraud alerts: Notify you of suspicious activity",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Beware of credit repair scams promising to 'fix' your credit quickly. Legitimate credit repair takes time, and anything legal you can do yourself for free.",
           },
           {
             type: "tip",
             content:
-              "Write down your financial goals and review them regularly. Written goals are significantly more likely to be achieved than goals kept only in your head.",
+              "Check your credit reports from all three bureaus annually and dispute any errors immediately. Even small errors can impact your score and loan eligibility.",
           },
         ],
         keyTakeaways: [
-          "Specific goals provide direction and motivation",
-          "Clear targets make progress measurable",
-          "Written goals are more likely to be achieved",
-          "Goals help prioritize competing financial demands",
+          "Credit scores range from 300-850, with 740+ considered very good",
+          "Payment history and credit utilization are the most important factors",
+          "Credit reports contain detailed information used to calculate scores",
+          "Monitor your credit regularly and dispute errors promptly",
         ],
         quiz: {
           questions: [
             {
-              question: "What makes a financial goal more likely to be achieved?",
+              question: "Which factor has the biggest impact on your credit score?",
               options: [
-                "Keeping it flexible and vague",
-                "Making it specific and written down",
-                "Setting it very high",
-                "Not telling anyone about it",
+                "Credit utilization (30%)",
+                "Payment history (35%)",
+                "Length of credit history (15%)",
+                "Credit mix (10%)",
               ],
-              correctAnswer: "Making it specific and written down",
+              correctAnswer: "Payment history (35%)",
               explanation:
-                "Specific, written goals are significantly more likely to be achieved because they provide clear targets and accountability.",
+                "Payment history accounts for 35% of your FICO score, making it the most important factor. Consistently making on-time payments is crucial for maintaining good credit.",
             },
           ],
         },
       },
       {
-        title: "SMART Goal Framework",
-        duration: "4 min",
-        points: 15,
+        title: "Building Credit from Scratch",
+        duration: "6 min",
+        points: 18,
         content: [
           {
             type: "heading",
-            content: "Creating Goals That Actually Work",
+            content: "Establishing Your Credit History",
           },
           {
             type: "paragraph",
             content:
-              "The SMART framework helps you create financial goals that are more likely to be achieved. SMART stands for Specific, Measurable, Achievable, Relevant, and Time-bound.",
+              "Building credit from scratch requires patience and strategy. Without existing credit history, you'll need to start with basic credit products and gradually build a positive payment history. Here's how to establish credit responsibly.",
           },
           {
             type: "list",
-            content: "SMART goal components:",
+            content: "Credit building options for beginners:",
             items: [
-              "Specific: Exactly what you want to achieve",
-              "Measurable: How you'll track progress",
-              "Achievable: Realistic given your situation",
-              "Relevant: Meaningful to your life and values",
-              "Time-bound: Clear deadline for completion",
+              "Secured credit cards: Deposit becomes your credit limit",
+              "Student credit cards: Designed for college students with limited history",
+              "Authorized user: Added to someone else's account",
+              "Credit-builder loans: Loans designed specifically to build credit",
+              "Store credit cards: Often easier to qualify for but higher rates",
+              "Co-signed loans: Someone with good credit guarantees the loan",
+            ],
+          },
+          {
+            type: "list",
+            content: "Secured credit card strategy:",
+            items: [
+              "Choose cards that graduate to unsecured (Capital One, Discover)",
+              "Look for no annual fee options",
+              "Start with $200-500 deposit",
+              "Use for small, regular purchases (gas, groceries)",
+              "Pay in full every month to avoid interest",
+              "Keep utilization below 10% for best score impact",
             ],
           },
           {
             type: "example",
             content:
-              "Poor goal: 'Save money for vacation.' SMART goal: 'Save $3,000 for a European vacation by June 2025 by setting aside $250 per month starting now.'",
+              "Credit Building Timeline: Month 1-3: Apply for secured card, become authorized user. Month 4-6: First credit score appears. Month 7-12: Score improves with consistent payments. Month 13+: Qualify for unsecured cards and better terms.",
           },
           {
             type: "list",
-            content: "Making goals specific:",
+            content: "Authorized user strategy:",
             items: [
-              "Include exact dollar amounts",
-              "Specify what the money is for",
-              "Define success clearly",
-              "Identify required actions",
-              "Consider all related costs",
-              "Plan for obstacles and setbacks",
+              "Choose someone with excellent payment history and low utilization",
+              "Ensure the account reports to all three credit bureaus",
+              "Understand you're not legally responsible for the debt",
+              "Monitor the account to ensure payments stay current",
+              "Consider removing yourself once you establish your own credit",
+              "Communicate clearly about expectations and usage",
             ],
           },
           {
             type: "list",
-            content: "Making goals measurable:",
+            content: "Credit building best practices:",
             items: [
-              "Set milestone checkpoints",
-              "Track progress monthly",
-              "Use percentages and ratios",
-              "Create visual progress indicators",
-              "Celebrate small wins along the way",
-              "Adjust timeline if needed",
+              "Never miss a payment - set up autopay for at least minimums",
+              "Keep credit utilization below 30%, ideally below 10%",
+              "Don't close your first credit card (length of history matters)",
+              "Apply for new credit sparingly (hard inquiries lower scores)",
+              "Monitor your credit reports for errors and fraud",
+              "Be patient - good credit takes 6-12 months to establish",
             ],
           },
           {
+            type: "calculation",
+            content: "Credit utilization optimization:",
+            formula: "Optimal Balance = Credit Limit × 0.10 (10%)",
+            variables: {
+              "Credit Limit": "Maximum amount you can borrow",
+              "Current Balance": "Amount currently owed",
+              Target: "Keep balances below 10% of limits",
+            },
+          },
+          {
+            type: "case-study",
+            content:
+              "Success Story: College student Emma started with a $300 secured card and authorized user status on her mom's account. After 18 months of perfect payments and low utilization, she had a 720 credit score and qualified for a premium rewards card.",
+          },
+          {
             type: "list",
-            content: "Ensuring goals are achievable:",
+            content: "Common credit building mistakes:",
             items: [
-              "Based on realistic income and expenses",
-              "Consider your current financial situation",
-              "Break large goals into smaller steps",
-              "Allow for unexpected expenses",
-              "Start with easier goals to build confidence",
-              "Adjust as circumstances change",
+              "Applying for too many cards at once",
+              "Maxing out credit cards",
+              "Making only minimum payments and carrying balances",
+              "Closing old accounts to 'clean up' credit report",
+              "Not monitoring credit reports for errors",
+              "Using credit for purchases you can't afford",
             ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid credit repair companies that promise quick fixes. Building good credit takes time, and there are no legitimate shortcuts to establishing a positive credit history.",
           },
           {
             type: "tip",
             content:
-              "Test your goal with this question: 'Can I clearly explain to someone else exactly what I'm trying to achieve and by when?' If not, make it more specific.",
+              "Set up automatic payments for at least the minimum amount due, but try to pay the full balance monthly. This builds payment history while avoiding interest charges.",
           },
         ],
         keyTakeaways: [
-          "SMART goals are Specific, Measurable, Achievable, Relevant, Time-bound",
-          "Specific goals include exact amounts and deadlines",
-          "Measurable goals allow you to track progress",
-          "Achievable goals are realistic for your situation",
+          "Secured credit cards are often the best starting point for building credit",
+          "Authorized user status can help establish credit history quickly",
+          "Payment history and low utilization are crucial from the beginning",
+          "Building good credit takes 6-12 months of consistent responsible use",
         ],
         quiz: {
           questions: [
             {
-              question: "Which of these is a SMART financial goal?",
+              question: "What is the best first credit product for someone with no credit history?",
               options: [
-                "Save money for retirement",
-                "Save $500 per month for 2 years to build a $12,000 emergency fund",
-                "Get rich someday",
-                "Buy a nice car eventually",
+                "An unsecured rewards credit card",
+                "A secured credit card",
+                "A personal loan",
+                "A store credit card with high interest",
               ],
-              correctAnswer: "Save $500 per month for 2 years to build a $12,000 emergency fund",
+              correctAnswer: "A secured credit card",
               explanation:
-                "This goal is Specific ($12,000 emergency fund), Measurable ($500/month), Achievable (reasonable amount), Relevant (emergency fund), and Time-bound (2 years).",
+                "Secured credit cards are designed for people with no or poor credit history. The security deposit reduces risk for the lender while helping you build credit history.",
             },
           ],
         },
       },
       {
-        title: "Prioritizing Multiple Goals",
-        duration: "4 min",
-        points: 15,
+        title: "Credit Utilization Optimization",
+        duration: "5 min",
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Managing Competing Financial Priorities",
+            content: "Mastering the 30% Rule and Beyond",
           },
           {
             type: "paragraph",
             content:
-              "Most people have multiple financial goals competing for limited resources. Learning to prioritize and balance these goals ensures you make progress on what matters most while not neglecting other important objectives.",
+              "Credit utilization is the second most important factor in your credit score, accounting for 30% of your FICO score. Understanding how to optimize utilization can quickly improve your credit score and save you thousands in interest rates.",
           },
           {
             type: "list",
-            content: "Goal prioritization framework:",
+            content: "Credit utilization fundamentals:",
             items: [
-              "Tier 1: Financial security (emergency fund, debt payoff)",
-              "Tier 2: Time-sensitive goals (house down payment, wedding)",
-              "Tier 3: Long-term wealth building (retirement, investments)",
-              "Tier 4: Lifestyle and experience goals (vacation, hobbies)",
-              "Adjust based on your personal situation and timeline",
+              "Overall utilization: Total balances ÷ total credit limits",
+              "Per-card utilization: Individual card balance ÷ card limit",
+              "Both matter: Keep overall below 30%, individual cards below 30%",
+              "Lower is better: Under 10% is ideal, under 1% is excellent",
+              "Zero isn't always best: Small balances show active use",
+              "Timing matters: Balances when statements close affect scores",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Multi-card utilization optimization:",
+            formula: "Optimal Strategy = Spread balances evenly across cards",
+            variables: {
+              "Total Available Credit": "Sum of all credit card limits",
+              "Target Utilization": "10% of total available credit",
+              "Per-Card Target": "No more than 30% on any single card",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Before: $2,000 balance on $3,000 limit card (67% utilization) + $0 on $7,000 limit card = 20% overall but poor per-card ratio. After: $1,000 on each card = 20% overall, 33% and 14% per-card (much better).",
+          },
+          {
+            type: "list",
+            content: "Advanced utilization strategies:",
+            items: [
+              "Statement date manipulation: Pay before statement closes",
+              "Multiple payment strategy: Make payments throughout the month",
+              "Credit limit increases: Request higher limits to lower ratios",
+              "New card strategy: Open cards to increase total available credit",
+              "Balance transfer: Move balances to optimize utilization",
+              "Authorized user limits: Use others' credit limits to help ratios",
             ],
           },
           {
             type: "list",
-            content: "Factors for prioritizing goals:",
+            content: "Timing optimization techniques:",
             items: [
-              "Urgency and timeline",
-              "Impact on financial security",
-              "Cost of delay",
-              "Personal values and importance",
-              "Available resources and income",
-              "Opportunity costs of other goals",
+              "Know your statement closing dates for each card",
+              "Pay balances before statements close for 0% reported utilization",
+              "Leave small balances (1-2%) to show active use",
+              "Make multiple payments per month to keep balances low",
+              "Use autopay to ensure you never miss payments",
+              "Monitor credit reports to see what's being reported",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Utilization Optimization Success: By paying his credit cards before statement dates and requesting credit limit increases, Jake lowered his utilization from 45% to 8%, increasing his credit score by 67 points in 3 months.",
+          },
+          {
+            type: "list",
+            content: "Credit limit increase strategies:",
+            items: [
+              "Request increases every 6-12 months",
+              "Highlight income increases and good payment history",
+              "Use online tools for instant decisions when available",
+              "Consider automatic increase programs",
+              "Don't use increases as permission to spend more",
+              "Spread requests across different banks",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common utilization mistakes:",
+            items: [
+              "Focusing only on overall utilization, ignoring per-card ratios",
+              "Not knowing when statement dates close",
+              "Closing cards and reducing total available credit",
+              "Maxing out cards even if overall utilization is low",
+              "Not requesting credit limit increases",
+              "Using balance transfers without addressing spending habits",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't request credit limit increases if you have trouble controlling spending. More available credit should lower utilization, not enable more debt.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up account alerts to notify you when balances reach 20% of your credit limit. This gives you time to make payments before hitting the 30% threshold.",
+          },
+        ],
+        keyTakeaways: [
+          "Keep overall utilization below 30%, ideally below 10%",
+          "Both overall and per-card utilization ratios matter for your score",
+          "Pay balances before statement closing dates for optimal reporting",
+          "Request credit limit increases to improve utilization ratios",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the ideal credit utilization ratio for the best credit scores?",
+              options: ["Below 30%", "Below 10%", "Exactly 0%", "Between 30-50%"],
+              correctAnswer: "Below 10%",
+              explanation:
+                "While below 30% is acceptable, keeping utilization below 10% typically results in the highest credit scores. Some utilization is better than zero to show active credit use.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit Repair and Improvement",
+        duration: "7 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Legitimate Strategies to Improve Your Credit",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit repair is the process of identifying and addressing negative items on your credit report. While there are no quick fixes, legitimate strategies can help improve your credit score over time. Understanding what works and what doesn't can save you money and frustration.",
+          },
+          {
+            type: "list",
+            content: "Legitimate credit repair strategies:",
+            items: [
+              "Dispute inaccurate information on credit reports",
+              "Pay down high credit card balances",
+              "Make all payments on time going forward",
+              "Negotiate pay-for-delete agreements with collectors",
+              "Request goodwill deletions from creditors",
+              "Use credit repair letters for documented errors",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit report dispute process:",
+            items: [
+              "Step 1: Obtain credit reports from all three bureaus",
+              "Step 2: Review reports carefully for errors and inaccuracies",
+              "Step 3: Gather documentation supporting your dispute",
+              "Step 4: File disputes online, by mail, or phone",
+              "Step 5: Wait 30 days for investigation results",
+              "Step 6: Follow up if items aren't corrected",
             ],
           },
           {
             type: "example",
             content:
-              "Jake has $800/month to allocate: $300 to emergency fund (Tier 1), $300 to house down payment (Tier 2), $200 to retirement (Tier 3). He'll adjust when emergency fund is complete.",
+              "Dispute Success: Maria found a credit card account on her report that wasn't hers. She disputed it with all three bureaus, providing identity theft documentation. The account was removed within 30 days, improving her score by 45 points.",
           },
           {
             type: "list",
-            content: "Strategies for multiple goals:",
+            content: "Common credit report errors to look for:",
             items: [
-              "Focus on one goal at a time if resources are limited",
-              "Use percentage allocation across goals",
-              "Complete highest priority goals first",
-              "Use windfalls strategically",
-              "Adjust allocations as goals are achieved",
-              "Don't spread resources too thin",
+              "Accounts that don't belong to you",
+              "Incorrect payment history or late payments",
+              "Wrong account balances or credit limits",
+              "Accounts listed as open when they're closed",
+              "Duplicate accounts listed multiple times",
+              "Incorrect personal information",
             ],
           },
           {
             type: "list",
-            content: "Common prioritization mistakes:",
+            content: "Negotiation strategies with creditors:",
             items: [
-              "Focusing on wants before needs",
-              "Ignoring emergency fund for other goals",
-              "Not considering time sensitivity",
-              "Spreading money too thin across too many goals",
-              "Letting emotions override logic",
-              "Not adjusting priorities as life changes",
+              "Pay-for-delete: Offer payment in exchange for removal",
+              "Goodwill letters: Request removal based on good history",
+              "Settlement negotiations: Pay less than full amount owed",
+              "Payment plans: Arrange affordable monthly payments",
+              "Hardship programs: Temporary payment reductions",
+              "Re-aging accounts: Bring accounts current to stop negative reporting",
             ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Credit Repair Timeline: After bankruptcy, it took Susan 2 years to rebuild her credit to 650 through secured cards, authorized user status, and disputing errors. By year 4, she reached 720 and qualified for a conventional mortgage.",
+          },
+          {
+            type: "list",
+            content: "DIY credit repair vs. professional services:",
+            items: [
+              "DIY: Free, full control, learn the process, time-consuming",
+              "Professional: Expertise, time-saving, costs money, potential scams",
+              "Hybrid approach: DIY for simple disputes, professional for complex issues",
+              "Red flags: Guarantees, upfront fees, promises to remove accurate info",
+              "Legal option: Consumer law attorneys for serious violations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Timeline for credit improvement:",
+            items: [
+              "Immediate (0-30 days): Dispute errors, pay down balances",
+              "Short-term (1-3 months): See score improvements from lower utilization",
+              "Medium-term (3-12 months): Payment history improvements show",
+              "Long-term (1-2 years): Negative items have less impact",
+              "Very long-term (7-10 years): Most negative items fall off reports",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid credit repair scams that promise to remove accurate negative information or guarantee specific score increases. Legitimate credit repair takes time and patience.",
           },
           {
             type: "tip",
             content:
-              "It's better to fully fund 2-3 important goals than to make minimal progress on 10 different goals. Focus creates momentum and results.",
+              "Focus on the factors you can control: making payments on time, keeping balances low, and disputing legitimate errors. These have the biggest impact on your credit score.",
           },
         ],
         keyTakeaways: [
-          "Prioritize financial security goals first",
-          "Consider urgency and timeline when ranking goals",
-          "Focus resources rather than spreading too thin",
-          "Adjust priorities as goals are completed",
+          "Legitimate credit repair focuses on removing errors and improving habits",
+          "The dispute process can remove inaccurate information from reports",
+          "Negotiation with creditors can sometimes result in favorable outcomes",
+          "Credit improvement takes time - beware of quick-fix promises",
         ],
         quiz: {
           questions: [
             {
-              question: "Which goal should typically be the highest priority?",
-              options: ["Vacation fund", "Emergency fund", "New car fund", "Entertainment budget"],
-              correctAnswer: "Emergency fund",
+              question: "What is the most effective first step in credit repair?",
+              options: [
+                "Hiring a credit repair company",
+                "Applying for new credit cards",
+                "Reviewing credit reports for errors and disputing them",
+                "Paying off all debts immediately",
+              ],
+              correctAnswer: "Reviewing credit reports for errors and disputing them",
               explanation:
-                "Emergency fund should be the highest priority because it provides financial security and prevents debt accumulation during unexpected events.",
+                "The first step should always be obtaining and reviewing your credit reports for errors, which can be disputed and removed relatively quickly if found.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Strategic Credit Card Management",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Optimizing Your Credit Card Portfolio",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Strategic credit card management goes beyond just making payments on time. It involves optimizing your card portfolio for maximum credit score benefit, rewards earning, and financial flexibility while minimizing costs and risks.",
+          },
+          {
+            type: "list",
+            content: "Credit card portfolio optimization:",
+            items: [
+              "Keep old cards open to maintain credit history length",
+              "Maintain 3-5 cards for optimal credit mix",
+              "Spread balances across cards to optimize utilization",
+              "Use different cards for different spending categories",
+              "Request credit limit increases annually",
+              "Close cards only if they have high annual fees and no benefits",
+            ],
+          },
+          {
+            type: "list",
+            content: "Strategic card selection criteria:",
+            items: [
+              "No annual fee for long-term keeper cards",
+              "High credit limits to help with utilization ratios",
+              "Different issuers for diversification",
+              "Rewards that match your spending patterns",
+              "Good customer service and dispute resolution",
+              "Upgrade paths to better cards within the same bank",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Optimal Portfolio Example: Sarah has 4 cards - a 10-year-old no-fee card ($5,000 limit), a cash back card for groceries ($8,000 limit), a travel rewards card ($12,000 limit), and a business card ($15,000 limit). Total credit: $40,000.",
+          },
+          {
+            type: "list",
+            content: "Credit limit optimization strategies:",
+            items: [
+              "Request increases every 6-12 months per card",
+              "Time requests after income increases or promotions",
+              "Use soft pull pre-qualification tools when available",
+              "Provide updated income information annually",
+              "Consider balance transfers to show responsible usage",
+              "Don't use increases as permission to spend more",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Credit portfolio health metrics:",
+            formula: "Portfolio Health = (Total Limits ÷ Total Balances) + (Avg Account Age) + (Payment History %)",
+            variables: {
+              "Total Limits": "Sum of all credit card limits",
+              "Total Balances": "Sum of all outstanding balances",
+              "Avg Account Age": "Average age of all credit accounts",
+              "Payment History %": "Percentage of on-time payments",
+            },
+          },
+          {
+            type: "list",
+            content: "Advanced management techniques:",
+            items: [
+              "Sock drawer method: Keep old cards active with small recurring charges",
+              "Cycling credit: Using and paying off cards throughout the month",
+              "Product changes: Upgrading/downgrading cards instead of closing",
+              "Authorized user optimization: Adding family members strategically",
+              "Business credit separation: Keep business and personal credit separate",
+              "Credit monitoring: Track changes across all accounts",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Portfolio Management Success: By keeping his first credit card open for 15 years, strategically requesting limit increases, and maintaining low utilization across 5 cards, David achieved an 820 credit score and $75,000 in total available credit.",
+          },
+          {
+            type: "list",
+            content: "Common portfolio management mistakes:",
+            items: [
+              "Closing old cards to 'clean up' credit report",
+              "Applying for too many cards in a short period",
+              "Not using cards regularly (leading to closures)",
+              "Concentrating all spending on one card",
+              "Not requesting credit limit increases",
+              "Ignoring annual fee cards that provide value",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't let credit card rewards or available credit tempt you to overspend. The interest charges and debt will quickly outweigh any benefits from rewards or credit score improvements.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up small recurring charges (Netflix, Spotify) on old cards you don't use regularly to keep them active and prevent closure due to inactivity.",
+          },
+        ],
+        keyTakeaways: [
+          "Keep old credit cards open to maintain credit history length",
+          "Optimize your portfolio with 3-5 cards from different issuers",
+          "Request credit limit increases regularly to improve utilization ratios",
+          "Use strategic management techniques to maximize credit score benefits",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Why should you generally keep old credit cards open?",
+              options: [
+                "To have more cards to use for spending",
+                "To maintain the length of your credit history",
+                "To impress lenders with the number of cards you have",
+                "To avoid paying closing fees",
+              ],
+              correctAnswer: "To maintain the length of your credit history",
+              explanation:
+                "Length of credit history accounts for 15% of your credit score. Keeping old accounts open maintains your average account age and shows long-term credit management experience.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit Monitoring and Protection",
+        duration: "5 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Credit Identity",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit monitoring and protection are essential in today's digital world. Identity theft and credit fraud can devastate your financial life, but proper monitoring and protection strategies can help you detect and respond to threats quickly.",
+          },
+          {
+            type: "list",
+            content: "Types of credit monitoring:",
+            items: [
+              "Free monitoring: Credit Karma, Credit Sesame, bank-provided",
+              "Paid monitoring: Comprehensive services with identity theft protection",
+              "Credit bureau monitoring: Direct from Experian, Equifax, TransUnion",
+              "Dark web monitoring: Scans for your information on illegal sites",
+              "Social Security monitoring: Alerts for SSN usage",
+              "Bank account monitoring: Unusual activity alerts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit protection strategies:",
+            items: [
+              "Credit freezes: Prevent new accounts from being opened",
+              "Fraud alerts: Require verification for new credit applications",
+              "Identity theft insurance: Coverage for recovery costs",
+              "Strong passwords: Unique passwords for all financial accounts",
+              "Two-factor authentication: Extra security layer for accounts",
+              "Regular monitoring: Check reports and scores monthly",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Identity Theft Response: When John's credit monitoring alerted him to a new credit card application, he immediately placed fraud alerts, contacted the credit card company, and filed a police report. The fraudulent account was closed before any damage occurred.",
+          },
+          {
+            type: "list",
+            content: "Credit freeze vs. fraud alert comparison:",
+            items: [
+              "Credit freeze: Completely blocks access, you control with PIN",
+              "Fraud alert: Requires lenders to verify identity before extending credit",
+              "Freeze duration: Indefinite until you lift it",
+              "Alert duration: 1 year (extended alerts last 7 years)",
+              "Freeze cost: Free at all three bureaus",
+              "Alert cost: Free, but less comprehensive protection",
+            ],
+          },
+          {
+            type: "list",
+            content: "Signs of identity theft to watch for:",
+            items: [
+              "Unexpected credit score drops",
+              "New accounts you didn't open appearing on reports",
+              "Bills for accounts you don't recognize",
+              "Missing mail or redirected mail",
+              "Denied credit applications for unknown reasons",
+              "Calls from debt collectors about unfamiliar debts",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Prevention Success: By using credit freezes, monitoring services, and strong passwords, Maria prevented identity thieves from opening accounts even after her personal information was compromised in a data breach.",
+          },
+          {
+            type: "list",
+            content: "Identity theft response steps:",
+            items: [
+              "Step 1: Place fraud alerts with all three credit bureaus",
+              "Step 2: Review credit reports for unauthorized accounts",
+              "Step 3: Contact creditors for fraudulent accounts",
+              "Step 4: File identity theft report with FTC",
+              "Step 5: File police report if required",
+              "Step 6: Monitor accounts closely for months afterward",
+            ],
+          },
+          {
+            type: "list",
+            content: "Best practices for credit protection:",
+            items: [
+              "Never give personal information over unsolicited calls",
+              "Use secure networks for financial transactions",
+              "Shred documents containing personal information",
+              "Monitor bank and credit card statements regularly",
+              "Use identity theft protection services if high-risk",
+              "Keep personal documents in secure locations",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be cautious of credit monitoring services that require you to provide credit card information upfront or have difficult cancellation processes. Many free options provide adequate protection.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up account alerts for all your financial accounts to notify you immediately of any transactions, balance changes, or login attempts. Early detection is key to minimizing damage.",
+          },
+        ],
+        keyTakeaways: [
+          "Credit monitoring helps detect identity theft and fraud early",
+          "Credit freezes provide the strongest protection against new account fraud",
+          "Free monitoring services often provide adequate protection for most people",
+          "Quick response to identity theft can minimize long-term damage",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the strongest protection against identity thieves opening new credit accounts?",
+              options: ["Credit monitoring services", "Fraud alerts", "Credit freezes", "Identity theft insurance"],
+              correctAnswer: "Credit freezes",
+              explanation:
+                "Credit freezes completely block access to your credit reports, preventing new accounts from being opened without your explicit permission via PIN or password.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Advanced Credit Strategies",
+        duration: "7 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Leveraging Credit for Wealth Building",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Advanced credit strategies go beyond basic credit management to use credit as a tool for building wealth. These techniques require discipline and understanding but can provide significant financial advantages when used responsibly.",
+          },
+          {
+            type: "list",
+            content: "Advanced credit optimization techniques:",
+            items: [
+              "Credit card churning: Earning sign-up bonuses from new cards",
+              "Balance transfer arbitrage: Profiting from 0% APR offers",
+              "Manufactured spending: Creating spending to earn rewards",
+              "Credit stacking: Using multiple credit sources strategically",
+              "Business credit building: Separating business and personal credit",
+              "Credit line cycling: Maximizing available credit usage",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit card churning strategy:",
+            items: [
+              "Research cards with valuable sign-up bonuses",
+              "Meet minimum spending requirements organically",
+              "Track application timing to avoid too many inquiries",
+              "Maintain good relationships with card issuers",
+              "Keep cards open for at least 12 months",
+              "Calculate value vs. annual fees and opportunity costs",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Churning profitability analysis:",
+            formula: "Net Profit = Sign-up Bonus Value - Annual Fees - Opportunity Costs",
+            variables: {
+              "Sign-up Bonus Value": "Cash or points value of bonus earned",
+              "Annual Fees": "Fees paid for cards",
+              "Opportunity Costs": "Hard inquiries, time, complexity costs",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Churning Example: Sarah earned $2,000 in sign-up bonuses from 3 cards in one year, paid $300 in annual fees, and spent 10 hours managing applications. Net profit: $1,700 or $170/hour for her time.",
+          },
+          {
+            type: "list",
+            content: "Balance transfer arbitrage strategy:",
+            items: [
+              "Find 0% APR balance transfer offers with low/no fees",
+              "Transfer balances to 0% cards",
+              "Invest the cash in high-yield savings or CDs",
+              "Earn interest spread between 0% and investment returns",
+              "Pay off balances before promotional rates expire",
+              "Maintain excellent credit to qualify for best offers",
+            ],
+          },
+          {
+            type: "list",
+            content: "Business credit advantages:",
+            items: [
+              "Separate business and personal credit profiles",
+              "Higher credit limits for business needs",
+              "Better expense tracking and accounting",
+              "Business-specific rewards and benefits",
+              "Potential tax advantages for business expenses",
+              "Protection of personal credit from business risks",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Advanced Strategy Success: Entrepreneur Mike built separate business credit with $100,000+ limits, used 0% APR offers to finance inventory, and earned $5,000+ annually in credit card rewards while maintaining an 800+ credit score.",
+          },
+          {
+            type: "list",
+            content: "Risks and considerations:",
+            items: [
+              "Complexity can lead to missed payments or overspending",
+              "Hard inquiries temporarily lower credit scores",
+              "Annual fees can outweigh benefits if not managed properly",
+              "Requires excellent credit and financial discipline",
+              "Time-intensive to manage multiple accounts and offers",
+              "Regulatory changes can affect strategy viability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Advanced credit metrics to track:",
+            items: [
+              "Credit utilization across all accounts",
+              "Average account age and credit history length",
+              "Hard inquiry frequency and timing",
+              "Credit mix optimization",
+              "Reward earning rates and redemption values",
+              "Annual fee vs. benefit analysis",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Advanced credit strategies require excellent financial discipline and should only be attempted by those who can manage multiple accounts responsibly without overspending or missing payments.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start with one advanced strategy at a time and master it before adding complexity. The fundamentals of on-time payments and low utilization are always more important than advanced techniques.",
+          },
+        ],
+        keyTakeaways: [
+          "Advanced strategies can provide significant financial benefits when used responsibly",
+          "Credit card churning and balance transfer arbitrage require discipline and planning",
+          "Business credit separation provides additional opportunities and protection",
+          "These strategies should only be attempted with excellent credit management skills",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important prerequisite for advanced credit strategies?",
+              options: [
+                "Having multiple credit cards",
+                "Excellent financial discipline and credit management skills",
+                "A high income",
+                "Business ownership",
+              ],
+              correctAnswer: "Excellent financial discipline and credit management skills",
+              explanation:
+                "Advanced credit strategies involve managing multiple accounts and complex timing. Without excellent discipline, these strategies can backfire and damage your credit and finances.",
             },
           ],
         },
       },
     ],
+    "retirement-planning": [
+      {
+        title: "Retirement Planning Fundamentals",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Building Your Retirement Foundation",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Retirement planning is the process of determining retirement income goals and making decisions to achieve those goals. It involves identifying sources of income, estimating expenses, implementing a savings program, and managing assets and risk. The earlier you start, the more time compound growth has to work in your favor.",
+          },
+          {
+            type: "calculation",
+            content: "The power of compound growth in retirement savings:",
+            formula: "Future Value = Present Value × (1 + Interest Rate)^Years",
+            variables: {
+              "Present Value": "Current savings or monthly contribution",
+              "Interest Rate": "Expected annual return (typically 6-8%)",
+              Years: "Time until retirement",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Starting at 25: $200/month for 40 years at 7% return = $525,000. Starting at 35: $200/month for 30 years at 7% return = $245,000. Starting 10 years earlier results in $280,000 more despite only $24,000 in additional contributions.",
+          },
+          {
+            type: "list",
+            content: "The three-legged stool of retirement:",
+            items: [
+              "Social Security: Government-provided benefits based on work history",
+              "Employer-sponsored plans: 401(k), 403(b), pension plans",
+              "Personal savings: IRAs, taxable accounts, other investments",
+              "Modern addition: Health Savings Accounts (HSAs)",
+              "Optional fourth leg: Part-time work or business income",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement planning timeline:",
+            items: [
+              "20s-30s: Focus on high savings rate, aggressive growth investments",
+              "40s: Peak earning years, maximize contributions, reassess goals",
+              "50s: Catch-up contributions, begin shifting to conservative investments",
+              "60s: Fine-tune withdrawal strategy, consider healthcare costs",
+              "70s+: Required minimum distributions, estate planning",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Retirement needs estimation:",
+            formula: "Annual Retirement Need = Current Expenses × Replacement Ratio",
+            variables: {
+              "Current Expenses": "Your current annual living expenses",
+              "Replacement Ratio": "Percentage of current income needed (70-90%)",
+              "Total Needed": "Annual need × 25 (4% withdrawal rule)",
+            },
+          },
+          {
+            type: "list",
+            content: "Factors affecting retirement needs:",
+            items: [
+              "Healthcare costs: Often increase significantly in retirement",
+              "Inflation: Reduces purchasing power over time",
+              "Longevity: People are living longer, requiring more savings",
+              "Lifestyle goals: Travel, hobbies, family support",
+              "Housing: Mortgage payoff, downsizing, or long-term care",
+              "Taxes: Different tax treatment of retirement income",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Retirement Planning Success: Maria started saving $300/month at age 25 in her 401(k) with employer match. By increasing contributions with raises and maintaining a 70% stock allocation, she accumulated $1.2 million by age 60, enabling early retirement.",
+          },
+          {
+            type: "list",
+            content: "Common retirement planning mistakes:",
+            items: [
+              "Starting too late or saving too little",
+              "Being too conservative with investments when young",
+              "Not taking advantage of employer matches",
+              "Cashing out 401(k)s when changing jobs",
+              "Underestimating healthcare and long-term care costs",
+              "Not planning for inflation and longevity",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement income strategies:",
+            items: [
+              "4% withdrawal rule: Withdraw 4% of portfolio annually",
+              "Bucket strategy: Divide assets into short, medium, long-term buckets",
+              "Bond ladder: Stagger bond maturities for predictable income",
+              "Dividend investing: Focus on dividend-paying stocks",
+              "Annuities: Insurance products providing guaranteed income",
+              "Part-time work: Reduce withdrawal needs with earned income",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't rely solely on Social Security for retirement. The average Social Security benefit replaces only about 40% of pre-retirement income, and the system faces long-term funding challenges.",
+          },
+          {
+            type: "tip",
+            content:
+              "Aim to save at least 10-15% of your income for retirement, including employer matches. If you can't start there, begin with whatever you can afford and increase by 1% annually.",
+          },
+        ],
+        keyTakeaways: [
+          "Start retirement planning as early as possible to maximize compound growth",
+          "Plan for 70-90% of current income needs in retirement",
+          "Use multiple retirement savings vehicles for diversification",
+          "Consider healthcare costs and inflation in your planning",
+        ],
+        quiz: {
+          questions: [
+            {
+              question:
+                "According to the 4% withdrawal rule, how much do you need saved to generate $40,000 annually in retirement?",
+              options: ["$800,000", "$1,000,000", "$1,200,000", "$1,600,000"],
+              correctAnswer: "$1,000,000",
+              explanation:
+                "Using the 4% rule, you need 25 times your annual expenses saved. $40,000 × 25 = $1,000,000. This rule suggests you can safely withdraw 4% of your portfolio annually.",
+            },
+          ],
+        },
+      },
+      // Additional lessons would continue here...
+    ],
+    // Additional modules would continue here...
   }
 
   const moduleContent = lessons[moduleId]
