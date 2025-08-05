@@ -8,20 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-  Send,
-  Bot,
-  User,
-  Lightbulb,
-  TrendingUp,
-  DollarSign,
-  Target,
-  Shield,
-  Zap,
-  PiggyBank,
-  CreditCard,
-} from "lucide-react"
-import { userDataManager } from "@/lib/user-data"
+import { Send, Bot, User, Lightbulb, TrendingUp, DollarSign, Target, Shield, Zap } from "lucide-react"
 
 interface Message {
   id: string
@@ -35,7 +22,7 @@ const AIChatComponent = () => {
       id: "welcome",
       role: "assistant",
       content:
-        "Hi! I'm your AI financial advisor powered by GPT-4. I can analyze your personal budget, review your goals, and give you tailored advice on budgeting, saving, debt management, and investing. What would you like to know about?",
+        "Hi! I'm your AI financial advisor. I'll help you make smart money decisions with simple, easy-to-understand advice. What would you like to know about?",
     },
   ])
   const [input, setInput] = useState("")
@@ -51,58 +38,26 @@ const AIChatComponent = () => {
     scrollToBottom()
   }, [messages])
 
-  // Get user data for context
-  const userData = {
-    profile: userDataManager.getUserProfile(),
-    budgetData: userDataManager.getBudgetData(),
-    goals: userDataManager.getGoals(),
-    progress: userDataManager.getUserProgress(),
-    budgetCategories: userDataManager.getBudgetCategories(),
-    budgetEntries: userDataManager.getBudgetEntries(),
-  }
-
-  const hasUserData = !!(userData.budgetData.income || userData.goals.length || userData.profile.age)
-
   const quickStarters = [
     {
       icon: <DollarSign className="w-4 h-4" />,
-      text: hasUserData ? "Analyze my budget" : "Help me create a budget",
-      message: hasUserData
-        ? "Can you analyze my current budget and spending patterns? What improvements can I make?"
-        : "I want to create a budget but don't know where to start. Can you help me?",
-    },
-    {
-      icon: <PiggyBank className="w-4 h-4" />,
-      text: hasUserData ? "Review my savings strategy" : "How much should I save?",
-      message: hasUserData
-        ? "Based on my income and expenses, am I saving enough? What's my savings rate?"
-        : "How much of my income should I be saving each month?",
-    },
-    {
-      icon: <CreditCard className="w-4 h-4" />,
-      text: "Help with debt strategy",
-      message: "I have some debt. What's the best strategy to pay it off while still saving?",
-    },
-    {
-      icon: <TrendingUp className="w-4 h-4" />,
-      text: hasUserData ? "Should I start investing?" : "Investment basics",
-      message: hasUserData
-        ? "Based on my financial situation, should I start investing? What's the best approach?"
-        : "I'm new to investing. Can you explain the basics and how to get started?",
+      text: "I have $1,000 to invest",
+      message: "I have $1,000 to invest and I'm not sure where to start. What should I do?",
     },
     {
       icon: <Target className="w-4 h-4" />,
-      text: hasUserData ? "Review my goals" : "Help me set financial goals",
-      message: hasUserData
-        ? "Can you help me review my financial goals and create a plan to achieve them?"
-        : "I want to set some financial goals but don't know what's realistic. Can you help?",
+      text: "Help me set financial goals",
+      message: "I want to set some financial goals but don't know what's realistic. Can you help?",
     },
     {
       icon: <Shield className="w-4 h-4" />,
-      text: hasUserData ? "Check my emergency fund" : "Do I need an emergency fund?",
-      message: hasUserData
-        ? "Do I have enough in my emergency fund? How does it compare to my expenses?"
-        : "Everyone talks about emergency funds. Do I really need one and how much?",
+      text: "Do I need an emergency fund?",
+      message: "Everyone talks about emergency funds. Do I really need one and how much?",
+    },
+    {
+      icon: <TrendingUp className="w-4 h-4" />,
+      text: "Explain investing basics",
+      message: "I'm completely new to investing. Can you explain the basics in simple terms?",
     },
   ]
 
@@ -129,7 +84,6 @@ const AIChatComponent = () => {
         },
         body: JSON.stringify({
           messages: [...messages, userMessage],
-          userData: userData,
         }),
       })
 
@@ -154,7 +108,7 @@ const AIChatComponent = () => {
         {
           id: Date.now().toString(),
           role: "assistant",
-          content: "Sorry, I'm having trouble connecting to the AI service right now. Please try again in a moment.",
+          content: "Sorry, I'm having trouble responding right now. Could you try asking again?",
         },
       ])
     } finally {
@@ -183,7 +137,7 @@ const AIChatComponent = () => {
             AI Financial Advisor
             <Badge variant="outline" className="ml-auto">
               <Zap className="w-3 h-3 mr-1" />
-              {hasUserData ? "GPT-4 Powered" : "AI Powered"}
+              Smart & Simple
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -196,18 +150,8 @@ const AIChatComponent = () => {
                   <Bot className="w-12 h-12 text-brand-blue mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Hi! I'm your AI financial advisor</h3>
                   <p className="text-gray-600 mb-6">
-                    {hasUserData
-                      ? "Powered by GPT-4, I can analyze your personal budget, review your goals, and give you expert financial advice."
-                      : "Powered by GPT-4, I can help with budgeting, saving, debt management, and investing. Add your financial data for personalized advice!"}
+                    I'll help you make smart money decisions with simple, easy-to-understand advice.
                   </p>
-
-                  {hasUserData && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
-                      <p className="text-sm text-green-800">
-                        ✅ I can see your financial data and provide personalized AI-powered recommendations!
-                      </p>
-                    </div>
-                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -215,7 +159,7 @@ const AIChatComponent = () => {
                     <Button
                       key={index}
                       variant="outline"
-                      className="h-auto p-4 text-left justify-start bg-transparent hover:bg-gray-50"
+                      className="h-auto p-4 text-left justify-start"
                       onClick={() => handleQuickStart(starter.message)}
                     >
                       <div className="flex items-center gap-3">
@@ -227,9 +171,7 @@ const AIChatComponent = () => {
                 </div>
 
                 <div className="text-center text-sm text-gray-500 mt-6">
-                  {hasUserData
-                    ? "Ask me anything about your finances - I have access to your budget and goals!"
-                    : "Or ask me anything about budgeting, saving, debt management, or investing!"}
+                  Or ask me anything about money, investing, budgeting, or financial planning!
                 </div>
               </div>
             )}
@@ -292,11 +234,7 @@ const AIChatComponent = () => {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={
-                  hasUserData
-                    ? "Ask GPT-4 about your budget, goals, or get personalized advice..."
-                    : "Ask GPT-4 about budgeting, saving, debt, investing, or personal finance..."
-                }
+                placeholder="Ask me anything about money and investing..."
                 className="flex-1"
                 disabled={isLoading}
               />
@@ -311,11 +249,7 @@ const AIChatComponent = () => {
 
             <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
               <Lightbulb className="w-3 h-3" />
-              <span>
-                {hasUserData
-                  ? 'Try: "How\'s my budget looking?" or "Should I invest my savings?"'
-                  : 'Try: "Should I pay off debt or invest?" or "How much should I save?"'}
-              </span>
+              <span>Try asking: "Should I invest in index funds?" or "How much should I save?"</span>
             </div>
           </div>
         </CardContent>

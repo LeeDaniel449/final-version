@@ -1,217 +1,160 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { MessageCircle, Brain, Zap, CheckCircle, TrendingUp, Shield, Target, DollarSign } from "lucide-react"
+import AIChatComponent from "@/components/ai-chat"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { Bot, Send, Loader2, TrendingUp, PiggyBank, Target, CreditCard } from "lucide-react"
 
-interface Message {
-  role: "user" | "assistant" | "system"
-  content: string
-}
-
-export default function AIAdvisor() {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "system", content: "You are a helpful financial advisor." },
-  ])
-  const [input, setInput] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  const sendMessage = async () => {
-    if (!input.trim()) return
-
-    const newMessages = [...messages, { role: "user", content: input }]
-    setMessages(newMessages)
-    setInput("")
-    setLoading(true)
-
-    try {
-      const res = await fetch("/api/ai-advisor", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
-      })
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`)
-      }
-
-      const data = await res.json()
-      setMessages([...newMessages, { role: "assistant", content: data.reply }])
-    } catch (error) {
-      console.error("AI Advisor Error:", error)
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content: "Sorry, I'm having trouble connecting right now. Please try again in a moment.",
-        },
-      ])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
-    }
-  }
-
-  const quickStarters = [
-    { icon: TrendingUp, text: "Analyze my budget", color: "bg-blue-500" },
-    { icon: PiggyBank, text: "How much should I save?", color: "bg-green-500" },
-    { icon: Target, text: "Review my goals", color: "bg-purple-500" },
-    { icon: CreditCard, text: "Debt payoff strategy", color: "bg-red-500" },
+const AIAdvisorPage = () => {
+  const features = [
+    {
+      icon: <MessageCircle className="w-5 h-5 text-blue-600" />,
+      title: "Natural Conversation",
+      description: "Chat like you're talking to a friend, not a textbook",
+    },
+    {
+      icon: <Brain className="w-5 h-5 text-purple-600" />,
+      title: "Smart & Simple",
+      description: "Complex financial concepts explained in plain English",
+    },
+    {
+      icon: <Zap className="w-5 h-5 text-yellow-600" />,
+      title: "Instant Answers",
+      description: "Get personalized advice in seconds, not hours",
+    },
+    {
+      icon: <CheckCircle className="w-5 h-5 text-green-600" />,
+      title: "Actionable Steps",
+      description: "Clear next steps you can actually follow",
+    },
   ]
 
-  const handleQuickStart = (text: string) => {
-    setInput(text)
-  }
+  const helpTopics = [
+    {
+      icon: <DollarSign className="w-4 h-4" />,
+      title: "Getting Started",
+      examples: ["I have $500 to invest", "Where should I put my money?", "What's a good first investment?"],
+    },
+    {
+      icon: <Target className="w-4 h-4" />,
+      title: "Goal Setting",
+      examples: ["I want to buy a house", "Planning for retirement", "Saving for vacation"],
+    },
+    {
+      icon: <Shield className="w-4 h-4" />,
+      title: "Risk & Safety",
+      examples: ["How much emergency fund?", "Is this investment safe?", "What if I lose money?"],
+    },
+    {
+      icon: <TrendingUp className="w-4 h-4" />,
+      title: "Growing Wealth",
+      examples: ["Best index funds?", "Should I invest more?", "How to diversify?"],
+    },
+  ]
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
-            <Bot className="h-6 w-6 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-2">
+            <Brain className="w-8 h-8 text-brand-blue" />
+            <h1 className="text-3xl font-bold text-gray-900">AI Financial Advisor</h1>
+            <Badge className="bg-green-100 text-green-800">
+              <Zap className="w-3 h-3 mr-1" />
+              Simple & Smart
+            </Badge>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">AI Financial Advisor</h1>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs">
-                GPT-4 Powered
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                Personalized Advice
-              </Badge>
-            </div>
-          </div>
-        </div>
-        <p className="text-muted-foreground">
-          Get personalized financial advice based on your budget, goals, and profile. Ask about budgeting, saving,
-          investing, or debt management.
-        </p>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <Card className="h-[600px] flex flex-col">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Chat with Your AI Advisor</CardTitle>
-              <CardDescription>Ask questions about your finances and get personalized recommendations</CardDescription>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col gap-4">
-              <ScrollArea className="flex-1 pr-4">
-                <div className="space-y-4">
-                  {messages.slice(1).map((msg, i) => (
-                    <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                      <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                          msg.role === "user" ? "bg-primary text-primary-foreground ml-4" : "bg-muted mr-4"
-                        }`}
-                      >
-                        <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
-                      </div>
-                    </div>
-                  ))}
-                  {loading && (
-                    <div className="flex justify-start">
-                      <div className="bg-muted rounded-lg px-4 py-2 mr-4">
-                        <div className="flex items-center gap-2">
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          <p className="text-sm text-muted-foreground">Thinking...</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </ScrollArea>
-
-              <Separator />
-
-              <div className="flex gap-2">
-                <Input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask about budgeting, saving, investing..."
-                  className="flex-1"
-                  disabled={loading}
-                />
-                <Button onClick={sendMessage} disabled={loading || !input.trim()}>
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Get personalized financial advice in plain English. No jargon, no confusion - just clear answers to help you
+            make better money decisions.
+          </p>
         </div>
 
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Quick Starters</CardTitle>
-              <CardDescription>Try these common financial questions</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {quickStarters.map((starter, i) => (
-                <Button
-                  key={i}
-                  variant="outline"
-                  className="w-full justify-start gap-3 h-auto py-3 bg-transparent"
-                  onClick={() => handleQuickStart(starter.text)}
-                >
-                  <div className={`p-1.5 rounded ${starter.color}`}>
-                    <starter.icon className="h-4 w-4 text-white" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Chat Interface */}
+          <div className="lg:col-span-2">
+            <AIChatComponent />
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Features */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Why This AI is Different</CardTitle>
+                <CardDescription>Designed to actually help, not confuse</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="mt-0.5">{feature.icon}</div>
+                    <div>
+                      <h4 className="font-medium text-sm">{feature.title}</h4>
+                      <p className="text-xs text-gray-600">{feature.description}</p>
+                    </div>
                   </div>
-                  <span className="text-sm">{starter.text}</span>
-                </Button>
-              ))}
-            </CardContent>
-          </Card>
+                ))}
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">What I Can Help With</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm">
-              <div>
-                <h4 className="font-medium mb-1">📊 Budget Analysis</h4>
-                <p className="text-muted-foreground">Review your income, expenses, and savings rate</p>
-              </div>
-              <div>
-                <h4 className="font-medium mb-1">💰 Investment Advice</h4>
-                <p className="text-muted-foreground">Asset allocation based on your risk tolerance</p>
-              </div>
-              <div>
-                <h4 className="font-medium mb-1">🎯 Goal Planning</h4>
-                <p className="text-muted-foreground">Strategies to reach your financial goals</p>
-              </div>
-              <div>
-                <h4 className="font-medium mb-1">💳 Debt Management</h4>
-                <p className="text-muted-foreground">Payoff strategies and debt consolidation</p>
-              </div>
-            </CardContent>
-          </Card>
+            {/* Help Topics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Popular Questions</CardTitle>
+                <CardDescription>Not sure what to ask? Try these topics</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {helpTopics.map((topic, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <div className="text-brand-blue">{topic.icon}</div>
+                      <h4 className="font-medium text-sm">{topic.title}</h4>
+                    </div>
+                    <div className="ml-6 space-y-1">
+                      {topic.examples.map((example, exIndex) => (
+                        <div key={exIndex} className="text-xs text-gray-600 bg-gray-50 rounded px-2 py-1">
+                          "{example}"
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-xs text-muted-foreground">
-                <strong>Disclaimer:</strong> This AI provides educational information only and should not be considered
-                as professional financial advice. Always consult with a qualified financial advisor for personalized
-                guidance.
-              </p>
-            </CardContent>
-          </Card>
+            {/* Tips */}
+            <Card className="bg-blue-50 border-blue-200">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-blue-600" />
+                  Pro Tips
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm">
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>Be specific about your situation (age, income, goals)</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>Ask follow-up questions if something isn't clear</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>Mention your risk tolerance and timeline</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span>Don't hesitate to ask "why" or "how"</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
   )
 }
+
+export default AIAdvisorPage
