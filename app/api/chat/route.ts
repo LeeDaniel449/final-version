@@ -1,225 +1,73 @@
 import { type NextRequest, NextResponse } from "next/server"
-import OpenAI from "openai"
+import { generateText } from "ai"
+import { openai } from "@ai-sdk/openai"
 
-interface Message {
-  role: "user" | "assistant"
-  content: string
-}
-
-interface UserData {
-  profile?: any
-  budgetData?: any
-  goals?: any
-  progress?: any
-  budgetCategories?: any
-  budgetEntries?: any
-}
-
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    console.log("Chat API called")
+    const { message, userData } = await request.json()
 
-    const { messages, userData } = await req.json()
-
-    if (!messages || !Array.isArray(messages)) {
-      return new NextResponse("Invalid messages format", { status: 400 })
+    if (!message) {
+      return NextResponse.json({ error: "Message is required" }, { status: 400 })
     }
 
-    // Build context from user data
-    const userContext = buildUserContext(userData)
-    console.log("User context built")
-
-    // Create system prompt with user context
-    const systemPrompt = createSystemPrompt(userContext)
-
-    // Convert messages to OpenAI format
-    const openaiMessages = [
-      { role: "system" as const, content: systemPrompt },
-      ...messages.map((msg: Message) => ({
-        role: msg.role as "user" | "assistant",
-        content: msg.content,
-      })),
-    ]
-
-    console.log("Calling OpenAI API...")
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: openaiMessages,
-      temperature: 0.7,
-      max_tokens: 1000,
-      presence_penalty: 0.1,
-      frequency_penalty: 0.1,
-    })
-
-    const assistantMessage = response.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response."
-
-    console.log("OpenAI response received successfully")
-
-    return new NextResponse(
-      JSON.stringify({
-        id: Date.now().toString(),
-        role: "assistant",
-        content: assistantMessage,
-        timestamp: new Date().toISOString(),
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    )
-  } catch (error) {
-    console.error("Chat API Error:", error)
-
-    // Provide a helpful fallback response
-    const fallbackResponse = {
-      id: Date.now().toString(),
-      role: "assistant",
-      content:
-        "I'm experiencing some technical difficulties right now. Please try again in a moment, or feel free to explore the other features of the financial literacy app!",
-      timestamp: new Date().toISOString(),
-      error: true,
+    // Build user context
+    let userContext = ""
+    if (userData?.profile) {
+      userContext += `User: ${userData.profile.firstName} ${userData.profile.lastName}\n`
+      userContext += `Experience: ${userData.profile.investmentExperience}\n`
+      userContext += `Risk Tolerance: ${userData.profile.riskTolerance}\n`
     }
 
-    return new NextResponse(JSON.stringify(fallbackResponse), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-  }
-}
-
-function buildUserContext(userData?: UserData): string {
-  if (!userData) return "No user data available."
-
-  let context = "USER FINANCIAL DATA:\n\n"
-
-  // Budget Information
-  if (userData.budgetData?.income) {
-    const income = userData.budgetData.income
-    const expenses = userData.budgetData.expenses || {}
-    const savings = userData.budgetData.savings || 0
-    const totalExpenses = Object.values(expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0)
-    const monthlyLeftover = income - totalExpenses
-    const savingsRate = income > 0 ? ((savings / income) * 100).toFixed(1) : "0"
-    const emergencyFundMonths = totalExpenses > 0 ? (savings / totalExpenses).toFixed(1) : "0"
-
-    context += `BUDGET:\n`
-    context += `- Monthly Income: $${income.toLocaleString()}\n`
-    context += `- Total Monthly Expenses: $${totalExpenses.toLocaleString()}\n`
-    context += `- Current Savings: $${savings.toLocaleString()}\n`
-    context += `- Monthly Leftover: $${monthlyLeftover.toLocaleString()}\n`
-    context += `- Savings Rate: ${savingsRate}%\n`
-    context += `- Emergency Fund Coverage: ${emergencyFundMonths} months\n\n`
-
-    if (Object.keys(expenses).length > 0) {
-      context += `EXPENSE BREAKDOWN:\n`
-      Object.entries(expenses).forEach(([category, amount]) => {
-        context += `- ${category}: $${(amount as number).toLocaleString()}\n`
-      })
-      context += `\n`
+    if (userData?.budgetData) {
+      userContext += `Income: $${userData.budgetData.income || 0}\n`
+      userContext += `Savings: $${userData.budgetData.savings || 0}\n`
     }
-  }
 
-  // Goals Information
-  if (userData.goals && userData.goals.length > 0) {
-    context += `FINANCIAL GOALS:\n`
-    userData.goals.forEach((goal: any, index: number) => {
-      const progress = ((goal.current / goal.target) * 100).toFixed(1)
-      const remaining = goal.target - goal.current
-      context += `${index + 1}. ${goal.title}\n`
-      context += `   - Target: $${goal.target.toLocaleString()}\n`
-      context += `   - Current: $${goal.current.toLocaleString()}\n`
-      context += `   - Progress: ${progress}%\n`
-      context += `   - Remaining: $${remaining.toLocaleString()}\n`
-      if (goal.deadline) {
-        context += `   - Deadline: ${goal.deadline}\n`
-      }
-      if (goal.priority) {
-        context += `   - Priority: ${goal.priority}\n`
-      }
-      context += `\n`
-    })
-  }
+    const systemPrompt = `You are a helpful financial literacy assistant. Provide clear, educational responses about personal finance topics. Keep responses concise but informative.
 
-  // Profile Information
-  if (userData.profile) {
-    context += `USER PROFILE:\n`
-    if (userData.profile.age) {
-      context += `- Age: ${userData.profile.age}\n`
-    }
-    if (userData.profile.experience) {
-      context += `- Investment Experience: ${userData.profile.experience}\n`
-    }
-    if (userData.profile.riskTolerance) {
-      context += `- Risk Tolerance: ${userData.profile.riskTolerance}\n`
-    }
-    if (userData.profile.timeHorizon) {
-      context += `- Investment Time Horizon: ${userData.profile.timeHorizon}\n`
-    }
-    context += `\n`
-  }
-
-  // Budget Categories
-  if (userData.budgetCategories && userData.budgetCategories.length > 0) {
-    const expenseCategories = userData.budgetCategories.filter(
-      (cat: any) => cat.type === "expense" && cat.spentAmount > 0,
-    )
-    if (expenseCategories.length > 0) {
-      context += `DETAILED SPENDING BY CATEGORY:\n`
-      expenseCategories
-        .sort((a: any, b: any) => b.spentAmount - a.spentAmount)
-        .forEach((cat: any) => {
-          const percentOfBudget = cat.budgetAmount > 0 ? ((cat.spentAmount / cat.budgetAmount) * 100).toFixed(1) : "N/A"
-          context += `- ${cat.name}: $${cat.spentAmount.toLocaleString()} spent / $${cat.budgetAmount.toLocaleString()} budgeted (${percentOfBudget}%)\n`
-        })
-      context += `\n`
-    }
-  }
-
-  return context
-}
-
-function createSystemPrompt(userContext: string): string {
-  return `You are an expert AI financial advisor. You provide personalized, practical financial advice based on the user's actual financial data.
-
+User context:
 ${userContext}
 
-INSTRUCTIONS:
-1. Always use the user's actual financial data when providing advice
-2. Be specific with numbers and calculations based on their real situation
-3. Prioritize advice based on their financial health (emergency fund first, then debt, then investing)
-4. Consider their age, risk tolerance, and goals when making recommendations
-5. Provide actionable, step-by-step advice
-6. Use a friendly, encouraging tone while being professional
-7. If they don't have certain data, suggest they add it to get better advice
+Focus on education and practical advice.`
 
-FINANCIAL ADVICE PRIORITIES:
-1. Emergency Fund (3-6 months of expenses)
-2. High-interest debt payoff (>7% interest)
-3. Employer 401k match (free money)
-4. Additional debt payoff vs investing (depends on interest rates)
-5. Long-term investing in diversified index funds
-6. Specific goal saving (house, vacation, etc.)
+    let response: string
 
-INVESTMENT RECOMMENDATIONS:
-- Age-based stock allocation: roughly (100 - age)% in stocks
-- Low-cost index funds: VTI (total market), VOO (S&P 500), BND (bonds)
-- Dollar-cost averaging for consistent investing
-- Tax-advantaged accounts first (401k, IRA)
+    try {
+      // Try OpenAI first
+      const result = await generateText({
+        model: openai("gpt-4o"),
+        system: systemPrompt,
+        prompt: message,
+        maxTokens: 500,
+      })
 
-BUDGETING ADVICE:
-- 50/30/20 rule: 50% needs, 30% wants, 20% savings/debt
-- Track spending to identify areas for improvement
-- Automate savings and investments
-- Review and adjust monthly
+      response = result.text
+    } catch (openaiError) {
+      console.error("OpenAI error:", openaiError)
 
-Always provide specific, actionable advice based on their actual financial situation. If you need more information to give better advice, ask for it.`
+      // Fallback response
+      response = `I'm having trouble connecting to my AI service right now. However, I can still help! 
+
+For financial questions, I recommend:
+• Checking reputable sources like Investopedia or the SEC's investor.gov
+• Speaking with a qualified financial advisor
+• Using budgeting apps to track your spending
+
+What specific financial topic would you like to learn about? I can provide some general guidance even without my full AI capabilities.`
+    }
+
+    return NextResponse.json({
+      response,
+      timestamp: new Date().toISOString(),
+    })
+  } catch (error) {
+    console.error("Chat API error:", error)
+    return NextResponse.json(
+      {
+        error: "Failed to process message",
+        response: "I'm experiencing technical difficulties. Please try again in a moment.",
+      },
+      { status: 500 },
+    )
+  }
 }
