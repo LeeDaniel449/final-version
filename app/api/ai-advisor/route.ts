@@ -1,262 +1,368 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { generateText } from "ai"
-import { openai } from "@ai-sdk/openai"
+import OpenAI from "openai"
+import { getUserData } from "@/lib/user-data"
+
+interface Message {
+  role: "user" | "assistant" | "system"
+  content: string
+}
+
+interface RequestBody {
+  messages: Message[]
+}
+
+// Initialize OpenAI client
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+})
+
+// Build comprehensive user context for personalized advice
+function buildUserContext() {
+  try {
+    const userData = getUserData()
+
+    if (!userData.isSignedIn) {
+      return "User is not signed in. Provide general financial advice and encourage them to create an account for personalized recommendations."
+    }
+
+    const { profile, budgetData, goals } = userData
+
+    // Calculate key financial metrics
+    const totalExpenses = Object.values(budgetData.expenses).reduce(
+      (sum: number, expense: any) => sum + (expense || 0),
+      0,
+    )
+    const monthlyLeftover = budgetData.income - totalExpenses
+    const savingsRate = budgetData.income > 0 ? ((monthlyLeftover / budgetData.income) * 100).toFixed(1) : "0"
+    const emergencyFundMonths = totalExpenses > 0 ? (budgetData.savings / totalExpenses).toFixed(1) : "0"
+
+    // Analyze expense categories
+    const expenseEntries = Object.entries(budgetData.expenses).filter(([_, amount]) => (amount as number) > 0)
+    const topExpenses = expenseEntries
+      .sort(([, a], [, b]) => (b as number) - (a as number))
+      .slice(0, 3)
+      .map(([category, amount]) => `${category}: $${amount}`)
+      .join(", ")
+
+    // Analyze goals
+    const activeGoals = goals.filter((g: any) => g.status === "active" || !g.status)
+    const goalsSummary = activeGoals
+      .map((g: any) => {
+        const progress = g.targetAmount > 0 ? ((g.currentAmount / g.targetAmount) * 100).toFixed(1) : "0"
+        return `${g.title}: $${g.currentAmount}/$${g.targetAmount} (${progress}%)`
+      })
+      .join("; ")
+
+    return `
+USER FINANCIAL PROFILE:
+• Name: ${profile.firstName} ${profile.lastName}
+• Age: ${profile.age}
+• Risk Tolerance: ${profile.riskTolerance}
+• Investment Experience: ${profile.investmentExperience}
+• Time Horizon: ${profile.timeHorizon}
+
+BUDGET ANALYSIS:
+• Monthly Income: $${budgetData.income}
+• Total Monthly Expenses: $${totalExpenses}
+• Monthly Leftover: $${monthlyLeftover}
+• Savings Rate: ${savingsRate}%
+• Current Savings: $${budgetData.savings}
+• Emergency Fund Coverage: ${emergencyFundMonths} months
+• Top Expense Categories: ${topExpenses || "None recorded"}
+
+FINANCIAL GOALS:
+${goalsSummary || "No active goals set"}
+
+FINANCIAL HEALTH INDICATORS:
+• Emergency Fund Status: ${Number.parseFloat(emergencyFundMonths) >= 3 ? "✅ Good" : "⚠️ Needs attention"}
+• Savings Rate: ${Number.parseFloat(savingsRate) >= 20 ? "✅ Excellent" : Number.parseFloat(savingsRate) >= 10 ? "✅ Good" : "⚠️ Could improve"}
+• Investment Readiness: ${Number.parseFloat(emergencyFundMonths) >= 3 && monthlyLeftover > 0 ? "✅ Ready" : "⚠️ Build emergency fund first"}
+    `.trim()
+  } catch (error) {
+    console.error("Error building user context:", error)
+    return "Unable to load user data. Providing general financial advice."
+  }
+}
+
+// Generate intelligent response based on user question and context
+function generateFallbackResponse(userQuestion: string, userContext: string): string {
+  const question = userQuestion.toLowerCase()
+
+  // Budget-related questions
+  if (question.includes("budget") || question.includes("analyze") || question.includes("spending")) {
+    if (userContext.includes("not signed in")) {
+      return `I'd love to analyze your budget! To provide personalized advice, please sign up and add your income and expenses to your budget tracker. 
+
+Generally, a good budget follows the 50/30/20 rule:
+• 50% for needs (housing, food, utilities)
+• 30% for wants (entertainment, dining out)
+• 20% for savings and debt repayment
+
+Once you add your financial data, I can give you specific recommendations based on your actual numbers!`
+    }
+
+    const incomeMatch = userContext.match(/Monthly Income: \$(\d+)/)
+    const expensesMatch = userContext.match(/Total Monthly Expenses: \$(\d+)/)
+    const savingsRateMatch = userContext.match(/Savings Rate: ([\d.]+)%/)
+
+    if (incomeMatch && expensesMatch && savingsRateMatch) {
+      const income = Number.parseInt(incomeMatch[1])
+      const expenses = Number.parseInt(expensesMatch[1])
+      const savingsRate = Number.parseFloat(savingsRateMatch[1])
+      const leftover = income - expenses
+
+      return `📊 **Budget Analysis:**
+
+**Income & Expenses:**
+• Monthly Income: $${income.toLocaleString()}
+• Total Expenses: $${expenses.toLocaleString()}
+• Monthly Leftover: $${leftover.toLocaleString()}
+• Savings Rate: ${savingsRate}%
+
+**Assessment:**
+${
+  savingsRate >= 20
+    ? "🎉 Excellent savings rate! You're saving " +
+      savingsRate +
+      "% of your income, which is above the recommended 20%."
+    : savingsRate >= 10
+      ? "✅ Good savings rate of " + savingsRate + "%. Consider increasing to 20% if possible."
+      : "⚠️ Your savings rate of " + savingsRate + "% could be improved. Aim for at least 10-20%."
+}
+
+**Recommendations:**
+${
+  leftover > 0
+    ? `• You have $${leftover.toLocaleString()} monthly surplus - great job!
+• Consider automating savings to reach a 20% savings rate
+• Review your top expense categories for optimization opportunities`
+    : `• Your expenses equal or exceed your income
+• Look for areas to reduce spending, especially in discretionary categories
+• Consider ways to increase your income`
+}
+
+Would you like me to suggest specific areas where you could optimize your spending?`
+    }
+  }
+
+  // Investment-related questions
+  if (question.includes("invest") || question.includes("portfolio") || question.includes("stocks")) {
+    if (userContext.includes("not signed in")) {
+      return `For investment advice, I'd need to know your financial situation, risk tolerance, and goals. Please sign up to get personalized recommendations!
+
+Generally, here's a basic investment approach:
+• Build emergency fund first (3-6 months expenses)
+• Pay off high-interest debt
+• Start with low-cost index funds
+• Diversify across asset classes
+• Invest consistently over time`
+    }
+
+    const emergencyFundMatch = userContext.match(/Emergency Fund Coverage: ([\d.]+) months/)
+    const riskToleranceMatch = userContext.match(/Risk Tolerance: (\w+)/)
+    const ageMatch = userContext.match(/Age: (\d+)/)
+
+    if (emergencyFundMatch && riskToleranceMatch) {
+      const emergencyMonths = Number.parseFloat(emergencyFundMatch[1])
+      const riskTolerance = riskToleranceMatch[1]
+      const age = ageMatch ? Number.parseInt(ageMatch[1]) : 30
+
+      if (emergencyMonths < 3) {
+        return `⚠️ **Investment Readiness Check:**
+
+Before investing, you should build your emergency fund. You currently have ${emergencyMonths} months of expenses saved, but I recommend 3-6 months.
+
+**Priority Order:**
+1. **Build Emergency Fund** - Save $${Math.round((3 - emergencyMonths) * 1000)} more
+2. **Pay Off High-Interest Debt** - Focus on credit cards (>6% interest)
+3. **Start Investing** - Once emergency fund is complete
+
+Once you're ready to invest, I'll recommend a portfolio based on your ${riskTolerance} risk tolerance!`
+      }
+
+      // Investment allocation based on risk tolerance and age
+      let stockAllocation = 100 - age // Age in bonds rule
+      if (riskTolerance === "conservative") stockAllocation = Math.min(stockAllocation, 60)
+      if (riskTolerance === "aggressive") stockAllocation = Math.min(stockAllocation + 10, 90)
+
+      const bondAllocation = 100 - stockAllocation
+
+      return `💰 **Investment Recommendations:**
+
+**Your Profile:**
+• Age: ${age}
+• Risk Tolerance: ${riskTolerance}
+• Emergency Fund: ✅ ${emergencyMonths} months (Good!)
+
+**Suggested Portfolio Allocation:**
+• **${stockAllocation}% Stocks** (VTI - Total Stock Market)
+• **${bondAllocation}% Bonds** (BND - Total Bond Market)
+
+**Investment Strategy:**
+• Start with low-cost index funds
+• Invest consistently (dollar-cost averaging)
+• Rebalance annually
+• Don't try to time the market
+• Consider tax-advantaged accounts (401k, IRA)
+
+**Next Steps:**
+1. Open investment account (Vanguard, Fidelity, Schwab)
+2. Set up automatic monthly investments
+3. Start with target-date funds if you prefer simplicity
+
+Would you like specific fund recommendations or help with account setup?`
+    }
+  }
+
+  // Default response for general questions
+  return `I'm here to help with your financial questions! I can provide personalized advice on:
+
+📊 **Budget Analysis** - Review your spending and savings rate
+💰 **Investment Strategy** - Portfolio recommendations based on your risk tolerance  
+🎯 **Goal Planning** - Help you reach your financial objectives
+💳 **Debt Management** - Strategies to pay off debt efficiently
+💰 **Savings Plans** - Emergency funds and savings strategies
+
+${
+  userContext.includes("not signed in")
+    ? "For personalized advice based on your actual financial situation, please sign up and add your budget information!"
+    : "I can see your financial profile and provide specific recommendations based on your actual data."
+}
+
+What specific area would you like help with today?`
+}
 
 export async function POST(request: NextRequest) {
   try {
-    const { message, userData } = await request.json()
+    console.log("AI Advisor API called")
 
-    if (!message) {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 })
+    const body: RequestBody = await request.json()
+    console.log("Request body received:", JSON.stringify(body, null, 2))
+
+    const { messages } = body
+
+    if (!messages || !Array.isArray(messages)) {
+      console.error("Invalid messages format:", messages)
+      return NextResponse.json({ error: "Invalid messages format. Expected array of messages." }, { status: 400 })
     }
 
-    // Build context from user data
-    let userContext = "User Profile:\n"
-
-    if (userData?.profile) {
-      const profile = userData.profile
-      userContext += `- Name: ${profile.firstName} ${profile.lastName}\n`
-      userContext += `- Age: ${profile.age}\n`
-      userContext += `- Risk Tolerance: ${profile.riskTolerance}\n`
-      userContext += `- Investment Experience: ${profile.investmentExperience}\n`
-      userContext += `- Time Horizon: ${profile.timeHorizon}\n`
+    if (messages.length === 0) {
+      console.error("No messages provided")
+      return NextResponse.json({ error: "No messages provided" }, { status: 400 })
     }
 
-    if (userData?.budgetData) {
-      const budget = userData.budgetData
-      userContext += `\nFinancial Situation:\n`
-      userContext += `- Monthly Income: $${budget.income?.toLocaleString() || 0}\n`
-      userContext += `- Current Savings: $${budget.savings?.toLocaleString() || 0}\n`
-
-      if (budget.expenses && Object.keys(budget.expenses).length > 0) {
-        userContext += `- Monthly Expenses:\n`
-        Object.entries(budget.expenses).forEach(([category, amount]) => {
-          if (amount > 0) {
-            userContext += `  • ${category}: $${amount.toLocaleString()}\n`
-          }
-        })
-      }
+    // Get the latest user message
+    const userMessage = messages[messages.length - 1]
+    if (!userMessage || userMessage.role !== "user") {
+      console.error("No user message found or invalid message role:", userMessage)
+      return NextResponse.json({ error: "No valid user message found" }, { status: 400 })
     }
 
-    if (userData?.goals && userData.goals.length > 0) {
-      userContext += `\nFinancial Goals:\n`
-      userData.goals.forEach((goal: any) => {
-        userContext += `- ${goal.title}: $${goal.currentAmount?.toLocaleString() || 0} / $${goal.targetAmount?.toLocaleString() || 0}\n`
-      })
-    }
+    console.log("Processing user message:", userMessage.content)
 
-    // System prompt for the AI financial advisor
-    const systemPrompt = `You are a professional financial advisor with expertise in personal finance, budgeting, investing, and financial planning. You provide personalized, actionable advice based on the user's specific financial situation.
+    // Build user context for personalized advice
+    const userContext = buildUserContext()
+    console.log("User context built successfully")
 
-Key principles:
-- Always consider the user's risk tolerance, age, and financial goals
-- Provide specific, actionable recommendations
-- Explain complex financial concepts in simple terms
-- Consider tax implications when relevant
-- Emphasize the importance of emergency funds and debt management
-- Be encouraging but realistic about financial goals
-- Always recommend consulting with a qualified financial professional for major decisions
+    let reply: string
 
-Current user context:
+    // Try to use OpenAI if API key is available
+    if (process.env.OPENAI_API_KEY) {
+      try {
+        console.log("Using OpenAI GPT-4 for response generation...")
+
+        const systemPrompt = `You are a professional AI financial advisor with expertise in personal finance, budgeting, investing, and debt management. You provide personalized, actionable advice based on the user's actual financial data.
+
+IMPORTANT: Use the following user context to provide personalized advice:
+
 ${userContext}
 
-Respond in a helpful, professional tone with specific advice tailored to their situation.`
+FINANCIAL ADVICE GUIDELINES:
+1. **Always use the user's actual financial data** when providing advice
+2. **Be specific with numbers and calculations** based on their real situation
+3. **Prioritize advice based on financial health**: Emergency fund → High-interest debt → Retirement savings → Other goals
+4. **Consider their age, risk tolerance, and goals** when making recommendations
+5. **Provide actionable, step-by-step advice** they can implement immediately
+6. **Use a friendly, encouraging tone** while being professional and realistic
+7. **If they lack certain data**, suggest they add it to get better personalized advice
 
-    let response: string
-    let source = "openai"
+INVESTMENT RECOMMENDATIONS:
+• Age-based stock allocation: roughly (100 - age)% in stocks, rest in bonds
+• Low-cost index funds: VTI (total market), VOO (S&P 500), BND (bonds)
+• Dollar-cost averaging for consistent investing
+• Tax-advantaged accounts first (401k with match, then IRA)
+• Emergency fund must be complete before investing
 
-    try {
-      // Try OpenAI first
-      const result = await generateText({
-        model: openai("gpt-4o"),
-        system: systemPrompt,
-        prompt: message,
-        maxTokens: 1000,
-      })
+BUDGETING ADVICE:
+• 50/30/20 rule: 50% needs, 30% wants, 20% savings/debt repayment
+• Track spending to identify optimization opportunities
+• Automate savings and investments
+• Review and adjust monthly based on actual spending patterns
 
-      response = result.text
-    } catch (openaiError) {
-      console.error("OpenAI API error:", openaiError)
-      source = "fallback"
+FORMAT YOUR RESPONSE:
+• Use clear headings and bullet points
+• Include specific dollar amounts from their data
+• Provide concrete next steps
+• Use emojis sparingly for readability
+• Keep responses comprehensive but concise (under 800 words)
 
-      // Intelligent fallback based on user data and message content
-      response = generateIntelligentFallback(message, userData)
+If the user is not signed in, encourage them to create an account for personalized advice while still providing valuable general guidance.`
+
+        const completion = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages: [
+            { role: "system", content: systemPrompt },
+            ...messages.slice(-3), // Include last 3 messages for context
+          ],
+          max_tokens: 1200,
+          temperature: 0.7,
+          presence_penalty: 0.1,
+          frequency_penalty: 0.1,
+        })
+
+        reply =
+          completion.choices[0]?.message?.content ||
+          "I apologize, but I couldn't generate a response. Please try again."
+
+        console.log("OpenAI response generated successfully")
+        console.log("Response length:", reply.length)
+      } catch (openaiError) {
+        console.error("OpenAI API Error:", openaiError)
+        console.log("Falling back to intelligent response system...")
+        reply = generateFallbackResponse(userMessage.content, userContext)
+      }
+    } else {
+      console.log("No OpenAI API key found, using fallback response system")
+      reply = generateFallbackResponse(userMessage.content, userContext)
     }
 
     return NextResponse.json({
-      response,
-      source,
+      reply,
       timestamp: new Date().toISOString(),
+      source: process.env.OPENAI_API_KEY ? "openai" : "fallback",
     })
   } catch (error) {
-    console.error("AI Advisor API error:", error)
+    console.error("AI Advisor API Error:", error)
+
+    // Provide a helpful error response
+    const errorReply = `I apologize, but I'm experiencing technical difficulties right now. Here are some general financial tips while I get back online:
+
+📊 **Quick Financial Health Check:**
+• Emergency fund: 3-6 months of expenses in savings
+• Debt: Pay off high-interest debt (>6% APR) before investing
+• Savings rate: Aim for 10-20% of income
+• Investing: Low-cost index funds for long-term growth
+
+Please try asking your question again in a moment, or feel free to explore the other features of the app!`
+
     return NextResponse.json(
       {
-        error: "Failed to get financial advice",
-        response:
-          "I'm having trouble connecting right now, but I'd be happy to help with your financial questions. Could you try asking again?",
-        source: "error",
+        reply: errorReply,
+        error: "Service temporarily unavailable",
+        timestamp: new Date().toISOString(),
+        source: "error_fallback",
       },
-      { status: 500 },
+      { status: 200 }, // Return 200 so the UI can display the helpful message
     )
   }
-}
-
-function generateIntelligentFallback(message: string, userData: any): string {
-  const lowerMessage = message.toLowerCase()
-
-  // Budget-related questions
-  if (lowerMessage.includes("budget") || lowerMessage.includes("spending")) {
-    if (userData?.budgetData?.income > 0) {
-      const income = userData.budgetData.income
-      const totalExpenses = Object.values(userData.budgetData.expenses || {}).reduce(
-        (sum: number, exp: any) => sum + (exp || 0),
-        0,
-      )
-      const leftover = income - totalExpenses
-
-      return `Based on your monthly income of $${income.toLocaleString()}, here's my budgeting advice:
-
-${
-  leftover > 0
-    ? `Great news! You have $${leftover.toLocaleString()} left over each month. Consider allocating this to:
-  • 50% to savings/emergency fund
-  • 30% to debt repayment or investments
-  • 20% to discretionary spending`
-    : `Your expenses exceed your income by $${Math.abs(leftover).toLocaleString()}. Priority steps:
-  1. Review and cut non-essential expenses
-  2. Look for ways to increase income
-  3. Focus on the largest expense categories first`
-}
-
-The 50/30/20 rule is a good starting point: 50% needs, 30% wants, 20% savings and debt repayment.`
-    }
-
-    return `Here are some fundamental budgeting principles:
-
-1. **Track everything** - Know where every dollar goes
-2. **50/30/20 rule** - 50% needs, 30% wants, 20% savings/debt
-3. **Emergency fund first** - Build 3-6 months of expenses
-4. **Automate savings** - Pay yourself first
-5. **Review monthly** - Adjust as needed
-
-Start by listing all income and expenses to see your current situation.`
-  }
-
-  // Investment questions
-  if (lowerMessage.includes("invest") || lowerMessage.includes("stock") || lowerMessage.includes("retirement")) {
-    const age = userData?.profile?.age || 30
-    const riskTolerance = userData?.profile?.riskTolerance || "moderate"
-    const savings = userData?.budgetData?.savings || 0
-
-    return `Investment advice based on your profile:
-
-**Age ${age} with ${riskTolerance} risk tolerance:**
-
-${
-  savings < 10000
-    ? `Priority: Build your emergency fund first (3-6 months expenses) before investing.`
-    : `Good foundation! Here's a suggested approach:`
-}
-
-1. **Emergency Fund** - 3-6 months expenses in high-yield savings
-2. **401(k) Match** - Always get the full employer match (free money!)
-3. **Index Funds** - Low-cost, diversified options like:
-   • Total Stock Market Index (${age < 40 ? "70-80%" : "60-70%"})
-   • Bond Index (${age < 40 ? "20-30%" : "30-40%"})
-
-**Rule of thumb:** Stock allocation = 100 - your age (so ${100 - age}% stocks)
-
-Start with broad market index funds and increase contributions over time.`
-  }
-
-  // Debt questions
-  if (lowerMessage.includes("debt") || lowerMessage.includes("loan") || lowerMessage.includes("credit card")) {
-    return `Debt management strategies:
-
-**High-Interest Debt (Credit Cards, etc.):**
-1. **Avalanche Method** - Pay minimums on all, extra on highest interest rate
-2. **Snowball Method** - Pay minimums on all, extra on smallest balance
-3. **Balance Transfer** - Consider 0% APR cards for credit card debt
-
-**Student Loans:**
-• Federal loans: Explore income-driven repayment plans
-• Consider refinancing private loans if you have good credit
-
-**General Priority:**
-1. Emergency fund ($1,000 minimum)
-2. High-interest debt (>7% interest rate)
-3. Build full emergency fund
-4. Invest for retirement
-
-The key is consistency - even small extra payments make a big difference over time!`
-  }
-
-  // Emergency fund questions
-  if (lowerMessage.includes("emergency") || lowerMessage.includes("savings")) {
-    const income = userData?.budgetData?.income || 0
-    const savings = userData?.budgetData?.savings || 0
-
-    if (income > 0) {
-      const monthlyTarget = income * 0.75 // Assume 75% of income for expenses
-      const targetFund = monthlyTarget * 6
-
-      return `Emergency Fund Guidance:
-
-**Your Target:** $${targetFund.toLocaleString()} (6 months of expenses)
-**Current Savings:** $${savings.toLocaleString()}
-**Still Needed:** $${Math.max(0, targetFund - savings).toLocaleString()}
-
-**Building Strategy:**
-1. Start with $1,000 minimum emergency fund
-2. Save 10-20% of income monthly until you reach 3-6 months
-3. Keep in high-yield savings account (separate from checking)
-4. Only use for true emergencies (job loss, medical, major repairs)
-
-**Quick wins:**
-• Automate transfers on payday
-• Save tax refunds and bonuses
-• Sell unused items
-• Take on temporary side work`
-    }
-
-    return `Emergency Fund Essentials:
-
-**Target Amount:** 3-6 months of living expenses
-**Where to Keep It:** High-yield savings account (separate from daily banking)
-**When to Use:** Job loss, medical emergencies, major home/car repairs
-
-**Building Steps:**
-1. Start with $1,000 minimum
-2. Save 10-20% of income monthly
-3. Automate the process
-4. Don't invest emergency funds - keep them liquid and safe
-
-This fund provides peace of mind and prevents you from going into debt during tough times.`
-  }
-
-  // Default response
-  return `I'd be happy to help with your financial question! Here are some key areas I can assist with:
-
-**Budgeting & Spending:**
-• Creating and managing budgets
-• Tracking expenses
-• Finding areas to cut costs
-
-**Saving & Investing:**
-• Building emergency funds
-• Investment strategies
-• Retirement planning
-
-**Debt Management:**
-• Paying off credit cards
-• Student loan strategies
-• Debt consolidation options
-
-**Financial Goals:**
-• Setting realistic targets
-• Creating action plans
-• Tracking progress
-
-Could you be more specific about what aspect of your finances you'd like help with? I can provide more targeted advice based on your situation.`
 }

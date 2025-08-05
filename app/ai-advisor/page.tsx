@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Bot, Send, Loader2, TrendingUp, PiggyBank, Target, CreditCard } from "lucide-react"
+import { Bot, Send, Loader2, TrendingUp, PiggyBank, Target, CreditCard, AlertCircle } from "lucide-react"
 
 interface Message {
   role: "user" | "assistant" | "system"
@@ -17,42 +17,88 @@ interface Message {
 }
 
 export default function AIAdvisor() {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "system", content: "You are a helpful financial advisor." },
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const sendMessage = async () => {
     if (!input.trim()) return
 
-    const newMessages = [...messages, { role: "user", content: input }]
+    const userMessage: Message = { role: "user", content: input.trim() }
+    const newMessages = [...messages, userMessage]
     setMessages(newMessages)
     setInput("")
     setLoading(true)
+    setError(null)
 
     try {
-      const res = await fetch("/api/ai-advisor", {
+      console.log("Sending message to AI advisor API...")
+      console.log("Messages being sent:", newMessages)
+
+      const response = await fetch("/api/ai-advisor", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ messages: newMessages }),
       })
 
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`)
+      console.log("Response status:", response.status)
+      console.log("Response headers:", response.headers)
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error("API Error Response:", errorText)
+
+        let errorMessage = `HTTP error! status: ${response.status}`
+        try {
+          const errorData = JSON.parse(errorText)
+          errorMessage = errorData.error || errorMessage
+        } catch {
+          // If we can't parse the error, use the status text
+          errorMessage = `Server error: ${response.status} ${response.statusText}`
+        }
+
+        throw new Error(errorMessage)
       }
 
-      const data = await res.json()
-      setMessages([...newMessages, { role: "assistant", content: data.reply }])
+      const data = await response.json()
+      console.log("AI Response received:", data)
+
+      if (data.error) {
+        throw new Error(data.error)
+      }
+
+      const assistantMessage: Message = {
+        role: "assistant",
+        content: data.reply || "I apologize, but I couldn't generate a response. Please try again.",
+      }
+      setMessages([...newMessages, assistantMessage])
     } catch (error) {
       console.error("AI Advisor Error:", error)
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content: "Sorry, I'm having trouble connecting right now. Please try again in a moment.",
-        },
-      ])
+      setError(error instanceof Error ? error.message : "An unexpected error occurred")
+
+      const errorMessage: Message = {
+        role: "assistant",
+        content: `I apologize, but I encountered an error: ${error instanceof Error ? error.message : "Unknown error"}. 
+
+Here are some general financial tips while I get back online:
+
+📊 **Budget Basics:**
+• Track all income and expenses
+• Follow the 50/30/20 rule (needs/wants/savings)
+• Build an emergency fund (3-6 months expenses)
+
+💰 **Investment Fundamentals:**
+• Start with low-cost index funds
+• Diversify your portfolio
+• Invest consistently over time
+• Don't try to time the market
+
+Please try asking your question again, or explore the other features of the app!`,
+      }
+      setMessages([...newMessages, errorMessage])
     } finally {
       setLoading(false)
     }
@@ -74,6 +120,10 @@ export default function AIAdvisor() {
 
   const handleQuickStart = (text: string) => {
     setInput(text)
+  }
+
+  const clearError = () => {
+    setError(null)
   }
 
   return (
@@ -101,6 +151,28 @@ export default function AIAdvisor() {
         </p>
       </div>
 
+      {error && (
+        <Card className="mb-6 border-red-200 bg-red-50">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="font-medium text-red-900">Connection Error</h3>
+                <p className="text-sm text-red-700 mt-1">{error}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={clearError}
+                  className="mt-2 border-red-300 text-red-700 hover:bg-red-100 bg-transparent"
+                >
+                  Dismiss
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Card className="h-[600px] flex flex-col">
@@ -111,7 +183,18 @@ export default function AIAdvisor() {
             <CardContent className="flex-1 flex flex-col gap-4">
               <ScrollArea className="flex-1 pr-4">
                 <div className="space-y-4">
-                  {messages.slice(1).map((msg, i) => (
+                  {messages.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Bot className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p className="text-lg font-medium">Welcome to your AI Financial Advisor!</p>
+                      <p className="text-sm mt-2">
+                        Ask me anything about budgeting, saving, investing, or debt management.
+                      </p>
+                      <p className="text-xs mt-2">Try one of the quick starters below or type your own question.</p>
+                    </div>
+                  )}
+
+                  {messages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                       <div
                         className={`max-w-[80%] rounded-lg px-4 py-2 ${
@@ -122,12 +205,13 @@ export default function AIAdvisor() {
                       </div>
                     </div>
                   ))}
+
                   {loading && (
                     <div className="flex justify-start">
                       <div className="bg-muted rounded-lg px-4 py-2 mr-4">
                         <div className="flex items-center gap-2">
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <p className="text-sm text-muted-foreground">Thinking...</p>
+                          <p className="text-sm text-muted-foreground">Analyzing your financial situation...</p>
                         </div>
                       </div>
                     </div>
@@ -167,6 +251,7 @@ export default function AIAdvisor() {
                   variant="outline"
                   className="w-full justify-start gap-3 h-auto py-3 bg-transparent"
                   onClick={() => handleQuickStart(starter.text)}
+                  disabled={loading}
                 >
                   <div className={`p-1.5 rounded ${starter.color}`}>
                     <starter.icon className="h-4 w-4 text-white" />
