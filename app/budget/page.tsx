@@ -1781,7 +1781,32 @@ function BudgetDashboardContent() {
                           <AlertDescription className="text-gray-700">{insight.description}</AlertDescription>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="ml-4 bg-transparent">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="ml-4 bg-transparent"
+                        onClick={() => {
+                          // Navigate based on the insight action type
+                          if (insight.action === "Add Income") {
+                            setShowAddIncomeDialog(true)
+                          } else if (insight.action === "Review Budget" || insight.action === "Review Categories") {
+                            // Stay on current page and scroll to categories tab
+                            const tabsElement = document.querySelector('[data-tutorial="category-tabs"]')
+                            if (tabsElement) {
+                              tabsElement.scrollIntoView({ behavior: "smooth" })
+                              // Switch to categories tab
+                              const categoriesTab = document.querySelector('[value="categories"]') as HTMLButtonElement
+                              if (categoriesTab) categoriesTab.click()
+                            }
+                          } else if (insight.action === "Allocate Savings" || insight.action === "Add Expenses") {
+                            // Navigate to goals and planning section
+                            window.location.href = "/goals"
+                          } else {
+                            // Default action - navigate to goals
+                            window.location.href = "/goals"
+                          }
+                        }}
+                      >
                         {insight.action}
                       </Button>
                     </div>
