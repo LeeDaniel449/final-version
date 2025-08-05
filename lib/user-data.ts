@@ -298,7 +298,13 @@ class UserDataManager {
 
       // Set as current user and load their data
       this.setCurrentUser(user.profile.email || user.profile.username)
+      this.setUserSignedIn(true) // Make sure to set signed in status
       this.loadUserData(user)
+
+      // Dispatch sign-in event for UI updates
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("userSignedIn"))
+      }
 
       console.log("Authentication successful")
       return { success: true }
@@ -336,15 +342,25 @@ class UserDataManager {
     // Save current user data before signing out
     this.saveCurrentUserData()
 
-    // Clear sign-in status but keep user data
+    // Clear sign-in status and current session data
     this.setUserSignedIn(false)
     localStorage.removeItem(this.STORAGE_KEYS.CURRENT_USER)
+
+    // Clear current session progress data (but keep it saved for the user)
+    localStorage.removeItem(this.STORAGE_KEYS.USER_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
+    localStorage.removeItem(this.STORAGE_KEYS.GOALS)
 
     // Clear remember me if not set
     const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
     if (!rememberMe) {
       localStorage.removeItem(this.STORAGE_KEYS.REMEMBER_ME)
+      // Also clear the user profile if not remembering
+      localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
     }
+
+    console.log("User signed out and session data cleared")
   }
 
   isUserSignedUp(): boolean {

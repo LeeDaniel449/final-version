@@ -46,14 +46,27 @@ export default function LearningDashboard() {
   const refreshData = () => {
     console.log("🔄 Refreshing learning dashboard data")
     const signedUp = userDataManager.isUserSignedUp()
+    const signedIn = userDataManager.isUserSignedIn()
     const budgetingStarted = userDataManager.hasStartedBudgeting()
     setIsUserSignedUp(signedUp)
     setHasStartedBudgeting(budgetingStarted)
 
-    // Always load progress data regardless of signup/budget status
-    const progress = userDataManager.getUserProgress()
-    console.log("📊 User progress data loaded:", progress)
-    setUserProgress({ ...progress })
+    // Only load progress data if user is signed in
+    if (signedIn) {
+      const progress = userDataManager.getUserProgress()
+      console.log("📊 User progress data loaded:", progress)
+      setUserProgress({ ...progress })
+    } else {
+      // Reset progress data when signed out
+      setUserProgress({
+        completedLessons: 0,
+        daysActive: 0,
+        lastActiveDate: "",
+        modules: {} as Record<string, any>,
+        hasStartedBudgeting: false,
+        totalMoneyTracked: 0,
+      })
+    }
 
     // Force immediate re-render with updated data
     setRefreshTrigger(Date.now())
@@ -158,7 +171,7 @@ export default function LearningDashboard() {
   const completedModules = getCompletedModulesCount()
 
   // Show the learning dashboard for all signed up users
-  if (!isUserSignedUp) {
+  if (!isUserSignedUp || !userDataManager.isUserSignedIn()) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
         <div className="max-w-7xl mx-auto space-y-6">
