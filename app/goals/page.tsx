@@ -142,17 +142,15 @@ function GoalsPage() {
       })
       setGoals(formattedGoals)
 
-      // Load available funds
-      const userData = userDataManager.getUserData()
-      const totalIncome =
-        userData.budgetEntries
-          ?.filter((entry) => entry.type === "income")
-          .reduce((sum, entry) => sum + entry.amount, 0) || 0
+      // Load available funds by calculating income minus expenses
+      const budgetEntries = userDataManager.getBudgetEntries()
+      const totalIncome = budgetEntries
+        .filter((entry) => entry.type === "income")
+        .reduce((sum, entry) => sum + entry.amount, 0)
 
-      const totalExpenses =
-        userData.budgetEntries
-          ?.filter((entry) => entry.type === "expense")
-          .reduce((sum, entry) => sum + entry.amount, 0) || 0
+      const totalExpenses = budgetEntries
+        .filter((entry) => entry.type === "expense")
+        .reduce((sum, entry) => sum + entry.amount, 0)
 
       setAvailableFunds(totalIncome - totalExpenses)
     } else {
