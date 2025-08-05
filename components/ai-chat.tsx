@@ -8,7 +8,20 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Send, Bot, User, Lightbulb, TrendingUp, DollarSign, Target, Shield, Zap } from "lucide-react"
+import {
+  Send,
+  Bot,
+  User,
+  Lightbulb,
+  TrendingUp,
+  DollarSign,
+  Target,
+  Shield,
+  Zap,
+  PiggyBank,
+  CreditCard,
+} from "lucide-react"
+import { userDataManager } from "@/lib/user-data"
 
 interface Message {
   id: string
@@ -22,7 +35,7 @@ const AIChatComponent = () => {
       id: "welcome",
       role: "assistant",
       content:
-        "Hi! I'm your AI financial advisor. I'll help you make smart money decisions with simple, easy-to-understand advice. What would you like to know about?",
+        "Hi! I'm your AI financial advisor. I can help you with budgeting, saving, debt management, and investing. I'll use your personal data from the app to give you tailored advice. What would you like to know about?",
     },
   ])
   const [input, setInput] = useState("")
@@ -41,23 +54,33 @@ const AIChatComponent = () => {
   const quickStarters = [
     {
       icon: <DollarSign className="w-4 h-4" />,
-      text: "I have $1,000 to invest",
-      message: "I have $1,000 to invest and I'm not sure where to start. What should I do?",
+      text: "Analyze my budget",
+      message: "Can you analyze my current budget and spending patterns? What improvements can I make?",
     },
     {
-      icon: <Target className="w-4 h-4" />,
-      text: "Help me set financial goals",
-      message: "I want to set some financial goals but don't know what's realistic. Can you help?",
+      icon: <PiggyBank className="w-4 h-4" />,
+      text: "How much should I save?",
+      message: "Based on my income and expenses, how much should I be saving each month?",
     },
     {
-      icon: <Shield className="w-4 h-4" />,
-      text: "Do I need an emergency fund?",
-      message: "Everyone talks about emergency funds. Do I really need one and how much?",
+      icon: <CreditCard className="w-4 h-4" />,
+      text: "Help with debt strategy",
+      message: "I have some debt. What's the best strategy to pay it off while still saving?",
     },
     {
       icon: <TrendingUp className="w-4 h-4" />,
-      text: "Explain investing basics",
-      message: "I'm completely new to investing. Can you explain the basics in simple terms?",
+      text: "Investment advice",
+      message: "Should I start investing? What's the best approach for my situation?",
+    },
+    {
+      icon: <Target className="w-4 h-4" />,
+      text: "Review my goals",
+      message: "Can you help me review my financial goals and create a plan to achieve them?",
+    },
+    {
+      icon: <Shield className="w-4 h-4" />,
+      text: "Emergency fund guidance",
+      message: "Do I have enough in my emergency fund? How much should I aim for?",
     },
   ]
 
@@ -77,6 +100,14 @@ const AIChatComponent = () => {
     setShowSuggestions(false)
 
     try {
+      // Gather user data for personalized responses
+      const userData = {
+        profile: userDataManager.getUserProfile(),
+        budgetData: userDataManager.getBudgetData(),
+        goals: userDataManager.getGoals(),
+        progress: userDataManager.getUserProgress(),
+      }
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -84,6 +115,7 @@ const AIChatComponent = () => {
         },
         body: JSON.stringify({
           messages: [...messages, userMessage],
+          userData: userData,
         }),
       })
 
@@ -137,7 +169,7 @@ const AIChatComponent = () => {
             AI Financial Advisor
             <Badge variant="outline" className="ml-auto">
               <Zap className="w-3 h-3 mr-1" />
-              Smart & Simple
+              Personalized & Smart
             </Badge>
           </CardTitle>
         </CardHeader>
@@ -150,7 +182,8 @@ const AIChatComponent = () => {
                   <Bot className="w-12 h-12 text-brand-blue mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Hi! I'm your AI financial advisor</h3>
                   <p className="text-gray-600 mb-6">
-                    I'll help you make smart money decisions with simple, easy-to-understand advice.
+                    I can help with budgeting, saving, debt management, and investing. I'll use your personal data to
+                    give you tailored advice.
                   </p>
                 </div>
 
@@ -159,7 +192,7 @@ const AIChatComponent = () => {
                     <Button
                       key={index}
                       variant="outline"
-                      className="h-auto p-4 text-left justify-start"
+                      className="h-auto p-4 text-left justify-start bg-transparent"
                       onClick={() => handleQuickStart(starter.message)}
                     >
                       <div className="flex items-center gap-3">
@@ -171,7 +204,7 @@ const AIChatComponent = () => {
                 </div>
 
                 <div className="text-center text-sm text-gray-500 mt-6">
-                  Or ask me anything about money, investing, budgeting, or financial planning!
+                  Or ask me anything about budgeting, saving, debt management, or investing!
                 </div>
               </div>
             )}
@@ -234,7 +267,7 @@ const AIChatComponent = () => {
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask me anything about money and investing..."
+                placeholder="Ask about budgeting, saving, debt, investing, or your personal finances..."
                 className="flex-1"
                 disabled={isLoading}
               />
@@ -249,7 +282,7 @@ const AIChatComponent = () => {
 
             <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
               <Lightbulb className="w-3 h-3" />
-              <span>Try asking: "Should I invest in index funds?" or "How much should I save?"</span>
+              <span>Try: "Should I pay off debt or invest?" or "How's my budget looking?"</span>
             </div>
           </div>
         </CardContent>
