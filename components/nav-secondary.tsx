@@ -35,7 +35,17 @@ export function NavSecondary({ items, className, ...props }: NavSecondaryProps) 
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild size="sm">
+              <SidebarMenuButton
+                asChild
+                size="sm"
+                onClick={(e) => {
+                  // If this is a feedback item, open email client
+                  if (item.title.toLowerCase().includes("feedback")) {
+                    e.preventDefault()
+                    window.location.href = "mailto:your.email@gmail.com?subject=Feedback on Financial Literacy App"
+                  }
+                }}
+              >
                 <Link href={item.url}>
                   {item.icon && <item.icon className="size-4" />}
                   <span>{item.title}</span>
