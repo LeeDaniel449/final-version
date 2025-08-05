@@ -115,24 +115,30 @@ Guidelines:
 Remember: You are providing educational information, not professional financial advice. Users should consult with qualified financial professionals for major financial decisions.`
 
     try {
-      console.log("🤖 Initializing OpenAI client...")
-
-      // Dynamic import of OpenAI to avoid initialization issues
-      const { default: OpenAI } = await import("openai")
-
-      const openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-      })
-
       console.log("🤖 Making OpenAI API call...")
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4",
-        messages: [{ role: "system", content: systemPrompt }, ...messages],
-        max_tokens: 500,
-        temperature: 0.7,
+      // Use fetch directly to call OpenAI API
+      const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [{ role: "system", content: systemPrompt }, ...messages],
+          max_tokens: 500,
+          temperature: 0.7,
+        }),
       })
 
+      if (!openaiResponse.ok) {
+        const errorData = await openaiResponse.json()
+        console.error("❌ OpenAI API Error:", errorData)
+        throw new Error(`OpenAI API error: ${openaiResponse.status} - ${errorData.error?.message || "Unknown error"}`)
+      }
+
+      const completion = await openaiResponse.json()
       const reply = completion.choices[0]?.message?.content?.trim()
 
       if (!reply) {
@@ -157,13 +163,11 @@ Remember: You are providing educational information, not professional financial 
       // Return a more specific error message based on the error type
       let errorMessage = "I'm experiencing technical difficulties with the AI service. Please try again in a moment."
 
-      if (openaiError.code === "insufficient_quota") {
+      if (openaiError.message?.includes("insufficient_quota")) {
         errorMessage = "The AI service is temporarily unavailable due to quota limits. Please try again later."
-      } else if (openaiError.code === "rate_limit_exceeded") {
+      } else if (openaiError.message?.includes("rate_limit")) {
         errorMessage = "Too many requests. Please wait a moment and try again."
-      } else if (openaiError.code === "invalid_api_key") {
-        errorMessage = "AI service configuration error. Please contact support."
-      } else if (openaiError.message?.includes("API key")) {
+      } else if (openaiError.message?.includes("invalid_api_key") || openaiError.message?.includes("API key")) {
         errorMessage = "There's an issue with the AI service configuration. Please contact support."
       }
 
