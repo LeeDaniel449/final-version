@@ -220,7 +220,7 @@ function GoalsPage() {
 
       toast({
         title: "Goal added!",
-        description: `Added ${quickGoal.title} to your goals. Click "Add Money" to start tracking progress.`,
+        description: `Added ${quickGoal.title} to your goals. Click "Add Money" to start tracking progress. Money added will be deducted from your available budget.`,
       })
     } catch (error) {
       console.error("Error adding quick goal:", error)
@@ -292,7 +292,7 @@ function GoalsPage() {
       setIsDialogOpen(false)
       toast({
         title: "Goal created!",
-        description: `Created custom goal: ${goal.title}. Click "Add Money" to start tracking progress.`,
+        description: `Created custom goal: ${goal.title}. Click "Add Money" to start tracking progress. Money added will be deducted from your available budget.`,
       })
     } catch (error) {
       console.error("Error adding custom goal:", error)
@@ -339,6 +339,15 @@ function GoalsPage() {
         currentAmount: updatedGoals[goalIndex].currentAmount,
       })
 
+      // Add a budget entry to track this as an expense (money allocated to goals)
+      userDataManager.addBudgetEntry({
+        amount,
+        category: "Savings & Goals",
+        description: `Money added to goal: ${updatedGoals[goalIndex].title}`,
+        date: new Date().toISOString(),
+        type: "expense",
+      })
+
       setAddMoneyDialog({ open: false, goalId: "" })
       setMoneyAmount("")
 
@@ -347,7 +356,7 @@ function GoalsPage() {
 
       toast({
         title: "Money added! 💰",
-        description: `Added $${amount} to ${goalTitle}. Total saved: $${newTotal}`,
+        description: `Added $${amount} to ${goalTitle}. Total saved: $${newTotal}. This amount has been deducted from your available budget.`,
       })
     } catch (error) {
       console.error("Error adding money to goal:", error)
