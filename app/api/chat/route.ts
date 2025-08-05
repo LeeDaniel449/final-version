@@ -15,16 +15,24 @@ interface UserData {
   budgetEntries?: any
 }
 
+// Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("Chat API called")
+
     const { messages, userData } = await req.json()
+
+    if (!messages || !Array.isArray(messages)) {
+      return new NextResponse("Invalid messages format", { status: 400 })
+    }
 
     // Build context from user data
     const userContext = buildUserContext(userData)
+    console.log("User context built")
 
     // Create system prompt with user context
     const systemPrompt = createSystemPrompt(userContext)
@@ -38,20 +46,27 @@ export async function POST(req: NextRequest) {
       })),
     ]
 
+    console.log("Calling OpenAI API...")
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: openaiMessages,
       temperature: 0.7,
       max_tokens: 1000,
+      presence_penalty: 0.1,
+      frequency_penalty: 0.1,
     })
 
     const assistantMessage = response.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response."
+
+    console.log("OpenAI response received successfully")
 
     return new NextResponse(
       JSON.stringify({
         id: Date.now().toString(),
         role: "assistant",
         content: assistantMessage,
+        timestamp: new Date().toISOString(),
       }),
       {
         headers: {
@@ -61,7 +76,23 @@ export async function POST(req: NextRequest) {
     )
   } catch (error) {
     console.error("Chat API Error:", error)
-    return new NextResponse("Error processing chat", { status: 500 })
+
+    // Provide a helpful fallback response
+    const fallbackResponse = {
+      id: Date.now().toString(),
+      role: "assistant",
+      content:
+        "I'm experiencing some technical difficulties right now. Please try again in a moment, or feel free to explore the other features of the financial literacy app!",
+      timestamp: new Date().toISOString(),
+      error: true,
+    }
+
+    return new NextResponse(JSON.stringify(fallbackResponse), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
   }
 }
 
