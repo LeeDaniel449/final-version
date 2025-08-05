@@ -3,146 +3,191 @@ import { getUserData } from "@/lib/user-data"
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("🤖 AI Advisor API called")
+    console.log("🔄 AI Advisor API called")
 
-    // Parse the request body
-    const body = await request.json()
-    const { message } = body
-
-    if (!message) {
-      return NextResponse.json({ error: "Message is required" }, { status: 400 })
+    // Parse request body safely
+    let body
+    try {
+      body = await request.json()
+    } catch (parseError) {
+      console.error("❌ Failed to parse request body:", parseError)
+      return NextResponse.json(
+        {
+          reply: "I'm sorry, I couldn't understand your request. Please try asking your financial question again.",
+          source: "error",
+        },
+        { status: 400 },
+      )
     }
 
-    console.log("📝 User message:", message)
+    // Validate request structure
+    if (!body || typeof body !== "object") {
+      console.error("❌ Invalid request body structure")
+      return NextResponse.json(
+        {
+          reply: "I'm sorry, there was an issue with your request format. Please try again.",
+          source: "error",
+        },
+        { status: 400 },
+      )
+    }
+
+    const { messages } = body
+
+    // Validate messages array
+    if (!Array.isArray(messages) || messages.length === 0) {
+      console.error("❌ Invalid messages array:", messages)
+      return NextResponse.json(
+        {
+          reply: "I'm sorry, I didn't receive any messages to process. Please ask me a financial question.",
+          source: "error",
+        },
+        { status: 400 },
+      )
+    }
+
+    // Validate message structure
+    const lastMessage = messages[messages.length - 1]
+    if (!lastMessage || typeof lastMessage.content !== "string" || !lastMessage.content.trim()) {
+      console.error("❌ Invalid message content:", lastMessage)
+      return NextResponse.json(
+        {
+          reply: "I'm sorry, your message appears to be empty. Please ask me a specific financial question.",
+          source: "error",
+        },
+        { status: 400 },
+      )
+    }
+
+    // Check if OpenAI API key is available
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("❌ OpenAI API key not found")
+      return NextResponse.json(
+        {
+          reply:
+            "I'm sorry, but the AI advisor is not properly configured. The OpenAI API key is missing. Please contact support.",
+          source: "error",
+        },
+        { status: 500 },
+      )
+    }
 
     // Get user data for context
     const userData = getUserData()
-    console.log("👤 User data loaded:", {
-      isSignedIn: userData.isSignedIn,
-      hasProfile: !!userData.profile.firstName,
-      hasGoals: userData.goals.length > 0,
-    })
+    console.log("📊 User data loaded for AI context")
 
-    // Check if OpenAI API key is available
-    const openaiApiKey = process.env.OPENAI_API_KEY
-    if (!openaiApiKey) {
-      console.error("❌ OpenAI API key not found")
-      return NextResponse.json({
-        success: false,
-        message: "I'm sorry, but the AI service is currently unavailable. Please try again later.",
-        source: "error",
-      })
-    }
-
-    // Create user context for personalized responses
+    // Build context for AI
     const userContext = `
 User Profile:
 - Name: ${userData.profile.firstName} ${userData.profile.lastName}
-- Age: ${userData.profile.age || "Not specified"}
-- Risk Tolerance: ${userData.profile.riskTolerance || "Not specified"}
-- Investment Experience: ${userData.profile.investmentExperience || "Not specified"}
-- Time Horizon: ${userData.profile.timeHorizon || "Not specified"}
+- Age: ${userData.profile.age}
+- Risk Tolerance: ${userData.profile.riskTolerance}
+- Investment Experience: ${userData.profile.investmentExperience}
+- Time Horizon: ${userData.profile.timeHorizon}
 
-Budget Information:
-- Monthly Income: $${userData.budgetData.income || 0}
-- Monthly Expenses: $${Object.values(userData.budgetData.expenses).reduce((sum, exp) => sum + exp, 0)}
-- Savings: $${userData.budgetData.savings || 0}
-
-Financial Goals:
-${
-  userData.goals.length > 0
-    ? userData.goals
-        .map((goal) => `- ${goal.title}: $${goal.currentAmount}/$${goal.targetAmount} (${goal.status})`)
-        .join("\n")
-    : "- No goals set yet"
-}
+Financial Situation:
+- Monthly Income: $${userData.budgetData.income?.toLocaleString() || "0"}
+- Monthly Expenses: $${Object.values(userData.budgetData.expenses || {})
+      .reduce((sum: number, exp: number) => sum + exp, 0)
+      .toLocaleString()}
+- Savings: $${userData.budgetData.savings?.toLocaleString() || "0"}
+- Active Goals: ${userData.goals?.length || 0}
 
 Learning Progress:
-- Completed Lessons: ${userData.progress.completedLessons || 0}
-- Current Streak: ${userData.progress.currentStreak || 0} days
-- Total XP: ${userData.progress.totalXP || 0}
+- Completed Lessons: ${userData.progress?.completedLessons || 0}
+- Current Streak: ${userData.progress?.currentStreak || 0} days
 `
 
-    console.log("🎯 Sending request to OpenAI...")
-
-    // Make direct API call to OpenAI
-    const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${openaiApiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [
-          {
-            role: "system",
-            content: `You are a helpful financial advisor AI assistant. You provide personalized financial advice based on the user's profile, budget, goals, and progress. Always be encouraging, practical, and educational. Use the user's specific information to give tailored advice.
+    const systemPrompt = `You are a knowledgeable and friendly financial advisor AI assistant. You provide personalized financial advice based on the user's specific situation, goals, and experience level.
 
 ${userContext}
 
 Guidelines:
-- Be conversational and friendly
-- Provide specific, actionable advice
-- Reference the user's actual financial situation when relevant
-- Encourage good financial habits
-- Explain financial concepts in simple terms
-- Always prioritize the user's financial wellbeing`,
-          },
-          {
-            role: "user",
-            content: message,
-          },
-        ],
-        max_tokens: 500,
-        temperature: 0.7,
-      }),
-    })
+- Provide specific, actionable advice tailored to the user's situation
+- Use clear, jargon-free language appropriate for their experience level
+- Reference their specific financial data when relevant
+- Suggest concrete next steps they can take
+- Be encouraging and supportive
+- If asked about investments, consider their risk tolerance and time horizon
+- Always prioritize emergency funds and debt management before investment advice
+- Keep responses concise but comprehensive (2-4 paragraphs max)
 
-    if (!openaiResponse.ok) {
-      const errorData = await openaiResponse.json().catch(() => ({}))
-      console.error("❌ OpenAI API Error:", {
-        status: openaiResponse.status,
-        statusText: openaiResponse.statusText,
-        error: errorData,
+Remember: You are providing educational information, not professional financial advice. Users should consult with qualified financial professionals for major financial decisions.`
+
+    try {
+      console.log("🤖 Making OpenAI API call...")
+
+      // Use fetch directly to call OpenAI API
+      const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [{ role: "system", content: systemPrompt }, ...messages],
+          max_tokens: 500,
+          temperature: 0.7,
+        }),
       })
 
-      let errorMessage = "I'm experiencing some technical difficulties. Please try again in a moment."
-
-      if (openaiResponse.status === 401) {
-        errorMessage = "There's an authentication issue with the AI service. Please contact support."
-      } else if (openaiResponse.status === 429) {
-        errorMessage = "The AI service is currently busy. Please try again in a few minutes."
-      } else if (openaiResponse.status === 500) {
-        errorMessage = "The AI service is temporarily unavailable. Please try again later."
+      if (!openaiResponse.ok) {
+        const errorData = await openaiResponse.json()
+        console.error("❌ OpenAI API Error:", errorData)
+        throw new Error(`OpenAI API error: ${openaiResponse.status} - ${errorData.error?.message || "Unknown error"}`)
       }
 
+      const completion = await openaiResponse.json()
+      const reply = completion.choices[0]?.message?.content?.trim()
+
+      if (!reply) {
+        console.error("❌ Empty response from OpenAI")
+        return NextResponse.json(
+          {
+            reply: "I'm sorry, I couldn't generate a response. Please try rephrasing your question.",
+            source: "error",
+          },
+          { status: 500 },
+        )
+      }
+
+      console.log("✅ OpenAI response received successfully")
       return NextResponse.json({
-        success: false,
-        message: errorMessage,
-        source: "error",
+        reply,
+        source: "openai",
       })
+    } catch (openaiError: any) {
+      console.error("❌ OpenAI API Error:", openaiError)
+
+      // Return a more specific error message based on the error type
+      let errorMessage = "I'm experiencing technical difficulties with the AI service. Please try again in a moment."
+
+      if (openaiError.message?.includes("insufficient_quota")) {
+        errorMessage = "The AI service is temporarily unavailable due to quota limits. Please try again later."
+      } else if (openaiError.message?.includes("rate_limit")) {
+        errorMessage = "Too many requests. Please wait a moment and try again."
+      } else if (openaiError.message?.includes("invalid_api_key") || openaiError.message?.includes("API key")) {
+        errorMessage = "There's an issue with the AI service configuration. Please contact support."
+      }
+
+      return NextResponse.json(
+        {
+          reply: errorMessage,
+          source: "error",
+        },
+        { status: 200 }, // Return 200 to avoid frontend error handling issues
+      )
     }
-
-    const openaiData = await openaiResponse.json()
-    console.log("✅ OpenAI response received")
-
-    const aiMessage =
-      openaiData.choices?.[0]?.message?.content || "I'm sorry, I couldn't generate a response. Please try again."
-
-    return NextResponse.json({
-      success: true,
-      message: aiMessage,
-      source: "openai",
-      model: "gpt-4",
-    })
-  } catch (error) {
-    console.error("❌ API Error:", error)
-
-    return NextResponse.json({
-      success: false,
-      message: "I'm sorry, but I'm experiencing technical difficulties. Please try again later.",
-      source: "error",
-    })
+  } catch (error: any) {
+    console.error("❌ Unexpected error in AI advisor:", error)
+    return NextResponse.json(
+      {
+        reply:
+          "I apologize, but I'm experiencing technical difficulties right now. Please try asking your question again in a moment.",
+        source: "error",
+      },
+      { status: 200 }, // Return 200 to avoid frontend error handling issues
+    )
   }
 }
