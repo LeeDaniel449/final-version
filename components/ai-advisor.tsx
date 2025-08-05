@@ -15,16 +15,6 @@ export default function AIAdvisor() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
 
-  // Get user data for context
-  const userData = {
-    profile: userDataManager.getUserProfile(),
-    budgetData: userDataManager.getBudgetData(),
-    goals: userDataManager.getGoals(),
-    progress: userDataManager.getUserProgress(),
-    budgetCategories: userDataManager.getBudgetCategories(),
-    budgetEntries: userDataManager.getBudgetEntries(),
-  }
-
   const sendMessage = async () => {
     if (!input.trim()) return
 
@@ -34,6 +24,16 @@ export default function AIAdvisor() {
     setLoading(true)
 
     try {
+      // Get user data for context
+      const userData = {
+        profile: userDataManager.getUserProfile(),
+        budgetData: userDataManager.getBudgetData(),
+        goals: userDataManager.getGoals(),
+        progress: userDataManager.getUserProgress(),
+        budgetCategories: userDataManager.getBudgetCategories(),
+        budgetEntries: userDataManager.getBudgetEntries(),
+      }
+
       const res = await fetch("/api/ai-advisor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,10 +43,15 @@ export default function AIAdvisor() {
         }),
       })
 
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`)
+      }
+
       const data = await res.json()
       setMessages([...newMessages, { role: "assistant", content: data.reply }])
     } catch (e) {
-      setMessages([...newMessages, { role: "assistant", content: "Sorry, something went wrong." }])
+      console.error("AI Advisor Error:", e)
+      setMessages([...newMessages, { role: "assistant", content: "Sorry, something went wrong. Please try again." }])
     } finally {
       setLoading(false)
     }

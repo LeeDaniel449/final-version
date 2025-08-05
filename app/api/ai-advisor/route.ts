@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import OpenAI from "openai"
 
 interface Message {
   role: "system" | "user" | "assistant"
@@ -15,10 +14,6 @@ interface UserData {
   budgetEntries?: any
 }
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
 export async function POST(req: NextRequest) {
   try {
     const { messages, userData } = await req.json()
@@ -26,57 +21,51 @@ export async function POST(req: NextRequest) {
     // Build context from user data
     const userContext = buildUserContext(userData)
 
-    // Create system prompt with user context
-    const systemPrompt = createSystemPrompt(userContext)
+    // For now, we'll use a simple response system
+    // After export, replace this with OpenAI API call
+    const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || ""
 
-    // Convert messages to OpenAI format, replacing system message with our enhanced one
-    const openaiMessages = [
-      { role: "system" as const, content: systemPrompt },
-      ...messages.slice(1).map((msg: Message) => ({
-        role: msg.role as "user" | "assistant",
-        content: msg.content,
-      })),
-    ]
+    let reply = ""
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: openaiMessages,
-      temperature: 0.7,
-      max_tokens: 1000,
-    })
+    // Simple keyword-based responses with user context
+    if (lastMessage.includes("budget") || lastMessage.includes("spending")) {
+      reply = generateBudgetAdvice(userData)
+    } else if (lastMessage.includes("save") || lastMessage.includes("saving")) {
+      reply = generateSavingAdvice(userData)
+    } else if (lastMessage.includes("invest") || lastMessage.includes("investment")) {
+      reply = generateInvestmentAdvice(userData)
+    } else if (lastMessage.includes("debt")) {
+      reply = generateDebtAdvice(userData)
+    } else if (lastMessage.includes("goal") || lastMessage.includes("goals")) {
+      reply = generateGoalAdvice(userData)
+    } else {
+      reply = `I'm here to help with your financial questions! Based on your profile, I can provide personalized advice about:
 
-    const assistantMessage = response.choices[0]?.message?.content || "I'm sorry, I couldn't generate a response."
+• Budgeting and expense management
+• Saving strategies
+• Investment recommendations
+• Debt management
+• Goal planning
 
-    return new NextResponse(
-      JSON.stringify({
-        reply: assistantMessage,
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    )
+${userContext ? "I can see your financial data and will provide personalized advice based on your situation." : "To get personalized advice, please set up your budget and goals in the app."}
+
+What would you like to know about?`
+    }
+
+    return NextResponse.json({ reply })
   } catch (error) {
     console.error("AI Advisor API Error:", error)
-    return new NextResponse(
-      JSON.stringify({
-        reply: "Sorry, I'm having trouble connecting to the AI service right now. Please try again in a moment.",
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        status: 500,
-      },
+    return NextResponse.json(
+      { reply: "Sorry, I'm having trouble right now. Please try again in a moment." },
+      { status: 500 },
     )
   }
 }
 
 function buildUserContext(userData?: UserData): string {
-  if (!userData) return "No user data available."
+  if (!userData) return ""
 
-  let context = "USER FINANCIAL DATA:\n\n"
+  let context = ""
 
   // Budget Information
   if (userData.budgetData?.income) {
@@ -86,101 +75,131 @@ function buildUserContext(userData?: UserData): string {
     const totalExpenses = Object.values(expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0)
     const monthlyLeftover = income - totalExpenses
     const savingsRate = income > 0 ? ((savings / income) * 100).toFixed(1) : "0"
-    const emergencyFundMonths = totalExpenses > 0 ? (savings / totalExpenses).toFixed(1) : "0"
 
-    context += `BUDGET:\n`
-    context += `- Monthly Income: $${income.toLocaleString()}\n`
-    context += `- Total Monthly Expenses: $${totalExpenses.toLocaleString()}\n`
-    context += `- Current Savings: $${savings.toLocaleString()}\n`
-    context += `- Monthly Leftover: $${monthlyLeftover.toLocaleString()}\n`
-    context += `- Savings Rate: ${savingsRate}%\n`
-    context += `- Emergency Fund Coverage: ${emergencyFundMonths} months\n\n`
-
-    if (Object.keys(expenses).length > 0) {
-      context += `EXPENSE BREAKDOWN:\n`
-      Object.entries(expenses).forEach(([category, amount]) => {
-        context += `- ${category}: $${(amount as number).toLocaleString()}\n`
-      })
-      context += `\n`
-    }
-  }
-
-  // Goals Information
-  if (userData.goals && userData.goals.length > 0) {
-    context += `FINANCIAL GOALS:\n`
-    userData.goals.forEach((goal: any, index: number) => {
-      const progress = ((goal.current / goal.target) * 100).toFixed(1)
-      const remaining = goal.target - goal.current
-      context += `${index + 1}. ${goal.title}\n`
-      context += `   - Target: $${goal.target.toLocaleString()}\n`
-      context += `   - Current: $${goal.current.toLocaleString()}\n`
-      context += `   - Progress: ${progress}%\n`
-      context += `   - Remaining: $${remaining.toLocaleString()}\n`
-      if (goal.deadline) {
-        context += `   - Deadline: ${goal.deadline}\n`
-      }
-      if (goal.priority) {
-        context += `   - Priority: ${goal.priority}\n`
-      }
-      context += `\n`
-    })
-  }
-
-  // Profile Information
-  if (userData.profile) {
-    context += `USER PROFILE:\n`
-    if (userData.profile.age) {
-      context += `- Age: ${userData.profile.age}\n`
-    }
-    if (userData.profile.experience) {
-      context += `- Investment Experience: ${userData.profile.experience}\n`
-    }
-    if (userData.profile.riskTolerance) {
-      context += `- Risk Tolerance: ${userData.profile.riskTolerance}\n`
-    }
-    if (userData.profile.timeHorizon) {
-      context += `- Investment Time Horizon: ${userData.profile.timeHorizon}\n`
-    }
-    context += `\n`
+    context += `Your monthly income is $${income.toLocaleString()} with $${totalExpenses.toLocaleString()} in expenses, leaving $${monthlyLeftover.toLocaleString()} leftover. Your current savings rate is ${savingsRate}%.`
   }
 
   return context
 }
 
-function createSystemPrompt(userContext: string): string {
-  return `You are an expert AI financial advisor powered by GPT-4. You provide personalized, practical financial advice based on the user's actual financial data.
+function generateBudgetAdvice(userData?: UserData): string {
+  if (!userData?.budgetData?.income) {
+    return "To give you personalized budget advice, I'd need to see your income and expenses. You can set these up in the Budget section of the app. In general, I recommend the 50/30/20 rule: 50% for needs, 30% for wants, and 20% for savings and debt repayment."
+  }
 
-${userContext}
+  const income = userData.budgetData.income
+  const expenses = userData.budgetData.expenses || {}
+  const totalExpenses = Object.values(expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0)
+  const monthlyLeftover = income - totalExpenses
+  const savingsRate = income > 0 ? ((monthlyLeftover / income) * 100).toFixed(1) : "0"
 
-INSTRUCTIONS:
-1. Always use the user's actual financial data when providing advice
-2. Be specific with numbers and calculations based on their real situation
-3. Prioritize advice based on their financial health (emergency fund first, then debt, then investing)
-4. Consider their age, risk tolerance, and goals when making recommendations
-5. Provide actionable, step-by-step advice
-6. Use a friendly, encouraging tone while being professional
-7. If they don't have certain data, suggest they add it to get better advice
-8. Keep responses concise but comprehensive
+  let advice = `📊 **Budget Analysis:**\n\n`
+  advice += `• Monthly Income: $${income.toLocaleString()}\n`
+  advice += `• Total Expenses: $${totalExpenses.toLocaleString()}\n`
+  advice += `• Monthly Leftover: $${monthlyLeftover.toLocaleString()}\n`
+  advice += `• Savings Rate: ${savingsRate}%\n\n`
 
-FINANCIAL ADVICE PRIORITIES:
-1. Emergency Fund (3-6 months of expenses)
-2. High-interest debt payoff (>7% interest)
-3. Employer 401k match (free money)
-4. Additional debt payoff vs investing (depends on interest rates)
-5. Long-term investing in diversified index funds
-6. Specific goal saving (house, vacation, etc.)
+  if (Number.parseFloat(savingsRate) >= 20) {
+    advice += `🎉 Excellent! You're saving ${savingsRate}% of your income, which exceeds the recommended 20%.`
+  } else if (Number.parseFloat(savingsRate) >= 10) {
+    advice += `👍 Good job! You're saving ${savingsRate}%. Try to increase this to 20% if possible.`
+  } else {
+    advice += `💡 Your savings rate is ${savingsRate}%. I recommend aiming for at least 20%. Look for areas to reduce expenses or increase income.`
+  }
 
-INVESTMENT RECOMMENDATIONS:
-- Age-based stock allocation: roughly (100 - age)% in stocks
-- Low-cost index funds: VTI (total market), VOO (S&P 500), BND (bonds)
-- Dollar-cost averaging for consistent investing
-- Tax-advantaged accounts first (401k, IRA)
+  if (Object.keys(expenses).length > 0) {
+    const topExpense = Object.entries(expenses).reduce((max, [cat, amt]) =>
+      (amt as number) > (max[1] as number) ? [cat, amt] : max,
+    )
+    advice += `\n\nYour largest expense category is ${topExpense[0]} at $${(topExpense[1] as number).toLocaleString()}.`
+  }
 
-BUDGETING ADVICE:
-- 50/30/20 rule: 50% needs, 30% wants, 20% savings/debt
-- Track spending to identify areas for improvement
-- Automate savings and investments
-- Review and adjust monthly
+  return advice
+}
 
-Always provide specific, actionable advice based on their actual financial situation. If you need more information to give better advice, ask for it.`
+function generateSavingAdvice(userData?: UserData): string {
+  const budgetData = userData?.budgetData
+
+  if (!budgetData?.income) {
+    return "💰 **Saving Tips:**\n\n• Start with an emergency fund (3-6 months of expenses)\n• Automate your savings\n• Use high-yield savings accounts\n• Set specific savings goals\n\nTo get personalized advice, add your budget information in the app!"
+  }
+
+  const income = budgetData.income
+  const expenses = budgetData.expenses || {}
+  const savings = budgetData.savings || 0
+  const totalExpenses = Object.values(expenses).reduce((sum: number, exp: any) => sum + (exp || 0), 0)
+  const emergencyFundTarget = totalExpenses * 6
+  const emergencyFundMonths = totalExpenses > 0 ? (savings / totalExpenses).toFixed(1) : "0"
+
+  let advice = `💰 **Savings Analysis:**\n\n`
+  advice += `• Current Savings: $${savings.toLocaleString()}\n`
+  advice += `• Emergency Fund Target: $${emergencyFundTarget.toLocaleString()} (6 months)\n`
+  advice += `• Current Coverage: ${emergencyFundMonths} months\n\n`
+
+  if (savings >= emergencyFundTarget) {
+    advice += `🎉 Great! Your emergency fund is fully funded. Consider investing additional savings for long-term growth.`
+  } else {
+    const needed = emergencyFundTarget - savings
+    advice += `🎯 Focus on building your emergency fund. You need $${needed.toLocaleString()} more to reach 6 months of expenses.`
+  }
+
+  return advice
+}
+
+function generateInvestmentAdvice(userData?: UserData): string {
+  const profile = userData?.profile
+  const budgetData = userData?.budgetData
+
+  let advice = `📈 **Investment Guidance:**\n\n`
+
+  if (!budgetData?.savings || budgetData.savings < 1000) {
+    advice += `Before investing, make sure you have:\n• An emergency fund (3-6 months expenses)\n• High-interest debt paid off\n• Stable income\n\nStart with building your emergency fund first!`
+    return advice
+  }
+
+  if (profile?.age) {
+    const stockAllocation = Math.max(100 - profile.age, 20)
+    const bondAllocation = 100 - stockAllocation
+
+    advice += `Based on your age (${profile.age}), consider:\n`
+    advice += `• ${stockAllocation}% stocks (VTI, VOO)\n`
+    advice += `• ${bondAllocation}% bonds (BND)\n\n`
+  }
+
+  advice += `💡 **Investment Priorities:**\n`
+  advice += `1. 401(k) match (free money!)\n`
+  advice += `2. Roth IRA ($6,500/year limit)\n`
+  advice += `3. Additional 401(k) contributions\n`
+  advice += `4. Taxable investment accounts\n\n`
+
+  advice += `Consider low-cost index funds and dollar-cost averaging for consistent investing.`
+
+  return advice
+}
+
+function generateDebtAdvice(userData?: UserData): string {
+  return `💳 **Debt Management Strategy:**\n\n• List all debts with balances and interest rates\n• Pay minimums on all debts\n• Focus extra payments on highest interest debt first\n• Consider debt consolidation if it lowers rates\n• Avoid taking on new debt while paying off existing debt\n\nFor personalized debt advice, add your specific debt information to your profile!`
+}
+
+function generateGoalAdvice(userData?: UserData): string {
+  const goals = userData?.goals
+
+  if (!goals || goals.length === 0) {
+    return `🎯 **Goal Setting Tips:**\n\n• Set SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound)\n• Prioritize your goals\n• Automate savings for each goal\n• Review progress monthly\n\nAdd your financial goals in the Goals section to get personalized advice!`
+  }
+
+  let advice = `🎯 **Your Goals Analysis:**\n\n`
+
+  goals.forEach((goal: any, index: number) => {
+    const progress = ((goal.current / goal.target) * 100).toFixed(1)
+    const remaining = goal.target - goal.current
+
+    advice += `${index + 1}. **${goal.title}**\n`
+    advice += `   Progress: ${progress}% ($${goal.current.toLocaleString()}/$${goal.target.toLocaleString()})\n`
+    advice += `   Remaining: $${remaining.toLocaleString()}\n\n`
+  })
+
+  advice += `Keep up the great work! Consider automating contributions to reach your goals faster.`
+
+  return advice
 }
