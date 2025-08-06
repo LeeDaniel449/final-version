@@ -31,6 +31,7 @@ export interface LearningModule {
   icon: any
   color: string
   completed: boolean
+  keyTopics?: string[]
 }
 
 export const learningModules: LearningModule[] = [
@@ -46,6 +47,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-blue-500",
     completed: true,
+    keyTopics: ["Money Flow", "Needs vs Wants", "Saving", "Mindset"],
   },
   {
     id: "budgeting",
@@ -59,6 +61,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-green-500",
     completed: false,
+    keyTopics: ["50/30/20 Rule", "Zero-Based Budgeting", "Tracking Spending", "Irregular Expenses"],
   },
   {
     id: "saving",
@@ -72,6 +75,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-purple-500",
     completed: false,
+    keyTopics: ["Automation", "High-Yield Accounts", "52-Week Challenge", "Multiple Goals"],
   },
   {
     id: "debt-management",
@@ -85,6 +89,91 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-red-500",
     completed: false,
+    keyTopics: ["Debt Types", "Snowball Method", "Avalanche Method", "Consolidation", "Negotiation"],
+  },
+  {
+    id: "credit-scores",
+    title: "Credit Scores & Reports",
+    description: "Understand credit scores, reports, and how to improve your credit health",
+    duration: "28 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 6,
+    points: 95,
+    icon: null,
+    color: "bg-yellow-500",
+    completed: false,
+    keyTopics: ["Credit Scores", "Credit Reports", "Credit Improvement", "Credit Monitoring"],
+  },
+  {
+    id: "loans",
+    title: "Loans (Auto, Student, Personal)",
+    description: "Navigate auto, student, and personal loans with confidence",
+    duration: "32 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 7,
+    points: 110,
+    icon: null,
+    color: "bg-lime-500",
+    completed: false,
+    keyTopics: ["Auto Loans", "Student Loans", "Personal Loans", "Loan Comparison"],
+  },
+  {
+    id: "mortgages",
+    title: "Mortgages",
+    description: "Learn about mortgages, home buying, and refinancing",
+    duration: "35 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 8,
+    points: 125,
+    icon: null,
+    color: "bg-sky-500",
+    completed: false,
+    keyTopics: ["Mortgage Types", "Home Buying", "Refinancing", "Down Payments"],
+  },
+  {
+    id: "retirement-planning",
+    title: "Retirement Planning (401(k), IRA, Roth IRA)",
+    description: "Plan for retirement with 401(k), IRA, and Roth IRA strategies",
+    duration: "40 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 9,
+    points: 140,
+    icon: null,
+    color: "bg-fuchsia-500",
+    completed: false,
+    keyTopics: ["401(k)", "Traditional IRA", "Roth IRA", "Retirement Strategies"],
+  },
+  {
+    id: "hsa",
+    title: "Health Savings Accounts (HSA)",
+    description: "Understand the benefits and uses of Health Savings Accounts",
+    duration: "20 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 5,
+    points: 75,
+    icon: null,
+    color: "bg-teal-500",
+    completed: false,
+    keyTopics: ["HSA Basics", "HSA Benefits", "HSA Investments", "HSA Strategies"],
+  },
+  {
+    id: "insurance",
+    title: "Insurance (Life, Health, Auto, Home)",
+    description: "Learn about different types of insurance and how to choose the right policies",
+    duration: "35 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 7,
+    points: 115,
+    icon: null,
+    color: "bg-rose-500",
+    completed: false,
+    keyTopics: ["Life Insurance", "Health Insurance", "Auto Insurance", "Home Insurance"],
   },
   {
     id: "bill-negotiation",
@@ -98,6 +187,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-orange-500",
     completed: false,
+    keyTopics: ["Negotiation Tactics", "Service Alternatives", "Tracking Savings"],
   },
   {
     id: "investing",
@@ -111,6 +201,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-indigo-500",
     completed: false,
+    keyTopics: ["Risk and Return", "Index Funds", "Dollar-Cost Averaging", "Rebalancing"],
   },
   {
     id: "emergency-fund",
@@ -124,6 +215,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-teal-500",
     completed: false,
+    keyTopics: ["Emergency Fund Basics", "How Much to Save", "Where to Keep Funds"],
   },
   {
     id: "financial-goals",
@@ -137,6 +229,7 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-pink-500",
     completed: false,
+    keyTopics: ["SMART Goals", "Prioritizing Goals"],
   },
   {
     id: "sustainable-impact-investing",
@@ -150,6 +243,49 @@ export const learningModules: LearningModule[] = [
     icon: null,
     color: "bg-emerald-700",
     completed: false,
+    keyTopics: ["ESG Investing", "Impact Investing", "Green Bonds", "SRI"],
+  },
+  {
+    id: "taxes",
+    title: "Filing Your Taxes",
+    description: "Learn how to file your taxes correctly and maximize your returns",
+    duration: "35 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 7,
+    points: 110,
+    icon: null,
+    color: "bg-amber-500",
+    completed: false,
+    keyTopics: ["Tax Basics", "Tax Forms", "Deductions", "Credits"],
+  },
+  {
+    id: "estate-planning",
+    title: "Estate Planning",
+    description: "Plan for the future with wills, trusts, and estate planning strategies",
+    duration: "40 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 8,
+    points: 130,
+    icon: null,
+    color: "bg-stone-500",
+    completed: false,
+    keyTopics: ["Wills", "Trusts", "Estate Taxes", "Beneficiaries"],
+  },
+  {
+    id: "financial-advisors",
+    title: "Financial Advisors",
+    description: "Learn how to choose and work with financial advisors",
+    duration: "20 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 4,
+    points: 70,
+    icon: null,
+    color: "bg-slate-500",
+    completed: false,
+    keyTopics: ["Advisor Types", "Fees", "Finding Advisors", "Working with Advisors"],
   },
 ]
 
@@ -159,6 +295,638 @@ export function getModuleById(moduleId: string): LearningModule | null {
 
 export function getLessonContent(moduleId: string, lessonIndex: number): LessonContent | null {
   const lessons: Record<string, LessonContent[]> = {
+    "credit-scores": [
+      {
+        title: "Understanding Credit Scores",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Credit Score?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A credit score is a three-digit number that represents your creditworthiness. It's used by lenders to assess the risk of lending you money.",
+          },
+          {
+            type: "list",
+            content: "Factors that affect your credit score:",
+            items: [
+              "Payment history",
+              "Amounts owed",
+              "Length of credit history",
+              "Credit mix",
+              "New credit",
+            ],
+          },
+        ],
+        keyTakeaways: ["Credit scores are important", "Payment history is key"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important factor in your credit score?",
+              options: ["Payment history", "Amounts owed", "Credit mix", "New credit"],
+              correctAnswer: "Payment history",
+              explanation: "Payment history makes up 35% of your credit score.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Checking Your Credit Report",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Why Check Your Credit Report?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Checking your credit report allows you to identify any errors or inaccuracies that may be affecting your credit score.",
+          },
+          {
+            type: "list",
+            content: "Where to check your credit report:",
+            items: ["AnnualCreditReport.com", "Credit Karma", "Credit Sesame"],
+          },
+        ],
+        keyTakeaways: ["Check your credit report regularly", "Dispute any errors"],
+        quiz: {
+          questions: [
+            {
+              question: "How often should you check your credit report?",
+              options: ["Once a year", "Every month", "Every week", "Never"],
+              correctAnswer: "Once a year",
+              explanation: "You are entitled to one free credit report per year from each of the three major credit bureaus.",
+            },
+          ],
+        },
+      },
+    ],
+    loans: [
+      {
+        title: "Understanding Auto Loans",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is an Auto Loan?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "An auto loan is a secured loan used to purchase a vehicle. The vehicle serves as collateral for the loan.",
+          },
+          {
+            type: "list",
+            content: "Factors to consider when getting an auto loan:",
+            items: ["Interest rate", "Loan term", "Down payment", "Monthly payment"],
+          },
+        ],
+        keyTakeaways: ["Shop around for the best rates", "Consider the total cost of the loan"],
+        quiz: {
+          questions: [
+            {
+              question: "What serves as collateral for an auto loan?",
+              options: ["Your house", "Your car", "Your savings account", "Your credit score"],
+              correctAnswer: "Your car",
+              explanation: "The vehicle serves as collateral for the loan.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Navigating Student Loans",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Student Loan?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A student loan is a type of loan designed to help students pay for post-secondary education and associated fees, such as tuition, books, and living expenses.",
+          },
+          {
+            type: "list",
+            content: "Types of student loans:",
+            items: ["Federal student loans", "Private student loans"],
+          },
+        ],
+        keyTakeaways: ["Understand the terms of your loan", "Explore repayment options"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the difference between federal and private student loans?",
+              options: [
+                "Federal loans are cheaper",
+                "Private loans have better repayment options",
+                "Federal loans are only for graduate students",
+                "Private loans are subsidized by the government",
+              ],
+              correctAnswer: "Federal loans are cheaper",
+              explanation: "Federal loans typically have lower interest rates and more flexible repayment options.",
+            },
+          ],
+        },
+      },
+    ],
+    mortgages: [
+      {
+        title: "Understanding Mortgage Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Mortgage?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A mortgage is a loan used to purchase or refinance a home. It is secured by the property itself.",
+          },
+          {
+            type: "list",
+            content: "Key mortgage terms:",
+            items: ["Principal", "Interest", "Property Taxes", "Insurance"],
+          },
+        ],
+        keyTakeaways: ["Understand the terms of your mortgage", "Shop around for the best rates"],
+        quiz: {
+          questions: [
+            {
+              question: "What secures a mortgage?",
+              options: ["Your car", "Your house", "Your credit score", "Your savings account"],
+              correctAnswer: "Your house",
+              explanation: "The property serves as collateral for the loan.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Types of Mortgages",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Fixed-Rate Mortgages",
+          },
+          {
+            type: "paragraph",
+              content:
+                "A fixed-rate mortgage has an interest rate that remains constant throughout the life of the loan.",
+          },
+          {
+            type: "heading",
+            content: "Adjustable-Rate Mortgages (ARMs)",
+          },
+          {
+            type: "paragraph",
+              content:
+                "An adjustable-rate mortgage (ARM) has an interest rate that may change periodically based on market conditions.",
+          },
+        ],
+        keyTakeaways: ["Fixed-rate mortgages offer stability", "ARMs can be riskier"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main difference between a fixed-rate mortgage and an ARM?",
+              options: [
+                "Fixed-rate mortgages are cheaper",
+                "ARMs have a fixed interest rate",
+                "Fixed-rate mortgages have a variable interest rate",
+                "ARMs have an interest rate that may change",
+              ],
+              correctAnswer: "ARMs have an interest rate that may change",
+              explanation: "ARMs have an interest rate that may change periodically based on market conditions.",
+            },
+          ],
+        },
+      },
+    ],
+    "retirement-planning": [
+      {
+        title: "Understanding 401(k) Plans",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a 401(k)?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A 401(k) is a retirement savings plan sponsored by an employer. It allows employees to save and invest a portion of their paycheck before taxes are taken out.",
+          },
+          {
+            type: "list",
+            content: "Benefits of a 401(k):",
+            items: ["Tax-deferred growth", "Employer matching", "Automatic savings"],
+          },
+        ],
+        keyTakeaways: ["Take advantage of employer matching", "Choose appropriate investments"],
+        quiz: {
+          questions: [
+            {
+              question: "What is a key benefit of a 401(k)?",
+              options: ["Tax-free withdrawals", "High liquidity", "Employer matching", "Guaranteed returns"],
+              correctAnswer: "Employer matching",
+              explanation: "Employer matching is a significant benefit of a 401(k).",
+            },
+          ],
+        },
+      },
+      {
+        title: "Exploring Traditional and Roth IRAs",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is an IRA?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "An IRA (Individual Retirement Account) is a retirement savings account that provides tax advantages for individuals.",
+          },
+          {
+            type: "list",
+            content: "Types of IRAs:",
+            items: ["Traditional IRA", "Roth IRA"],
+          },
+        ],
+        keyTakeaways: ["Understand the tax implications of each type", "Choose the right IRA for your situation"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main difference between a Traditional IRA and a Roth IRA?",
+              options: [
+                "Traditional IRAs are tax-free",
+                "Roth IRAs offer tax-free withdrawals in retirement",
+                "Traditional IRAs have no contribution limits",
+                "Roth IRAs are only for high-income earners",
+              ],
+              correctAnswer: "Roth IRAs offer tax-free withdrawals in retirement",
+              explanation: "Roth IRAs offer tax-free withdrawals in retirement, while Traditional IRAs are tax-deferred.",
+            },
+          ],
+        },
+      },
+    ],
+    hsa: [
+      {
+        title: "Understanding Health Savings Accounts",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is an HSA?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A Health Savings Account (HSA) is a tax-advantaged savings account that can be used to pay for qualified medical expenses.",
+          },
+          {
+            type: "list",
+            content: "Benefits of an HSA:",
+            items: ["Tax-deductible contributions", "Tax-free growth", "Tax-free withdrawals for qualified expenses"],
+          },
+        ],
+        keyTakeaways: ["HSAs offer a triple tax advantage", "Use for qualified medical expenses"],
+        quiz: {
+          questions: [
+            {
+              question: "What is a key benefit of an HSA?",
+              options: [
+                "Tax-free contributions",
+                "Tax-free growth",
+                "Tax-free withdrawals for qualified expenses",
+                "All of the above",
+              ],
+              correctAnswer: "All of the above",
+              explanation: "HSAs offer a triple tax advantage: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified expenses.",
+            },
+          ],
+        },
+      },
+    ],
+    insurance: [
+      {
+        title: "Understanding Life Insurance",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is Life Insurance?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Life insurance is a contract between an insurance company and a policyholder, where the insurer guarantees a payment to designated beneficiaries upon the death of the insured person.",
+          },
+          {
+            type: "list",
+            content: "Types of life insurance:",
+            items: ["Term life insurance", "Whole life insurance"],
+          },
+        ],
+        keyTakeaways: ["Protect your loved ones", "Choose the right type of policy"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the purpose of life insurance?",
+              options: [
+                "To build wealth",
+                "To protect your loved ones financially",
+                "To pay for medical expenses",
+                "To fund your retirement",
+              ],
+              correctAnswer: "To protect your loved ones financially",
+              explanation: "Life insurance provides a financial safety net for your loved ones in the event of your death.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Navigating Health Insurance",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is Health Insurance?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Health insurance is a contract that requires an insurer to pay some or all of a person's healthcare costs in exchange for a premium.",
+          },
+          {
+            type: "list",
+            content: "Key health insurance terms:",
+            items: ["Premium", "Deductible", "Co-pay", "Co-insurance"],
+          },
+        ],
+        keyTakeaways: ["Understand your policy", "Shop around for the best coverage"],
+        quiz: {
+          questions: [
+            {
+              question: "What is a premium in health insurance?",
+              options: [
+                "The amount you pay before insurance covers costs",
+                "The amount you pay each month for coverage",
+                "The amount you pay for each doctor's visit",
+                "The amount the insurance company pays",
+              ],
+              correctAnswer: "The amount you pay each month for coverage",
+              explanation: "The premium is the monthly payment you make to maintain your health insurance coverage.",
+            },
+          ],
+        },
+      },
+    ],
+    taxes: [
+      {
+        title: "Tax Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Taxes",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Taxes are mandatory contributions levied on individuals or corporations by a government entity—whether local, regional, or national—to finance government activities.",
+          },
+          {
+            type: "list",
+            content: "Types of taxes:",
+            items: ["Income tax", "Sales tax", "Property tax", "Payroll tax"],
+          },
+        ],
+        keyTakeaways: ["Taxes fund government services", "Understand different tax types"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the purpose of taxes?",
+              options: [
+                "To make people angry",
+                "To fund government services",
+                "To make the rich richer",
+                "To control the population",
+              ],
+              correctAnswer: "To fund government services",
+              explanation: "Taxes are used to finance government activities and public services.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tax Forms",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Common Tax Forms",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Familiarize yourself with the most common tax forms to ensure you file your taxes correctly.",
+          },
+          {
+            type: "list",
+            content: "Common tax forms:",
+            items: ["W-2", "1099", "1040"],
+          },
+        ],
+        keyTakeaways: ["Know which forms you need", "Keep accurate records"],
+        quiz: {
+          questions: [
+            {
+              question: "What is a W-2 form used for?",
+              options: [
+                "Reporting income from self-employment",
+                "Reporting income from employment",
+                "Reporting interest income",
+                "Reporting capital gains",
+              ],
+              correctAnswer: "Reporting income from employment",
+              explanation: "A W-2 form reports your income from employment and the taxes withheld from your paycheck.",
+            },
+          ],
+        },
+      },
+    ],
+    "estate-planning": [
+      {
+        title: "Wills",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Will?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A will is a legal document that specifies how your assets should be distributed after your death.",
+          },
+          {
+            type: "list",
+            content: "Key components of a will:",
+            items: ["Beneficiaries", "Executor", "Guardianship"],
+          },
+        ],
+        keyTakeaways: ["Create a will to protect your assets", "Update your will as needed"],
+        quiz: {
+          questions: [
+            {
+              question: "What is the purpose of a will?",
+              options: [
+                "To avoid taxes",
+                "To specify how your assets should be distributed after your death",
+                "To control your finances while you're alive",
+                "To avoid probate",
+              ],
+              correctAnswer: "To specify how your assets should be distributed after your death",
+              explanation: "A will ensures that your assets are distributed according to your wishes after your death.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Trusts",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Trust?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A trust is a legal arrangement in which a trustee holds assets for the benefit of beneficiaries.",
+          },
+          {
+            type: "list",
+            content: "Types of trusts:",
+            items: ["Revocable trust", "Irrevocable trust"],
+          },
+        ],
+        keyTakeaways: ["Trusts can avoid probate", "Choose the right type of trust"],
+        quiz: {
+          questions: [
+            {
+              question: "What is a key benefit of a trust?",
+              options: [
+                "Avoiding taxes",
+                "Avoiding probate",
+                "Increasing investment returns",
+                "Protecting assets from creditors",
+              ],
+              correctAnswer: "Avoiding probate",
+              explanation: "Trusts can help avoid the probate process, which can be time-consuming and costly.",
+            },
+          ],
+        },
+      },
+    ],
+    "financial-advisors": [
+      {
+        title: "Choosing a Financial Advisor",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Why Use a Financial Advisor?",
+          },
+          {
+            type: "paragraph",
+              content:
+                "A financial advisor can provide personalized advice and guidance to help you achieve your financial goals.",
+          },
+          {
+            type: "list",
+            content: "Benefits of using a financial advisor:",
+            items: ["Personalized advice", "Investment management", "Financial planning"],
+          },
+        ],
+        keyTakeaways: ["Find a qualified advisor", "Understand their fees"],
+        quiz: {
+          questions: [
+            {
+              question: "What is a key benefit of using a financial advisor?",
+              options: [
+                "Guaranteed returns",
+                "Personalized advice",
+                "Avoiding taxes",
+                "Getting rich quickly",
+              ],
+              correctAnswer: "Personalized advice",
+              explanation: "A financial advisor can provide personalized advice tailored to your specific financial situation and goals.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Working with a Financial Advisor",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "How to Work with a Financial Advisor",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Establish clear communication and set expectations with your financial advisor to ensure a successful working relationship.",
+          },
+          {
+            type: "list",
+            content: "Tips for working with a financial advisor:",
+            items: ["Communicate your goals", "Ask questions", "Review your plan regularly"],
+          },
+        ],
+        keyTakeaways: ["Communicate effectively", "Review your plan regularly"],
+        quiz: {
+          questions: [
+            {
+              question: "What is important when working with a financial advisor?",
+              options: [
+                "Letting them make all the decisions",
+                "Communicating your goals and concerns",
+                "Never asking questions",
+                "Ignoring their advice",
+              ],
+              correctAnswer: "Communicating your goals and concerns",
+              explanation: "Open communication is essential for a successful working relationship with a financial advisor.",
+            },
+          ],
+        },
+      },
+    ],
     "sustainable-impact-investing": [
       {
         title: "What is ESG Investing?",
@@ -4138,320 +4906,3 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             content: "Automation strategies:",
             items: [
               "Automatic transfers on payday",
-              "Direct deposit splitting",
-              "Round-up apps that save spare change",
-              "Automatic savings from checking account",
-              "Save all raises and bonuses",
-              "Use separate account to avoid temptation",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Treat building your emergency fund like a financial emergency itself. Focus intensely on this goal before other financial priorities.",
-          },
-        ],
-        keyTakeaways: [
-          "Use windfalls and bonuses to jumpstart your fund",
-          "Combine expense cutting with income increases",
-          "Automate savings to build consistently",
-          "Treat emergency fund building as a top priority",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the most effective way to build an emergency fund quickly?",
-              options: [
-                "Only cut expenses",
-                "Only increase income",
-                "Combine multiple strategies",
-                "Wait for a big windfall",
-              ],
-              correctAnswer: "Combine multiple strategies",
-              explanation:
-                "Combining expense reduction, income increases, windfalls, and automation is the most effective way to build an emergency fund quickly.",
-            },
-          ],
-        },
-      },
-    ],
-    "financial-goals": [
-      {
-        title: "The Power of Clear Financial Goals",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Why Specific Goals Drive Success",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Clear, specific financial goals are the foundation of financial success. They provide direction, motivation, and a way to measure progress. Without goals, money tends to disappear on random purchases instead of building wealth.",
-          },
-          {
-            type: "list",
-            content: "Benefits of setting financial goals:",
-            items: [
-              "Provides clear direction for your money",
-              "Motivates you to save and invest",
-              "Helps prioritize spending decisions",
-              "Creates accountability and tracking",
-              "Builds momentum through small wins",
-              "Turns abstract dreams into concrete plans",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Instead of 'I want to save money,' Maria set a goal: 'Save $15,000 for a house down payment by December 2025.' This specific goal helped her save $625 monthly and reach her target.",
-          },
-          {
-            type: "list",
-            content: "Common financial goals by category:",
-            items: [
-              "Emergency fund: 3-6 months of expenses",
-              "Debt payoff: Specific amounts and timelines",
-              "Major purchases: Car, house, wedding",
-              "Experiences: Vacation, education, hobbies",
-              "Long-term wealth: Retirement, financial independence",
-              "Giving: Charity, family support",
-            ],
-          },
-          {
-            type: "list",
-            content: "Why vague goals fail:",
-            items: [
-              "No clear target to aim for",
-              "Difficult to measure progress",
-              "Easy to postpone or abandon",
-              "Lack of urgency or deadline",
-              "No specific action steps",
-              "Competing priorities without clear ranking",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Write down your financial goals and review them regularly. Written goals are significantly more likely to be achieved than goals kept only in your head.",
-          },
-        ],
-        keyTakeaways: [
-          "Specific goals provide direction and motivation",
-          "Clear targets make progress measurable",
-          "Written goals are more likely to be achieved",
-          "Goals help prioritize competing financial demands",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What makes a financial goal more likely to be achieved?",
-              options: [
-                "Keeping it flexible and vague",
-                "Making it specific and written down",
-                "Setting it very high",
-                "Not telling anyone about it",
-              ],
-              correctAnswer: "Making it specific and written down",
-              explanation:
-                "Specific, written goals are significantly more likely to be achieved because they provide clear targets and accountability.",
-            },
-          ],
-        },
-      },
-      {
-        title: "SMART Goal Framework",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Creating Goals That Actually Work",
-          },
-          {
-            type: "paragraph",
-            content:
-              "The SMART framework helps you create financial goals that are more likely to be achieved. SMART stands for Specific, Measurable, Achievable, Relevant, and Time-bound.",
-          },
-          {
-            type: "list",
-            content: "SMART goal components:",
-            items: [
-              "Specific: Exactly what you want to achieve",
-              "Measurable: How you'll track progress",
-              "Achievable: Realistic given your situation",
-              "Relevant: Meaningful to your life and values",
-              "Time-bound: Clear deadline for completion",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Poor goal: 'Save money for vacation.' SMART goal: 'Save $3,000 for a European vacation by June 2025 by setting aside $250 per month starting now.'",
-          },
-          {
-            type: "list",
-            content: "Making goals specific:",
-            items: [
-              "Include exact dollar amounts",
-              "Specify what the money is for",
-              "Define success clearly",
-              "Identify required actions",
-              "Consider all related costs",
-              "Plan for obstacles and setbacks",
-            ],
-          },
-          {
-            type: "list",
-            content: "Making goals measurable:",
-            items: [
-              "Set milestone checkpoints",
-              "Track progress monthly",
-              "Use percentages and ratios",
-              "Create visual progress indicators",
-              "Celebrate small wins along the way",
-              "Adjust timeline if needed",
-            ],
-          },
-          {
-            type: "list",
-            content: "Ensuring goals are achievable:",
-            items: [
-              "Based on realistic income and expenses",
-              "Consider your current financial situation",
-              "Break large goals into smaller steps",
-              "Allow for unexpected expenses",
-              "Start with easier goals to build confidence",
-              "Adjust as circumstances change",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "Test your goal with this question: 'Can I clearly explain to someone else exactly what I'm trying to achieve and by when?' If not, make it more specific.",
-          },
-        ],
-        keyTakeaways: [
-          "SMART goals are Specific, Measurable, Achievable, Relevant, Time-bound",
-          "Specific goals include exact amounts and deadlines",
-          "Measurable goals allow you to track progress",
-          "Achievable goals are realistic for your situation",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Which of these is a SMART financial goal?",
-              options: [
-                "Save money for retirement",
-                "Save $500 per month for 2 years to build a $12,000 emergency fund",
-                "Get rich someday",
-                "Buy a nice car eventually",
-              ],
-              correctAnswer: "Save $500 per month for 2 years to build a $12,000 emergency fund",
-              explanation:
-                "This goal is Specific ($12,000 emergency fund), Measurable ($500/month), Achievable (reasonable amount), Relevant (emergency fund), and Time-bound (2 years).",
-            },
-          ],
-        },
-      },
-      {
-        title: "Prioritizing Multiple Goals",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Managing Competing Financial Priorities",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Most people have multiple financial goals competing for limited resources. Learning to prioritize and balance these goals ensures you make progress on what matters most while not neglecting other important objectives.",
-          },
-          {
-            type: "list",
-            content: "Goal prioritization framework:",
-            items: [
-              "Tier 1: Financial security (emergency fund, debt payoff)",
-              "Tier 2: Time-sensitive goals (house down payment, wedding)",
-              "Tier 3: Long-term wealth building (retirement, investments)",
-              "Tier 4: Lifestyle and experience goals (vacation, hobbies)",
-              "Adjust based on your personal situation and timeline",
-            ],
-          },
-          {
-            type: "list",
-            content: "Factors for prioritizing goals:",
-            items: [
-              "Urgency and timeline",
-              "Impact on financial security",
-              "Cost of delay",
-              "Personal values and importance",
-              "Available resources and income",
-              "Opportunity costs of other goals",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Jake has $800/month to allocate: $300 to emergency fund (Tier 1), $300 to house down payment (Tier 2), $200 to retirement (Tier 3). He'll adjust when emergency fund is complete.",
-          },
-          {
-            type: "list",
-            content: "Strategies for multiple goals:",
-            items: [
-              "Focus on one goal at a time if resources are limited",
-              "Use percentage allocation across goals",
-              "Complete highest priority goals first",
-              "Use windfalls strategically",
-              "Adjust allocations as goals are achieved",
-              "Don't spread resources too thin",
-            ],
-          },
-          {
-            type: "list",
-            content: "Common prioritization mistakes:",
-            items: [
-              "Focusing on wants before needs",
-              "Ignoring emergency fund for other goals",
-              "Not considering time sensitivity",
-              "Spreading money too thin across too many goals",
-              "Letting emotions override logic",
-              "Not adjusting priorities as life changes",
-            ],
-          },
-          {
-            type: "tip",
-            content:
-              "It's better to fully fund 2-3 important goals than to make minimal progress on 10 different goals. Focus creates momentum and results.",
-          },
-        ],
-        keyTakeaways: [
-          "Prioritize financial security goals first",
-          "Consider urgency and timeline when ranking goals",
-          "Focus resources rather than spreading too thin",
-          "Adjust priorities as goals are completed",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "Which goal should typically be the highest priority?",
-              options: ["Vacation fund", "Emergency fund", "New car fund", "Entertainment budget"],
-              correctAnswer: "Emergency fund",
-              explanation:
-                "Emergency fund should be the highest priority because it provides financial security and prevents debt accumulation during unexpected events.",
-            },
-          ],
-        },
-      },
-    ],
-  }
-
-  const moduleContent = lessons[moduleId]
-  if (!moduleContent || lessonIndex < 0 || lessonIndex >= moduleContent.length) {
-    return null
-  }
-
-  return moduleContent[lessonIndex]
-}
