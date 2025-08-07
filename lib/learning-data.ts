@@ -5287,3 +5287,1749 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
                 "Can be invested for growth",
                 "All of the above",
               ],
+              correctAnswer: "All of the above",
+              explanation: "HSAs offer higher contribution limits, indefinite rollover of funds, and investment options - all advantages over FSAs which have 'use it or lose it' rules and limited investment options.",
+            },
+          ],
+        },
+      },
+      {
+        title: "HSA as a Retirement Account",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Using Your HSA for Retirement",
+          },
+          {
+            type: "paragraph",
+            content:
+              "After age 65, HSAs become incredibly flexible retirement accounts. They can be used for any expense without penalty, while still maintaining tax-free withdrawals for medical expenses. This makes HSAs potentially more valuable than traditional retirement accounts.",
+          },
+          {
+            type: "list",
+            content: "HSA rules after age 65:",
+            items: [
+              "No penalty for non-medical withdrawals",
+              "Non-medical withdrawals taxed as ordinary income",
+              "Medical withdrawals remain tax-free forever",
+              "No required minimum distributions (unlike 401k/IRA)",
+              "Can pay Medicare premiums tax-free",
+              "Funds can be inherited by spouse or other beneficiaries",
+            ],
+          },
+          {
+            type: "list",
+            content: "Healthcare costs in retirement:",
+            items: [
+              "Average couple needs $300,000+ for retirement healthcare",
+              "Medicare doesn't cover all expenses",
+              "Long-term care costs average $50,000+ annually",
+              "Healthcare inflation typically exceeds general inflation",
+              "Prescription drug costs continue rising",
+              "Dental and vision care not covered by Medicare",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "At age 65, Maria has $200,000 in her HSA from decades of contributions and growth. She uses $50,000 tax-free for medical expenses and withdraws $20,000 for living expenses (paying income tax like a traditional IRA).",
+          },
+          {
+            type: "list",
+            content: "HSA retirement strategies:",
+            items: [
+              "Maximize contributions while working",
+              "Invest for long-term growth",
+              "Pay current medical expenses out-of-pocket when possible",
+              "Keep receipts for future reimbursement",
+              "Use as last resort in retirement (after other accounts)",
+              "Consider Roth IRA conversions to reduce future taxes",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA vs. other retirement accounts:",
+            items: [
+              "Better than 401k: No required distributions, medical withdrawals tax-free",
+              "Better than Roth IRA: Tax deduction on contributions",
+              "Better than Traditional IRA: Medical withdrawals tax-free",
+              "Unique triple tax advantage no other account offers",
+              "Most flexible retirement account after age 65",
+              "Can complement other retirement savings strategies",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Think of your HSA as a 'stealth retirement account.' Maximize contributions, invest for growth, and avoid withdrawals when possible. After age 65, it becomes the most flexible retirement account available.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs become flexible retirement accounts after age 65",
+          "Medical withdrawals remain tax-free forever",
+          "No required minimum distributions like other retirement accounts",
+          "Healthcare costs are a major retirement expense",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens to HSA withdrawals for non-medical expenses after age 65?",
+              options: [
+                "20% penalty plus taxes",
+                "Taxed as ordinary income with no penalty",
+                "Tax-free like Roth IRA",
+                "Not allowed at any age",
+              ],
+              correctAnswer: "Taxed as ordinary income with no penalty",
+              explanation: "After age 65, non-medical HSA withdrawals are taxed as ordinary income but have no penalty, making the HSA function like a traditional IRA for non-medical expenses.",
+            },
+          ],
+        },
+      },
+    ],
+    "insurance": [
+      {
+        title: "Life Insurance Fundamentals",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Life Insurance",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Life insurance provides financial protection for your loved ones in the event of your death. For young adults, understanding life insurance basics helps you make informed decisions about when and how much coverage you need.",
+          },
+          {
+            type: "list",
+            content: "Types of life insurance:",
+            items: [
+              "Term life: Temporary coverage for specific period (10, 20, 30 years)",
+              "Whole life: Permanent coverage with cash value component",
+              "Universal life: Flexible permanent coverage with investment options",
+              "Variable life: Permanent coverage with investment choices",
+              "Group life: Coverage through employer or organization",
+              "Accidental death: Coverage only for accidental deaths",
+            ],
+          },
+          {
+            type: "list",
+            content: "When you need life insurance:",
+            items: [
+              "You have dependents who rely on your income",
+              "You have debts others would inherit (cosigned loans)",
+              "You want to cover funeral and burial expenses",
+              "You have a mortgage or other major debts",
+              "You want to leave money for children's education",
+              "You have a business that depends on you",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah, 28, is married with a new baby and a $200,000 mortgage. She buys a $500,000 20-year term policy for $25/month to ensure her family can pay off the house and cover expenses if something happens to her.",
+          },
+          {
+            type: "list",
+            content: "How much life insurance you need:",
+            items: [
+              "10-12 times your annual income (rule of thumb)",
+              "Enough to pay off major debts (mortgage, student loans)",
+              "5-10 years of living expenses for dependents",
+              "Children's education costs",
+              "Final expenses (funeral, burial, legal fees)",
+              "Consider your spouse's earning ability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Term vs. permanent life insurance:",
+            items: [
+              "Term: Lower cost, temporary coverage, no cash value",
+              "Permanent: Higher cost, lifelong coverage, builds cash value",
+              "Most young adults should start with term insurance",
+              "Term is 10-20 times cheaper than permanent coverage",
+              "Buy term and invest the difference is often better strategy",
+              "Permanent insurance for estate planning and high net worth",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For most young adults, term life insurance provides the most coverage for the lowest cost. Buy coverage when you're young and healthy to lock in low rates for 20-30 years.",
+          },
+        ],
+        keyTakeaways: [
+          "Life insurance protects dependents from financial hardship",
+          "Term insurance is usually best for young adults",
+          "Coverage should be 10-12 times your annual income",
+          "Buy when young and healthy for best rates",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What type of life insurance is typically best for young adults?",
+              options: ["Whole life", "Term life", "Universal life", "Variable life"],
+              correctAnswer: "Term life",
+              explanation: "Term life insurance provides the most coverage for the lowest cost, making it ideal for young adults who need maximum protection at an affordable price.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Health Insurance Essentials",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Navigating Health Insurance Options",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Health insurance is essential for protecting yourself from high medical costs. Understanding your options and key terms helps you choose the right coverage and use it effectively.",
+          },
+          {
+            type: "list",
+            content: "Types of health insurance plans:",
+            items: [
+              "HMO (Health Maintenance Organization): Lower cost, requires referrals",
+              "PPO (Preferred Provider Organization): More flexibility, higher cost",
+              "EPO (Exclusive Provider Organization): Network restrictions, no referrals",
+              "POS (Point of Service): Combines HMO and PPO features",
+              "HDHP (High Deductible Health Plan): Lower premiums, higher deductibles",
+              "Catastrophic plans: Very high deductibles, young adult option",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key health insurance terms:",
+            items: [
+              "Premium: Monthly cost for coverage",
+              "Deductible: Amount you pay before insurance kicks in",
+              "Copay: Fixed amount for specific services",
+              "Coinsurance: Percentage you pay after deductible",
+              "Out-of-pocket maximum: Most you'll pay in a year",
+              "Network: Doctors and hospitals covered by your plan",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake has a plan with $200/month premium, $2,000 deductible, and $6,000 out-of-pocket max. He breaks his leg, incurring $8,000 in costs. He pays the first $2,000 (deductible), then 20% of the remaining $6,000 ($1,200), totaling $3,200.",
+          },
+          {
+            type: "list",
+            content: "Where to get health insurance:",
+            items: [
+              "Employer-sponsored plans (often best value)",
+              "Healthcare.gov marketplace",
+              "State insurance marketplaces",
+              "Direct from insurance companies",
+              "Short-term health plans (limited coverage)",
+              "Parent's plan until age 26",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing the right plan:",
+            items: [
+              "Consider your health needs and medications",
+              "Check if your doctors are in network",
+              "Compare total costs (premiums + out-of-pocket)",
+              "Look at prescription drug coverage",
+              "Consider HSA eligibility with HDHPs",
+              "Review plan benefits and exclusions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Using your health insurance effectively:",
+            items: [
+              "Understand your benefits before you need them",
+              "Use in-network providers when possible",
+              "Get preventive care (usually covered 100%)",
+              "Keep track of deductible and out-of-pocket spending",
+              "Appeal denied claims if you disagree",
+              "Use urgent care instead of ER when appropriate",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If you're young and healthy, consider a High Deductible Health Plan with an HSA. The lower premiums and tax advantages often make this the best choice for building long-term wealth.",
+          },
+        ],
+        keyTakeaways: [
+          "Understand key terms like deductible and out-of-pocket maximum",
+          "Employer plans are often the best value",
+          "Choose based on your health needs and budget",
+          "Use preventive care and in-network providers",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is a deductible in health insurance?",
+              options: [
+                "Monthly payment for coverage",
+                "Amount you pay before insurance starts covering costs",
+                "Fixed fee for doctor visits",
+                "Maximum you'll pay in a year",
+              ],
+              correctAnswer: "Amount you pay before insurance starts covering costs",
+              explanation: "A deductible is the amount you must pay out-of-pocket for covered services before your insurance begins to pay its share of costs.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Auto Insurance Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Yourself on the Road",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Auto insurance is required in most states and protects you financially from accidents, theft, and other vehicle-related incidents. Understanding coverage types and how to save money helps you get adequate protection at the best price.",
+          },
+          {
+            type: "list",
+            content: "Types of auto insurance coverage:",
+            items: [
+              "Liability: Covers damage you cause to others (required in most states)",
+              "Collision: Covers damage to your car from accidents",
+              "Comprehensive: Covers theft, vandalism, weather damage",
+              "Uninsured/Underinsured motorist: Protects from uninsured drivers",
+              "Personal injury protection (PIP): Covers medical expenses",
+              "Gap insurance: Covers loan balance if car is totaled",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors affecting auto insurance rates:",
+            items: [
+              "Age and driving experience (young drivers pay more)",
+              "Driving record and claims history",
+              "Type of vehicle and safety features",
+              "Location and where car is parked",
+              "Credit score (in most states)",
+              "Annual mileage and usage",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma, 22, drives a 2020 Honda Civic. Her full coverage costs $150/month. She saves money by maintaining good grades (student discount), taking a defensive driving course, and choosing a $1,000 deductible instead of $500.",
+          },
+          {
+            type: "list",
+            content: "Ways to save on auto insurance:",
+            items: [
+              "Shop around with multiple insurers annually",
+              "Bundle with other insurance (home, renters)",
+              "Maintain good credit score",
+              "Take defensive driving courses",
+              "Install safety features and anti-theft devices",
+              "Choose higher deductibles to lower premiums",
+            ],
+          },
+          {
+            type: "list",
+            content: "Coverage limits to consider:",
+            items: [
+              "State minimums are often too low",
+              "Consider 100/300/100 liability coverage",
+              "Match uninsured motorist to liability limits",
+              "Choose deductibles you can afford to pay",
+              "Consider umbrella policy for additional liability",
+              "Gap insurance if you owe more than car's value",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't just buy state minimum coverage - it's often inadequate. Aim for at least $100,000/$300,000 liability coverage to protect your assets from lawsuits after serious accidents.",
+          },
+        ],
+        keyTakeaways: [
+          "Liability coverage is required but minimums are often too low",
+          "Young drivers pay higher rates but can earn discounts",
+          "Shop around annually for better rates",
+          "Consider your car's value when choosing collision/comprehensive",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does liability insurance cover?",
+              options: [
+                "Damage to your own car",
+                "Damage you cause to other people and property",
+                "Theft of your vehicle",
+                "Your medical expenses",
+              ],
+              correctAnswer: "Damage you cause to other people and property",
+              explanation: "Liability insurance covers damage and injuries you cause to others in an accident, but does not cover damage to your own vehicle or your own injuries.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Homeowners and Renters Insurance",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Home and Belongings",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Whether you own or rent, insurance protects your personal property and provides liability coverage. Understanding the differences between homeowners and renters insurance helps you get appropriate coverage for your situation.",
+          },
+          {
+            type: "list",
+            content: "Homeowners insurance coverage:",
+            items: [
+              "Dwelling: Structure of your home",
+              "Other structures: Garage, shed, fence",
+              "Personal property: Belongings inside the home",
+              "Loss of use: Temporary living expenses",
+              "Personal liability: Legal responsibility for injuries/damage",
+              "Medical payments: Guest injuries regardless of fault",
+            ],
+          },
+          {
+            type: "list",
+            content: "Renters insurance coverage:",
+            items: [
+              "Personal property: Your belongings (not the building)",
+              "Loss of use: Temporary housing if apartment is uninhabitable",
+              "Personal liability: Protection from lawsuits",
+              "Medical payments: Guest injuries in your apartment",
+              "Additional living expenses: Hotel, food costs during displacement",
+              "Off-premises coverage: Belongings stolen from car, etc.",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Alex's apartment is burglarized, losing $5,000 in electronics and clothes. His $15/month renters insurance covers the loss (minus $500 deductible), saving him $4,500. The policy also covers his laptop stolen from his car.",
+          },
+          {
+            type: "list",
+            content: "How much coverage you need:",
+            items: [
+              "Personal property: Inventory your belongings' replacement cost",
+              "Liability: At least $100,000, preferably $300,000+",
+              "Dwelling (homeowners): Enough to rebuild, not market value",
+              "Consider replacement cost vs. actual cash value",
+              "Higher limits for expensive items (jewelry, art)",
+              "Umbrella policy for additional liability protection",
+            ],
+          },
+          {
+            type: "list",
+            content: "Ways to save on home insurance:",
+            items: [
+              "Bundle with auto insurance for discounts",
+              "Install security systems and smoke detectors",
+              "Choose higher deductibles",
+              "Maintain good credit score",
+              "Shop around with multiple insurers",
+              "Ask about loyalty and claims-free discounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common misconceptions:",
+            items: [
+              "Renters think landlord's insurance covers their belongings (it doesn't)",
+              "Flood damage is covered (requires separate flood insurance)",
+              "Home business equipment is covered (often requires rider)",
+              "Expensive jewelry/art is fully covered (usually limited)",
+              "Market value equals replacement cost (often different)",
+              "All natural disasters are covered (earthquakes often excluded)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Even if you're renting, get renters insurance - it's incredibly cheap (often $10-20/month) and provides valuable protection for your belongings and liability coverage.",
+          },
+        ],
+        keyTakeaways: [
+          "Renters insurance is cheap and essential for protecting belongings",
+          "Homeowners insurance covers structure and personal property",
+          "Liability coverage protects from lawsuits",
+          "Inventory your belongings to determine coverage needs",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does renters insurance typically NOT cover?",
+              options: [
+                "Your personal belongings",
+                "The apartment building structure",
+                "Personal liability",
+                "Temporary living expenses",
+              ],
+              correctAnswer: "The apartment building structure",
+              explanation: "Renters insurance covers your personal property and liability, but the landlord's insurance covers the building structure itself.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Disability Insurance",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Income",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Disability insurance replaces a portion of your income if you become unable to work due to illness or injury. For young adults, protecting your earning ability is often more important than life insurance since you're more likely to become disabled than die young.",
+          },
+          {
+            type: "list",
+            content: "Types of disability insurance:",
+            items: [
+              "Short-term disability: Covers 3-12 months, 60-70% of income",
+              "Long-term disability: Covers years or until retirement",
+              "Social Security Disability: Government program with strict requirements",
+              "Workers' compensation: Covers work-related injuries only",
+              "Individual policies: Purchased directly from insurers",
+              "Group policies: Through employers or associations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key disability insurance features:",
+            items: [
+              "Benefit amount: Typically 60-70% of income",
+              "Benefit period: How long benefits are paid",
+              "Elimination period: Waiting period before benefits start",
+              "Own occupation vs. any occupation coverage",
+              "Cost of living adjustments",
+              "Residual benefits for partial disabilities",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Maria, a 28-year-old teacher earning $50,000, becomes disabled in a car accident. Her long-term disability insurance pays $2,500/month (60% of income) until she can return to work, preventing financial disaster.",
+          },
+          {
+            type: "list",
+            content: "Why disability insurance matters:",
+            items: [
+              "1 in 4 workers will become disabled before retirement",
+              "Most disabilities are due to illness, not accidents",
+              "Average long-term disability lasts 2.5 years",
+              "Social Security disability is difficult to qualify for",
+              "Your ability to earn income is your most valuable asset",
+              "Disability can lead to bankruptcy without insurance",
+            ],
+          },
+          {
+            type: "list",
+            content: "Getting disability insurance:",
+            items: [
+              "Check if your employer offers group coverage",
+              "Consider supplemental individual policy",
+              "Apply while young and healthy for better rates",
+              "Choose 'own occupation' coverage if possible",
+              "Consider cost of living adjustments",
+              "Don't rely solely on Social Security disability",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If your employer offers disability insurance, take it - it's usually very affordable. Consider supplementing with an individual policy to ensure adequate coverage of your income.",
+          },
+        ],
+        keyTakeaways: [
+          "Disability is more likely than death for young adults",
+          "Disability insurance replaces 60-70% of income",
+          "Own occupation coverage is better than any occupation",
+          "Don't rely solely on Social Security disability",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What percentage of workers will become disabled before retirement?",
+              options: ["1 in 10", "1 in 8", "1 in 4", "1 in 2"],
+              correctAnswer: "1 in 4",
+              explanation: "Statistics show that 1 in 4 workers will experience a disability that prevents them from working before they reach retirement age.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Umbrella Insurance",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Extra Liability Protection",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Umbrella insurance provides additional liability coverage beyond your auto and homeowners policies. It's relatively inexpensive protection against large lawsuits that could threaten your financial future.",
+          },
+          {
+            type: "list",
+            content: "What umbrella insurance covers:",
+            items: [
+              "Liability beyond auto/home policy limits",
+              "Personal injury claims (libel, slander)",
+              "Legal defense costs",
+              "Worldwide coverage",
+              "Rental property liability",
+              "Certain lawsuits not covered by other policies",
+            ],
+          },
+          {
+            type: "list",
+            content: "When you might need umbrella insurance:",
+            items: [
+              "You have significant assets to protect",
+              "You own rental property",
+              "You have teenage drivers",
+              "You host parties or events",
+              "You have a swimming pool or trampoline",
+              "You're in a profession prone to lawsuits",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "John causes a serious car accident with $800,000 in damages. His auto insurance covers $300,000, but his $1 million umbrella policy covers the remaining $500,000, protecting his savings and future earnings.",
+          },
+          {
+            type: "list",
+            content: "Umbrella insurance benefits:",
+            items: [
+              "Relatively inexpensive ($200-400 annually for $1M)",
+              "Covers gaps in other policies",
+              "Provides legal defense",
+              "Protects future earnings, not just current assets",
+              "Peace of mind for liability risks",
+              "May cover incidents abroad",
+            ],
+          },
+          {
+            type: "list",
+            content: "How much umbrella coverage to buy:",
+            items: [
+              "At least equal to your net worth",
+              "Consider future earning potential",
+              "Common amounts: $1M, $2M, $5M",
+              "Higher limits available for high net worth individuals",
+              "Balance cost vs. protection needed",
+              "Review coverage as wealth grows",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Even young adults should consider umbrella insurance if they have any assets or high earning potential. It's very affordable protection against lawsuits that could garnish future wages.",
+          },
+        ],
+        keyTakeaways: [
+          "Umbrella insurance provides extra liability protection",
+          "It's relatively inexpensive for the coverage provided",
+          "Consider it if you have assets or high earning potential",
+          "Covers gaps and provides legal defense",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main purpose of umbrella insurance?",
+              options: [
+                "Cover your car in accidents",
+                "Provide additional liability coverage beyond other policies",
+                "Replace your homeowners insurance",
+                "Cover medical expenses",
+              ],
+              correctAnswer: "Provide additional liability coverage beyond other policies",
+              explanation: "Umbrella insurance provides additional liability coverage that kicks in when your auto or homeowners policy limits are exceeded.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Insurance Shopping and Claims",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Getting the Best Insurance Value",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Shopping for insurance and handling claims effectively can save you money and ensure you get the coverage you need. Understanding how to compare policies and navigate the claims process protects your financial interests.",
+          },
+          {
+            type: "list",
+            content: "Insurance shopping tips:",
+            items: [
+              "Get quotes from at least 3-5 companies",
+              "Compare coverage amounts, not just prices",
+              "Check financial strength ratings (A.M. Best, Moody's)",
+              "Read customer reviews and complaint ratios",
+              "Ask about available discounts",
+              "Review policies annually for better rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common insurance discounts:",
+            items: [
+              "Multi-policy bundling (auto + home)",
+              "Good student discounts",
+              "Safe driver discounts",
+              "Security system discounts",
+              "Loyalty discounts for long-term customers",
+              "Professional association memberships",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa shops for auto insurance and finds rates from $120-200/month for similar coverage. She chooses a company with good ratings at $140/month, saving $720 annually compared to the highest quote.",
+          },
+          {
+            type: "list",
+            content: "Filing insurance claims:",
+            items: [
+              "Report claims promptly (within 24-48 hours)",
+              "Document everything with photos and notes",
+              "Keep receipts for expenses related to the claim",
+              "Cooperate with the investigation process",
+              "Don't admit fault or speculate about causes",
+              "Keep records of all communications",
+            ],
+          },
+          {
+            type: "list",
+            content: "Dealing with claim disputes:",
+            items: [
+              "Review your policy to understand coverage",
+              "Get written explanations for claim denials",
+              "Provide additional documentation if requested",
+              "Consider hiring a public adjuster for large claims",
+              "File complaints with state insurance commissioners",
+              "Consult an attorney for significant disputes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags when shopping for insurance:",
+            items: [
+              "Prices significantly below market rates",
+              "High-pressure sales tactics",
+              "Companies with poor financial ratings",
+              "Policies with major coverage gaps",
+              "Agents who won't explain policy details",
+              "Companies with high complaint ratios",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Review your insurance coverage annually and shop around every 2-3 years. Your circumstances change, and so do insurance rates. You might find better coverage or significant savings.",
+          },
+        ],
+        keyTakeaways: [
+          "Shop around regularly for better rates and coverage",
+          "Compare coverage details, not just prices",
+          "Document everything when filing claims",
+          "Take advantage of available discounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "How often should you shop around for insurance?",
+              options: [
+                "Never, once you find a company",
+                "Every 2-3 years",
+                "Only when you have a claim",
+                "Every 10 years",
+              ],
+              correctAnswer: "Every 2-3 years",
+              explanation: "Shopping around every 2-3 years helps ensure you're getting competitive rates and coverage as your circumstances and the insurance market change.",
+            },
+          ],
+        },
+      },
+    ],
+    "bill-negotiation": [
+      {
+        title: "Understanding Your Bills",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Know What You're Paying For",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Before you can negotiate your bills, you need to understand what you're paying for and identify which expenses are negotiable. Many young adults don't realize that most service providers are willing to work with customers to keep their business.",
+          },
+          {
+            type: "list",
+            content: "Bills you can typically negotiate:",
+            items: [
+              "Cell phone and internet service",
+              "Cable and streaming services",
+              "Insurance premiums (auto, home, health)",
+              "Credit card interest rates and fees",
+              "Medical bills and payment plans",
+              "Subscription services and memberships",
+            ],
+          },
+          {
+            type: "list",
+            content: "Bills that are harder to negotiate:",
+            items: [
+              "Rent (unless lease renewal)",
+              "Utilities (electric, gas, water)",
+              "Government fees and taxes",
+              "Student loan payments (but payment plans available)",
+              "Mortgage payments (refinancing is an option)",
+              "Court-ordered payments",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah reviews her monthly bills and identifies $200 in potentially negotiable expenses: $80 cell phone, $60 internet, $40 gym membership, and $20 in subscription services. She targets these for negotiation.",
+          },
+          {
+            type: "list",
+            content: "Analyzing your bills:",
+            items: [
+              "Review 3-6 months of statements",
+              "Identify recurring charges and fees",
+              "Compare your rates to current market prices",
+              "Note when your contracts expire",
+              "Track usage patterns and needs",
+              "Research competitor pricing",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags in your bills:",
+            items: [
+              "Charges that have increased without notice",
+              "Services you don't use or need",
+              "Fees that weren't in your original agreement",
+              "Automatic renewals at higher rates",
+              "Bundled services you don't want",
+              "Premium features you never requested",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set aside time monthly to review all your bills. Look for unexpected charges, rate increases, or services you no longer need. Early detection makes negotiation easier.",
+          },
+        ],
+        keyTakeaways: [
+          "Many service bills are negotiable",
+          "Understanding your bills is the first step to negotiation",
+          "Research competitor pricing before negotiating",
+          "Look for unnecessary services and fees",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which type of bill is typically easiest to negotiate?",
+              options: ["Rent", "Electric bill", "Cell phone service", "Student loans"],
+              correctAnswer: "Cell phone service",
+              explanation: "Cell phone service is highly competitive, making providers more willing to negotiate rates and offer discounts to retain customers.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Negotiation Strategies and Tactics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "How to Negotiate Like a Pro",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Successful bill negotiation requires preparation, the right approach, and persistence. Understanding how customer service works and what motivates companies helps you get better results.",
+          },
+          {
+            type: "list",
+            content: "Preparation before calling:",
+            items: [
+              "Research competitor prices and promotions",
+              "Review your payment history and loyalty",
+              "Identify your ideal outcome and minimum acceptable result",
+              "Gather account information and recent bills",
+              "Choose the right time to call (avoid peak hours)",
+              "Prepare to speak with multiple representatives if needed",
+            ],
+          },
+          {
+            type: "list",
+            content: "Effective negotiation tactics:",
+            items: [
+              "Be polite and friendly - representatives want to help nice customers",
+              "Mention competitor offers specifically",
+              "Emphasize your loyalty and payment history",
+              "Ask to speak with retention or cancellation department",
+              "Be willing to walk away if they won't negotiate",
+              "Ask 'What can you do to help me lower my bill?'",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike calls his internet provider: 'I've been a customer for 3 years and always pay on time. I see [competitor] offers the same speed for $20 less. Can you match that price to keep my business?' He gets a $15/month discount.",
+          },
+          {
+            type: "list",
+            content: "What to say during negotiation:",
+            items: [
+              "'I've been a loyal customer for [X] years'",
+              "'I'm considering switching to [competitor] because...'",
+              "'What promotions or discounts are available?'",
+              "'Can you match [competitor's] price?'",
+              "'I'd like to stay but need to reduce my expenses'",
+              "'What's the best you can do to keep my business?'",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to escalate:",
+            items: [
+              "First representative says they can't help",
+              "You're offered a deal that's not good enough",
+              "You're told 'that's the best we can do'",
+              "Ask for supervisor or retention department",
+              "Be prepared to actually cancel if necessary",
+              "Sometimes calling back gets a different result",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common negotiation mistakes:",
+            items: [
+              "Being rude or aggressive with representatives",
+              "Not doing research on competitor prices",
+              "Accepting the first 'no' without trying again",
+              "Not getting agreements in writing",
+              "Negotiating when you're angry or frustrated",
+              "Not following up to ensure changes were made",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "The retention or cancellation department often has more authority to offer discounts than regular customer service. Don't be afraid to ask to cancel your service - they'll often transfer you to someone who can make deals.",
+          },
+        ],
+        keyTakeaways: [
+          "Preparation and research improve negotiation success",
+          "Be polite but persistent with representatives",
+          "Mention competitor offers and your loyalty",
+          "Don't accept the first 'no' - escalate when needed",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the most important thing to do before negotiating a bill?",
+              options: [
+                "Get angry about the high cost",
+                "Research competitor prices",
+                "Threaten to cancel immediately",
+                "Wait until you're behind on payments",
+              ],
+              correctAnswer: "Research competitor prices",
+              explanation: "Researching competitor prices gives you leverage and specific offers to mention during negotiation, making your request more credible.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Cell Phone and Internet Bills",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Cutting Your Communication Costs",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Cell phone and internet bills are among the most negotiable expenses, with providers regularly offering promotions and discounts to retain customers. These services are essential for young adults, but you don't have to pay premium prices.",
+          },
+          {
+            type: "list",
+            content: "Cell phone negotiation strategies:",
+            items: [
+              "Call when your contract is up for renewal",
+              "Mention switching to a competitor with better rates",
+              "Ask about loyalty discounts for long-term customers",
+              "Inquire about employer or student discounts",
+              "Consider switching to a family plan to save money",
+              "Look into prepaid plans for significant savings",
+            ],
+          },
+          {
+            type: "list",
+            content: "Internet service negotiation tips:",
+            items: [
+              "Research all providers in your area",
+              "Ask about promotional rates for new customers",
+              "Negotiate to get new customer pricing as existing customer",
+              "Consider downgrading speed if you don't need premium",
+              "Bundle services only if you'll use them all",
+              "Threaten to cancel and see what retention offers",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa's cell phone bill is $85/month. She calls and mentions a competitor's $60 plan. The representative offers her a $20/month discount for 12 months, saving her $240 annually while keeping her current plan.",
+          },
+          {
+            type: "list",
+            content: "Alternative options to consider:",
+            items: [
+              "Prepaid plans often cost 30-50% less",
+              "Family plans can reduce per-line costs",
+              "Employer discounts (often 10-25% off)",
+              "Student discounts from major carriers",
+              "Switching to budget carriers (Mint, Visible, etc.)",
+              "Using Wi-Fi calling to reduce data needs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Questions to ask providers:",
+            items: [
+              "'What's the lowest rate you can offer me?'",
+              "'Do you have any current promotions?'",
+              "'Can you match [competitor's] price?'",
+              "'What discounts am I eligible for?'",
+              "'Can I get the new customer rate?'",
+              "'What happens if I downgrade my plan?'",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Consider switching to a prepaid plan or budget carrier. You can often get the same coverage for 30-50% less than major carriers, especially if you don't need unlimited everything.",
+          },
+        ],
+        keyTakeaways: [
+          "Cell phone and internet bills are highly negotiable",
+          "Mention competitor offers and ask for loyalty discounts",
+          "Consider alternative providers and prepaid plans",
+          "Employer and student discounts can provide significant savings",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's often the best time to negotiate your cell phone bill?",
+              options: [
+                "When you're behind on payments",
+                "When your contract is up for renewal",
+                "During peak business hours",
+                "After you've already switched providers",
+              ],
+              correctAnswer: "When your contract is up for renewal",
+              explanation: "Contract renewal time gives you the most leverage because providers know you can easily switch to a competitor without penalties.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Insurance Premium Negotiations",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Lowering Your Insurance Costs",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Insurance premiums can often be reduced through negotiation, discounts, and policy adjustments. Since insurance is required for cars and homes, finding ways to lower these costs can significantly impact your budget.",
+          },
+          {
+            type: "list",
+            content: "Auto insurance negotiation strategies:",
+            items: [
+              "Shop around annually for better rates",
+              "Ask about all available discounts",
+              "Consider raising deductibles to lower premiums",
+              "Bundle auto and renters/homeowners insurance",
+              "Maintain good credit to qualify for better rates",
+              "Take defensive driving courses for discounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common auto insurance discounts:",
+            items: [
+              "Good student discount (usually 3.0+ GPA)",
+              "Safe driver discount (no accidents/tickets)",
+              "Multi-policy discount (bundling)",
+              "Low mileage discount",
+              "Safety feature discounts (anti-lock brakes, airbags)",
+              "Loyalty discounts for long-term customers",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom's auto insurance is $150/month. He shops around, finds a quote for $120, and calls his current insurer. They match the price and add a good student discount, reducing his bill to $110/month - saving $480 annually.",
+          },
+          {
+            type: "list",
+            content: "Health insurance cost reduction:",
+            items: [
+              "Choose higher deductible plans with lower premiums",
+              "Use Health Savings Accounts (HSAs) for tax benefits",
+              "Stay in-network for all medical services",
+              "Use generic medications when available",
+              "Take advantage of preventive care (usually free)",
+              "Appeal denied claims that should be covered",
+            ],
+          },
+          {
+            type: "list",
+            content: "Renters insurance savings:",
+            items: [
+              "Bundle with auto insurance for discounts",
+              "Install security systems for lower rates",
+              "Choose higher deductibles if you can afford them",
+              "Don't over-insure - inventory your belongings",
+              "Ask about loyalty and claims-free discounts",
+              "Consider actual cash value vs. replacement cost",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Review your insurance coverage annually and get quotes from at least 3 companies. Rates change frequently, and you might qualify for new discounts based on age, education, or life changes.",
+          },
+        ],
+        keyTakeaways: [
+          "Shop around annually for insurance to find better rates",
+          "Ask about all available discounts you might qualify for",
+          "Consider adjusting deductibles and coverage levels",
+          "Bundle policies for multi-policy discounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's one of the easiest ways to lower auto insurance premiums?",
+              options: [
+                "Drive more miles",
+                "Get in an accident",
+                "Bundle with renters insurance",
+                "Lower your credit score",
+              ],
+              correctAnswer: "Bundle with renters insurance",
+              explanation: "Bundling auto and renters insurance typically provides a multi-policy discount that can save 10-25% on both policies.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Medical Bill Negotiation",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Reducing Healthcare Costs",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Medical bills are often negotiable, especially for uninsured patients or those facing financial hardship. Healthcare providers would rather receive some payment than none, making them willing to work with patients on payment plans and reductions.",
+          },
+          {
+            type: "list",
+            content: "Before negotiating medical bills:",
+            items: [
+              "Review bills carefully for errors",
+              "Verify insurance was billed correctly",
+              "Understand what services were provided",
+              "Get itemized bills for all charges",
+              "Check if you qualify for financial assistance",
+              "Don't ignore bills - address them promptly",
+            ],
+          },
+          {
+            type: "list",
+            content: "Medical bill negotiation strategies:",
+            items: [
+              "Ask for cash/prompt payment discounts",
+              "Request payment plans with no interest",
+              "Apply for hospital charity care programs",
+              "Negotiate based on Medicare/Medicaid rates",
+              "Ask for medical necessity reviews",
+              "Consider hiring a medical billing advocate",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma receives a $2,000 emergency room bill. She calls the billing department, explains her financial situation, and negotiates a 40% reduction plus a 12-month payment plan, reducing her burden from $2,000 to $1,200 over time.",
+          },
+          {
+            type: "list",
+            content: "What to say when negotiating:",
+            items: [
+              "'I want to pay this bill but need help with the amount'",
+              "'Do you offer financial hardship discounts?'",
+              "'Can you set up a payment plan with no interest?'",
+              "'What's the cash discount for paying in full?'",
+              "'I'm uninsured - what discount can you offer?'",
+              "'Can you review this bill for accuracy?'",
+            ],
+          },
+          {
+            type: "list",
+            content: "Financial assistance programs:",
+            items: [
+              "Hospital charity care (often required by law)",
+              "Pharmaceutical company patient assistance",
+              "State and local healthcare assistance programs",
+              "Non-profit organization grants",
+              "Sliding scale fees based on income",
+              "Medical credit cards (use carefully)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Preventing high medical bills:",
+            items: [
+              "Understand your insurance coverage before treatment",
+              "Use in-network providers when possible",
+              "Get pre-authorization for expensive procedures",
+              "Ask about costs upfront",
+              "Consider urgent care instead of emergency rooms",
+              "Use generic medications when available",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Many hospitals are required by law to offer charity care or payment assistance. Ask about financial assistance programs before agreeing to payment plans - you might qualify for significant reductions.",
+          },
+        ],
+        keyTakeaways: [
+          "Medical bills are often negotiable, especially for financial hardship",
+          "Review bills carefully for errors before paying",
+          "Ask about charity care and financial assistance programs",
+          "Payment plans can make large bills manageable",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do first when you receive a large medical bill?",
+              options: [
+                "Pay it immediately",
+                "Ignore it and hope it goes away",
+                "Review it carefully for errors",
+                "Apply for a loan to pay it",
+              ],
+              correctAnswer: "Review it carefully for errors",
+              explanation: "Medical bills often contain errors. Reviewing the bill carefully and verifying all charges before negotiating or paying can save you money.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tracking Your Savings Success",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Measuring Your Negotiation Wins",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tracking your bill negotiation successes helps you see the real impact on your budget and motivates you to continue finding savings. Small monthly reductions add up to significant annual savings.",
+          },
+          {
+            type: "list",
+            content: "What to track:",
+            items: [
+              "Original bill amount vs. negotiated amount",
+              "Monthly savings from each negotiation",
+              "Annual savings projections",
+              "Time spent negotiating vs. money saved",
+              "Success rate of negotiation attempts",
+              "Expiration dates of promotional rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Creating a savings tracker:",
+            items: [
+              "Use a simple spreadsheet or app",
+              "Record date, company, original amount, new amount",
+              "Calculate monthly and annual savings",
+              "Note when promotional rates expire",
+              "Track which tactics worked best",
+              "Set reminders to renegotiate when rates increase",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Over one year, Jake negotiated: $20/month off cell phone, $15/month off internet, $25/month off car insurance. His total annual savings: $720, which he puts toward his emergency fund.",
+          },
+          {
+            type: "list",
+            content: "Maximizing your savings:",
+            items: [
+              "Renegotiate when promotional rates expire",
+              "Set calendar reminders for annual reviews",
+              "Use savings for specific financial goals",
+              "Share successful tactics with friends and family",
+              "Consider switching providers if negotiation fails",
+              "Celebrate your wins to stay motivated",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common tracking mistakes:",
+            items: [
+              "Not following up to ensure changes were made",
+              "Forgetting when promotional rates expire",
+              "Not calculating the true annual impact",
+              "Giving up after one unsuccessful attempt",
+              "Not tracking which companies are most willing to negotiate",
+              "Failing to renegotiate when circumstances change",
+            ],
+          },
+          {
+            type: "list",
+            content: "Using your savings wisely:",
+            items: [
+              "Add to emergency fund",
+              "Pay down high-interest debt",
+              "Increase retirement contributions",
+              "Save for specific goals (vacation, car)",
+              "Invest in index funds",
+              "Build sinking funds for irregular expenses",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic transfers for the amount you save through negotiation. If you save $50/month on bills, automatically transfer that $50 to savings so you don't spend it elsewhere.",
+          },
+        ],
+        keyTakeaways: [
+          "Track your negotiation successes to see the real impact",
+          "Small monthly savings add up to significant annual amounts",
+          "Use saved money purposefully for financial goals",
+          "Set reminders to renegotiate when rates increase",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best use of money saved through bill negotiation?",
+              options: [
+                "Spend it on entertainment",
+                "Leave it in checking account",
+                "Use it for specific financial goals",
+                "Increase other spending",
+              ],
+              correctAnswer: "Use it for specific financial goals",
+              explanation: "Using negotiation savings for specific financial goals like emergency funds or debt payoff maximizes the benefit and prevents lifestyle inflation.",
+            },
+          ],
+        },
+      },
+    ],
+    "investing": [
+      {
+        title: "Investment Fundamentals",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Risk and Return",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Investing is the process of putting money to work to generate returns over time. Understanding the relationship between risk and return is fundamental to making smart investment decisions. For young adults, investing early provides the greatest advantage due to compound growth.",
+          },
+          {
+            type: "list",
+            content: "Basic investment concepts:",
+            items: [
+              "Risk: The possibility of losing money or not meeting expectations",
+              "Return: The profit or loss from an investment",
+              "Compound growth: Earning returns on your returns",
+              "Inflation: Rising prices that reduce purchasing power",
+              "Diversification: Spreading risk across different investments",
+              "Time horizon: How long you plan to invest",
+            ],
+          },
+          {
+            type: "list",
+            content: "Risk vs. return relationship:",
+            items: [
+              "Higher potential returns typically come with higher risk",
+              "Lower risk investments usually offer lower returns",
+              "Risk tolerance varies by individual and life stage",
+              "Young investors can typically take more risk",
+              "Time helps smooth out short-term volatility",
+              "No investment is completely risk-free",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah invests $5,000 at age 22 and earns 7% annually. By age 65, it grows to over $160,000. If she waits until age 32 to invest the same amount, it only grows to about $80,000 - half as much due to 10 fewer years of compound growth.",
+          },
+          {
+            type: "list",
+            content: "Types of investment risk:",
+            items: [
+              "Market risk: Overall market declines",
+              "Inflation risk: Rising prices reduce purchasing power",
+              "Interest rate risk: Changes in rates affect bond values",
+              "Company risk: Individual company problems",
+              "Liquidity risk: Difficulty selling investments quickly",
+              "Currency risk: Foreign exchange rate changes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Why young adults should invest:",
+            items: [
+              "Time is your greatest advantage for compound growth",
+              "Can afford to take more risk for higher returns",
+              "Inflation protection for long-term purchasing power",
+              "Building wealth for future goals (house, retirement)",
+              "Learning investment skills early",
+              "Taking advantage of tax-advantaged accounts",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start investing as early as possible, even with small amounts. The power of compound growth means that time in the market is more important than timing the market.",
+          },
+        ],
+        keyTakeaways: [
+          "Higher returns typically come with higher risk",
+          "Compound growth makes early investing extremely powerful",
+          "Young investors can afford to take more risk",
+          "Time helps smooth out investment volatility",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important advantage young investors have?",
+              options: ["More money to invest", "Better investment knowledge", "Time for compound growth", "Lower risk tolerance"],
+              correctAnswer: "Time for compound growth",
+              explanation: "Time is the most powerful factor in investing. Young investors have decades for their investments to compound, which can turn small amounts into substantial wealth.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Understanding Index Funds",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "The Power of Passive Investing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Index funds are investment funds that track a specific market index, like the S&P 500. They offer instant diversification, low costs, and historically strong performance, making them ideal for beginning investors and the foundation of many portfolios.",
+          },
+          {
+            type: "list",
+            content: "What are index funds:",
+            items: [
+              "Funds that track a market index (S&P 500, Total Stock Market)",
+              "Passive management - no stock picking",
+              "Instant diversification across hundreds or thousands of stocks",
+              "Low expense ratios (typically 0.03% - 0.20%)",
+              "Available as mutual funds or ETFs",
+              "Transparent holdings that match the index",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of index funds:",
+            items: [
+              "Low costs mean more money stays invested",
+              "Broad diversification reduces individual stock risk",
+              "No need to research individual companies",
+              "Historically outperform most actively managed funds",
+              "Simple to understand and invest in",
+              "Tax efficient due to low turnover",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "An S&P 500 index fund owns stocks in all 500 companies in the index. If you invest $1,000, you own a tiny piece of Apple, Microsoft, Amazon, and 497 other companies. This provides instant diversification that would be impossible to achieve buying individual stocks.",
+          },
+          {
+            type: "list",
+            content: "Popular index fund types:",
+            items: [
+              "S&P 500: Large U.S. companies",
+              "Total Stock Market: All U.S. stocks",
+              "International: Foreign developed markets",
+              "Emerging Markets: Developing countries",
+              "Bond Index: Government and corporate bonds",
+              "Target Date: Automatically adjusts allocation over time",
+            ],
+          },
+          {
+            type: "list",
+            content: "Index funds vs. actively managed funds:",
+            items: [
+              "Lower fees (0.05% vs. 1%+ for active funds)",
+              "No manager risk - performance matches the market",
+              "More predictable returns over long term",
+              "Less research required for selection",
+              "Better tax efficiency",
+              "Historically better long-term performance",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to choose index funds:",
+            items: [
+              "Look for low expense ratios (under 0.20%)",
+              "Choose broad market exposure",
+              "Consider your risk tolerance and time horizon",
+              "Start with total stock market or S&P 500 funds",
+              "Add international exposure for diversification",
+              "Use target-date funds for automatic allocation",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For most beginning investors, a simple portfolio of 70% total stock market index fund and 30% total bond market index fund provides excellent diversification at low cost.",
+          },
+        ],
+        keyTakeaways: [
+          "Index funds provide instant diversification at low cost",
+          "They historically outperform most actively managed funds",
+          "Low fees mean more money stays invested and compounds",
+          "Perfect for beginning investors who want market returns",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of index funds over actively managed funds?",
+              options: ["Higher returns guaranteed", "Lower fees and costs", "More exciting investments", "Professional stock picking"],
+              correctAnswer: "Lower fees and costs",
+              explanation: "Index funds typically have much lower fees than actively managed funds, which means more of your money stays invested and compounds over time.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Dollar-Cost Averaging",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Investing Consistently Over Time",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Dollar-cost averaging is an investment strategy where you invest a fixed amount of money at regular intervals, regardless of market conditions. This approach reduces the impact of market volatility and removes the emotion from investment timing decisions.",
+          },
+          {
+            type: "list",
+            content: "How dollar-cost averaging works:",
+            items: [
+              "Invest the same amount at regular intervals (monthly, bi-weekly)",
+              "Buy more shares when prices are low",
+              "Buy fewer shares when prices are high",
+              "Average cost per share smooths out over time",
+              "Removes emotion and timing decisions",
+              "Works automatically through payroll deductions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of dollar-cost averaging:",
+            items: [
+              "Reduces impact of market volatility",
+              "Eliminates need to time the market",
+              "Builds disciplined investing habits",
+              "Works well with employer 401(k) plans",
+              "Reduces average cost per share over time",
+              "Less stressful than lump-sum investing",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom invests $500 monthly in an index fund. In January, shares cost $50 (buys 10 shares). In February, shares cost $25 (buys 20 shares). In March, shares cost $100 (buys 5 shares). His average cost is $42.86 per share, lower than the $58.33 average price.",
+          },
+          {
+            type: "list",
+            content: "Dollar-cost averaging vs. lump sum:",
+            items: [
+              "Lump sum historically performs better in rising markets",
+              "Dollar-cost averaging reduces risk in volatile markets",
+              "Most people don't have large lump sums to invest",
+              "Regular investing fits better with earned income",
+              "Psychological benefits of gradual investing",
+              "Both strategies work well long-term",
+            ],
+          },
+          {
+            type: "list",
+            content: "Implementing dollar-cost averaging:",
+            items: [
+              "Set up automatic investments from your bank account",
+              "Use employer 401(k) payroll deductions",
+              "Choose a consistent amount you can afford",
+              "Invest on the same day each month",
+              "Don't stop during market downturns",
+              "Increase amount when income grows",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic investments so you don't have to think about it. This removes emotion from the process and ensures you keep investing even when markets are scary.",
+          },
+        ],
+        keyTakeaways: [
+          "Dollar-cost averaging reduces the impact of market volatility",
+          "Investing regularly builds disciplined habits",
+          "Automation removes emotion from investment decisions",
+          "Works well for people investing from regular income",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main benefit of dollar-cost averaging?",
+              options: ["Guarantees higher returns", "Reduces impact of market volatility", "Eliminates all investment risk", "Requires perfect market timing"],
+              correctAnswer: "Reduces impact of market volatility",
+              explanation: "Dollar-cost averaging smooths out the effects of market ups and downs by investing consistently over time, reducing the impact of volatility on your average purchase price.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Asset Allocation and Diversification",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Building a Balanced Portfolio",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Asset allocation is how you divide your investments among different asset classes like stocks, bonds, and cash. Proper diversification helps manage risk while pursuing returns appropriate for your age and goals.",
+          },
+          {
+            type: "list",
+            content: "Major asset classes:",
+            items: [
+              "Stocks (equities): Ownership in companies, higher risk/return",
+              "Bonds (fixed income): Loans to companies/governments, lower risk",
+              "Cash equivalents: Savings accounts, CDs, money market funds",
+              "Real estate: Property investments, REITs",
+              "Commodities: Gold, oil, agricultural products",
+              "International: Foreign stocks and bonds",
+            ],
+          },
+          {
+            type: "list",
+            content: "Age-based allocation guidelines:",
+            items: [
+              "20s-30s: 80-90% stocks, 10-20% bonds",
+              "40s: 70-80% stocks, 20-30% bonds",
+              "50s: 60-70% stocks, 30-40% bonds",
+              "60s+: 50-60% stocks, 40-50% bonds",
+              "Rule of thumb: 100 minus your age = stock percentage",
+              "Adjust based on risk tolerance and goals",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa, age 25, allocates her portfolio: 80% stock index funds (60% U.S., 20% international), 20% bond index funds. This aggressive allocation is appropriate for her long time horizon and ability to weather market volatility.",
+          },
+          {
+            type: "list",
+            content: "Types of diversification:",
+            items: [
+              "Asset class: Stocks, bonds, real estate",
+              "Geographic: U.S., international, emerging markets",
+              "Company size: Large, mid, small-cap stocks",
+              "Sector: Technology, healthcare, finance, etc.",
+              "Time: Dollar-cost averaging over time",
+              "Style: Growth vs. value investing",
+            ],
+          },
+          {
+            type: "list",
+            content: "Simple portfolio examples:",
+            items: [
+              "Three-fund portfolio: Total stock, international stock, total bond",
+              "Target-date fund: Automatically adjusts allocation over time",
+              "Two-fund portfolio: Total stock market, total bond market",
+              "Four-fund portfolio: Add real estate investment trusts (REITs)",
+              "Lazy portfolios: Simple, low-maintenance allocations",
+              "Robo-advisor portfolios: Automated allocation management
