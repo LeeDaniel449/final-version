@@ -659,8 +659,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "A budget is simply a plan for your money. It tells your money where to go instead of wondering where it went. Budgeting is the foundation that makes all other financial goals possible. For young adults, this means planning for expenses like rent, tuition, and social activities.",
+            content:
+              "A budget is simply a plan for your money. It tells your money where to go instead of wondering where it went. Budgeting is the foundation that makes all other financial goals possible. For young adults, this means planning for expenses like rent, tuition, and social activities.",
           },
           {
             type: "list",
@@ -676,8 +676,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Without a budget, Jake spent $200 on random purchases and couldn't afford his $150 car payment. With a budget, he allocated money for his car first, then had $50 for fun spending. This also applies to young adults who might spend too much on eating out and then can't afford textbooks.",
+            content:
+              "Without a budget, Jake spent $200 on random purchases and couldn't afford his $150 car payment. With a budget, he allocated money for his car first, then had $50 for fun spending. This also applies to young adults who might spend too much on eating out and then can't afford textbooks.",
           },
           {
             type: "list",
@@ -693,8 +693,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Think of a budget as giving yourself permission to spend, not restricting yourself. You're deciding in advance how to use your money for maximum happiness and success. Include fun money in your budget so you don't feel deprived.",
+            content:
+              "Think of a budget as giving yourself permission to spend, not restricting yourself. You're deciding in advance how to use your money for maximum happiness and success. Include fun money in your budget so you don't feel deprived.",
           },
         ],
         keyTakeaways: [
@@ -731,8 +731,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "The 50/30/20 rule is a simple budgeting framework that divides your after-tax income into three categories. It's perfect for beginners and provides a balanced approach to spending and saving. This rule can be adapted for young adults managing student loans and limited income.",
+            content:
+              "The 50/30/20 rule is a simple budgeting framework that divides your after-tax income into three categories. It's perfect for beginners and provides a balanced approach to spending and saving. This rule can be adapted for young adults managing student loans and limited income.",
           },
           {
             type: "list",
@@ -769,8 +769,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "On a $3,000 monthly income: $1,500 for needs, $900 for wants, $600 for savings and extra debt payments. This ensures you cover essentials while still enjoying life and building wealth. If you have student loans, prioritize paying them down within the 20% category.",
+            content:
+              "On a $3,000 monthly income: $1,500 for needs, $900 for wants, $600 for savings and extra debt payments. This ensures you cover essentials while still enjoying life and building wealth. If you have student loans, prioritize paying them down within the 20% category.",
           },
           {
             type: "list",
@@ -785,8 +785,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you can't fit your needs into 50%, look for ways to reduce housing costs or transportation expenses. Consider living with roommates or using public transportation to save money.",
+            content:
+              "If you can't fit your needs into 50%, look for ways to reduce housing costs or transportation expenses. Consider living with roommates or using public transportation to save money.",
           },
         ],
         keyTakeaways: [
@@ -818,8 +818,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Zero-based budgeting means your income minus your expenses equals zero. Every dollar gets assigned a purpose before the month begins. This method ensures no money slips through the cracks, which is especially helpful for young adults with variable income from part-time jobs.",
+            content:
+              "Zero-based budgeting means your income minus your expenses equals zero. Every dollar gets assigned a purpose before the month begins. This method ensures no money slips through the cracks, which is especially helpful for young adults with variable income from part-time jobs.",
           },
           {
             type: "list",
@@ -834,8 +834,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "$2,500 income. Expenses: Rent $800, Food $300, Car $250, Insurance $100, Savings $400, Fun $350, Miscellaneous $300. Total: $2,500. Every dollar has a job! If your income varies, use your lowest expected income for the month.",
+            content:
+              "$2,500 income. Expenses: Rent $800, Food $300, Car $250, Insurance $100, Savings $400, Fun $350, Miscellaneous $300. Total: $2,500. Every dollar has a job! If your income varies, use your lowest expected income for the month.",
           },
           {
             type: "list",
@@ -873,8 +873,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you have money left over after assigning all expenses, put it toward your highest priority goal - usually emergency fund or debt payoff. Consider using a budgeting app to help you track your progress.",
+            content:
+              "If you have money left over after assigning all expenses, put it toward your highest priority goal - usually emergency fund or debt payoff. Consider using a budgeting app to help you track your progress.",
           },
         ],
         keyTakeaways: [
@@ -906,8 +906,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "You can't manage what you don't measure. Tracking your spending shows you exactly where your money goes and helps you make informed decisions about your budget. This is especially important for young adults who may not be aware of where their money is going.",
+            content:
+              "You can't manage what you don't measure. Tracking your spending shows you exactly where your money goes and helps you make informed decisions about your budget. This is especially important for young adults who may not be aware of where their money is going.",
           },
           {
             type: "list",
@@ -934,8 +934,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Maria thought she spent $200 on food monthly. After tracking for a month, she discovered she actually spent $350 - $150 on groceries and $200 on dining out. This awareness helped her adjust her budget. This is common for young adults who may underestimate how much they spend on eating out.",
+            content:
+              "Maria thought she spent $200 on food monthly. After tracking for a month, she discovered she actually spent $350 - $150 on groceries and $200 on dining out. This awareness helped her adjust her budget. This is common for young adults who may underestimate how much they spend on eating out.",
           },
           {
             type: "list",
@@ -961,8 +961,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Track your spending for at least one full month before creating your budget. This gives you realistic numbers to work with instead of guessing. Use a budgeting app to make this easier.",
+            content:
+              "Track your spending for at least one full month before creating your budget. This gives you realistic numbers to work with instead of guessing. Use a budgeting app to make this easier.",
           },
         ],
         keyTakeaways: [
@@ -999,8 +999,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Irregular expenses are costs that don't happen every month but are predictable over time. Planning for these prevents them from derailing your budget when they occur. For young adults, this might include textbooks, spring break trips, or car repairs.",
+            content:
+              "Irregular expenses are costs that don't happen every month but are predictable over time. Planning for these prevents them from derailing your budget when they occur. For young adults, this might include textbooks, spring break trips, or car repairs.",
           },
           {
             type: "list",
@@ -1029,8 +1029,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Car maintenance costs $1,200 per year on average. Save $100 per month in a 'car fund.' When you need $400 for new tires, the money is already there without impacting your regular budget. This also applies to textbooks, which can be a significant expense for students.",
+            content:
+              "Car maintenance costs $1,200 per year on average. Save $100 per month in a 'car fund.' When you need $400 for new tires, the money is already there without impacting your regular budget. This also applies to textbooks, which can be a significant expense for students.",
           },
           {
             type: "list",
@@ -1056,8 +1056,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Start with the most important irregular expenses first - car maintenance and medical costs. Add other categories as your budget allows. Use a spreadsheet to track your sinking funds.",
+            content:
+              "Start with the most important irregular expenses first - car maintenance and medical costs. Add other categories as your budget allows. Use a spreadsheet to track your sinking funds.",
           },
         ],
         keyTakeaways: [
@@ -1094,8 +1094,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Your budget is a living document that should change as your life changes. Regular reviews and adjustments ensure your budget stays realistic and effective. This is especially important for young adults whose income and expenses may fluctuate.",
+            content:
+              "Your budget is a living document that should change as your life changes. Regular reviews and adjustments ensure your budget stays realistic and effective. This is especially important for young adults whose income and expenses may fluctuate.",
           },
           {
             type: "list",
@@ -1122,8 +1122,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Tom budgeted $200 for groceries but consistently spent $280. Instead of feeling guilty, he adjusted his grocery budget to $250 and reduced his entertainment budget by $50. This is a common scenario, so don't be afraid to adjust your budget as needed.",
+            content:
+              "Tom budgeted $200 for groceries but consistently spent $280. Instead of feeling guilty, he adjusted his grocery budget to $250 and reduced his entertainment budget by $50. This is a common scenario, so don't be afraid to adjust your budget as needed.",
           },
           {
             type: "list",
@@ -1149,8 +1149,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Don't abandon your budget if you overspend one month. Instead, learn from it and adjust. The goal is progress, not perfection. Be flexible and adapt your budget to your changing needs.",
+            content:
+              "Don't abandon your budget if you overspend one month. Instead, learn from it and adjust. The goal is progress, not perfection. Be flexible and adapt your budget to your changing needs.",
           },
         ],
         keyTakeaways: [
@@ -1189,8 +1189,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Saving money goes against our natural instincts. Our brains are wired to prioritize immediate rewards over future benefits. Understanding this psychology helps you develop strategies to overcome these mental barriers. This is especially relevant for young adults who are often bombarded with marketing and social pressures to spend.",
+            content:
+              "Saving money goes against our natural instincts. Our brains are wired to prioritize immediate rewards over future benefits. Understanding this psychology helps you develop strategies to overcome these mental barriers. This is especially relevant for young adults who are often bombarded with marketing and social pressures to spend.",
           },
           {
             type: "list",
@@ -1218,8 +1218,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Instead of saving 'whatever is left over' (usually nothing), Maya automatically transfers $100 to savings on payday. She never sees the money, so she doesn't miss it. This can be easily set up with most banks.",
+            content:
+              "Instead of saving 'whatever is left over' (usually nothing), Maya automatically transfers $100 to savings on payday. She never sees the money, so she doesn't miss it. This can be easily set up with most banks.",
           },
           {
             type: "list",
@@ -1234,8 +1234,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Start with saving just 1% of your income. Once that feels normal, increase to 2%, then 3%. Gradual increases feel less painful than jumping to 10% immediately. Every little bit helps!",
+            content:
+              "Start with saving just 1% of your income. Once that feels normal, increase to 2%, then 3%. Gradual increases feel less painful than jumping to 10% immediately. Every little bit helps!",
           },
         ],
         keyTakeaways: [
@@ -1272,8 +1272,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Automation is the secret weapon of successful savers. By setting up automatic transfers, you remove emotions and decision-making from saving, making it as reliable as paying your rent. This is especially helpful for young adults who are busy with school and work.",
+            content:
+              "Automation is the secret weapon of successful savers. By setting up automatic transfers, you remove emotions and decision-making from saving, making it as reliable as paying your rent. This is especially helpful for young adults who are busy with school and work.",
           },
           {
             type: "list",
@@ -1301,8 +1301,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Alex sets up three automatic transfers: $200 to emergency fund, $150 to vacation fund, and $100 to car replacement fund. Every payday, $450 is automatically saved before he can spend it. This can be easily set up through your bank's website or app.",
+            content:
+              "Alex sets up three automatic transfers: $200 to emergency fund, $150 to vacation fund, and $100 to car replacement fund. Every payday, $450 is automatically saved before he can spend it. This can be easily set up through your bank's website or app.",
           },
           {
             type: "list",
@@ -1330,8 +1330,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Treat your automated savings like a bill that must be paid. If you can afford your rent, you can afford to pay your future self. Set it up and forget about it!",
+            content:
+              "Treat your automated savings like a bill that must be paid. If you can afford your rent, you can afford to pay your future self. Set it up and forget about it!",
           },
         ],
         keyTakeaways: [
@@ -1368,8 +1368,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Not all savings accounts are created equal. High-yield savings accounts can earn 10-20 times more interest than traditional bank accounts, helping your money grow faster while staying safe and accessible. This is a great way for young adults to maximize their savings.",
+            content:
+              "Not all savings accounts are created equal. High-yield savings accounts can earn 10-20 times more interest than traditional bank accounts, helping your money grow faster while staying safe and accessible. This is a great way for young adults to maximize their savings.",
           },
           {
             type: "list",
@@ -1385,8 +1385,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "$10,000 in a traditional bank account earning 0.01% makes $1 per year. The same amount in a high-yield account earning 4% makes $400 per year - that's $399 more for doing nothing! This extra money can be used for your goals.",
+            content:
+              "$10,000 in a traditional bank account earning 0.01% makes $1 per year. The same amount in a high-yield account earning 4% makes $400 per year - that's $399 more for doing nothing! This extra money can be used for your goals.",
           },
           {
             type: "list",
@@ -1425,8 +1425,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Interest rates change over time. Review your savings account rates annually and be willing to switch if you find significantly better rates elsewhere. Don't be afraid to shop around for the best deal!",
+            content:
+              "Interest rates change over time. Review your savings account rates annually and be willing to switch if you find significantly better rates elsewhere. Don't be afraid to shop around for the best deal!",
           },
         ],
         keyTakeaways: [
@@ -1458,8 +1458,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "The 52-week savings challenge is a popular method that makes saving feel like a game. You save an increasing amount each week, building both your savings account and your saving habit gradually. This is a great way for young adults to build an emergency fund or save for a specific goal.",
+            content:
+              "The 52-week savings challenge is a popular method that makes saving feel like a game. You save an increasing amount each week, building both your savings account and your saving habit gradually. This is a great way for young adults to build an emergency fund or save for a specific goal.",
           },
           {
             type: "list",
@@ -1486,8 +1486,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Sarah chose the reverse challenge, starting with $52 in January when she had holiday money, then decreasing amounts as the year progressed and other expenses increased. This can be a good strategy if you know you'll have more expenses later in the year.",
+            content:
+              "Sarah chose the reverse challenge, starting with $52 in January when she had holiday money, then decreasing amounts as the year progressed and other expenses increased. This can be a good strategy if you know you'll have more expenses later in the year.",
           },
           {
             type: "list",
@@ -1526,8 +1526,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If the traditional amounts don't fit your budget, create your own version. The key is consistency, not the specific dollar amounts. Make it work for you!",
+            content:
+              "If the traditional amounts don't fit your budget, create your own version. The key is consistency, not the specific dollar amounts. Make it work for you!",
           },
         ],
         keyTakeaways: [
@@ -1559,8 +1559,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Most people have multiple financial goals at once - emergency fund, vacation, car, house down payment. Learning to save for multiple goals simultaneously helps you make progress on all fronts without feeling overwhelmed. This is especially relevant for young adults who may be saving for college, travel, and a future apartment.",
+            content:
+              "Most people have multiple financial goals at once - emergency fund, vacation, car, house down payment. Learning to save for multiple goals simultaneously helps you make progress on all fronts without feeling overwhelmed. This is especially relevant for young adults who may be saving for college, travel, and a future apartment.",
           },
           {
             type: "list",
@@ -1590,8 +1590,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Mike saves $500 monthly: $200 to emergency fund (priority), $150 to vacation fund (6 months away), $100 to car fund (2 years away), $50 to gift fund (ongoing). This allows him to make progress on all his goals simultaneously.",
+            content:
+              "Mike saves $500 monthly: $200 to emergency fund (priority), $150 to vacation fund (6 months away), $100 to car fund (2 years away), $50 to gift fund (ongoing). This allows him to make progress on all his goals simultaneously.",
           },
           {
             type: "list",
@@ -1618,8 +1618,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Don't spread your savings too thin across too many goals. Focus on 3-4 main goals at a time for better progress and motivation. Make sure your goals are realistic and achievable.",
+            content:
+              "Don't spread your savings too thin across too many goals. Focus on 3-4 main goals at a time for better progress and motivation. Make sure your goals are realistic and achievable.",
           },
         ],
         keyTakeaways: [
@@ -1651,8 +1651,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Everyone faces obstacles when trying to save money. The key is recognizing these barriers and developing specific strategies to overcome them. Most savings obstacles are mental, not mathematical. This is especially true for young adults who may be facing student loan debt and limited income.",
+            content:
+              "Everyone faces obstacles when trying to save money. The key is recognizing these barriers and developing specific strategies to overcome them. Most savings obstacles are mental, not mathematical. This is especially true for young adults who may be facing student loan debt and limited income.",
           },
           {
             type: "list",
@@ -1681,8 +1681,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Lisa felt she couldn't save on her tight budget. She started saving just $5 per week by bringing lunch from home twice a week instead of buying it. After a year, she had $260 saved. This shows that even small changes can make a big difference.",
+            content:
+              "Lisa felt she couldn't save on her tight budget. She started saving just $5 per week by bringing lunch from home twice a week instead of buying it. After a year, she had $260 saved. This shows that even small changes can make a big difference.",
           },
           {
             type: "list",
@@ -1722,8 +1722,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you can't save money, focus on not going further into debt. Sometimes maintaining your current position is progress when facing financial challenges. Don't get discouraged!",
+            content:
+              "If you can't save money, focus on not going further into debt. Sometimes maintaining your current position is progress when facing financial challenges. Don't get discouraged!",
           },
         ],
         keyTakeaways: [
@@ -1762,8 +1762,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Not all debt is created equal. Understanding the difference between good debt and bad debt is crucial for making smart financial decisions and building wealth over time. This is especially important for young adults who are often faced with student loans and credit card offers.",
+            content:
+              "Not all debt is created equal. Understanding the difference between good debt and bad debt is crucial for making smart financial decisions and building wealth over time. This is especially important for young adults who are often faced with student loans and credit card offers.",
           },
           {
             type: "list",
@@ -1789,13 +1789,13 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "A mortgage at 4% interest that helps you build equity in a home is good debt. A credit card at 24% interest used for vacation expenses is bad debt. Student loans can be considered good debt if they lead to a higher-paying job.",
+            content:
+              "A mortgage at 4% interest that helps you build equity in a home is good debt. A credit card at 24% interest used for vacation expenses is bad debt. Student loans can be considered good debt if they lead to a higher-paying job.",
           },
           {
             type: "tip",
-              content:
-                "Focus on paying off bad debt first, especially high-interest credit cards. Good debt can often be managed with minimum payments while you build wealth elsewhere. Prioritize paying off credit card debt to avoid high interest charges.",
+            content:
+              "Focus on paying off bad debt first, especially high-interest credit cards. Good debt can often be managed with minimum payments while you build wealth elsewhere. Prioritize paying off credit card debt to avoid high interest charges.",
           },
         ],
         keyTakeaways: [
@@ -1827,8 +1827,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "The debt snowball method focuses on paying off your smallest debts first, regardless of interest rate. This creates psychological wins and momentum that helps you stay motivated throughout your debt payoff journey. This can be a good strategy for young adults who are just starting to manage their debt.",
+            content:
+              "The debt snowball method focuses on paying off your smallest debts first, regardless of interest rate. This creates psychological wins and momentum that helps you stay motivated throughout your debt payoff journey. This can be a good strategy for young adults who are just starting to manage their debt.",
           },
           {
             type: "list",
@@ -1843,8 +1843,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Sarah has: Credit Card A ($500), Credit Card B ($1,200), Car Loan ($8,000). She pays minimums on B and the car, puts extra $200/month toward A. Once A is paid off, she puts $200 + A's minimum toward B. This creates a snowball effect, making it easier to pay off larger debts.",
+            content:
+              "Sarah has: Credit Card A ($500), Credit Card B ($1,200), Car Loan ($8,000). She pays minimums on B and the car, puts extra $200/month toward A. Once A is paid off, she puts $200 + A's minimum toward B. This creates a snowball effect, making it easier to pay off larger debts.",
           },
           {
             type: "list",
@@ -1859,8 +1859,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "The debt snowball is about psychology, not math. If you need motivation and quick wins, this method can be more effective than focusing on interest rates alone. Celebrate each debt you pay off to stay motivated.",
+            content:
+              "The debt snowball is about psychology, not math. If you need motivation and quick wins, this method can be more effective than focusing on interest rates alone. Celebrate each debt you pay off to stay motivated.",
           },
         ],
         keyTakeaways: [
@@ -1892,8 +1892,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "The debt avalanche method focuses on paying off debts with the highest interest rates first. This approach saves the most money in interest payments over time, making it the mathematically optimal debt payoff strategy. This is a good strategy for young adults who are disciplined and want to save the most money.",
+            content:
+              "The debt avalanche method focuses on paying off debts with the highest interest rates first. This approach saves the most money in interest payments over time, making it the mathematically optimal debt payoff strategy. This is a good strategy for young adults who are disciplined and want to save the most money.",
           },
           {
             type: "list",
@@ -1908,8 +1908,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Mike has: Credit Card (22% APR, $3,000), Personal Loan (12% APR, $5,000), Car Loan (6% APR, $10,000). He focuses extra payments on the credit card first, despite it not being the largest balance. This saves him the most money in the long run.",
+            content:
+              "Mike has: Credit Card (22% APR, $3,000), Personal Loan (12% APR, $5,000), Car Loan (6% APR, $10,000). He focuses extra payments on the credit card first, despite it not being the largest balance. This saves him the most money in the long run.",
           },
           {
             type: "list",
@@ -1934,8 +1934,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Choose debt avalanche if you're motivated by saving money and can stay disciplined without needing frequent wins. Combine with debt snowball psychology by celebrating interest saved. Track your progress to stay motivated.",
+            content:
+              "Choose debt avalanche if you're motivated by saving money and can stay disciplined without needing frequent wins. Combine with debt snowball psychology by celebrating interest saved. Track your progress to stay motivated.",
           },
         ],
         keyTakeaways: [
@@ -1972,8 +1972,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Debt consolidation combines multiple debts into a single loan or payment, potentially with a lower interest rate. This can simplify your finances and save money, but it's important to understand the pros and cons. This is a common strategy for young adults with multiple credit card debts.",
+            content:
+              "Debt consolidation combines multiple debts into a single loan or payment, potentially with a lower interest rate. This can simplify your finances and save money, but it's important to understand the pros and cons. This is a common strategy for young adults with multiple credit card debts.",
           },
           {
             type: "list",
@@ -2010,13 +2010,13 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "Lisa has $15,000 in credit card debt across 4 cards averaging 20% APR. She gets a personal loan at 12% APR to pay them off, saving $1,200 per year in interest while having just one payment. This simplifies her finances and makes it easier to manage her debt.",
+            content:
+              "Lisa has $15,000 in credit card debt across 4 cards averaging 20% APR. She gets a personal loan at 12% APR to pay them off, saving $1,200 per year in interest while having just one payment. This simplifies her finances and makes it easier to manage her debt.",
           },
           {
             type: "tip",
-              content:
-                "Only consolidate debt if you get a lower interest rate and commit to not running up new debt. Cut up the credit cards or remove them from your wallet to avoid temptation. Focus on changing your spending habits to avoid accumulating debt again.",
+            content:
+              "Only consolidate debt if you get a lower interest rate and commit to not running up new debt. Cut up the credit cards or remove them from your wallet to avoid temptation. Focus on changing your spending habits to avoid accumulating debt again.",
           },
         ],
         keyTakeaways: [
@@ -2053,8 +2053,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "If you're struggling with debt payments, creditors are often willing to work with you to find a solution. They'd rather receive some payment than none at all, making negotiation a valuable tool in debt management. This is a good option for young adults who are facing unexpected financial difficulties.",
+            content:
+              "If you're struggling with debt payments, creditors are often willing to work with you to find a solution. They'd rather receive some payment than none at all, making negotiation a valuable tool in debt management. This is a good option for young adults who are facing unexpected financial difficulties.",
           },
           {
             type: "list",
@@ -2082,8 +2082,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "John lost his job and called his credit card company before missing a payment. They agreed to reduce his minimum payment by 50% for 6 months and waived late fees, giving him time to find new employment. This shows the importance of being proactive.",
+            content:
+              "John lost his job and called his credit card company before missing a payment. They agreed to reduce his minimum payment by 50% for 6 months and waived late fees, giving him time to find new employment. This shows the importance of being proactive.",
           },
           {
             type: "list",
@@ -2099,8 +2099,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Be proactive and contact creditors as soon as you anticipate problems. They're more willing to help customers who communicate early rather than those who simply stop paying. Be polite and professional during the negotiation.",
+            content:
+              "Be proactive and contact creditors as soon as you anticipate problems. They're more willing to help customers who communicate early rather than those who simply stop paying. Be polite and professional during the negotiation.",
           },
         ],
         keyTakeaways: [
@@ -2137,8 +2137,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Some types of debt are designed to trap borrowers in cycles of debt. Learning to recognize and avoid these predatory lending practices can save you thousands of dollars and years of financial stress. This is especially important for young adults who may be targeted by these lenders.",
+            content:
+              "Some types of debt are designed to trap borrowers in cycles of debt. Learning to recognize and avoid these predatory lending practices can save you thousands of dollars and years of financial stress. This is especially important for young adults who may be targeted by these lenders.",
           },
           {
             type: "list",
@@ -2166,8 +2166,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "A $300 payday loan with $45 fee due in 2 weeks equals 391% APR. If rolled over multiple times, the fees can exceed the original loan amount within months. Avoid these loans at all costs!",
+            content:
+              "A $300 payday loan with $45 fee due in 2 weeks equals 391% APR. If rolled over multiple times, the fees can exceed the original loan amount within months. Avoid these loans at all costs!",
           },
           {
             type: "list",
@@ -2183,8 +2183,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you're considering a payday loan or similar high-cost debt, first explore all other options. The temporary relief isn't worth the long-term financial damage. There are always better alternatives.",
+            content:
+              "If you're considering a payday loan or similar high-cost debt, first explore all other options. The temporary relief isn't worth the long-term financial damage. There are always better alternatives.",
           },
         ],
         keyTakeaways: [
@@ -2221,8 +2221,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "paragraph",
-              content:
-                "Paying off debt is just the beginning. Building a truly debt-free lifestyle requires changing habits, mindsets, and systems to ensure you never fall back into the debt trap. This is a lifelong commitment to financial health.",
+            content:
+              "Paying off debt is just the beginning. Building a truly debt-free lifestyle requires changing habits, mindsets, and systems to ensure you never fall back into the debt trap. This is a lifelong commitment to financial health.",
           },
           {
             type: "list",
@@ -2250,8 +2250,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-              content:
-                "After paying off $30,000 in debt, Maria continued living on her debt-payoff budget but redirected those payments to savings and investments, building $50,000 in wealth within 3 years. This shows the power of discipline and consistency.",
+            content:
+              "After paying off $30,000 in debt, Maria continued living on her debt-payoff budget but redirected those payments to savings and investments, building $50,000 in wealth within 3 years. This shows the power of discipline and consistency.",
           },
           {
             type: "list",
@@ -2267,8 +2267,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "When you pay off debt, don't increase your lifestyle immediately. Continue living on your debt-payoff budget and redirect those payments to savings and investments. This will help you build wealth and avoid future debt.",
+            content:
+              "When you pay off debt, don't increase your lifestyle immediately. Continue living on your debt-payoff budget and redirect those payments to savings and investments. This will help you build wealth and avoid future debt.",
           },
         ],
         keyTakeaways: [
@@ -2295,1524 +2295,2995 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         },
       },
     ],
-    "bill-negotiation": [
+    "credit-scores": [
       {
-        title: "Understanding Your Bills",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Know What You're Paying For",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Before you can negotiate your bills, you need to understand exactly what you're paying for. Many bills contain fees, charges, and services you might not need or could get for less elsewhere. This is especially important for young adults who are often paying for services they don't use.",
-          },
-          {
-            type: "list",
-            content: "Common bills you can negotiate:",
-            items: [
-              "Cell phone and internet services",
-              "Cable and streaming subscriptions",
-              "Insurance premiums (auto, home, health)",
-              "Credit card interest rates and fees",
-              "Bank fees and charges",
-              "Utility bills and service charges",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to look for on your bills:",
-            items: [
-              "Base service costs vs. add-on fees",
-              "Promotional rates that have expired",
-              "Services you don't use or need",
-              "Automatic increases or rate changes",
-              "Bundled services that might cost more",
-              "Hidden fees and surcharges",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "Tom's cable bill showed $89/month for internet, but included $25 in fees for premium channels he never watched and equipment he didn't need. This is a common scenario, so review your bills carefully.",
-          },
-          {
-            type: "tip",
-              content:
-                "Spend 30 minutes reviewing each major bill line by line. You'll often find charges you forgot about or services you can eliminate. Use a highlighter to mark important information.",
-          },
-        ],
-        keyTakeaways: [
-          "Review bills line by line to understand all charges",
-          "Look for services you don't use or need",
-          "Identify promotional rates that have expired",
-          "Understand the difference between base costs and fees",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the first step in negotiating your bills?",
-              options: [
-                "Call customer service immediately",
-                "Understand what you're currently paying for",
-                "Threaten to cancel service",
-                "Compare with competitors",
-              ],
-              correctAnswer: "Understand what you're currently paying for",
-              explanation:
-                "You need to understand your current bills and charges before you can effectively negotiate or know what to ask for.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Research and Preparation",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Arm Yourself with Information",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Successful bill negotiation requires preparation. Companies are more likely to work with you when you're informed about their competitors, current promotions, and your value as a customer. This will give you leverage when you call.",
-          },
-          {
-            type: "list",
-            content: "Research before calling:",
-            items: [
-              "Competitor pricing and promotions",
-              "Your payment history and loyalty",
-              "Current promotions for new customers",
-              "Industry average prices",
-              "Your account status and usage patterns",
-              "Recent rate increases or policy changes",
-            ],
-          },
-          {
-            type: "list",
-            content: "Information to gather:",
-            items: [
-              "How long you've been a customer",
-              "Your payment history (on-time vs. late)",
-              "Competitor offers and pricing",
-              "Current promotions available",
-              "Your usage patterns and needs",
-              "Any service issues or complaints",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "Before calling her internet provider, Sarah found that competitors offered similar service for $20 less per month and that her company was offering new customers a $30/month discount for 12 months. This gave her leverage to negotiate a lower rate.",
-          },
-          {
-            type: "list",
-            content: "Best times to negotiate:",
-            items: [
-              "End of month/quarter when reps have quotas",
-              "When promotional rates are expiring",
-              "After experiencing service problems",
-              "When competitors launch new promotions",
-              "During slow business periods",
-              "When you're a long-term customer",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "Write down key points before calling: your research, desired outcome, and minimum acceptable offer. This keeps you focused during the conversation. Practice your negotiation skills with a friend.",
-          },
-        ],
-        keyTakeaways: [
-          "Research competitor pricing before negotiating",
-          "Know your value as a customer",
-          "Time your calls strategically",
-          "Prepare key points and desired outcomes",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What information is most important to have before negotiating bills?",
-              options: [
-                "Your social security number",
-                "Competitor pricing and offers",
-                "Your credit score",
-                "Your income level",
-              ],
-              correctAnswer: "Competitor pricing and offers",
-              explanation:
-                "Knowing what competitors offer gives you leverage in negotiations and shows the company you've done your research.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Negotiation Tactics That Work",
+        title: "Understanding Credit Scores",
         duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Credit Score?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A credit score is a three-digit number that represents your creditworthiness. It's used by lenders to assess the risk of lending you money. For young adults, understanding credit scores is crucial as they start building their financial independence.",
+          },
+          {
+            type: "list",
+            content: "Credit score ranges:",
+            items: [
+              "Excellent: 800-850",
+              "Very Good: 740-799",
+              "Good: 670-739",
+              "Fair: 580-669",
+              "Poor: 300-579",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors that affect your credit score:",
+            items: [
+              "Payment history (35%)",
+              "Amounts owed (30%)",
+              "Length of credit history (15%)",
+              "Credit mix (10%)",
+              "New credit (10%)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah has a credit score of 720. She always pays her bills on time, keeps her credit card balances low, and has had credit accounts for several years. This good score helps her qualify for better interest rates on loans.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start building credit early by becoming an authorized user on a parent's account or getting a student credit card. Use it responsibly by paying the full balance each month.",
+          },
+        ],
+        keyTakeaways: [
+          "Credit scores range from 300-850",
+          "Payment history is the most important factor",
+          "Higher scores mean better loan terms",
+          "Building credit takes time and consistency",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important factor in your credit score?",
+              options: ["Payment history", "Amounts owed", "Credit mix", "New credit"],
+              correctAnswer: "Payment history",
+              explanation: "Payment history makes up 35% of your credit score and is the most important factor.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Checking Your Credit Report",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Why Check Your Credit Report?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Checking your credit report allows you to identify any errors or inaccuracies that may be affecting your credit score. It also helps you monitor for identity theft and understand what lenders see when they review your credit.",
+          },
+          {
+            type: "list",
+            content: "Where to check your credit report:",
+            items: [
+              "AnnualCreditReport.com (official free site)",
+              "Credit Karma (free monitoring)",
+              "Credit Sesame (free monitoring)",
+              "Bank and credit card apps",
+              "Experian, Equifax, TransUnion directly",
+            ],
+          },
+          {
+            type: "list",
+            content: "What to look for on your credit report:",
+            items: [
+              "Personal information accuracy",
+              "Account information and balances",
+              "Payment history records",
+              "Accounts you don't recognize",
+              "Incorrect late payments",
+              "Outdated negative information",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike found an error on his credit report showing a late payment he never made. He disputed it with the credit bureau and had it removed, which improved his credit score by 20 points.",
+          },
+          {
+            type: "tip",
+            content:
+              "Check your credit report from all three bureaus annually. Set a reminder to check one every four months so you're monitoring your credit year-round.",
+          },
+        ],
+        keyTakeaways: [
+          "Check your credit report regularly for errors",
+          "You're entitled to free reports from all three bureaus",
+          "Dispute any inaccuracies you find",
+          "Monitor for signs of identity theft",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "How often should you check your credit report?",
+              options: ["Once a year", "Every month", "Every week", "Never"],
+              correctAnswer: "Once a year",
+              explanation: "You are entitled to one free credit report per year from each of the three major credit bureaus.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building Credit from Scratch",
+        duration: "6 min",
         points: 20,
         content: [
           {
             type: "heading",
-            content: "Proven Strategies for Successful Negotiations",
+            content: "Starting Your Credit Journey",
           },
           {
             type: "paragraph",
-              content:
-                "Effective bill negotiation is part art, part science. The right approach, tone, and timing can save you hundreds of dollars per year on your regular expenses. Be polite, persistent, and professional.",
+            content:
+              "Building credit from scratch can seem challenging, but there are several strategies young adults can use to establish a positive credit history. The key is starting early and being consistent with good habits.",
           },
           {
             type: "list",
-            content: "Effective negotiation strategies:",
+            content: "Ways to start building credit:",
             items: [
-              "Be polite but persistent",
-              "Ask to speak with retention department",
-              "Mention competitor offers specifically",
-              "Be prepared to walk away",
-              "Ask 'What can you do to help me?'",
-              "Request supervisor if needed",
+              "Become an authorized user on a parent's account",
+              "Apply for a student credit card",
+              "Get a secured credit card",
+              "Consider a credit-builder loan",
+              "Pay all bills on time (utilities, phone, rent)",
+              "Keep credit utilization low (under 30%)",
             ],
           },
           {
             type: "list",
-            content: "What to say that works:",
+            content: "Student credit card benefits:",
             items: [
-              "'I've been a loyal customer for X years...'",
-              "'I found a better offer with [competitor]...'",
-              "'What promotions do you have available?'",
-              "'I'm considering canceling unless we can work something out'",
-              "'Can you match this competitor's price?'",
-              "'What's the best you can do for me?'",
+              "Easier approval for students",
+              "Lower credit limits to start",
+              "Educational resources included",
+              "Potential rewards programs",
+              "Opportunity to build credit history",
+              "May graduate to regular cards later",
             ],
           },
           {
             type: "example",
-              content:
-                "Mike called his cell phone company: 'I've been a customer for 5 years with perfect payment history. T-Mobile is offering the same plan for $40 less. Can you match that or I'll need to switch?' They matched the price immediately. This shows the power of being informed and assertive.",
+            content:
+              "Emma got her first credit card as a college student with a $500 limit. She used it for small purchases like gas and groceries, always paying the full balance on time. After two years, her credit score reached 740.",
           },
           {
             type: "list",
-            content: "What NOT to do:",
+            content: "Credit building mistakes to avoid:",
             items: [
-              "Don't be rude or aggressive",
-              "Don't accept the first 'no'",
-              "Don't negotiate without research",
-              "Don't make empty threats",
-              "Don't settle for small concessions too quickly",
-              "Don't forget to get agreements in writing",
-            ],
-          },
-          {
-            type: "list",
-            content: "If they say no:",
-            items: [
-              "Ask to speak with a supervisor",
-              "Call back and try a different representative",
-              "Ask about future promotions or callbacks",
-              "Consider actually canceling and switching",
-              "Try the retention/cancellation department",
-              "Be willing to compromise on a middle ground",
+              "Missing payments or paying late",
+              "Maxing out credit cards",
+              "Applying for too many cards at once",
+              "Closing your oldest credit accounts",
+              "Only making minimum payments",
+              "Ignoring your credit report",
             ],
           },
           {
             type: "tip",
-              content:
-                "The retention department has more authority to offer discounts than regular customer service. Always ask to be transferred there for the best deals. Be persistent and don't give up easily.",
+            content:
+              "Set up automatic payments for at least the minimum amount due to ensure you never miss a payment. Payment history is the most important factor in your credit score.",
           },
         ],
         keyTakeaways: [
-          "Be polite but persistent in negotiations",
-          "Mention specific competitor offers",
-          "Ask for the retention department",
-          "Be prepared to actually walk away",
+          "Start building credit early with student or secured cards",
+          "Always pay on time and keep balances low",
+          "Authorized user status can help jumpstart credit",
+          "Avoid common mistakes that hurt your score",
         ],
         quiz: {
           questions: [
             {
-              question: "Which department typically has the most authority to offer discounts?",
-              options: ["Billing department", "Technical support", "Retention department", "New customer sales"],
-              correctAnswer: "Retention department",
-              explanation:
-                "The retention department is specifically designed to keep customers from leaving and typically has more authority to offer discounts and promotions.",
+              question: "What's the best way for a young adult to start building credit?",
+              options: [
+                "Apply for multiple credit cards",
+                "Get a student credit card and use it responsibly",
+                "Take out a large loan",
+                "Wait until they're older",
+              ],
+              correctAnswer: "Get a student credit card and use it responsibly",
+              explanation: "Student credit cards are designed for young adults with limited credit history and offer a good way to start building credit when used responsibly.",
             },
           ],
         },
       },
       {
-        title: "Negotiating Specific Services",
-        duration: "5 min",
+        title: "Improving Your Credit Score",
+        duration: "6 min",
         points: 20,
         content: [
           {
             type: "heading",
-            content: "Service-Specific Negotiation Strategies",
+            content: "Strategies to Boost Your Score",
           },
           {
             type: "paragraph",
-              content:
-                "Different types of services require different negotiation approaches. Understanding the specific tactics that work for each industry can significantly improve your success rate. Tailor your approach to the specific bill you're negotiating.",
+            content:
+              "Improving your credit score takes time and consistent effort, but the benefits are worth it. A higher credit score can save you thousands of dollars in interest over your lifetime and open doors to better financial opportunities.",
           },
           {
             type: "list",
-            content: "Cell phone negotiations:",
+            content: "Quick credit score improvements:",
             items: [
-              "Mention competitor promotions specifically",
-              "Ask about loyalty discounts",
-              "Negotiate data overages and fees",
-              "Request free phone upgrades",
-              "Ask for bill credits for service issues",
-              "Consider switching to prepaid plans",
+              "Pay down credit card balances",
+              "Pay bills on time consistently",
+              "Dispute errors on your credit report",
+              "Become an authorized user on a good account",
+              "Pay off collections or charge-offs",
+              "Don't close old credit accounts",
             ],
           },
           {
             type: "list",
-            content: "Internet/Cable negotiations:",
+            content: "Long-term credit building strategies:",
             items: [
-              "Unbundle services you don't need",
-              "Ask for new customer pricing",
-              "Negotiate equipment rental fees",
-              "Request speed upgrades at same price",
-              "Ask about promotional rates",
-              "Consider cord-cutting alternatives",
-            ],
-          },
-          {
-            type: "list",
-            content: "Insurance negotiations:",
-            items: [
-              "Shop quotes from multiple companies",
-              "Ask about all available discounts",
-              "Increase deductibles to lower premiums",
-              "Bundle policies for discounts",
-              "Review coverage annually",
-              "Maintain good credit and driving record",
+              "Keep accounts open to increase credit age",
+              "Maintain a mix of credit types",
+              "Keep credit utilization under 10% for best scores",
+              "Limit new credit applications",
+              "Set up automatic payments",
+              "Monitor your credit regularly",
             ],
           },
           {
             type: "example",
-              content:
-                "Lisa called her auto insurance company with quotes from three competitors. They not only matched the lower price but found additional discounts she qualified for, saving her $400 annually. This shows the importance of shopping around.",
+            content:
+              "David had a 620 credit score due to high credit card balances. He paid down his cards from 80% utilization to 15% over six months, and his score jumped to 720. This qualified him for a much better rate on his car loan.",
           },
           {
             type: "list",
-            content: "Credit card negotiations:",
+            content: "Credit utilization tips:",
             items: [
-              "Request lower interest rates",
-              "Ask for annual fee waivers",
-              "Negotiate payment plans if struggling",
-              "Request late fee removals",
-              "Ask for credit limit increases",
-              "Mention competitor card offers",
+              "Keep total utilization under 30%",
+              "Aim for under 10% for excellent scores",
+              "Pay balances before statement dates",
+              "Consider multiple payments per month",
+              "Request credit limit increases",
+              "Spread balances across multiple cards if needed",
             ],
           },
           {
             type: "tip",
-              content:
-                "For insurance, get quotes from at least 3 companies annually. Rates change frequently, and loyalty doesn't always pay in insurance. Set a reminder to shop around every year.",
+            content:
+              "The fastest way to improve your credit score is to pay down credit card balances. Even a small reduction in utilization can boost your score within a month or two.",
           },
         ],
         keyTakeaways: [
-          "Each service type requires specific negotiation tactics",
-          "Insurance should be shopped annually",
-          "Unbundling services often saves money",
-          "Loyalty discounts exist but must be requested",
+          "Pay down credit card balances for quick improvements",
+          "Consistency in payments is crucial for long-term success",
+          "Keep old accounts open to maintain credit history",
+          "Monitor your credit regularly for errors and progress",
         ],
         quiz: {
           questions: [
             {
-              question: "How often should you shop for new insurance quotes?",
-              options: ["Every 5 years", "Only when rates increase", "Annually", "Never if you're satisfied"],
-              correctAnswer: "Annually",
-              explanation:
-                "Insurance rates change frequently, and shopping annually ensures you're getting the best available rate, even if you're satisfied with your current service.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Alternative Cost-Cutting Strategies",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Beyond Negotiation: Other Ways to Cut Bills",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Sometimes negotiation isn't enough or isn't possible. Having alternative strategies to reduce your bills ensures you can lower expenses even when companies won't budge on pricing. Think outside the box to find creative solutions.",
-          },
-          {
-            type: "list",
-            content: "Service alternatives to consider:",
-            items: [
-              "Streaming services instead of cable",
-              "Prepaid cell plans instead of contracts",
-              "Generic brands instead of name brands",
-              "DIY services instead of professional",
-              "Public transportation instead of car ownership",
-              "Library services instead of subscriptions",
-            ],
-          },
-          {
-            type: "list",
-            content: "Timing strategies:",
-            items: [
-              "Buy insurance 6 months in advance",
-              "Shop utilities during off-peak seasons",
-              "Time major purchases for sales periods",
-              "Renew subscriptions during promotional periods",
-              "Switch services during competitor price wars",
-              "Cancel and re-subscribe for new customer rates",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "Instead of paying $120/month for cable, David switched to $15 Netflix, $12 Hulu, and $8 Disney+, saving $85 monthly while getting more content he actually watches. This is a great example of cutting costs without sacrificing entertainment.",
-          },
-          {
-            type: "list",
-            content: "Sharing and group strategies:",
-            items: [
-              "Family plans for cell phones",
-              "Shared streaming service accounts",
-              "Group buying for bulk discounts",
-              "Neighborhood internet sharing",
-              "Car sharing instead of ownership",
-              "Tool libraries and sharing groups",
-            ],
-          },
-          {
-            type: "list",
-            content: "Elimination strategies:",
-            items: [
-              "Cancel unused subscriptions",
-              "Eliminate redundant services",
-              "Downgrade to basic plans",
-              "Remove premium add-ons",
-              "Switch to free alternatives",
-              "Reduce frequency of services",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "Audit your subscriptions monthly. Many people pay for services they forgot about or no longer use. A simple cancellation can save hundreds per year. Use a calendar reminder to check your subscriptions regularly.",
-          },
-        ],
-        keyTakeaways: [
-          "Consider alternatives when negotiation fails",
-          "Timing purchases and renewals saves money",
-          "Sharing costs with others reduces individual expenses",
-          "Regular subscription audits prevent waste",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's a simple way to reduce monthly expenses without negotiating?",
-              options: ["Get a second job", "Cancel unused subscriptions", "Move to a cheaper city", "Sell your car"],
-              correctAnswer: "Cancel unused subscriptions",
-              explanation:
-                "Canceling unused subscriptions is the simplest way to immediately reduce monthly expenses without major lifestyle changes or negotiations.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Tracking Your Savings Success",
-        duration: "3 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Measuring and Maintaining Your Bill Reductions",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Successfully negotiating lower bills is just the beginning. Tracking your savings and maintaining those reductions over time ensures you continue to benefit from your efforts. This will help you stay motivated and achieve your financial goals.",
-          },
-          {
-            type: "list",
-            content: "Track your negotiation wins:",
-            items: [
-              "Document old vs. new rates",
-              "Calculate monthly and annual savings",
-              "Note expiration dates of promotional rates",
-              "Keep records of agreements",
-              "Set reminders for future negotiations",
-              "Track cumulative savings over time",
-            ],
-          },
-          {
-            type: "list",
-            content: "Maintain your savings:",
-            items: [
-              "Set calendar reminders before promotions expire",
-              "Monitor bills for unexpected increases",
-              "Re-negotiate annually or when rates change",
-              "Continue shopping competitors regularly",
-              "Review and adjust services as needs change",
-              "Stay informed about new options and technologies",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "After negotiating all her bills, Maria saved $150/month ($1,800/year). She set up automatic transfers to move this savings to her emergency fund, turning bill negotiation into wealth building. This is a great way to make your savings automatic.",
-          },
-          {
-            type: "list",
-            content: "What to do with bill savings:",
-            items: [
-              "Add to emergency fund",
-              "Increase retirement contributions",
-              "Pay down debt faster",
-              "Save for specific goals",
-              "Invest in index funds",
-              "Build sinking funds for future expenses",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "Automatically transfer your bill savings to a separate account so you don't accidentally spend them. This turns expense reduction into wealth building. Make your savings automatic and consistent.",
-          },
-        ],
-        keyTakeaways: [
-          "Document and track all negotiation successes",
-          "Set reminders for when promotional rates expire",
-          "Automatically save the money you're no longer spending",
-          "Continue monitoring and re-negotiating regularly",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should you do with the money saved from bill negotiations?",
+              question: "What's the fastest way to improve your credit score?",
               options: [
-                "Spend it on entertainment",
-                "Automatically save or invest it",
-                "Use it for more bills",
-                "Keep it in checking account",
+                "Apply for more credit cards",
+                "Pay down credit card balances",
+                "Close old accounts",
+                "Take out a personal loan",
               ],
-              correctAnswer: "Automatically save or invest it",
-              explanation:
-                "Automatically saving or investing bill savings ensures the money goes toward building wealth rather than being spent on other things.",
+              correctAnswer: "Pay down credit card balances",
+              explanation: "Reducing credit utilization by paying down balances can improve your credit score within 1-2 months and has a significant impact.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit Cards: Benefits and Risks",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Using Credit Cards Wisely",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit cards can be powerful financial tools when used responsibly, but they can also lead to debt problems if misused. Understanding both the benefits and risks helps young adults make informed decisions about credit card use.",
+          },
+          {
+            type: "list",
+            content: "Credit card benefits:",
+            items: [
+              "Build credit history and improve scores",
+              "Fraud protection and purchase security",
+              "Rewards programs (cash back, points, miles)",
+              "Emergency funding when needed",
+              "Convenience for online and travel purchases",
+              "Extended warranties and purchase protection",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit card risks:",
+            items: [
+              "High interest rates on carried balances",
+              "Temptation to overspend",
+              "Potential for debt accumulation",
+              "Late payment fees and penalties",
+              "Negative impact on credit if misused",
+              "Annual fees on some cards",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jessica uses her credit card for all purchases to earn 2% cash back, but she pays the full balance every month. She earns $300 per year in rewards while building excellent credit. Her friend Mark carries balances and pays $500 per year in interest.",
+          },
+          {
+            type: "list",
+            content: "Best practices for credit card use:",
+            items: [
+              "Pay the full balance every month",
+              "Keep utilization under 30% of limit",
+              "Set up automatic payments",
+              "Review statements for errors",
+              "Don't use cards for cash advances",
+              "Choose cards with no annual fee to start",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Treat your credit card like a debit card - only spend money you already have. Set up automatic payments for the full balance to avoid interest charges and build good credit.",
+          },
+        ],
+        keyTakeaways: [
+          "Credit cards offer benefits when used responsibly",
+          "Always pay the full balance to avoid interest",
+          "Use cards to build credit and earn rewards",
+          "Avoid the temptation to overspend",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best way to use a credit card?",
+              options: [
+                "Carry a small balance to build credit",
+                "Pay the full balance every month",
+                "Only use it for emergencies",
+                "Max out the credit limit",
+              ],
+              correctAnswer: "Pay the full balance every month",
+              explanation: "Paying the full balance every month avoids interest charges while building positive credit history and maximizing rewards.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Credit Monitoring and Protection",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Credit Identity",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Credit monitoring helps you stay aware of changes to your credit report and can alert you to potential identity theft. With the increasing frequency of data breaches, protecting your credit information is more important than ever.",
+          },
+          {
+            type: "list",
+            content: "Free credit monitoring options:",
+            items: [
+              "Credit Karma (TransUnion and Equifax)",
+              "Credit Sesame (TransUnion)",
+              "Bank and credit card apps",
+              "Experian free membership",
+              "Annual credit reports",
+              "Credit bureau mobile apps",
+            ],
+          },
+          {
+            type: "list",
+            content: "Signs of identity theft:",
+            items: [
+              "Accounts you didn't open",
+              "Unexpected credit score changes",
+              "Bills for accounts you don't have",
+              "Missing mail or statements",
+              "Denied credit unexpectedly",
+              "Calls from debt collectors for unknown debts",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Alex received an alert that a new credit card was opened in his name. He immediately contacted the credit card company and credit bureaus to report fraud, preventing thousands in fraudulent charges.",
+          },
+          {
+            type: "list",
+            content: "Steps to take if identity theft occurs:",
+            items: [
+              "Contact credit bureaus to place fraud alerts",
+              "File a report with the FTC",
+              "Contact affected creditors immediately",
+              "File a police report if necessary",
+              "Consider freezing your credit",
+              "Monitor accounts closely for months",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit protection tips:",
+            items: [
+              "Use strong, unique passwords",
+              "Don't share personal information online",
+              "Shred financial documents before disposal",
+              "Monitor bank and credit card statements",
+              "Be cautious with public Wi-Fi for financial tasks",
+              "Consider credit freezes for maximum protection",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set up free credit monitoring with at least one service to get alerts about changes to your credit report. Early detection of problems can save you time and money.",
+          },
+        ],
+        keyTakeaways: [
+          "Credit monitoring helps detect identity theft early",
+          "Many free monitoring services are available",
+          "Act quickly if you suspect identity theft",
+          "Prevention is better than dealing with fraud aftermath",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do first if you suspect identity theft?",
+              options: [
+                "Wait to see what happens",
+                "Contact credit bureaus to place fraud alerts",
+                "Close all your accounts",
+                "Hire a lawyer",
+              ],
+              correctAnswer: "Contact credit bureaus to place fraud alerts",
+              explanation: "Placing fraud alerts with credit bureaus is the first step to prevent further fraudulent accounts from being opened in your name.",
             },
           ],
         },
       },
     ],
-    investing: [
+    "loans": [
       {
-        title: "Why Investing Matters",
+        title: "Understanding Auto Loans",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is an Auto Loan?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "An auto loan is a secured loan used to purchase a vehicle. The vehicle serves as collateral for the loan, which typically means lower interest rates than unsecured loans. For young adults, understanding auto loans is crucial when buying their first car.",
+          },
+          {
+            type: "list",
+            content: "Types of auto loans:",
+            items: [
+              "New car loans (typically lower rates)",
+              "Used car loans (slightly higher rates)",
+              "Certified pre-owned loans",
+              "Refinancing loans",
+              "Private party loans",
+              "Lease buyout loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors that affect auto loan rates:",
+            items: [
+              "Credit score and history",
+              "Age and mileage of vehicle",
+              "Loan term length",
+              "Down payment amount",
+              "Debt-to-income ratio",
+              "Lender type (bank, credit union, dealer)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah wants to buy a $20,000 used car. With a 720 credit score, she qualifies for a 4.5% APR on a 5-year loan. Her monthly payment would be $372, and she'd pay $2,320 in total interest over the life of the loan.",
+          },
+          {
+            type: "list",
+            content: "Auto loan shopping tips:",
+            items: [
+              "Get pre-approved before shopping",
+              "Compare rates from multiple lenders",
+              "Consider credit unions for better rates",
+              "Don't focus only on monthly payments",
+              "Negotiate the car price separately from financing",
+              "Read all terms and conditions carefully",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Get financing pre-approval from banks or credit unions before visiting dealers. This gives you negotiating power and helps you avoid dealer markup on interest rates.",
+          },
+        ],
+        keyTakeaways: [
+          "Auto loans use the vehicle as collateral",
+          "Credit score significantly affects your interest rate",
+          "Shop around for the best rates before buying",
+          "Consider the total cost, not just monthly payments",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What serves as collateral for an auto loan?",
+              options: ["Your house", "Your car", "Your savings account", "Your credit score"],
+              correctAnswer: "Your car",
+              explanation: "The vehicle serves as collateral for the loan, which is why auto loans typically have lower interest rates than unsecured loans.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Navigating Student Loans",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Student Loan Options",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Student loans help finance education costs but can become a significant financial burden if not managed properly. Understanding the different types and repayment options is crucial for young adults planning for or currently in college.",
+          },
+          {
+            type: "list",
+            content: "Federal student loan types:",
+            items: [
+              "Direct Subsidized Loans (need-based, government pays interest while in school)",
+              "Direct Unsubsidized Loans (not need-based, interest accrues immediately)",
+              "Direct PLUS Loans (for parents and graduate students)",
+              "Direct Consolidation Loans (combine multiple federal loans)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Private student loan features:",
+            items: [
+              "Offered by banks, credit unions, and other lenders",
+              "Credit-based approval process",
+              "Variable or fixed interest rates",
+              "Fewer repayment options than federal loans",
+              "May require a cosigner for young borrowers",
+              "No federal protections or forgiveness programs",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike borrows $30,000 in federal student loans at 5% interest. Using income-driven repayment, his payments start at $200/month based on his entry-level salary, and increase as his income grows over time.",
+          },
+          {
+            type: "list",
+            content: "Federal loan repayment options:",
+            items: [
+              "Standard Repayment (10 years, fixed payments)",
+              "Income-Driven Repayment (payments based on income)",
+              "Graduated Repayment (payments start low, increase over time)",
+              "Extended Repayment (up to 25 years)",
+              "Public Service Loan Forgiveness (for qualifying public service jobs)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Student loan management tips:",
+            items: [
+              "Borrow only what you need for education",
+              "Understand your loan terms and servicer",
+              "Make payments during school if possible",
+              "Consider autopay for interest rate discounts",
+              "Explore forgiveness and discharge programs",
+              "Communicate with your servicer if you have trouble paying",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Always exhaust federal student loan options before considering private loans. Federal loans offer more flexible repayment options and borrower protections.",
+          },
+        ],
+        keyTakeaways: [
+          "Federal loans offer better terms and protections than private loans",
+          "Income-driven repayment can make payments more manageable",
+          "Borrow only what you need for educational expenses",
+          "Stay in communication with your loan servicer",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the main advantage of federal student loans over private loans?",
+              options: [
+                "Lower interest rates always",
+                "Better repayment options and borrower protections",
+                "No credit check required",
+                "Unlimited borrowing amounts",
+              ],
+              correctAnswer: "Better repayment options and borrower protections",
+              explanation: "Federal student loans offer income-driven repayment plans, forgiveness programs, and other borrower protections that private loans typically don't provide.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Personal Loans Explained",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "When and How to Use Personal Loans",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Personal loans are unsecured loans that can be used for various purposes. They typically have higher interest rates than secured loans but offer more flexibility than credit cards for large expenses or debt consolidation.",
+          },
+          {
+            type: "list",
+            content: "Common uses for personal loans:",
+            items: [
+              "Debt consolidation",
+              "Home improvements",
+              "Medical expenses",
+              "Wedding costs",
+              "Emergency expenses",
+              "Moving expenses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Personal loan features:",
+            items: [
+              "Fixed interest rates and payments",
+              "Loan terms typically 2-7 years",
+              "No collateral required",
+              "Credit-based approval",
+              "Origination fees may apply",
+              "Prepayment penalties on some loans",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa has $8,000 in credit card debt at 22% APR. She gets a personal loan at 12% APR to pay off the cards, saving $800 per year in interest while having a fixed payment plan.",
+          },
+          {
+            type: "list",
+            content: "Personal loan pros:",
+            items: [
+              "Lower rates than credit cards",
+              "Fixed payments and terms",
+              "No collateral required",
+              "Fast funding (often same day)",
+              "Can improve credit mix",
+              "Predictable payoff timeline",
+            ],
+          },
+          {
+            type: "list",
+            content: "Personal loan cons:",
+            items: [
+              "Higher rates than secured loans",
+              "Origination fees (1-8% of loan amount)",
+              "Credit requirements can be strict",
+              "Fixed payments regardless of financial changes",
+              "Potential prepayment penalties",
+              "Can lead to more debt if not used wisely",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Only use personal loans for necessary expenses or to save money (like debt consolidation). Avoid using them for discretionary spending that could lead to more debt.",
+          },
+        ],
+        keyTakeaways: [
+          "Personal loans offer fixed rates and terms",
+          "Best used for debt consolidation or necessary expenses",
+          "Shop around for the best rates and terms",
+          "Consider origination fees in your cost comparison",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best use for a personal loan?",
+              options: [
+                "Vacation expenses",
+                "Debt consolidation at a lower rate",
+                "Shopping spree",
+                "Gambling debts",
+              ],
+              correctAnswer: "Debt consolidation at a lower rate",
+              explanation: "Using a personal loan to consolidate high-interest debt at a lower rate can save money and simplify payments.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Loan Shopping and Comparison",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Finding the Best Loan Terms",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Shopping for loans requires comparing multiple factors beyond just interest rates. Understanding how to evaluate loan offers helps you make informed decisions and save money over the life of the loan.",
+          },
+          {
+            type: "list",
+            content: "Key factors to compare:",
+            items: [
+              "Annual Percentage Rate (APR)",
+              "Loan term length",
+              "Monthly payment amount",
+              "Total interest paid",
+              "Fees (origination, prepayment, late)",
+              "Lender reputation and customer service",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of lenders to consider:",
+            items: [
+              "Banks (traditional and online)",
+              "Credit unions (often better rates for members)",
+              "Online lenders (fast approval, competitive rates)",
+              "Peer-to-peer lenders",
+              "Dealer financing (for auto loans)",
+              "Employer-sponsored programs",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom compares three personal loan offers: Bank A (10% APR, $200 origination fee), Credit Union B (8.5% APR, no fees), and Online Lender C (9% APR, $150 fee). The credit union offers the best total cost despite not having the lowest advertised rate.",
+          },
+          {
+            type: "list",
+            content: "Loan shopping tips:",
+            items: [
+              "Get quotes from at least 3-5 lenders",
+              "Apply within a 14-45 day window to minimize credit impact",
+              "Compare APR, not just interest rates",
+              "Read all terms and conditions",
+              "Consider the total cost over the loan term",
+              "Don't just focus on monthly payment amounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags to avoid:",
+            items: [
+              "Guaranteed approval regardless of credit",
+              "No credit check required",
+              "Pressure to sign immediately",
+              "Extremely high fees",
+              "Variable rates that can increase significantly",
+              "Prepayment penalties on most loan types",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Use loan calculators to compare the total cost of different offers. A slightly higher rate with no fees might be better than a lower rate with high origination fees.",
+          },
+        ],
+        keyTakeaways: [
+          "Compare APR and total costs, not just interest rates",
+          "Shop with multiple lenders within a short timeframe",
+          "Credit unions often offer competitive rates",
+          "Read all terms and watch for hidden fees",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the most important factor to compare when shopping for loans?",
+              options: [
+                "Interest rate only",
+                "Monthly payment amount",
+                "Annual Percentage Rate (APR)",
+                "Lender's marketing materials",
+              ],
+              correctAnswer: "Annual Percentage Rate (APR)",
+              explanation: "APR includes both the interest rate and fees, giving you the true cost of borrowing for comparison purposes.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Loan Application Process",
         duration: "4 min",
-        points: 15,
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Building Wealth Through Time and Compound Growth",
+            content: "Preparing for Loan Applications",
           },
           {
             type: "paragraph",
-              content:
-                "Investing is how you make your money work for you instead of just working for money. While saving preserves your wealth, investing grows it over time through the power of compound returns. This is especially important for young adults who have time on their side.",
+            content:
+              "Understanding the loan application process helps you prepare properly and increases your chances of approval at the best possible terms. Being organized and knowing what to expect can streamline the process significantly.",
           },
           {
             type: "list",
-            content: "Why investing beats saving alone:",
+            content: "Documents typically required:",
             items: [
-              "Inflation erodes cash value over time",
-              "Investment returns typically beat inflation",
-              "Compound growth accelerates wealth building",
-              "Passive income potential",
-              "Long-term wealth preservation",
+              "Government-issued ID",
+              "Proof of income (pay stubs, tax returns)",
+              "Employment verification",
+              "Bank statements",
+              "Proof of residence",
+              "List of debts and assets",
+            ],
+          },
+          {
+            type: "list",
+            content: "Steps in the application process:",
+            items: [
+              "Pre-qualification (soft credit check)",
+              "Formal application submission",
+              "Hard credit check and underwriting",
+              "Income and employment verification",
+              "Final approval and loan terms",
+              "Loan funding and documentation",
             ],
           },
           {
             type: "example",
-              content:
-                "$10,000 in a savings account at 1% grows to $10,100 in a year. The same amount invested earning 7% annually becomes $19,672 after 10 years, while savings only reaches $11,046. This shows the power of compound growth.",
+            content:
+              "Emma applies for an auto loan. She gathers her pay stubs, bank statements, and employment letter beforehand. The pre-approval process takes 10 minutes online, and final approval comes within 24 hours because she was well-prepared.",
           },
           {
             type: "list",
-            content: "The cost of waiting to invest:",
+            content: "Tips for loan approval:",
             items: [
-              "Lost compound growth opportunities",
-              "Inflation reduces purchasing power",
-              "Less time for market volatility to smooth out",
-              "Higher required savings rate later",
-              "Missed dollar-cost averaging benefits",
-              "Delayed financial independence",
+              "Check your credit report before applying",
+              "Pay down existing debts to improve debt-to-income ratio",
+              "Gather all required documents in advance",
+              "Be honest and accurate on applications",
+              "Don't apply for multiple loans simultaneously",
+              "Consider a co-signer if your credit needs help",
             ],
           },
           {
             type: "list",
-            content: "Common investing fears and realities:",
+            content: "Common reasons for loan denial:",
             items: [
-              "Fear: 'I might lose money' - Reality: Diversified long-term investing has positive returns",
-              "Fear: 'It's too complicated' - Reality: Simple index funds work for most people",
-              "Fear: 'I need a lot of money' - Reality: You can start with $1",
-              "Fear: 'I need perfect timing' - Reality: Time in market beats timing the market",
+              "Low credit score",
+              "High debt-to-income ratio",
+              "Insufficient income",
+              "Recent negative credit events",
+              "Incomplete or inaccurate application",
+              "Unstable employment history",
             ],
           },
           {
             type: "tip",
-              content:
-                "Start investing even small amounts immediately. A 25-year-old investing $100/month until retirement will have more wealth than a 35-year-old investing $200/month. Time is your greatest asset.",
+            content:
+              "Get pre-qualified with multiple lenders before formally applying. This gives you a good idea of terms you'll qualify for without impacting your credit score.",
           },
         ],
         keyTakeaways: [
-          "Investing grows wealth while saving only preserves it",
-          "Compound growth accelerates over time",
-          "Starting early is more important than starting big",
-          "Long-term investing reduces risk through time",
+          "Prepare all required documents before applying",
+          "Pre-qualification helps you understand your options",
+          "Honest and complete applications process faster",
+          "Multiple applications in a short window minimize credit impact",
         ],
         quiz: {
           questions: [
             {
-              question: "What is the main advantage of investing over just saving money?",
+              question: "What's the benefit of getting pre-qualified for a loan?",
               options: [
-                "Guaranteed returns",
-                "No risk involved",
-                "Compound growth over time",
-                "Immediate access to funds",
+                "It guarantees approval",
+                "It locks in interest rates",
+                "It shows potential terms without affecting credit",
+                "It eliminates the need for documentation",
               ],
-              correctAnswer: "Compound growth over time",
-              explanation:
-                "Investing allows your money to grow through compound returns over time, significantly outpacing savings accounts and inflation.",
+              correctAnswer: "It shows potential terms without affecting credit",
+              explanation: "Pre-qualification uses a soft credit check to show you potential loan terms without impacting your credit score.",
             },
           ],
         },
       },
       {
-        title: "Investment Account Types",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Choosing the Right Account for Your Goals",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Different investment accounts serve different purposes and have different tax advantages. Understanding these accounts helps you optimize your investment strategy and minimize taxes. This is important for young adults who are just starting to save for retirement.",
-          },
-          {
-            type: "list",
-            content: "Retirement accounts (tax-advantaged):",
-            items: [
-              "401(k): Employer-sponsored, often with matching",
-              "Traditional IRA: Tax deduction now, pay taxes later",
-              "Roth IRA: Pay taxes now, tax-free growth and withdrawals",
-              "SEP-IRA: For self-employed individuals",
-              "HSA: Triple tax advantage for health expenses",
-            ],
-          },
-          {
-            type: "list",
-            content: "Taxable investment accounts:",
-            items: [
-              "Individual brokerage accounts",
-              "Joint accounts for couples",
-              "No contribution limits",
-              "More flexibility for withdrawals",
-              "Pay taxes on gains and dividends",
-              "Good for goals before retirement",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "Sarah contributes to her 401(k) up to the company match (free money), then maxes her Roth IRA ($6,000), then uses a taxable account for her house down payment savings. This is a smart way to prioritize your savings.",
-          },
-          {
-            type: "list",
-            content: "Account selection strategy:",
-            items: [
-              "Step 1: 401(k) up to company match",
-              "Step 2: Max Roth IRA if eligible",
-              "Step 3: Max 401(k) contribution",
-              "Step 4: Taxable accounts for additional investing",
-              "Step 5: Consider HSA if available",
-              "Adjust based on income and tax situation",
-            ],
-          },
-          {
-            type: "list",
-            content: "Key account features to compare:",
-            items: [
-              "Contribution limits and deadlines",
-              "Tax treatment of contributions and withdrawals",
-              "Early withdrawal penalties and exceptions",
-              "Required minimum distributions",
-              "Investment options available",
-              "Fees and expense ratios",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "Always get the full 401(k) match from your employer first - it's free money with an immediate 100% return on investment. Don't leave money on the table!",
-          },
-        ],
-        keyTakeaways: [
-          "Different accounts serve different purposes",
-          "Always get full employer 401(k) match first",
-          "Roth accounts provide tax-free growth",
-          "Taxable accounts offer more flexibility",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What should be your first investment priority?",
-              options: [
-                "Maxing out Roth IRA",
-                "Opening a taxable account",
-                "Getting full employer 401(k) match",
-                "Buying individual stocks",
-              ],
-              correctAnswer: "Getting full employer 401(k) match",
-              explanation:
-                "Employer 401(k) matching is free money with an immediate 100% return, making it the highest priority for new investors.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Understanding Risk and Return",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "The Fundamental Relationship in Investing",
-          },
-          {
-            type: "paragraph",
-              content:
-                "All investing involves a trade-off between risk and potential return. Understanding this relationship helps you make informed decisions about your investment strategy and set realistic expectations. This is crucial for young adults who have a long time horizon but may be tempted by risky investments.",
-          },
-          {
-            type: "list",
-            content: "Risk-return spectrum (low to high risk):",
-            items: [
-              "Savings accounts: 0-1% return, virtually no risk",
-              "Government bonds: 2-4% return, very low risk",
-              "Corporate bonds: 3-6% return, low to moderate risk",
-              "Stock market index funds: 6-10% average, moderate risk",
-              "Individual stocks: Highly variable, high risk",
-              "Cryptocurrency: Extremely variable, very high risk",
-            ],
-          },
-          {
-            type: "list",
-            content: "Types of investment risk:",
-            items: [
-              "Market risk: Overall market declines",
-              "Inflation risk: Purchasing power erosion",
-              "Interest rate risk: Bond values fluctuate",
-              "Company risk: Individual business failure",
-              "Liquidity risk: Difficulty selling investments",
-              "Currency risk: Foreign exchange fluctuations",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "During 2008, the S&P 500 fell 37%, but over the following decade it averaged 13.6% annual returns. Short-term volatility vs. long-term growth. This shows that it's important to stay invested even during market downturns.",
-          },
-          {
-            type: "list",
-            content: "Managing investment risk:",
-            items: [
-              "Diversification across asset classes",
-              "Long-term investment horizon",
-              "Dollar-cost averaging",
-              "Regular rebalancing",
-              "Age-appropriate asset allocation",
-              "Emergency fund for short-term needs",
-            ],
-          },
-          {
-            type: "list",
-            content: "Risk tolerance factors:",
-            items: [
-              "Age and time horizon",
-              "Financial goals and timeline",
-              "Income stability",
-              "Emergency fund size",
-              "Emotional comfort with volatility",
-              "Overall financial situation",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "Your risk tolerance should match your time horizon. Money needed in 5 years should be in lower-risk investments than money for retirement in 30 years. Don't take on more risk than you can handle.",
-          },
-        ],
-        keyTakeaways: [
-          "Higher potential returns come with higher risk",
-          "Diversification helps manage risk",
-          "Time horizon should determine risk level",
-          "Short-term volatility is normal in long-term investing",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the best way to manage investment risk?",
-              options: [
-                "Avoid all risky investments",
-                "Put everything in one safe investment",
-                "Diversify across different asset types",
-                "Try to time the market perfectly",
-              ],
-              correctAnswer: "Diversify across different asset types",
-              explanation:
-                "Diversification across different asset types helps reduce risk while maintaining growth potential, as different investments perform well at different times.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Index Funds: The Simple Solution",
-        duration: "5 min",
-        points: 20,
-        content: [
-          {
-            type: "heading",
-            content: "Instant Diversification with Low Costs",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Index funds are the perfect investment for most people. They provide instant diversification, low costs, and market-matching returns without requiring you to pick individual stocks or time the market. This is a great option for young adults who are new to investing.",
-          },
-          {
-            type: "list",
-            content: "What index funds are:",
-            items: [
-              "Funds that track a market index (like S&P 500)",
-              "Own hundreds or thousands of stocks automatically",
-              "Passively managed with very low fees",
-              "Provide instant diversification",
-              "Match market performance over time",
-              "Available for stocks, bonds, and international markets",
-            ],
-          },
-          {
-            type: "list",
-            content: "Benefits of index fund investing:",
-            items: [
-              "Low expense ratios (often under 0.1%)",
-              "Instant diversification reduces risk",
-              "No need to research individual stocks",
-              "Consistently outperform most active funds",
-              "Simple to understand and implement",
-              "Available in all account types",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "The Vanguard S&P 500 Index Fund (VFIAX) owns all 500 companies in the S&P 500, costs just 0.04% annually, and has averaged about 10% returns over decades. This is a simple and effective way to invest in the stock market.",
-          },
-          {
-            type: "list",
-            content: "Popular index fund categories:",
-            items: [
-              "Total Stock Market: Entire US stock market",
-              "S&P 500: 500 largest US companies",
-              "International: Foreign developed markets",
-              "Emerging Markets: Developing countries",
-              "Bond Index: Government and corporate bonds",
-              "Target Date: Automatically adjusts over time",
-            ],
-          },
-          {
-            type: "list",
-            content: "Simple index fund portfolios:",
-            items: [
-              "Three-fund: US stocks, international stocks, bonds",
-              "Two-fund: Total stock market, total bond market",
-              "Target date fund: All-in-one solution",
-              "Age in bonds: Stock/bond allocation by age",
-              "Adjust based on risk tolerance and timeline",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "A simple portfolio of 70% total stock market index and 30% total bond market index works well for most investors and requires minimal maintenance. This is a good starting point for young adults.",
-          },
-        ],
-        keyTakeaways: [
-          "Index funds provide instant diversification at low cost",
-          "They consistently outperform most actively managed funds",
-          "Simple portfolios with 2-3 index funds work well",
-          "Target date funds offer complete automation",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main advantage of index funds over individual stocks?",
-              options: [
-                "Higher returns guaranteed",
-                "Instant diversification",
-                "No risk involved",
-                "Daily trading opportunities",
-              ],
-              correctAnswer: "Instant diversification",
-              explanation:
-                "Index funds provide instant diversification across hundreds or thousands of stocks, reducing the risk of any single company affecting your entire investment.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Dollar-Cost Averaging",
+        title: "Managing Loan Payments",
         duration: "4 min",
-        points: 15,
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Investing Consistently Regardless of Market Conditions",
+            content: "Staying on Top of Your Loan Obligations",
           },
           {
             type: "paragraph",
-              content:
-                "Dollar-cost averaging means investing a fixed amount regularly, regardless of market conditions. This strategy removes emotion and timing from investing while potentially reducing your average cost per share. This is a great strategy for young adults who are just starting to invest and may be nervous about market volatility.",
+            content:
+              "Successfully managing loan payments is crucial for maintaining good credit and avoiding financial stress. Developing good payment habits and understanding your options can help you stay on track throughout the loan term.",
           },
           {
             type: "list",
-            content: "How dollar-cost averaging works:",
+            content: "Payment management strategies:",
             items: [
-              "Invest the same amount on a regular schedule",
-              "Buy more shares when prices are low",
-              "Buy fewer shares when prices are high",
-              "Average cost per share smooths out over time",
-              "Removes need to time the market",
-              "Builds consistent investing habits",
+              "Set up automatic payments",
+              "Pay more than the minimum when possible",
+              "Make bi-weekly payments to pay off faster",
+              "Keep track of payment due dates",
+              "Maintain contact information with lenders",
+              "Review statements for accuracy",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of extra payments:",
+            items: [
+              "Reduce total interest paid",
+              "Shorten loan term",
+              "Build equity faster (for secured loans)",
+              "Improve debt-to-income ratio",
+              "Provide financial flexibility sooner",
+              "Reduce monthly payment obligations",
             ],
           },
           {
             type: "example",
-              content:
-                "Investing $500 monthly: When shares cost $50, you buy 10 shares. When they cost $25, you buy 20 shares. Your average cost is $33.33 per share, better than the $37.50 average price. This shows how you can benefit from market fluctuations.",
+            content:
+              "Jake has a $15,000 car loan at 6% for 5 years ($290/month). By paying an extra $50 per month, he'll pay off the loan 10 months early and save $800 in interest.",
           },
           {
             type: "list",
-            content: "Benefits of dollar-cost averaging:",
+            content: "What to do if you can't make payments:",
             items: [
-              "Reduces impact of market volatility",
-              "Eliminates need to time the market",
-              "Builds disciplined investing habits",
-              "Works well with automatic investing",
-              "Reduces emotional investing decisions",
-              "Potentially lowers average cost basis",
+              "Contact your lender immediately",
+              "Explain your financial situation honestly",
+              "Ask about forbearance or deferment options",
+              "Explore loan modification possibilities",
+              "Consider refinancing if you qualify",
+              "Seek credit counseling if needed",
             ],
           },
           {
             type: "list",
-            content: "Setting up dollar-cost averaging:",
+            content: "Loan payment mistakes to avoid:",
             items: [
-              "Choose a fixed amount you can invest regularly",
-              "Set up automatic transfers from checking",
-              "Pick a consistent schedule (weekly, monthly)",
-              "Invest regardless of market news or feelings",
-              "Increase amount when income grows",
-              "Stay consistent through market ups and downs",
-            ],
-          },
-          {
-            type: "list",
-            content: "Dollar-cost averaging vs. lump sum:",
-            items: [
-              "Lump sum often performs better mathematically",
-              "Dollar-cost averaging reduces emotional stress",
-              "Most people don't have large lump sums available",
-              "Regular investing fits most people's cash flow",
-              "Both strategies work well long-term",
-              "Choose based on your situation and comfort",
+              "Missing payments without communication",
+              "Ignoring lender correspondence",
+              "Making only minimum payments when you can afford more",
+              "Not reading payment statements",
+              "Assuming problems will resolve themselves",
+              "Taking on more debt while struggling with current loans",
             ],
           },
           {
             type: "tip",
-              content:
-                "Set up automatic investing so dollar-cost averaging happens without you having to think about it. Automation removes emotion and ensures consistency. This is the key to long-term investing success.",
+            content:
+              "Set up automatic payments for at least the minimum amount due, then make additional payments manually when your budget allows. This ensures you never miss a payment while still allowing flexibility.",
           },
         ],
         keyTakeaways: [
-          "Invest the same amount regularly regardless of market conditions",
-          "Potentially reduces average cost per share over time",
-          "Removes emotion and timing from investing",
-          "Works best when automated",
+          "Automatic payments prevent missed payments",
+          "Extra payments save money and time",
+          "Communicate with lenders if you have trouble paying",
+          "Stay organized and review statements regularly",
         ],
         quiz: {
           questions: [
             {
-              question: "What is the main benefit of dollar-cost averaging?",
+              question: "What should you do first if you can't make a loan payment?",
               options: [
-                "Guarantees higher returns",
-                "Eliminates all investment risk",
-                "Removes need to time the market",
-                "Only works in bull markets",
+                "Ignore it and hope it goes away",
+                "Wait until you're 30 days late",
+                "Contact your lender immediately",
+                "Apply for another loan",
               ],
-              correctAnswer: "Removes need to time the market",
-              explanation:
-                "Dollar-cost averaging removes the need to time the market by investing consistently regardless of market conditions, reducing the impact of volatility over time.",
+              correctAnswer: "Contact your lender immediately",
+              explanation: "Contacting your lender as soon as you anticipate payment problems shows good faith and may lead to helpful solutions.",
             },
           ],
         },
       },
       {
-        title: "Rebalancing Your Portfolio",
-        duration: "4 min",
-        points: 15,
-        content: [
-          {
-            type: "heading",
-            content: "Maintaining Your Target Asset Allocation",
-          },
-          {
-            type: "paragraph",
-              content:
-                "Rebalancing means adjusting your portfolio back to your target allocation when market movements cause it to drift. This disciplined approach helps you buy low and sell high automatically. This is important for young adults to maintain their desired risk level as they invest.",
-          },
-          {
-            type: "list",
-            content: "Why portfolios need rebalancing:",
-            items: [
-              "Different investments grow at different rates",
-              "Market movements change your allocation",
-              "Risk level changes without rebalancing",
-              "Some assets become overweighted",
-              "Original strategy gets diluted over time",
-              "Emotional biases can creep in",
-            ],
-          },
-          {
-            type: "example",
-              content:
-                "Your target is 70% stocks, 30% bonds. After a good stock year, you're at 80% stocks, 20% bonds. Rebalancing sells some stocks and buys bonds to get back to 70/30. This helps you maintain your desired risk level.",
-          },
-          {
-            type: "list",
-            content: "When to rebalance:",
-            items: [
-              "Calendar rebalancing: Set schedule (quarterly, annually)",
-              "Threshold rebalancing: When allocation drifts 5-10%",
-              "Combination approach: Check quarterly, rebalance if needed",
-              "During major market movements",
-              "When adding new money to accounts",
-              "During life changes affecting risk tolerance",
-            ],
-          },
-          {
-            type: "list",
-            content: "How to rebalance efficiently:",
-            items: [
-              "Use new contributions to buy underweighted assets",
-              "Rebalance within tax-advantaged accounts first",
-              "Consider tax implications in taxable accounts",
-              "Use dividend reinvestment strategically",
-              "Rebalance across all accounts together",
-              "Keep transaction costs low",
-            ],
-          },
-          {
-            type: "list",
-            content: "Rebalancing benefits:",
-            items: [
-              "Maintains your desired risk level",
-              "Forces you to buy low and sell high",
-              "Prevents any single asset from dominating",
-              "Keeps emotions out of investment decisions",
-              "Maintains diversification benefits",
-              "Sticks to your long-term strategy",
-            ],
-          },
-          {
-            type: "tip",
-              content:
-                "Rebalance annually or when your allocation drifts more than 5-10% from targets. More frequent rebalancing usually isn't worth the effort and costs. Set a reminder to rebalance your portfolio regularly.",
-          },
-        ],
-        keyTakeaways: [
-          "Rebalancing maintains your target asset allocation",
-          "It forces you to buy low and sell high",
-          "Annual rebalancing is sufficient for most investors",
-          "Use new contributions to rebalance efficiently",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What is the main purpose of rebalancing your investment portfolio?",
-              options: [
-                "To maximize returns",
-                "To maintain your target asset allocation",
-                "To time the market",
-                "To avoid all losses",
-              ],
-              correctAnswer: "To maintain your target asset allocation",
-              explanation:
-                "Rebalancing maintains your target asset allocation, ensuring your portfolio's risk level stays consistent with your goals and timeline.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Common Investing Mistakes",
+        title: "Refinancing and Loan Modifications",
         duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "When and How to Modify Your Loans",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Refinancing and loan modifications can help you get better terms, lower payments, or adjust your loans to fit changing financial circumstances. Understanding when these options make sense can save you money and provide financial relief.",
+          },
+          {
+            type: "list",
+            content: "Reasons to consider refinancing:",
+            items: [
+              "Interest rates have dropped significantly",
+              "Your credit score has improved",
+              "You want to change loan terms",
+              "You need to remove a co-signer",
+              "You want to switch from variable to fixed rate",
+              "You're consolidating multiple loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "Auto loan refinancing benefits:",
+            items: [
+              "Lower monthly payments",
+              "Reduced total interest paid",
+              "Better loan terms",
+              "Remove co-signer from original loan",
+              "Switch lenders for better service",
+              "Access to cash (cash-out refinancing)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Maria refinanced her auto loan after her credit score improved from 650 to 750. She lowered her rate from 8% to 4.5%, reducing her monthly payment by $75 and saving $2,000 over the remaining loan term.",
+          },
+          {
+            type: "list",
+            content: "Student loan refinancing considerations:",
+            items: [
+              "May lose federal loan protections",
+              "Income-driven repayment plans not available",
+              "Forgiveness programs no longer applicable",
+              "Credit-based approval required",
+              "Potential for lower rates with good credit",
+              "Can combine federal and private loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "When refinancing might not make sense:",
+            items: [
+              "Closing costs exceed potential savings",
+              "You're close to paying off the current loan",
+              "Your credit has declined since the original loan",
+              "You'd lose valuable loan benefits or protections",
+              "Interest rates have increased",
+              "You're planning to pay off the loan soon",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Calculate the total cost savings of refinancing, including any fees, to determine if it's worthwhile. A lower monthly payment doesn't always mean you'll save money overall.",
+          },
+        ],
+        keyTakeaways: [
+          "Refinancing can lower rates and payments when your credit improves",
+          "Consider the total cost, not just monthly payment changes",
+          "Federal student loan refinancing means losing federal protections",
+          "Shop around with multiple lenders for the best refinancing terms",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When does auto loan refinancing typically make the most sense?",
+              options: [
+                "When you want a longer loan term",
+                "When interest rates have dropped or your credit improved",
+                "When you want to borrow more money",
+                "When you're behind on payments",
+              ],
+              correctAnswer: "When interest rates have dropped or your credit improved",
+              explanation: "Refinancing is most beneficial when you can qualify for better terms due to improved credit or lower market interest rates.",
+            },
+          ],
+        },
+      },
+    ],
+    "mortgages": [
+      {
+        title: "Understanding Mortgage Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Mortgage?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A mortgage is a loan used to purchase or refinance a home. It is secured by the property itself, which means the lender can foreclose if you don't make payments. For young adults, understanding mortgages is essential when planning for homeownership.",
+          },
+          {
+            type: "list",
+            content: "Key mortgage components (PITI):",
+            items: [
+              "Principal: The loan amount borrowed",
+              "Interest: The cost of borrowing money",
+              "Property Taxes: Annual taxes on the property",
+              "Insurance: Homeowner's insurance and possibly PMI",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common mortgage terms:",
+            items: [
+              "Down payment: Upfront payment (typically 3-20%)",
+              "Loan-to-value ratio (LTV): Loan amount vs. property value",
+              "Private Mortgage Insurance (PMI): Required if down payment < 20%",
+              "Escrow: Account for taxes and insurance",
+              "Amortization: How the loan is paid down over time",
+              "Closing costs: Fees to finalize the mortgage",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah buys a $300,000 home with a $60,000 down payment (20%). Her mortgage is $240,000 at 6.5% for 30 years, resulting in a monthly payment of $1,517 for principal and interest, plus taxes and insurance.",
+          },
+          {
+            type: "list",
+            content: "Factors affecting mortgage approval:",
+            items: [
+              "Credit score (typically 620+ required)",
+              "Debt-to-income ratio (usually under 43%)",
+              "Employment history and income stability",
+              "Down payment amount",
+              "Property appraisal value",
+              "Cash reserves for closing costs",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start preparing for homeownership early by building your credit score, saving for a down payment, and maintaining stable employment. These factors significantly impact your mortgage terms.",
+          },
+        ],
+        keyTakeaways: [
+          "Mortgages are secured loans using the property as collateral",
+          "PITI makes up your total monthly housing payment",
+          "Credit score and income are key approval factors",
+          "Down payment affects loan terms and PMI requirements",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What secures a mortgage?",
+              options: ["Your car", "Your house", "Your credit score", "Your savings account"],
+              correctAnswer: "Your house",
+              explanation: "The property serves as collateral for the loan, which is why lenders can foreclose if payments aren't made.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Types of Mortgages",
+        duration: "6 min",
         points: 20,
         content: [
           {
             type: "heading",
-            content: "Avoiding Costly Investment Errors",
+            content: "Choosing the Right Mortgage Type",
           },
           {
             type: "paragraph",
-              content:
-                "Even experienced investors make mistakes that can cost them thousands of dollars and years of progress. Learning about common pitfalls helps you avoid them and stay on track toward your financial goals. This is especially important for young adults who are new to investing and may be more susceptible to these mistakes.",
+            content:
+              "Different mortgage types serve different needs and financial situations. Understanding your options helps you choose the best mortgage for your circumstances and long-term financial goals.",
           },
           {
             type: "list",
-            content: "Emotional investing mistakes:",
+            content: "Fixed-Rate Mortgages:",
             items: [
-              "Panic selling during market downturns",
-              "FOMO buying during market peaks",
-              "Trying to time the market",
-              "Chasing last year's hot investments",
-              "Checking accounts too frequently",
-              "Making decisions based on news headlines",
+              "Interest rate stays the same for entire loan term",
+              "Predictable monthly payments",
+              "Common terms: 15, 20, or 30 years",
+              "Protection against rising interest rates",
+              "Typically higher initial rates than ARMs",
+              "Good for long-term homeowners",
             ],
           },
           {
             type: "list",
-            content: "Strategy mistakes:",
+            content: "Adjustable-Rate Mortgages (ARMs):",
             items: [
-              "Not diversifying enough",
-              "Paying high fees for actively managed funds",
-              "Not taking advantage of employer match",
-              "Waiting for the 'perfect' time to start",
-              "Not increasing contributions with income",
-              "Ignoring tax-advantaged accounts",
+              "Interest rate changes periodically",
+              "Lower initial rates than fixed mortgages",
+              "Rate adjustments based on market indexes",
+              "Caps limit how much rates can increase",
+              "Good for short-term ownership or falling rate environments",
+              "Higher risk if rates rise significantly",
             ],
           },
           {
             type: "example",
-              content:
-                "During the 2008 financial crisis, investors who panic-sold missed the recovery. Those who stayed invested or bought more during the downturn saw significant gains in the following years. This shows the importance of staying calm during market volatility.",
+            content:
+              "Mike chooses a 5/1 ARM with an initial rate of 5.5% for 5 years, then adjusts annually. His initial payment is $200 less than a 30-year fixed at 6.5%, but he plans to sell within 5 years.",
           },
           {
             type: "list",
-            content: "How to avoid common mistakes:",
+            content: "Government-backed loans:",
             items: [
-              "Create an investment plan and stick to it",
-              "Automate investments to remove emotion",
+              "FHA loans: 3.5% down, lower credit requirements",
+              "VA loans: No down payment for eligible veterans",
+              "USDA loans: Rural property financing with no down payment",
+              "Conventional loans: Not government-backed, typically require higher credit scores",
+            ],
+          },
+          {
+            type: "list",
+            content: "Specialty mortgage types:",
+            items: [
+              "Jumbo loans: For expensive properties above conforming limits",
+              "Interest-only loans: Pay only interest for initial period",
+              "Balloon mortgages: Large payment due at end of term",
+              "Construction loans: Financing for building new homes",
+              "Bridge loans: Short-term financing between home purchases",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For most first-time homebuyers, a 30-year fixed-rate mortgage provides stability and predictability. Consider government-backed loans if you qualify for better terms.",
+          },
+        ],
+        keyTakeaways: [
+          "Fixed-rate mortgages offer payment stability",
+          "ARMs have lower initial rates but carry interest rate risk",
+          "Government-backed loans often have lower down payment requirements",
+          "Choose based on your financial situation and how long you plan to stay",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main difference between a fixed-rate mortgage and an ARM?",
+              options: [
+                "Fixed-rate mortgages are cheaper",
+                "ARMs have a fixed interest rate",
+                "Fixed-rate mortgages have a variable interest rate",
+                "ARMs have an interest rate that may change",
+              ],
+              correctAnswer: "ARMs have an interest rate that may change",
+              explanation: "ARMs have an interest rate that may change periodically based on market conditions, while fixed-rate mortgages maintain the same rate throughout the loan term.",
+            },
+          ],
+        },
+      },
+      {
+        title: "The Home Buying Process",
+        duration: "7 min",
+        points: 22,
+        content: [
+          {
+            type: "heading",
+            content: "Steps to Homeownership",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The home buying process involves multiple steps and can take 30-60 days from offer to closing. Understanding each step helps you prepare and avoid common pitfalls that can delay or derail your home purchase.",
+          },
+          {
+            type: "list",
+            content: "Pre-purchase preparation:",
+            items: [
+              "Check and improve your credit score",
+              "Save for down payment and closing costs",
+              "Get pre-approved for a mortgage",
+              "Determine your budget and must-haves",
+              "Research neighborhoods and market conditions",
+              "Find a qualified real estate agent",
+            ],
+          },
+          {
+            type: "list",
+            content: "The buying process steps:",
+            items: [
+              "House hunting and property tours",
+              "Make an offer with contingencies",
+              "Negotiate terms and price",
+              "Sign purchase agreement",
+              "Complete mortgage application",
+              "Schedule home inspection and appraisal",
+              "Finalize mortgage and prepare for closing",
+              "Final walkthrough and closing",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma gets pre-approved for $350,000, finds a house for $320,000, makes an offer at $315,000 with inspection and financing contingencies. After negotiation, they settle at $318,000 and close 45 days later.",
+          },
+          {
+            type: "list",
+            content: "Important contingencies to include:",
+            items: [
+              "Financing contingency: Protects if you can't get a loan",
+              "Inspection contingency: Allows you to back out for major issues",
+              "Appraisal contingency: Protects if home doesn't appraise for purchase price",
+              "Title contingency: Ensures clear ownership transfer",
+              "Homeowner's insurance contingency: Confirms you can get coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "Closing costs to expect:",
+            items: [
+              "Loan origination fees (0.5-1% of loan amount)",
+              "Appraisal fee ($300-600)",
+              "Home inspection ($300-500)",
+              "Title insurance and search fees",
+              "Attorney or escrow fees",
+              "Property taxes and insurance prorations",
+              "Recording fees and transfer taxes",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Get pre-approved, not just pre-qualified, before house hunting. Pre-approval shows sellers you're a serious buyer and can close on the purchase.",
+          },
+        ],
+        keyTakeaways: [
+          "Preparation is key to a smooth home buying process",
+          "Pre-approval strengthens your position with sellers",
+          "Contingencies protect you during the buying process",
+          "Budget for closing costs in addition to your down payment",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the difference between pre-qualification and pre-approval?",
+              options: [
+                "There is no difference",
+                "Pre-approval involves verification of financial information",
+                "Pre-qualification is more thorough",
+                "Pre-approval costs more money",
+              ],
+              correctAnswer: "Pre-approval involves verification of financial information",
+              explanation: "Pre-approval requires documentation and verification of income, assets, and credit, while pre-qualification is based on self-reported information.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Down Payments and PMI",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Down Payment Requirements",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The down payment is one of the biggest barriers to homeownership for young adults. Understanding your options and the implications of different down payment amounts helps you plan and potentially buy sooner than you think.",
+          },
+          {
+            type: "list",
+            content: "Down payment options by loan type:",
+            items: [
+              "Conventional loans: 3-20% down",
+              "FHA loans: 3.5% down minimum",
+              "VA loans: 0% down for eligible veterans",
+              "USDA loans: 0% down for rural properties",
+              "First-time buyer programs: Often 3-5% down",
+              "Jumbo loans: Typically 10-20% down",
+            ],
+          },
+          {
+            type: "list",
+            content: "Private Mortgage Insurance (PMI):",
+            items: [
+              "Required when down payment is less than 20%",
+              "Protects the lender, not the borrower",
+              "Costs 0.3-1.5% of loan amount annually",
+              "Can be removed when you reach 20% equity",
+              "Different types: borrower-paid, lender-paid, split-premium",
+              "FHA loans have mortgage insurance premiums (MIP)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake buys a $250,000 home with 5% down ($12,500). His PMI costs $150/month. After 5 years of payments and appreciation, he reaches 20% equity and cancels PMI, saving $1,800 annually.",
+          },
+          {
+            type: "list",
+            content: "Strategies to avoid or minimize PMI:",
+            items: [
+              "Save for a 20% down payment",
+              "Use a piggyback loan (80-10-10 or 80-15-5)",
+              "Choose lender-paid PMI with slightly higher rate",
+              "Look into first-time buyer programs",
+              "Consider VA or USDA loans if eligible",
+              "Make extra principal payments to reach 20% equity faster",
+            ],
+          },
+          {
+            type: "list",
+            content: "Down payment assistance programs:",
+            items: [
+              "State and local first-time buyer programs",
+              "Employer homebuyer assistance",
+              "Non-profit organization grants",
+              "IRA withdrawals for first-time buyers",
+              "Gift funds from family members",
+              "Community development programs",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't let the 20% down payment myth stop you from buying. Many programs allow much lower down payments, and PMI can be removed once you build equity.",
+          },
+        ],
+        keyTakeaways: [
+          "You don't always need 20% down to buy a home",
+          "PMI protects the lender and adds to your monthly payment",
+          "Government-backed loans offer low down payment options",
+          "Down payment assistance programs can help first-time buyers",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When can you typically remove PMI from your mortgage?",
+              options: [
+                "After 5 years of payments",
+                "When you reach 20% equity in the home",
+                "When interest rates drop",
+                "Never, it's permanent",
+              ],
+              correctAnswer: "When you reach 20% equity in the home",
+              explanation: "PMI can typically be removed when you have 20% equity in your home through payments, appreciation, or a combination of both.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Mortgage Rates and Shopping",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Finding the Best Mortgage Rate",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Mortgage rates can vary significantly between lenders and change daily based on market conditions. Shopping around and understanding what affects your rate can save you thousands of dollars over the life of your loan.",
+          },
+          {
+            type: "list",
+            content: "Factors that affect your mortgage rate:",
+            items: [
+              "Credit score (higher scores get better rates)",
+              "Down payment amount (more down = lower rate)",
+              "Loan term (15-year loans typically have lower rates)",
+              "Loan type (conventional vs. government-backed)",
+              "Debt-to-income ratio",
+              "Market conditions and economic factors",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of lenders to consider:",
+            items: [
+              "Banks (traditional relationship, local service)",
+              "Credit unions (member benefits, competitive rates)",
+              "Online lenders (convenience, competitive pricing)",
+              "Mortgage brokers (access to multiple lenders)",
+              "Direct lenders (streamlined process)",
+              "Portfolio lenders (keep loans in-house)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa shops with 5 lenders for a $300,000 mortgage. Rates range from 6.25% to 6.75%. The 0.5% difference means $89 more per month and $32,000 more over 30 years for the higher rate.",
+          },
+          {
+            type: "list",
+            content: "Rate shopping strategies:",
+            items: [
+              "Get quotes from at least 3-5 lenders",
+              "Compare within a 14-45 day window to minimize credit impact",
+              "Look at both rate and closing costs",
+              "Consider rate locks to protect against increases",
+              "Ask about discount points to buy down the rate",
+              "Compare Annual Percentage Rate (APR), not just interest rate",
+            ],
+          },
+          {
+            type: "list",
+            content: "Understanding rate locks:",
+            items: [
+              "Protects your rate for 30-60 days typically",
+              "May cost extra for longer lock periods",
+              "Necessary in rising rate environments",
+              "Float-down options may be available",
+              "Lock when you're satisfied with the rate",
+              "Understand what happens if lock expires",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't just focus on the interest rate. Compare the APR and total closing costs to get the true cost of each loan offer. Sometimes a slightly higher rate with lower fees is better.",
+          },
+        ],
+        keyTakeaways: [
+          "Shop with multiple lenders to find the best rate",
+          "Your credit score and down payment significantly affect rates",
+          "Compare APR and total costs, not just interest rates",
+          "Rate locks protect you from increases during processing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best way to compare mortgage offers from different lenders?",
+              options: [
+                "Compare interest rates only",
+                "Compare monthly payments only",
+                "Compare APR and total closing costs",
+                "Choose the lender with the best advertising",
+              ],
+              correctAnswer: "Compare APR and total closing costs",
+              explanation: "APR includes both the interest rate and fees, giving you the true cost of borrowing. Total closing costs show upfront expenses.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Refinancing Your Mortgage",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "When and How to Refinance",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Refinancing replaces your current mortgage with a new one, potentially with better terms. Understanding when refinancing makes sense and the process involved can help you save money or achieve other financial goals.",
+          },
+          {
+            type: "list",
+            content: "Reasons to refinance:",
+            items: [
+              "Lower interest rates (typically need 0.5-1% improvement)",
+              "Remove PMI when you have 20% equity",
+              "Change loan terms (30-year to 15-year or vice versa)",
+              "Switch from ARM to fixed rate",
+              "Cash-out refinancing for home improvements or debt consolidation",
+              "Remove a co-borrower after divorce",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of refinancing:",
+            items: [
+              "Rate-and-term refinance: Change rate or loan term",
+              "Cash-out refinance: Borrow against home equity",
+              "Cash-in refinance: Pay down principal to get better terms",
+              "Streamline refinance: Simplified process for government loans",
+              "No-closing-cost refinance: Lender pays costs for higher rate",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom has a $200,000 mortgage at 7% with 25 years left. He refinances to 5.5% for 30 years, lowering his payment by $200/month but extending the term. He plans to invest the savings.",
+          },
+          {
+            type: "list",
+            content: "Refinancing costs to consider:",
+            items: [
+              "Application and origination fees",
+              "Appraisal fee ($300-600)",
+              "Title insurance and search",
+              "Attorney or closing fees",
+              "Credit report and processing fees",
+              "Prepayment penalty on current loan (if applicable)",
+            ],
+          },
+          {
+            type: "list",
+            content: "When refinancing might not make sense:",
+            items: [
+              "Closing costs exceed potential savings",
+              "You plan to move within 2-3 years",
+              "Your credit score has declined significantly",
+              "You've already refinanced recently",
+              "Current loan balance is very low",
+              "You're close to paying off current mortgage",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Calculate your break-even point by dividing closing costs by monthly savings. If you'll stay in the home longer than the break-even period, refinancing likely makes sense.",
+          },
+        ],
+        keyTakeaways: [
+          "Refinancing can lower payments or change loan terms",
+          "Consider closing costs versus potential savings",
+          "Calculate break-even point before deciding",
+          "Shop around just like you did for your original mortgage",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the break-even point in refinancing?",
+              options: [
+                "When you pay off the loan",
+                "When closing costs equal monthly savings accumulated",
+                "When interest rates stop falling",
+                "When your home value increases",
+              ],
+              correctAnswer: "When closing costs equal monthly savings accumulated",
+              explanation: "The break-even point is when your accumulated monthly savings from the new loan equal the closing costs you paid to refinance.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Homeownership Costs and Budgeting",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "The True Cost of Homeownership",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Homeownership involves many costs beyond your mortgage payment. Understanding and budgeting for these expenses helps you avoid financial stress and maintain your home properly over time.",
+          },
+          {
+            type: "list",
+            content: "Ongoing homeownership costs:",
+            items: [
+              "Property taxes (varies by location, typically 1-3% of home value annually)",
+              "Homeowner's insurance ($800-2,000+ annually)",
+              "PMI if applicable ($100-300+ monthly)",
+              "HOA fees if applicable ($50-500+ monthly)",
+              "Utilities (electricity, gas, water, sewer, trash)",
+              "Maintenance and repairs (1-3% of home value annually)",
+            ],
+          },
+          {
+            type: "list",
+            content: "First-year homeowner expenses:",
+            items: [
+              "Moving costs",
+              "Immediate repairs or improvements",
+              "New furniture and appliances",
+              "Lawn and garden equipment",
+              "Security system installation",
+              "Utility deposits and setup fees",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Alex buys a $300,000 home. Annual costs include: $4,500 property taxes, $1,200 insurance, $1,800 PMI, $3,000 maintenance, plus utilities. Total: $10,500 annually beyond the mortgage payment.",
+          },
+          {
+            type: "list",
+            content: "Budgeting rules for homeownership:",
+            items: [
+              "28% rule: Housing costs shouldn't exceed 28% of gross income",
+              "36% rule: Total debt payments shouldn't exceed 36% of gross income",
+              "Save 1-3% of home value annually for maintenance",
+              "Keep 3-6 months of expenses in emergency fund",
+              "Budget for property tax and insurance increases",
+              "Plan for major system replacements (roof, HVAC, etc.)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Money-saving homeowner tips:",
+            items: [
+              "Shop around for homeowner's insurance annually",
+              "Appeal property tax assessments if home value drops",
+              "Learn basic maintenance to avoid service calls",
+              "Energy-efficient improvements can lower utility bills",
+              "Regular maintenance prevents costly repairs",
+              "Consider bundling insurance policies for discounts",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Create separate savings accounts for property taxes, insurance, and maintenance. Set up automatic transfers so you're prepared when these expenses come due.",
+          },
+        ],
+        keyTakeaways: [
+          "Homeownership costs extend far beyond the mortgage payment",
+          "Budget 1-3% of home value annually for maintenance",
+          "Follow the 28/36 rule for housing affordability",
+          "Build separate savings for homeownership expenses",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "According to the 28% rule, what's the maximum you should spend on housing?",
+              options: [
+                "28% of take-home pay",
+                "28% of gross monthly income",
+                "28% of your savings",
+                "28% of your total debt",
+              ],
+              correctAnswer: "28% of gross monthly income",
+              explanation: "The 28% rule states that your total housing costs (including mortgage, taxes, and insurance) shouldn't exceed 28% of your gross monthly income.",
+            },
+          ],
+        },
+      },
+      {
+        title: "First-Time Homebuyer Programs",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Programs to Help You Buy Your First Home",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Many programs exist to help first-time homebuyers overcome common barriers like down payments and closing costs. Understanding these options can make homeownership more accessible and affordable for young adults.",
+          },
+          {
+            type: "list",
+            content: "Federal first-time buyer programs:",
+            items: [
+              "FHA loans: 3.5% down, flexible credit requirements",
+              "VA loans: 0% down for eligible veterans and service members",
+              "USDA loans: 0% down for rural and suburban areas",
+              "Conventional 97: 3% down payment option",
+              "HomeReady and Home Possible: Low down payment with income limits",
+              "Good Neighbor Next Door: Discounts for teachers, firefighters, etc.",
+            ],
+          },
+          {
+            type: "list",
+            content: "State and local programs:",
+            items: [
+              "Down payment assistance grants",
+              "Closing cost assistance",
+              "Below-market interest rate loans",
+              "Tax credits for mortgage interest",
+              "Shared equity programs",
+              "First-time buyer education courses",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Maria qualifies for her state's first-time buyer program, receiving a $10,000 down payment grant and $3,000 in closing cost assistance, making her $250,000 home purchase possible with minimal out-of-pocket costs.",
+          },
+          {
+            type: "list",
+            content: "Employer homebuyer assistance:",
+            items: [
+              "Down payment assistance loans or grants",
+              "Closing cost reimbursement",
+              "Preferred lender relationships with better rates",
+              "Homebuyer education and counseling",
+              "Relocation assistance for job transfers",
+              "Employee housing programs in expensive markets",
+            ],
+          },
+          {
+            type: "list",
+            content: "First-time buyer definition:",
+            items: [
+              "Haven't owned a home in the past 3 years (most programs)",
+              "Single parents who only owned with former spouse",
+              "Displaced homemakers",
+              "Some programs have no previous ownership restrictions",
+              "Definition varies by program",
+              "May include income and location restrictions",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to find programs:",
+            items: [
+              "Contact your state housing finance agency",
+              "Check with local housing authorities",
+              "Ask lenders about available programs",
+              "Search HUD's website for local resources",
+              "Consult with HUD-approved housing counselors",
+              "Check with your employer's HR department",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start researching first-time buyer programs early in your home buying process. Some programs have limited funding and may have waiting lists or application deadlines.",
+          },
+        ],
+        keyTakeaways: [
+          "Many programs help first-time buyers with down payments and costs",
+          "Federal, state, local, and employer programs are available",
+          "First-time buyer definition is usually 3 years without homeownership",
+          "Research programs early as funding may be limited",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What typically qualifies someone as a first-time homebuyer?",
+              options: [
+                "Never owned any property",
+                "Haven't owned a home in the past 3 years",
+                "Under age 30",
+                "Income below $50,000",
+              ],
+              correctAnswer: "Haven't owned a home in the past 3 years",
+              explanation: "Most first-time homebuyer programs define a first-time buyer as someone who hasn't owned a home in the past 3 years.",
+            },
+          ],
+        },
+      },
+    ],
+    "retirement-planning": [
+      {
+        title: "Understanding 401(k) Plans",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What is a 401(k)?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A 401(k) is a retirement savings plan sponsored by an employer. It allows employees to save and invest a portion of their paycheck before taxes are taken out. For young adults, starting a 401(k) early is one of the most powerful wealth-building tools available.",
+          },
+          {
+            type: "list",
+            content: "Key 401(k) features:",
+            items: [
+              "Pre-tax contributions reduce current taxable income",
+              "Tax-deferred growth until retirement",
+              "Employer matching contributions (free money!)",
+              "Higher contribution limits than IRAs",
+              "Automatic payroll deductions make saving easy",
+              "Vesting schedules for employer contributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "2024 401(k) contribution limits:",
+            items: [
+              "Employee contribution: $23,000 annually",
+              "Catch-up contribution (age 50+): Additional $7,500",
+              "Total contribution limit: $69,000 (including employer match)",
+              "Highly compensated employee limits may apply",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah earns $60,000 and contributes 10% ($6,000) to her 401(k). Her employer matches 50% of contributions up to 6%, adding $1,800. Her total retirement savings is $7,800 annually, reducing her taxable income to $54,000.",
+          },
+          {
+            type: "list",
+            content: "Benefits of 401(k) participation:",
+            items: [
+              "Immediate tax savings on contributions",
+              "Employer matching is free money",
+              "Compound growth over decades",
+              "Automatic investing builds discipline",
+              "Portability when changing jobs",
+              "Loan options for emergencies (use carefully)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Always contribute enough to get the full employer match - it's an immediate 100% return on your investment. If your employer matches 50% up to 6%, contribute at least 6% to maximize free money.",
+          },
+        ],
+        keyTakeaways: [
+          "401(k)s offer tax advantages and employer matching",
+          "Start early to maximize compound growth",
+          "Always get the full employer match",
+          "Higher contribution limits than other retirement accounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is a key benefit of a 401(k)?",
+              options: ["Tax-free withdrawals", "High liquidity", "Employer matching", "Guaranteed returns"],
+              correctAnswer: "Employer matching",
+              explanation: "Employer matching is essentially free money added to your retirement savings, making it one of the most valuable benefits of 401(k) participation.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Exploring Traditional and Roth IRAs",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Individual Retirement Account Options",
+          },
+          {
+            type: "paragraph",
+            content:
+              "IRAs (Individual Retirement Accounts) provide additional retirement savings opportunities beyond employer plans. Understanding the differences between Traditional and Roth IRAs helps you choose the best option for your situation.",
+          },
+          {
+            type: "list",
+            content: "Traditional IRA features:",
+            items: [
+              "Tax-deductible contributions (subject to income limits)",
+              "Tax-deferred growth until withdrawal",
+              "Required minimum distributions starting at age 73",
+              "Penalties for early withdrawal before age 59½",
+              "Good for those expecting lower tax rates in retirement",
+              "2024 contribution limit: $7,000 ($8,000 if age 50+)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Roth IRA features:",
+            items: [
+              "After-tax contributions (no immediate deduction)",
+              "Tax-free growth and qualified withdrawals",
+              "No required minimum distributions during lifetime",
+              "Contributions can be withdrawn penalty-free anytime",
+              "Good for those expecting higher tax rates in retirement",
+              "Income limits for eligibility",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike, age 25, contributes $6,000 to a Roth IRA annually. Assuming 7% growth, he'll have over $1.3 million tax-free at age 65. If he used a Traditional IRA instead, he'd owe taxes on withdrawals in retirement.",
+          },
+          {
+            type: "list",
+            content: "Roth IRA income limits (2024):",
+            items: [
+              "Single filers: Phase-out $138,000-$153,000",
+              "Married filing jointly: Phase-out $218,000-$228,000",
+              "Above limits: Consider backdoor Roth conversion",
+              "No income limits for Traditional IRA contributions",
+              "Deductibility limits based on income and 401(k) participation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing between Traditional and Roth:",
+            items: [
+              "Current vs. expected future tax rates",
+              "Need for tax deduction now vs. tax-free income later",
+              "Time horizon until retirement",
+              "Income level and eligibility",
+              "Estate planning considerations",
+              "Flexibility for early withdrawals",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Young adults often benefit more from Roth IRAs because they're typically in lower tax brackets now and have decades for tax-free growth. Consider contributing to a Roth IRA after getting your full 401(k) match.",
+          },
+        ],
+        keyTakeaways: [
+          "Traditional IRAs offer immediate tax deductions",
+          "Roth IRAs provide tax-free retirement income",
+          "Young people often benefit more from Roth accounts",
+          "Consider your current and future tax situations",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main difference between a Traditional IRA and a Roth IRA?",
+              options: [
+                "Traditional IRAs are tax-free",
+                "Roth IRAs offer tax-free withdrawals in retirement",
+                "Traditional IRAs have no contribution limits",
+                "Roth IRAs are only for high-income earners",
+              ],
+              correctAnswer: "Roth IRAs offer tax-free withdrawals in retirement",
+              explanation: "Roth IRAs are funded with after-tax dollars but offer tax-free growth and withdrawals in retirement, while Traditional IRAs are tax-deferred.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Retirement Planning Strategies",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Building Your Retirement Plan",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Successful retirement planning requires a comprehensive strategy that considers your goals, timeline, and risk tolerance. Starting early and being consistent are more important than perfect investment selection.",
+          },
+          {
+            type: "list",
+            content: "Retirement planning steps:",
+            items: [
+              "Estimate retirement expenses (70-90% of current income)",
+              "Determine retirement timeline and goals",
+              "Calculate required savings rate",
+              "Maximize employer matching contributions",
+              "Choose appropriate investment allocation",
+              "Review and adjust plan annually",
+            ],
+          },
+          {
+            type: "list",
+            content: "The power of starting early:",
+            items: [
+              "Compound growth has more time to work",
+              "Lower required savings rate",
+              "More time to recover from market downturns",
+              "Ability to take more investment risk",
+              "Flexibility to adjust strategy over time",
+              "Less financial stress in later years",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma starts saving $300/month at age 22. By age 65, she'll have $1.4 million (assuming 7% returns). If she waits until age 32, she'd need to save $650/month to reach the same goal.",
+          },
+          {
+            type: "list",
+            content: "Age-based investment strategies:",
+            items: [
+              "20s-30s: Aggressive growth (80-90% stocks)",
+              "40s: Moderate growth (70-80% stocks)",
+              "50s: Balanced approach (60-70% stocks)",
+              "60s+: Conservative growth (40-60% stocks)",
+              "Rule of thumb: 100 minus your age = stock percentage",
+              "Adjust based on risk tolerance and goals",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement account prioritization:",
+            items: [
+              "1. 401(k) up to employer match",
+              "2. High-interest debt payoff",
+              "3. Roth IRA contribution",
+              "4. Max out 401(k) contribution",
+              "5. Taxable investment accounts",
+              "6. Other tax-advantaged accounts (HSA, etc.)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Automate your retirement savings by setting up automatic contributions. Increase your savings rate by 1% annually or whenever you get a raise to painlessly boost your retirement fund.",
+          },
+        ],
+        keyTakeaways: [
+          "Start retirement planning as early as possible",
+          "Compound growth makes early saving incredibly powerful",
+          "Adjust investment allocation based on age and risk tolerance",
+          "Prioritize accounts based on tax advantages and matching",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Why is starting retirement savings early so important?",
+              options: [
+                "Investment options are better when young",
+                "Compound growth has more time to work",
+                "Tax rates are lower for young people",
+                "Employers only match for young employees",
+              ],
+              correctAnswer: "Compound growth has more time to work",
+              explanation: "Starting early gives compound growth decades to work, allowing smaller contributions to grow into substantial retirement savings.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Social Security and Medicare",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Government Retirement Benefits",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Social Security and Medicare form the foundation of retirement security for most Americans. Understanding how these programs work helps you plan more effectively and make informed decisions about your retirement timing.",
+          },
+          {
+            type: "list",
+            content: "Social Security basics:",
+            items: [
+              "Funded by payroll taxes (6.2% employee, 6.2% employer)",
+              "Benefits based on highest 35 years of earnings",
+              "Full retirement age varies by birth year (66-67)",
+              "Can claim as early as age 62 (reduced benefits)",
+              "Delayed retirement credits until age 70",
+              "Cost-of-living adjustments (COLA) annually",
+            ],
+          },
+          {
+            type: "list",
+            content: "Social Security benefit calculation:",
+            items: [
+              "Based on Average Indexed Monthly Earnings (AIME)",
+              "Progressive benefit formula favors lower earners",
+              "Maximum benefit in 2024: $4,873/month at full retirement age",
+              "Early claiming reduces benefits by up to 30%",
+              "Delayed claiming increases benefits by 8% per year until age 70",
+              "Spousal and survivor benefits available",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "David's full retirement age is 67. If he claims at 62, his $2,000 monthly benefit becomes $1,400. If he waits until 70, it increases to $2,480. The difference is $1,080 per month for life.",
+          },
+          {
+            type: "list",
+            content: "Medicare overview:",
+            items: [
+              "Part A: Hospital insurance (premium-free for most)",
+              "Part B: Medical insurance (monthly premium required)",
+              "Part C: Medicare Advantage (private plan alternative)",
+              "Part D: Prescription drug coverage",
+              "Medigap: Supplemental insurance for gaps",
+              "Enrollment begins 3 months before turning 65",
+            ],
+          },
+          {
+            type: "list",
+            content: "Planning considerations:",
+            items: [
+              "Social Security may replace only 40% of pre-retirement income",
+              "Medicare doesn't cover all healthcare costs",
+              "Long-term care not covered by Medicare",
+              "Consider healthcare costs in retirement planning",
+              "Review Social Security statements annually",
+              "Plan for potential program changes",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Create a my Social Security account at ssa.gov to track your earnings history and get benefit estimates. This helps you plan and ensures your earnings are recorded correctly.",
+          },
+        ],
+        keyTakeaways: [
+          "Social Security provides a foundation but isn't enough alone",
+          "Claiming age significantly affects benefit amounts",
+          "Medicare has multiple parts with different costs",
+          "Plan for healthcare costs not covered by Medicare",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens if you claim Social Security before your full retirement age?",
+              options: [
+                "Benefits increase",
+                "Benefits are reduced permanently",
+                "Benefits are delayed",
+                "Nothing changes",
+              ],
+              correctAnswer: "Benefits are reduced permanently",
+              explanation: "Claiming Social Security before full retirement age results in permanently reduced benefits, up to 30% less than your full benefit amount.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Retirement Income Planning",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Creating Sustainable Retirement Income",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Retirement income planning involves creating a strategy to generate steady income throughout retirement. Understanding different income sources and withdrawal strategies helps ensure your money lasts as long as you do.",
+          },
+          {
+            type: "list",
+            content: "Sources of retirement income:",
+            items: [
+              "Social Security benefits",
+              "Employer retirement plans (401k, pension)",
+              "Personal savings and investments (IRAs, taxable accounts)",
+              "Part-time work or consulting",
+              "Rental income from real estate",
+              "Annuities or other insurance products",
+            ],
+          },
+          {
+            type: "list",
+            content: "The 4% withdrawal rule:",
+            items: [
+              "Withdraw 4% of portfolio value in first year",
+              "Adjust subsequent years for inflation",
+              "Based on historical market performance",
+              "Designed to make money last 30 years",
+              "May need adjustment based on market conditions",
+              "Conservative approach for peace of mind",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa retires with $1 million in savings. Using the 4% rule, she can withdraw $40,000 in year one, then adjust for inflation each year. This strategy historically preserves capital for 30+ years.",
+          },
+          {
+            type: "list",
+            content: "Tax-efficient withdrawal strategies:",
+            items: [
+              "Withdraw from taxable accounts first",
+              "Use tax-deferred accounts (401k, Traditional IRA) next",
+              "Save Roth accounts for last (tax-free growth)",
+              "Consider tax bracket management",
+              "Plan for required minimum distributions",
+              "Coordinate with Social Security timing",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement income risks:",
+            items: [
+              "Longevity risk: Living longer than expected",
+              "Inflation risk: Rising costs over time",
+              "Market risk: Poor investment performance",
+              "Healthcare cost risk: Expensive medical care",
+              "Sequence of returns risk: Poor early retirement returns",
+              "Interest rate risk: Low rates on fixed income",
+            ],
+          },
+          {
+            type: "list",
+            content: "Income planning strategies:",
+            items: [
+              "Create a retirement income floor with guaranteed sources",
+              "Maintain some growth investments for inflation protection",
+              "Consider delaying Social Security for higher benefits",
+              "Plan for healthcare and long-term care costs",
+              "Maintain emergency fund in retirement",
+              "Review and adjust strategy regularly",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start thinking about retirement income strategies in your 50s. Consider working with a financial advisor to create a comprehensive plan that addresses taxes, healthcare, and estate planning.",
+          },
+        ],
+        keyTakeaways: [
+          "Multiple income sources provide retirement security",
+          "The 4% rule is a starting point for withdrawal planning",
+          "Tax-efficient withdrawals can extend portfolio life",
+          "Plan for various risks that can affect retirement income",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does the 4% withdrawal rule suggest?",
+              options: [
+                "Withdraw 4% of your salary in retirement",
+                "Save 4% of income for retirement",
+                "Withdraw 4% of portfolio value annually",
+                "Invest 4% in bonds",
+              ],
+              correctAnswer: "Withdraw 4% of portfolio value annually",
+              explanation: "The 4% rule suggests withdrawing 4% of your portfolio value in the first year of retirement, then adjusting for inflation in subsequent years.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Catch-Up Strategies",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Getting Back on Track for Retirement",
+          },
+          {
+            type: "paragraph",
+            content:
+              "If you're behind on retirement savings, don't panic. There are several strategies to accelerate your savings and get back on track. The key is taking action now and maximizing your remaining working years.",
+          },
+          {
+            type: "list",
+            content: "Catch-up contribution opportunities:",
+            items: [
+              "401(k) catch-up: Additional $7,500 annually (age 50+)",
+              "IRA catch-up: Additional $1,000 annually (age 50+)",
+              "HSA catch-up: Additional $1,000 annually (age 55+)",
+              "Total 401(k) + catch-up: $30,500 in 2024",
+              "Total IRA + catch-up: $8,000 in 2024",
+              "Maximize all available catch-up contributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Aggressive savings strategies:",
+            items: [
+              "Increase savings rate by 1-2% annually",
+              "Save windfalls (bonuses, tax refunds, inheritance)",
+              "Reduce expenses to free up more savings",
+              "Consider working longer or part-time in retirement",
+              "Downsize home to reduce expenses and free up equity",
+              "Delay Social Security for higher benefits",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "At age 50, Tom has only $100,000 saved. By maximizing 401(k) contributions ($30,500 with catch-up) and IRA contributions ($8,000), he saves $38,500 annually. With employer match and growth, he could have $800,000+ by age 65.",
+          },
+          {
+            type: "list",
+            content: "Late-starter investment strategies:",
+            items: [
+              "Maintain growth investments longer than typical",
+              "Consider more aggressive asset allocation",
               "Focus on low-cost index funds",
-              "Don't check accounts daily",
-              "Increase contributions regularly",
-              "Stay educated but avoid information overload",
+              "Avoid panic selling during market downturns",
+              "Consider target-date funds for automatic adjustment",
+              "Don't be too conservative too early",
             ],
           },
           {
             type: "list",
-            content: "Red flags to watch for:",
+            content: "Alternative retirement strategies:",
             items: [
-              "Promises of guaranteed high returns",
-              "Pressure to invest immediately",
-              "Complex investments you don't understand",
-              "High fees and commissions",
-              "Get-rich-quick schemes",
-              "Advice from unqualified sources",
-            ],
-          },
-          {
-            type: "list",
-            content: "Building good investing habits:",
-            items: [
-              "Start early, even with small amounts",
-              "Invest consistently regardless of market conditions",
-              "Keep costs low with index funds",
-              "Maintain appropriate diversification",
-              "Rebalance periodically",
-              "Stay focused on long-term goals",
+              "Geographic arbitrage: Move to lower-cost area",
+              "Work part-time in early retirement",
+              "Start a small business or consulting",
+              "Consider house hacking or rental income",
+              "Explore international retirement destinations",
+              "Plan for a phased retirement approach",
             ],
           },
           {
             type: "tip",
-              content:
-                "The biggest investing mistake is not starting. Even a imperfect investment plan that you start today is better than a perfect plan you never implement. Just get started and learn as you go!",
+            content:
+              "If you're behind on retirement savings, focus on what you can control: your savings rate, expenses, and working timeline. Even starting at 50, you can still build substantial retirement wealth with aggressive saving.",
           },
         ],
         keyTakeaways: [
-          "Emotional decisions are the biggest investing mistakes",
-          "Automation helps avoid timing and emotional errors",
-          "High fees can significantly reduce long-term returns",
-          "Starting early is more important than perfect timing",
+          "Catch-up contributions allow higher savings after age 50",
+          "Aggressive savings strategies can help late starters",
+          "Consider working longer or part-time in retirement",
+          "Don't be too conservative with investments if you're behind",
         ],
         quiz: {
           questions: [
             {
-              question: "What is often considered the biggest investing mistake?",
+              question: "What is the 401(k) catch-up contribution limit for those age 50 and older?",
               options: [
-                "Choosing the wrong stocks",
-                "Not starting to invest",
-                "Not checking accounts daily",
-                "Investing in bonds",
+                "$1,000",
+                "$7,500",
+                "$23,000",
+                "$30,500",
               ],
-              correctAnswer: "Not starting to invest",
-              explanation:
-                "The biggest investing mistake is not starting at all. Time and compound growth are more important than perfect investment selection or timing.",
+              correctAnswer: "$7,500",
+              explanation: "Those age 50 and older can contribute an additional $7,500 to their 401(k) beyond the regular contribution limit, for a total of $30,500 in 2024.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Estate Planning and Retirement",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Retirement Legacy",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate planning becomes increasingly important as you build retirement wealth. Proper planning ensures your assets are distributed according to your wishes and can provide tax benefits for your heirs.",
+          },
+          {
+            type: "list",
+            content: "Key estate planning documents:",
+            items: [
+              "Will: Directs asset distribution and names guardians",
+              "Power of attorney: Financial decision-making authority",
+              "Healthcare directive: Medical decision preferences",
+              "Beneficiary designations: Direct transfer of retirement accounts",
+              "Trust documents: Advanced estate planning strategies",
+              "HIPAA authorization: Medical information access",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement account beneficiaries:",
+            items: [
+              "Primary and contingent beneficiaries",
+              "Spouse vs. non-spouse beneficiary rules",
+              "Required minimum distributions for inherited accounts",
+              "Stretch provisions for inherited IRAs",
+              "Trust as beneficiary considerations",
+              "Regular review and updates needed",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "When John dies, his $500,000 401(k) passes directly to his wife Mary as beneficiary, avoiding probate. Mary can roll it into her own IRA and continue tax-deferred growth until her required distributions begin.",
+          },
+          {
+            type: "list",
+            content: "Tax considerations for heirs:",
+            items: [
+              "Traditional retirement accounts: Heirs pay income tax",
+              "Roth accounts: Tax-free inheritance for heirs",
+              "Step-up in basis for taxable investments",
+              "Estate tax considerations for large estates",
+              "State inheritance tax implications",
+              "Generation-skipping transfer tax",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement and estate planning strategies:",
+            items: [
+              "Roth conversions to reduce taxable estate",
+              "Charitable giving strategies",
+              "Life insurance for estate liquidity",
+              "Trust strategies for tax efficiency",
+              "Gifting strategies during lifetime",
+              "Business succession planning",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Review and update beneficiary designations regularly, especially after major life events like marriage, divorce, or the birth of children. Beneficiary designations override your will for retirement accounts.",
+          },
+        ],
+        keyTakeaways: [
+          "Estate planning protects your retirement assets",
+          "Beneficiary designations are crucial for retirement accounts",
+          "Roth accounts provide tax-free inheritance for heirs",
+          "Regular updates are needed for life changes",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens to retirement account beneficiary designations when you get married?",
+              options: [
+                "They automatically update to your spouse",
+                "They remain unchanged unless you update them",
+                "They become invalid",
+                "The government decides the beneficiary",
+              ],
+              correctAnswer: "They remain unchanged unless you update them",
+              explanation: "Beneficiary designations don't automatically update when you get married. You must manually update them to reflect your current wishes.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Healthcare in Retirement",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Planning for Retirement Healthcare Costs",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Healthcare costs are often one of the largest expenses in retirement. Understanding Medicare, planning for long-term care, and budgeting for healthcare expenses are crucial components of retirement planning.",
+          },
+          {
+            type: "list",
+            content: "Medicare enrollment and costs:",
+            items: [
+              "Automatic enrollment if receiving Social Security",
+              "Part B premium: $174.70/month in 2024 (standard)",
+              "High earners pay higher premiums (IRMAA)",
+              "Part D prescription coverage recommended",
+              "Medigap insurance for additional coverage",
+              "Late enrollment penalties if you delay",
+            ],
+          },
+          {
+            type: "list",
+            content: "Healthcare costs not covered by Medicare:",
+            items: [
+              "Long-term care (nursing homes, assisted living)",
+              "Most dental and vision care",
+              "Hearing aids and routine foot care",
+              "Cosmetic surgery and alternative medicine",
+              "Healthcare while traveling abroad",
+              "Over-the-counter medications",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "A healthy 65-year-old couple may spend $300,000+ on healthcare throughout retirement. Long-term care costs average $50,000+ annually, with nursing home care exceeding $100,000 per year in many areas.",
+          },
+          {
+            type: "list",
+            content: "Long-term care planning:",
+            items: [
+              "70% chance of needing some long-term care",
+              "Average need: 3 years for men, 3.7 years for women",
+              "Long-term care insurance options",
+              "Self-insurance through savings",
+              "Hybrid life insurance/LTC policies",
+              "Veterans benefits for eligible service members",
+            ],
+          },
+          {
+            type: "list",
+            content: "Healthcare savings strategies:",
+            items: [
+              "Health Savings Account (HSA) for triple tax advantage",
+              "Separate healthcare budget in retirement planning",
+              "Consider geographic arbitrage for lower costs",
+              "Maintain healthy lifestyle to reduce costs",
+              "Research Medicare Advantage vs. traditional Medicare",
+              "Plan for inflation in healthcare costs",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If you have access to an HSA, maximize contributions and invest the funds for long-term growth. HSAs become powerful retirement healthcare accounts after age 65, with no penalties for non-medical withdrawals.",
+          },
+        ],
+        keyTakeaways: [
+          "Healthcare costs are a major retirement expense",
+          "Medicare doesn't cover all healthcare needs",
+          "Long-term care planning is essential",
+          "HSAs provide excellent healthcare savings benefits",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What percentage of people will need some form of long-term care?",
+              options: [
+                "30%",
+                "50%",
+                "70%",
+                "90%",
+              ],
+              correctAnswer: "70%",
+              explanation: "Statistics show that about 70% of people will need some form of long-term care during their lifetime, making it an important planning consideration.",
             },
           ],
         },
       },
     ],
-    "emergency-fund": [
+    "hsa": [
       {
-        title: "Why You Need an Emergency Fund",
-        duration: "3 min",
-        points: 10,
+        title: "Understanding Health Savings Accounts",
+        duration: "5 min",
+        points: 18,
         content: [
           {
             type: "heading",
-            content: "Your Financial Safety Net",
+            content: "What is an HSA?",
           },
           {
             type: "paragraph",
-              content:
-                "An emergency fund is money set aside specifically for unexpected expenses or financial emergencies. It's your first line of defense against going into debt when life throws you a curveball. This is especially important for young adults who may not have a lot of savings.",
+            content:
+              "A Health Savings Account (HSA) is a tax-advantaged savings account that can be used to pay for qualified medical expenses. It's often called the 'triple tax advantage' account because of its unique tax benefits. For young adults, HSAs can be powerful tools for both current healthcare costs and retirement planning.",
           },
           {
             type: "list",
-            content: "What qualifies as an emergency:",
+            content: "HSA eligibility requirements:",
             items: [
-              "Job loss or reduced income",
-              "Major medical expenses",
-              "Car repairs or replacement",
-              "Home repairs (roof, HVAC, plumbing)",
-              "Family emergencies requiring travel",
-              "Unexpected tax bills",
+              "Must be enrolled in a High Deductible Health Plan (HDHP)",
+              "Cannot be covered by other health insurance",
+              "Cannot be enrolled in Medicare",
+              "Cannot be claimed as a dependent on someone else's tax return",
+              "HDHP minimum deductible: $1,600 individual, $3,200 family (2024)",
+              "HDHP maximum out-of-pocket: $8,050 individual, $16,100 family (2024)",
             ],
           },
           {
             type: "list",
-            content: "What is NOT an emergency:",
+            content: "Triple tax advantage:",
             items: [
-              "Vacations or travel",
-              "Holiday gifts",
-              "Sale items you want to buy",
-              "Regular car maintenance",
-              "Annual insurance premiums",
-              "Predictable seasonal expenses",
+              "Tax-deductible contributions (reduces current taxable income)",
+              "Tax-free growth on investments within the account",
+              "Tax-free withdrawals for qualified medical expenses",
+              "No other account offers all three tax benefits",
+              "Contributions reduce both income and payroll taxes",
+              "No 'use it or lose it' rule - funds roll over indefinitely",
             ],
           },
           {
             type: "example",
-              content:
-                "Sarah's car needed a $1,200 transmission repair. With her emergency fund, she paid cash and continued her normal budget. Without it, she would have used credit cards and paid interest for months. This shows the importance of being prepared.",
+            content:
+              "Sarah contributes $3,000 to her HSA, saving $720 in taxes (24% bracket). She invests the funds and they grow to $4,500 over several years. When she uses the money for medical expenses, she pays no taxes on the $4,500 withdrawal.",
           },
           {
             type: "list",
-            content: "Benefits of having an emergency fund:",
+            content: "2024 HSA contribution limits:",
             items: [
-              "Prevents debt accumulation during crises",
-              "Reduces financial stress and anxiety",
-              "Provides peace of mind",
-              "Allows you to take calculated risks",
-              "Prevents disruption of long-term financial goals",
-              "Gives you time to make good decisions",
+              "Individual coverage: $4,150",
+              "Family coverage: $8,300",
+              "Catch-up contribution (age 55+): Additional $1,000",
+              "Employer contributions count toward these limits",
+              "Contributions can be made until tax filing deadline",
+              "Pro-rated limits if not eligible for full year",
             ],
           },
           {
             type: "tip",
-              content:
-                "Think of your emergency fund as insurance you pay yourself. It's not an investment - it's protection that allows your other financial strategies to work. It's a safety net for your financial life.",
+            content:
+              "If you're young and healthy, consider maximizing HSA contributions and investing the funds for long-term growth. Pay current medical expenses out-of-pocket if possible to let your HSA grow for future healthcare costs or retirement.",
           },
         ],
         keyTakeaways: [
-          "Emergency funds prevent debt during unexpected expenses",
-          "True emergencies are unpredictable and necessary",
-          "Emergency funds provide peace of mind and financial stability",
-          "They protect your other financial goals from disruption",
+          "HSAs offer a unique triple tax advantage",
+          "Must have a High Deductible Health Plan to be eligible",
+          "Funds roll over indefinitely with no expiration",
+          "Can be used as a retirement account after age 65",
         ],
         quiz: {
           questions: [
             {
-              question: "Which of these is a true financial emergency?",
+              question: "What is the unique benefit of an HSA compared to other accounts?",
               options: [
-                "A vacation you want to take",
-                "Unexpected job loss",
-                "Holiday shopping",
-                "A sale on electronics",
+                "Tax-free contributions",
+                "Tax-free growth",
+                "Tax-free withdrawals for qualified expenses",
+                "All of the above (triple tax advantage)",
               ],
-              correctAnswer: "Unexpected job loss",
-              explanation:
-                "Job loss is a true emergency because it's unpredictable, necessary to address, and can significantly impact your financial stability.",
+              correctAnswer: "All of the above (triple tax advantage)",
+              explanation: "HSAs offer a triple tax advantage: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses - no other account offers all three benefits.",
             },
           ],
         },
       },
       {
-        title: "How Much to Save",
-        duration: "4 min",
-        points: 15,
+        title: "HSA Investment Strategies",
+        duration: "5 min",
+        points: 18,
         content: [
           {
             type: "heading",
-            content: "Determining Your Emergency Fund Target",
+            content: "Growing Your HSA for Long-Term Benefits",
           },
           {
             type: "paragraph",
-              content:
-                "The right emergency fund size depends on your personal situation, job stability, and monthly expenses. Most experts recommend 3-6 months of expenses, but your target might be different. This is a good starting point for young adults to aim for.",
+            content:
+              "Many people don't realize that HSAs can be invested like retirement accounts. By investing your HSA funds instead of leaving them in cash, you can build substantial wealth for future healthcare costs and retirement.",
           },
           {
             type: "list",
-            content: "Standard emergency fund guidelines:",
+            content: "HSA investment options:",
             items: [
-              "3 months of expenses: Stable job, dual income household",
-              "6 months of expenses: Single income, less stable job",
-              "9-12 months: Self-employed, commission-based income",
-              "Start with $1,000 minimum for beginners",
-              "Adjust based on your specific situation",
-              "Consider both essential and total monthly expenses",
+              "Cash or money market accounts (for immediate expenses)",
+              "Mutual funds and index funds",
+              "Target-date funds",
+              "Individual stocks (some providers)",
+              "Bond funds",
+              "Investment options vary by HSA provider",
             ],
           },
           {
             type: "list",
-            content: "Factors that increase your target:",
+            content: "Investment strategies by age:",
             items: [
-              "Irregular or seasonal income",
-              "Self-employment or freelance work",
-              "Single income household",
-              "Health issues or chronic conditions",
-              "Older home or car requiring more repairs",
-              "Industry prone to layoffs",
+              "Young adults (20s-30s): Aggressive growth investments",
+              "Middle age (40s-50s): Balanced growth approach",
+              "Pre-retirement (50s-60s): More conservative allocation",
+              "Retirement (65+): Focus on preservation and income",
+              "Keep some cash for current medical expenses",
+              "Invest the rest for long-term growth",
             ],
           },
           {
             type: "example",
-              content:
-                "Mike spends $4,000/month total but only $2,800 on essentials (housing, food, utilities, insurance). His emergency fund target is $8,400-$16,800 based on essential expenses. This shows that you can focus on essential expenses to lower your target.",
+            content:
+              "Mike, age 25, contributes $4,150 annually to his HSA and invests it in index funds. Assuming 7% growth, he'll have over $1.2 million by age 65 for healthcare expenses and retirement - all tax-free for medical costs.",
           },
           {
             type: "list",
-            content: "Calculating your target amount:",
+            content: "HSA investment best practices:",
             items: [
-              "List all essential monthly expenses",
-              "Include: housing, utilities, food, insurance, minimum debt payments",
-              "Exclude: entertainment, dining out, subscriptions",
-              "Multiply by 3-6 months (or more if needed)",
-              "Start with a smaller goal if the full amount feels overwhelming",
-              "Increase target as your situation changes",
+              "Maintain cash buffer for current medical expenses",
+              "Invest long-term funds in growth-oriented investments",
+              "Choose low-cost index funds when available",
+              "Rebalance periodically like other investment accounts",
+              "Don't panic during market downturns",
+              "Consider your overall portfolio allocation",
             ],
           },
           {
             type: "list",
-            content: "Starter emergency fund approach:",
+            content: "Common HSA investment mistakes:",
             items: [
-              "Begin with $500-$1,000 goal",
-              "Focus on this before other financial goals",
-              "Build quickly with intense effort",
-              "Then work on debt payoff",
-              "Return to build full emergency fund",
-              "This prevents new debt during debt payoff",
+              "Leaving all funds in low-yield cash accounts",
+              "Not investing due to fear of market volatility",
+              "Choosing high-fee investment options",
+              "Withdrawing funds for non-medical expenses early",
+              "Not maximizing contributions when eligible",
+              "Forgetting about HSA when changing jobs",
             ],
           },
           {
             type: "tip",
-              content:
-                "Base your emergency fund on essential expenses, not your total spending. In an emergency, you'll cut non-essential spending first. This will help you reach your goal faster.",
+            content:
+              "Keep 3-6 months of potential medical expenses in cash within your HSA, then invest the rest for long-term growth. This strategy maximizes growth while ensuring funds are available for immediate needs.",
           },
         ],
         keyTakeaways: [
-          "3-6 months of essential expenses is the standard target",
-          "Adjust based on job stability and personal situation",
-          "Start with $1,000 if the full amount feels overwhelming",
-          "Base calculations on essential expenses, not total spending",
+          "HSAs can be invested like retirement accounts",
+          "Young people should focus on growth investments",
+          "Keep some cash for immediate medical expenses",
+          "Low-cost index funds are typically the best choice",
         ],
         quiz: {
           questions: [
             {
-              question: "How should you calculate your emergency fund target?",
+              question: "What's the best investment strategy for a young adult's HSA?",
               options: [
-                "Based on your total monthly spending",
-                "Based on essential monthly expenses",
-                "Based on your monthly income",
-                "Based on your debt payments",
+                "Keep everything in cash",
+                "Invest in growth funds while keeping some cash for expenses",
+                "Only invest in bonds",
+                "Don't invest HSA funds",
               ],
-              correctAnswer: "Based on essential monthly expenses",
-              explanation:
-                "Emergency funds should be based on essential expenses because you'll cut non-essential spending during a true emergency.",
+              correctAnswer: "Invest in growth funds while keeping some cash for expenses",
+              explanation: "Young adults should invest most of their HSA in growth-oriented investments for long-term wealth building while maintaining some cash for current medical expenses.",
             },
           ],
         },
       },
       {
-        title: "Where to Keep Your Emergency Fund",
+        title: "Qualified Medical Expenses",
         duration: "4 min",
-        points: 15,
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Balancing Accessibility and Growth",
+            content: "What You Can Pay for with HSA Funds",
           },
           {
             type: "paragraph",
-              content:
-                "Your emergency fund needs to be easily accessible when you need it, but you also want it to earn some return while it sits there. The key is finding the right balance between liquidity and yield. This is important for young adults to maximize their savings.",
+            content:
+              "Understanding what qualifies as a medical expense for HSA purposes is crucial for maximizing your tax benefits. The IRS has specific rules about what expenses are eligible for tax-free HSA withdrawals.",
           },
           {
             type: "list",
-            content: "Best places for emergency funds:",
+            content: "Common qualified medical expenses:",
             items: [
-              "High-yield savings accounts",
-              "Money market accounts",
-              "Short-term CDs (3-6 months)",
-              "Treasury bills or I-bonds",
-              "Online bank savings accounts",
-              "Credit union share accounts",
+              "Doctor visits and specialist consultations",
+              "Prescription medications",
+              "Dental care and orthodontics",
+              "Vision care, glasses, and contact lenses",
+              "Mental health counseling and therapy",
+              "Physical therapy and rehabilitation",
             ],
           },
           {
             type: "list",
-            content: "What to look for in emergency fund accounts:",
+            content: "Preventive care expenses:",
             items: [
-              "FDIC or NCUA insurance",
-              "Easy access to funds (online, ATM, transfer)",
-              "Competitive interest rates",
-              "No monthly fees",
-              "Low or no minimum balance",
-              "No penalties for withdrawals",
+              "Annual physical exams",
+              "Vaccinations and immunizations",
+              "Cancer screenings (mammograms, colonoscopies)",
+              "Blood pressure and cholesterol screenings",
+              "Prenatal care",
+              "Well-child visits",
             ],
           },
           {
             type: "example",
-              content:
-                "Lisa keeps her $15,000 emergency fund in a high-yield savings account earning 4% APY. It's FDIC insured, accessible within 24 hours, and earns $600 per year while waiting for emergencies. This is a smart way to make your money work for you.",
+            content:
+              "Lisa uses her HSA to pay for her annual eye exam ($150), new glasses ($300), dental cleaning ($200), and prescription medications ($500). All $1,150 is withdrawn tax-free from her HSA.",
           },
           {
             type: "list",
-            content: "Where NOT to keep emergency funds:",
+            content: "Expenses that are NOT qualified:",
             items: [
-              "Stock market investments (too volatile)",
-              "Long-term CDs (penalties for early withdrawal)",
-              "Retirement accounts (penalties and taxes)",
-              "Cryptocurrency (too volatile and risky)",
-              "Under your mattress (no growth, not insured)",
-              "Regular checking account (too easy to spend)",
+              "Over-the-counter medications (without prescription)",
+              "Cosmetic procedures (unless medically necessary)",
+              "Health club memberships",
+              "Nutritional supplements (unless prescribed)",
+              "Insurance premiums (with some exceptions)",
+              "Expenses reimbursed by other insurance",
             ],
           },
           {
             type: "list",
-            content: "Emergency fund account strategies:",
+            content: "Special HSA rules:",
             items: [
-              "Keep in separate account from regular savings",
-              "Use online banks for higher interest rates",
-              "Consider laddering short-term CDs",
-              "Keep small amount in checking for immediate access",
-              "Review rates annually and switch if needed",
-              "Don't chase rates that require high minimums",
+              "Can reimburse yourself years later for past expenses",
+              "Must keep receipts for potential IRS audit",
+              "Expenses must occur after HSA establishment",
+              "Can pay for spouse and dependents' expenses",
+              "Some insurance premiums qualify (COBRA, long-term care)",
+              "Medicare premiums qualify after age 65",
             ],
           },
           {
             type: "tip",
-              content:
-                "Keep your emergency fund in a separate account from your regular savings to avoid accidentally spending it on non-emergencies. This will help you stay disciplined and protect your savings.",
+            content:
+              "Keep detailed records and receipts for all medical expenses, even if you don't reimburse yourself immediately. You can reimburse yourself tax-free years later, allowing your HSA to grow in the meantime.",
           },
         ],
         keyTakeaways: [
-          "Emergency funds need to be liquid and accessible",
-          "High-yield savings accounts are usually the best option",
-          "FDIC insurance protects your emergency fund",
-          "Keep emergency funds separate from other savings",
+          "Many medical expenses qualify for tax-free HSA withdrawals",
+          "Keep detailed records and receipts for all expenses",
+          "You can reimburse yourself years later for past expenses",
+          "Preventive care is generally covered",
         ],
         quiz: {
           questions: [
             {
-              question: "What is the most important feature for an emergency fund account?",
+              question: "Which of these is a qualified medical expense for HSA purposes?",
               options: [
-                "Highest possible returns",
-                "Easy access to funds",
-                "Long-term growth potential",
-                "Tax advantages",
+                "Gym membership",
+                "Prescription glasses",
+                "Cosmetic surgery",
+                "Vitamins from the store",
               ],
-              correctAnswer: "Easy access to funds",
-              explanation:
-                "Emergency funds must be easily accessible when needed, making liquidity more important than maximizing returns.",
+              correctAnswer: "Prescription glasses",
+              explanation: "Prescription glasses are a qualified medical expense, while gym memberships, cosmetic surgery, and over-the-counter vitamins typically are not (unless prescribed by a doctor).",
             },
           ],
         },
       },
       {
-        title: "Building Your Fund Quickly",
+        title: "HSA vs. FSA Comparison",
         duration: "4 min",
-        points: 15,
+        points: 16,
         content: [
           {
             type: "heading",
-            content: "Strategies to Reach Your Goal Faster",
+            content: "Choosing Between Health Savings Options",
           },
           {
             type: "paragraph",
-              content:
-                "Building an emergency fund can feel overwhelming, but with the right strategies, you can reach your goal faster than you think. The key is combining multiple approaches and staying focused on the priority. This is especially important for young adults who may have limited income.",
+            content:
+              "Health Savings Accounts (HSAs) and Flexible Spending Accounts (FSAs) both help with medical expenses, but they have very different rules and benefits. Understanding these differences helps you choose the best option for your situation.",
           },
           {
             type: "list",
-            content: "Quick emergency fund building strategies:",
+            content: "HSA advantages:",
             items: [
-              "Use tax refunds and bonuses",
-              "Sell items you no longer need",
-              "Take on temporary side work",
-              "Cut expenses temporarily",
-              "Use cash-back rewards and rebates",
-              "Save all unexpected money (gifts, found money)",
+              "Funds roll over indefinitely (no 'use it or lose it')",
+              "Account is owned by you (portable between jobs)",
+              "Triple tax advantage",
+              "Can be invested for growth",
+              "Becomes retirement account after age 65",
+              "Higher contribution limits",
             ],
           },
           {
             type: "list",
-            content: "Expense cutting for emergency fund:",
+            content: "FSA advantages:",
             items: [
-              "Cancel subscriptions temporarily",
-              "Eat out less and cook more",
-              "Find free entertainment options",
-              "Negotiate bills to lower payments",
-              "Use coupons and shop sales",
-              "Delay non-essential purchases",
+              "Available with any health plan (no HDHP requirement)",
+              "Can use full annual amount immediately",
+              "Lower minimum deductible requirements",
+              "May have employer contributions",
+              "Covers some expenses HSAs don't (dependent care FSA)",
+              "No investment account minimums",
             ],
           },
           {
             type: "example",
-              content:
-                "Tom needed $6,000 for his emergency fund. He used his $2,000 tax refund, sold $1,000 worth of unused items, and saved $500/month by cutting expenses. He reached his goal in 6 months. This shows that it's possible to build an emergency fund quickly with the right strategies.",
+            content:
+              "Tom has an HDHP and chooses an HSA, contributing $4,150 annually. His coworker Jane has a traditional health plan and uses an FSA, contributing $3,200. Tom's unused funds grow over time, while Jane must use her FSA funds by year-end or lose them.",
           },
           {
             type: "list",
-            content: "Side income ideas for emergency fund:",
+            content: "Key differences:",
             items: [
-              "Freelance work in your skill area",
-              "Gig economy jobs (rideshare, delivery)",
-              "Sell handmade items or services",
-              "Rent out space or belongings",
-              "Seasonal work (tax prep, retail)",
-              "Online tutoring or consulting",
+              "Rollover: HSA funds never expire, FSA has 'use it or lose it'",
+              "Ownership: HSA is yours forever, FSA is employer-sponsored",
+              "Eligibility: HSA requires HDHP, FSA works with any plan",
+              "Investment: HSA can be invested, FSA typically cannot",
+              "Limits: HSA $4,150/$8,300, FSA $3,200 (2024)",
+              "Portability: HSA moves with you, FSA stays with employer",
             ],
           },
           {
             type: "list",
-            content: "Automation strategies:",
+            content: "When to choose HSA:",
             items: [
-              "Automatic transfers on payday",
+              "You're young and healthy with low medical expenses",
+              "You want to invest for long-term growth",
+              "You can afford the higher deductible",
+              "You want maximum tax benefits",
+              "You plan to use it as a retirement account",
+              "You want funds to roll over year to year",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If you're eligible for both, HSAs are generally better for long-term wealth building due to their investment potential and rollover benefits. FSAs work better if you have predictable annual medical expenses.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs offer better long-term benefits with rollover and investment options",
+          "FSAs provide immediate access to full annual amount",
+          "HSAs require High Deductible Health Plans",
+          "Choose based on your health needs and financial goals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of an HSA over an FSA?",
+              options: [
+                "Higher contribution limits",
+                "Funds roll over indefinitely",
+                "Can be invested for growth",
+                "All of the above",
+              ],
