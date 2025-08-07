@@ -3541,8 +3541,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "example",
-            content:
-              "Eligibility Loss: John had an HDHP and HSA but added a low-deductible plan mid-year for better coverage. He became ineligible for HSA contributions from that point forward but could keep existing funds and use them for medical expenses.",
+              content:
+                "Eligibility Loss: John had an HDHP and HSA but added a low-deductible plan mid-year for better coverage. He became ineligible for HSA contributions from that point forward but could keep existing funds and use them for medical expenses.",
           },
           {
             type: "list",
