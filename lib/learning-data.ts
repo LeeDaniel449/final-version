@@ -4362,4 +4362,2156 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
               ],
               correctAnswer: "Before you miss any payments",
               explanation:
-                "Contacting creditors proactively, before missing payments, shows good faith and
+                "Contacting creditors proactively, before missing payments, shows good faith and makes them more likely to work with you on hardship programs or modified payment plans.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Avoiding Debt Traps and Predatory Lending",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Yourself from Dangerous Debt Products",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Predatory lenders target vulnerable consumers with high-cost, high-risk debt products that can trap borrowers in cycles of debt. Understanding these products and their alternatives helps you avoid financial traps that can take years to escape.",
+          },
+          {
+            type: "list",
+            content: "Common predatory lending products:",
+            items: [
+              "Payday loans: Short-term, extremely high-cost loans",
+              "Title loans: Secured by vehicle title, risk losing car",
+              "Rent-to-own agreements: Extremely high effective interest rates",
+              "Cash advances: High fees and immediate interest charges",
+              "Subprime credit cards: High fees and rates for poor credit",
+              "Installment loans: High-rate loans marketed to poor credit borrowers",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "True cost of payday loans:",
+            formula: "APR = (Fee ÷ Loan Amount) × (365 ÷ Loan Term) × 100",
+            variables: {
+              Fee: "Cost to borrow (e.g., $15 per $100)",
+              "Loan Amount": "Amount borrowed",
+              "Loan Term": "Days until repayment",
+              "Typical APR": "300-400% for payday loans",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Payday Loan Trap: $300 loan with $45 fee due in 14 days = 391% APR. If you can't repay, you pay another $45 to roll over. After 6 rollovers, you've paid $315 in fees on a $300 loan and still owe the principal.",
+          },
+          {
+            type: "list",
+            content: "Red flags of predatory lending:",
+            items: [
+              "Extremely high interest rates or fees",
+              "Pressure to sign immediately without time to review",
+              "No credit check or 'guaranteed approval' claims",
+              "Balloon payments or unaffordable payment schedules",
+              "Encouragement to lie on applications",
+              "Aggressive sales tactics or door-to-door solicitation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternatives to predatory loans:",
+            items: [
+              "Credit union small-dollar loans (PALs)",
+              "Payment plans with creditors or service providers",
+              "Employer paycheck advances",
+              "Borrowing from family or friends",
+              "Community assistance programs",
+              "Selling items or taking on extra work",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Payday Loan Escape: Maria was trapped in a payday loan cycle, paying $50 every two weeks on a $300 loan. She contacted a credit union, got a $500 PAL at 18% APR, paid off the payday loan, and saved over $1,000 annually.",
+          },
+          {
+            type: "list",
+            content: "Credit card debt traps to avoid:",
+            items: [
+              "Making only minimum payments on high balances",
+              "Cash advances with immediate interest and high fees",
+              "Balance transfer offers with high post-promotional rates",
+              "Store cards with deferred interest promotions",
+              "Credit limit increases that encourage more spending",
+              "Multiple cards from the same issuer (shared limits)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Building emergency alternatives:",
+            items: [
+              "Start with $25-50 emergency fund",
+              "Use automatic savings to build gradually",
+              "Keep emergency fund in separate account",
+              "Consider credit union membership for better loan options",
+              "Build relationships with family/friends for emergency help",
+              "Develop multiple income streams for stability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Legal protections and resources:",
+            items: [
+              "Truth in Lending Act requires disclosure of loan terms",
+              "Fair Debt Collection Practices Act limits collector behavior",
+              "State laws may cap interest rates or regulate lenders",
+              "Consumer Financial Protection Bureau accepts complaints",
+              "Legal aid societies provide free legal assistance",
+              "Credit counseling agencies offer free debt advice",
+            ],
+          },
+          {
+            type: "list",
+            content: "Escaping existing debt traps:",
+            items: [
+              "Stop the cycle - don't renew or roll over loans",
+              "Seek help from nonprofit credit counseling",
+              "Consider debt management plans",
+              "Look into local emergency assistance programs",
+              "Negotiate payment plans with original creditors",
+              "Consult with bankruptcy attorney if situation is severe",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never use one high-cost loan to pay off another. This creates a dangerous cycle that becomes increasingly difficult to escape and can lead to financial ruin.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you're considering a payday loan, try asking your employer for a paycheck advance first. Many employers will advance a portion of earned wages at no cost.",
+          },
+        ],
+        keyTakeaways: [
+          "Predatory loans have extremely high costs and can trap borrowers in debt cycles",
+          "Always calculate the true APR of any loan before borrowing",
+          "Build emergency savings and explore alternatives before using high-cost loans",
+          "Legal protections exist, and free help is available through nonprofit agencies",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the typical APR range for payday loans?",
+              options: ["25-50%", "75-150%", "200-300%", "300-400%"],
+              correctAnswer: "300-400%",
+              explanation:
+                "Payday loans typically have APRs of 300-400% or higher when fees are calculated on an annual basis, making them one of the most expensive forms of credit available.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building Wealth After Debt Freedom",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Transitioning from Debt Payoff to Wealth Building",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Achieving debt freedom is a major milestone, but it's just the beginning of your wealth-building journey. The discipline and habits you developed during debt payoff can be redirected toward building assets and achieving financial independence.",
+          },
+          {
+            type: "list",
+            content: "Immediate steps after debt payoff:",
+            items: [
+              "Celebrate your achievement - you've accomplished something major!",
+              "Redirect debt payments to emergency fund completion",
+              "Increase retirement contributions significantly",
+              "Review and update your budget for new priorities",
+              "Consider increasing insurance coverage",
+              "Set new financial goals beyond debt elimination",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Wealth building acceleration:",
+            formula: "Monthly Wealth Building = Former Debt Payments + Additional Savings",
+            variables: {
+              "Former Debt Payments": "Money previously going to debt",
+              "Additional Savings": "Extra money from lifestyle optimization",
+              "Wealth Building Rate": "Percentage of income going to assets",
+              "Time to FI": "Years to financial independence",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Post-Debt Transition: Sarah was paying $800/month toward debt. After payoff, she allocated $400 to emergency fund completion, $300 to retirement investing, and $100 to a vacation fund. Her wealth building accelerated dramatically.",
+          },
+          {
+            type: "list",
+            content: "Priority order for post-debt money:",
+            items: [
+              "Complete emergency fund (3-6 months expenses)",
+              "Maximize employer 401(k) match if not already",
+              "Pay off any remaining low-balance, high-interest debt",
+              "Increase retirement contributions to 15% of income",
+              "Save for other financial goals (down payment, education)",
+              "Invest in diversified portfolio for long-term growth",
+            ],
+          },
+          {
+            type: "list",
+            content: "Advanced wealth building strategies:",
+            items: [
+              "Real estate investing (rental properties, REITs)",
+              "Business ownership and entrepreneurship",
+              "Tax-advantaged investing (HSA, 529 plans)",
+              "Alternative investments (private equity, angel investing)",
+              "Financial education and professional development",
+              "Estate planning and wealth transfer strategies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Avoiding debt relapse:",
+            items: [
+              "Maintain a detailed budget and track expenses",
+              "Avoid lifestyle inflation as income increases",
+              "Use credit cards responsibly (pay in full, low utilization)",
+              "Set clear financial boundaries with family and friends",
+              "Automate savings and investments",
+              "Regularly review and update your financial plan",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Wealth Building Success: After paying off $40,000 in debt, Tom redirected his $1,000 monthly payments to real estate investing. He bought a rental property, generating passive income and building long-term wealth.",
+          },
+          {
+            type: "list",
+            content: "Long-term financial independence:",
+            items: [
+              "Calculate your financial independence number (25x annual expenses)",
+              "Track your progress toward FI with net worth and savings rate",
+              "Consider early retirement or semi-retirement options",
+              "Plan for healthcare and long-term care expenses",
+              "Create a fulfilling and meaningful life beyond work",
+              "Give back to your community and support causes you care about",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't let debt freedom lead to overconfidence or reckless spending. Maintain the discipline and habits that got you out of debt to build lasting wealth.",
+          },
+          {
+            type: "tip",
+            content:
+              "Celebrate your debt payoff by treating yourself to something you've wanted, but don't let it derail your long-term financial goals. A small reward can reinforce positive behavior.",
+          },
+        ],
+        keyTakeaways: [
+          "Redirect debt payments to emergency fund and retirement savings",
+          "Increase savings rate and invest for long-term growth",
+          "Avoid lifestyle inflation and maintain good financial habits",
+          "Plan for financial independence and a fulfilling life beyond debt",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be your first priority after paying off debt?",
+              options: [
+                "Buying a new car or house",
+                "Taking a long vacation",
+                "Completing your emergency fund",
+                "Investing in high-risk stocks",
+              ],
+              correctAnswer: "Completing your emergency fund",
+              explanation:
+                "Completing your emergency fund provides a financial safety net and prevents you from going back into debt for unexpected expenses. It's the foundation for building long-term wealth.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Debt Management Tools and Resources",
+        duration: "5 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Technology and Support for Debt Freedom",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The right tools and resources can make debt management easier and more effective. From tracking apps to professional counseling, leveraging available resources can accelerate your journey to debt freedom.",
+          },
+          {
+            type: "list",
+            content: "Debt tracking and management apps:",
+            items: [
+              "Debt Payoff Planner: Visual debt payoff tracking",
+              "Tally: Automated credit card payments and optimization",
+              "Mint: Overall financial tracking including debt",
+              "YNAB: Zero-based budgeting with debt focus",
+              "Debt Free: Simple debt snowball/avalanche calculator",
+              "ChangEd: Round-up savings for debt payments",
+            ],
+          },
+          {
+            type: "list",
+            content: "Free online calculators:",
+            items: [
+              "Debt avalanche vs. snowball calculators",
+              "Credit card payoff calculators",
+              "Debt consolidation comparison tools",
+              "Minimum payment calculators",
+              "Interest savings calculators",
+              "Debt-to-income ratio calculators",
+            ],
+          },
+          {
+            type: "list",
+            content: "Professional debt help resources:",
+            items: [
+              "Nonprofit credit counseling agencies (NFCC members)",
+              "Debt management plans through certified counselors",
+              "Financial coaches specializing in debt elimination",
+              "Bankruptcy attorneys for extreme situations",
+              "Employee assistance programs through employers",
+              "Community financial education programs",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Resource Utilization: Mike used a debt tracking app to visualize progress, attended free credit counseling sessions, and joined an online debt payoff community. The combination of tools and support helped him stay motivated and pay off $25,000 in 30 months.",
+          },
+          {
+            type: "list",
+            content: "Educational resources:",
+            items: [
+              "Personal finance books focused on debt elimination",
+              "Podcasts about debt payoff success stories",
+              "YouTube channels with debt management strategies",
+              "Online courses on budgeting and debt management",
+              "Library workshops on financial literacy",
+              "Community college personal finance classes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Support communities:",
+            items: [
+              "Online debt payoff forums and groups",
+              "Social media debt-free communities",
+              "Local financial support groups",
+              "Accountability partners or debt payoff buddies",
+              "Family and friends support networks",
+              "Professional support groups through counseling agencies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing the right resources:",
+            items: [
+              "Start with free options before paying for services",
+              "Verify credentials of any professional advisors",
+              "Read reviews and testimonials from other users",
+              "Ensure tools integrate with your existing accounts",
+              "Look for resources that match your learning style",
+              "Avoid services that seem too good to be true",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Comprehensive Approach: Lisa combined multiple resources: a debt tracking app for daily motivation, monthly credit counseling sessions for strategy, and an online support group for accountability. This multi-faceted approach helped her eliminate $35,000 in debt in 28 months.",
+          },
+          {
+            type: "warning",
+            content:
+              "Be wary of debt settlement companies and credit repair services that charge upfront fees. Many legitimate resources are available for free, and paid services should be thoroughly researched.",
+          },
+          {
+            type: "tip",
+            content:
+              "Don't overwhelm yourself with too many tools. Choose 2-3 resources that work well together and use them consistently rather than jumping between many different options.",
+          },
+        ],
+        keyTakeaways: [
+          "Technology tools can simplify debt tracking and management",
+          "Free professional counseling is available through nonprofit agencies",
+          "Support communities provide motivation and accountability",
+          "Start with free resources before considering paid services",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you prioritize when choosing debt management resources?",
+              options: [
+                "The most expensive options available",
+                "Free, reputable resources first",
+                "The newest technology tools",
+                "Services that promise quick fixes",
+              ],
+              correctAnswer: "Free, reputable resources first",
+              explanation:
+                "Start with free, reputable resources like nonprofit credit counseling agencies and established apps. Many effective debt management tools and services are available at no cost.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Maintaining Debt-Free Living",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Staying Debt-Free for Life",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Achieving debt freedom is an accomplishment, but maintaining it requires ongoing vigilance and good financial habits. Building systems and mindsets that prevent debt accumulation is crucial for long-term financial success.",
+          },
+          {
+            type: "list",
+            content: "Habits for staying debt-free:",
+            items: [
+              "Live below your means consistently",
+              "Maintain and use your emergency fund appropriately",
+              "Pay credit card balances in full every month",
+              "Avoid lifestyle inflation when income increases",
+              "Plan and save for large purchases in advance",
+              "Regularly review and adjust your budget",
+            ],
+          },
+          {
+            type: "list",
+            content: "Building financial resilience:",
+            items: [
+              "Maintain 6-12 months of expenses in emergency savings",
+              "Diversify income sources when possible",
+              "Keep skills updated to maintain employability",
+              "Build strong professional and personal networks",
+              "Maintain adequate insurance coverage",
+              "Create multiple financial safety nets",
+            ],
+          },
+          {
+            type: "list",
+            content: "Smart use of credit after debt freedom:",
+            items: [
+              "Use credit cards for convenience and rewards only",
+              "Never charge more than you can pay off immediately",
+              "Keep old accounts open to maintain credit history",
+              "Monitor credit reports and scores regularly",
+              "Take advantage of 0% promotional offers strategically",
+              "Maintain low credit utilization ratios",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Wealth building acceleration:",
+            formula: "Net Worth Growth = Income - Expenses + Investment Returns",
+            variables: {
+              "Income": "All sources of income",
+              "Expenses": "All living expenses (no debt payments)",
+              "Investment Returns": "Growth from invested savings",
+              "Acceleration": "Former debt payments now building wealth",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Debt-Free Success: After eliminating $30,000 in debt, the Johnson family redirected their $750 monthly debt payments to investments. Five years later, their investment account has grown to over $60,000, demonstrating the power of debt-free wealth building.",
+          },
+          {
+            type: "list",
+            content: "Warning signs of debt creep:",
+            items: [
+              "Carrying credit card balances month to month",
+              "Using credit for routine expenses you used to pay cash for",
+              "Borrowing money for vacations or entertainment",
+              "Making only minimum payments on any debts",
+              "Feeling stressed about money despite having income",
+              "Avoiding looking at account balances or statements",
+            ],
+          },
+          {
+            type: "list",
+            content: "Strategies for major purchases:",
+            items: [
+              "Save in advance for cars, appliances, and home improvements",
+              "Research and compare options thoroughly before buying",
+              "Consider used or refurbished items to reduce costs",
+              "Negotiate prices and terms on major purchases",
+              "If financing is necessary, shop for the best rates",
+              "Ensure monthly payments fit comfortably in your budget",
+            ],
+          },
+          {
+            type: "list",
+            content: "Teaching debt-free principles to family:",
+            items: [
+              "Model good financial behavior for children",
+              "Teach kids about money management and delayed gratification",
+              "Involve family in financial goal setting and budgeting",
+              "Share your debt-free journey and lessons learned",
+              "Encourage saving before spending habits",
+              "Discuss the true cost of debt and interest",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Long-term Success: Ten years after becoming debt-free, Mark and Susan have built a net worth of $500,000. They've purchased two cars with cash, taken multiple vacations, and are on track for early retirement—all while never carrying debt again.",
+          },
+          {
+            type: "list",
+            content: "Annual financial check-ups:",
+            items: [
+              "Review and update your budget annually",
+              "Assess emergency fund adequacy",
+              "Evaluate insurance coverage needs",
+              "Check credit reports for accuracy",
+              "Review investment performance and allocation",
+              "Set new financial goals and priorities",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Create a 'debt-free anniversary' tradition where you celebrate your achievement and recommit to debt-free living. This annual reminder helps maintain focus on your financial values.",
+          },
+        ],
+        keyTakeaways: [
+          "Maintaining debt-free living requires ongoing vigilance and good habits",
+          "Build financial resilience through emergency funds and multiple income sources",
+          "Use credit strategically for convenience and rewards, not financing",
+          "Regular financial check-ups help prevent debt creep",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the most important habit for staying debt-free?",
+              options: [
+                "Never using credit cards",
+                "Living below your means consistently",
+                "Checking your credit score daily",
+                "Avoiding all major purchases",
+              ],
+              correctAnswer: "Living below your means consistently",
+              explanation:
+                "Living below your means consistently is the foundation of debt-free living. It ensures you always have money available for expenses and savings without needing to borrow.",
+            },
+          ],
+        },
+      },
+    ],
+    "loans": [
+      {
+        title: "Understanding Loans: An Overview",
+        duration: "7 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "The Basics of Borrowing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Loans are a fundamental part of the financial landscape, enabling individuals and businesses to make large purchases or investments they couldn't otherwise afford. Understanding the mechanics of loans, including interest rates, terms, and fees, is crucial for making informed borrowing decisions.",
+          },
+          {
+            type: "list",
+            content: "Key loan components:",
+            items: [
+              "Principal: The original amount borrowed",
+              "Interest rate: The cost of borrowing, expressed as APR",
+              "Loan term: The length of time to repay the loan",
+              "Fees: Origination, late payment, prep payment penalties",
+              "Collateral: Assets securing the loan (for secured loans)",
+              "Monthly payment: Regular payment amount including principal and interest",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Monthly payment calculation:",
+            formula: "PMT = P × [r(1+r)^n] / [(1+r)^n - 1]",
+            variables: {
+              "PMT": "Monthly payment",
+              "P": "Principal loan amount",
+              "r": "Monthly interest rate (annual rate ÷ 12)",
+              "n": "Total number of payments (years × 12)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Loan Example: $20,000 auto loan at 6% APR for 5 years. Monthly payment = $386.66. Total payments = $23,199.43. Total interest paid = $3,199.43.",
+          },
+          {
+            type: "list",
+            content: "Types of loans by security:",
+            items: [
+              "Secured loans: Backed by collateral (auto, home, boat)",
+              "Lower interest rates due to reduced lender risk",
+              "Collateral can be repossessed if payments are missed",
+              "Unsecured loans: No collateral required",
+              "Higher interest rates due to increased lender risk",
+              "Examples: Personal loans, credit cards, student loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of loans by payment structure:",
+            items: [
+              "Installment loans: Fixed payments over set term",
+              "Revolving credit: Variable payments, reusable credit line",
+              "Interest-only loans: Pay only interest for initial period",
+              "Balloon loans: Large final payment at end of term",
+              "Amortizing loans: Payments include principal and interest",
+              "Non-amortizing loans: Interest-only or balloon structure",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors affecting loan approval and terms:",
+            items: [
+              "Credit score: Higher scores get better rates and terms",
+              "Income and employment history: Stability and ability to pay",
+              "Debt-to-income ratio: Total monthly debts vs. income",
+              "Down payment: Larger down payments reduce lender risk",
+              "Loan purpose: Some uses are considered lower risk",
+              "Loan amount and term: Affects risk assessment",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Credit Impact: Sarah (credit score 780) and Mike (credit score 620) both applied for $25,000 auto loans. Sarah received 4.5% APR, while Mike received 12% APR. Over 5 years, Mike pays $4,200 more in interest due to his lower credit score.",
+          },
+          {
+            type: "list",
+            content: "Understanding APR vs. interest rate:",
+            items: [
+              "Interest rate: The cost of borrowing the principal",
+              "APR: Annual Percentage Rate includes interest plus fees",
+              "APR provides true cost comparison between loans",
+              "Always compare APRs, not just interest rates",
+              "APR is required disclosure for most consumer loans",
+              "Higher fees can make low-rate loans more expensive overall",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Beware of loans with prepayment penalties, which charge fees for paying off the loan early. These penalties can trap you in high-interest debt even when you have the means to pay it off.",
+          },
+          {
+            type: "tip",
+            content:
+              "Always read the loan agreement carefully before signing. Pay special attention to the APR, fees, and any penalties. Don't hesitate to ask questions about terms you don't understand.",
+          },
+        ],
+        keyTakeaways: [
+          "Loans consist of principal, interest, fees, and terms",
+          "Secured loans typically offer lower rates than unsecured loans",
+          "Credit score significantly impacts loan approval and interest rates",
+          "APR provides the true cost comparison between different loans",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does APR stand for and why is it important?",
+              options: [
+                "Annual Payment Rate - shows monthly payment amount",
+                "Annual Percentage Rate - includes interest and fees for true cost comparison",
+                "Approved Payment Rate - the rate you qualify for",
+                "Average Principal Rate - the typical rate for that loan type",
+              ],
+              correctAnswer: "Annual Percentage Rate - includes interest and fees for true cost comparison",
+              explanation:
+                "APR (Annual Percentage Rate) includes both the interest rate and fees, providing the true cost of borrowing and allowing accurate comparison between different loan offers.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Auto Loans: Financing Your Vehicle",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Smart Car Financing Strategies",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Auto loans are one of the most common types of installment loans. Understanding how auto financing works, where to get the best rates, and how to structure the loan can save you thousands of dollars over the life of the loan.",
+          },
+          {
+            type: "list",
+            content: "Auto loan basics:",
+            items: [
+              "Secured by the vehicle itself as collateral",
+              "Typical terms: 3-7 years (36-84 months)",
+              "Interest rates: 3-15% depending on credit and age of vehicle",
+              "Down payment: 10-20% recommended, though 0% down available",
+              "Gap insurance: Covers difference between loan balance and car value",
+              "Extended warranties: Often offered but not always necessary",
+            ],
+          },
+          {
+            type: "list",
+            content: "Where to get auto loans:",
+            items: [
+              "Banks and credit unions: Often offer competitive rates",
+              "Dealer financing: Convenient but may not be the best rate",
+              "Online lenders: Can offer competitive rates and quick approval",
+              "Manufacturer financing: Special promotions and incentives",
+              "Get pre-approved before shopping to know your budget",
+              "Compare offers from multiple sources",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Auto loan comparison:",
+            formula: "Total Cost = Monthly Payment × Number of Payments",
+            variables: {
+              "Example": "$25,000 car loan",
+              "5 years at 5%": "$471.78/month, total cost $28,307",
+              "7 years at 5%": "$353.39/month, total cost $29,684",
+              "Difference": "$1,377 more for longer term",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Smart Shopping: Lisa got pre-approved at her credit union for 4.5% APR. The dealer offered 6.5% financing but had a $2,000 cash rebate. She took the rebate and used her credit union loan, saving money overall.",
+          },
+          {
+            type: "list",
+            content: "New vs. used car financing:",
+            items: [
+              "New cars: Lower rates (2-6%), longer terms available",
+              "Manufacturer incentives: 0% APR promotions, cash rebates",
+              "Higher depreciation: Car loses value quickly",
+              "Used cars: Higher rates (4-12%), shorter terms typical",
+              "Less depreciation: Value more stable",
+              "Certified pre-owned: Warranty coverage, slightly higher rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Negotiating auto loans:",
+            items: [
+              "Negotiate car price separately from financing",
+              "Don't reveal your pre-approval until after price negotiation",
+              "Compare dealer financing to your pre-approved rate",
+              "Watch for add-ons: Extended warranties, gap insurance, etc.",
+              "Read all paperwork carefully before signing",
+              "Understand the total cost, not just monthly payment",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common auto loan mistakes:",
+            items: [
+              "Focusing only on monthly payment instead of total cost",
+              "Taking the longest term available to lower payments",
+              "Not getting pre-approved before shopping",
+              "Trading in upside-down loans (owing more than car's worth)",
+              "Buying unnecessary add-ons and extended warranties",
+              "Not reading the fine print on promotional offers",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Loan Term Impact: Tom chose a 7-year loan for lower payments ($350 vs. $450 for 5 years). However, he paid $3,600 more in total interest and was upside-down on the loan for 4 years, limiting his flexibility.",
+          },
+          {
+            type: "list",
+            content: "Strategies to save on auto loans:",
+            items: [
+              "Improve credit score before applying",
+              "Make a larger down payment to reduce loan amount",
+              "Choose shorter loan terms when possible",
+              "Consider certified pre-owned vehicles",
+              "Shop around for the best rates",
+              "Pay extra toward principal to pay off loan early",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be cautious of very long loan terms (7+ years). While they lower monthly payments, you'll pay much more in interest and may owe more than the car is worth for years.",
+          },
+          {
+            type: "tip",
+            content:
+              "Get pre-approved for financing before visiting dealerships. This gives you negotiating power and helps you focus on the car's price rather than monthly payments.",
+          },
+        ],
+        keyTakeaways: [
+          "Auto loans are secured by the vehicle and typically offer lower rates",
+          "Get pre-approved to understand your budget and negotiating position",
+          "Shorter loan terms cost less overall despite higher monthly payments",
+          "Negotiate car price separately from financing terms",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Why should you get pre-approved for an auto loan before shopping?",
+              options: [
+                "It guarantees you'll get the car you want",
+                "It gives you negotiating power and helps you focus on price",
+                "It's required by law before purchasing a vehicle",
+                "It automatically gets you the best interest rate available",
+              ],
+              correctAnswer: "It gives you negotiating power and helps you focus on price",
+              explanation:
+                "Pre-approval gives you a baseline rate to compare against dealer financing and helps you negotiate the car's price separately from financing, often resulting in better overall deals.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Student Loans: Investing in Education",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Navigating Education Financing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Student loans are a significant financial decision that can impact your finances for decades. Understanding the different types of student loans, repayment options, and strategies for managing education debt is crucial for making informed decisions about financing your education.",
+          },
+          {
+            type: "list",
+            content: "Types of federal student loans:",
+            items: [
+              "Direct Subsidized Loans: Need-based, government pays interest while in school",
+              "Direct Unsubsidized Loans: Not need-based, interest accrues while in school",
+              "Direct PLUS Loans: For parents and graduate students, higher rates",
+              "Perkins Loans: Low-interest loans for exceptional need (discontinued for new loans)",
+              "Fixed interest rates set annually by Congress",
+              "No credit check required for most federal loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "Federal vs. private student loans:",
+            items: [
+              "Federal loans: Fixed rates, income-driven repayment, forgiveness options",
+              "Federal protections: Deferment, forbearance, discharge options",
+              "Private loans: Variable or fixed rates, credit-based approval",
+              "Private loans: Fewer repayment options and protections",
+              "Exhaust federal options before considering private loans",
+              "Private loans may have lower rates for excellent credit",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Student loan payment calculation:",
+            formula: "Standard 10-year repayment uses standard loan payment formula",
+            variables: {
+              "Example": "$30,000 in loans at 5% APR",
+              "10-year payment": "$318.20/month",
+              "Total payments": "$38,184",
+              "Total interest": "$8,184",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Loan Comparison: Sarah has $25,000 in federal loans at 4.5% and $15,000 in private loans at 7%. She focuses extra payments on the private loans first due to higher interest rates and fewer protections.",
+          },
+          {
+            type: "list",
+            content: "Federal repayment plans:",
+            items: [
+              "Standard: Fixed payments over 10 years",
+              "Graduated: Payments start low and increase every 2 years",
+              "Extended: Lower payments over up to 25 years",
+              "Income-Driven: Payments based on income and family size",
+              "Income-Based Repayment (IBR): 10-15% of discretionary income",
+              "Pay As You Earn (PAYE): 10% of discretionary income",
+            ],
+          },
+          {
+            type: "list",
+            content: "Student loan forgiveness programs:",
+            items: [
+              "Public Service Loan Forgiveness: 120 qualifying payments in public service",
+              "Teacher Loan Forgiveness: Up to $17,500 for qualifying teachers",
+              "Income-driven repayment forgiveness: After 20-25 years of payments",
+              "Military service forgiveness: Various programs for service members",
+              "State-specific programs: Many states offer loan forgiveness",
+              "Employer assistance: Some employers help with loan payments",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "PSLF Success: Mark worked for a nonprofit and enrolled in PSLF. After 10 years of income-driven payments totaling $45,000, his remaining $85,000 in loans were forgiven tax-free, saving him significant money.",
+          },
+          {
+            type: "list",
+            content: "Strategies for managing student loans:",
+            items: [
+              "Make interest payments while in school if possible",
+              "Consider autopay discounts (typically 0.25% rate reduction)",
+              "Pay extra toward highest-rate loans first",
+              "Avoid default at all costs - severe consequences",
+              "Communicate with servicer if having payment difficulties",
+              "Keep detailed records of all payments and communications",
+            ],
+          },
+          {
+            type: "list",
+            content: "Student loan tax benefits:",
+            items: [
+              "Student loan interest deduction: Up to $2,500 annually",
+              "American Opportunity Tax Credit: Up to $2,500 for qualified expenses",
+              "Lifetime Learning Credit: Up to $2,000 for qualified expenses",
+              "Income limits apply to all education tax benefits",
+              "Keep records of tuition and loan interest payments",
+              "Consult tax professional for complex situations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Avoiding student loan problems:",
+            items: [
+              "Borrow only what you need for education expenses",
+              "Understand your total debt load and future payments",
+              "Choose a career path that can support your debt level",
+              "Stay in contact with your loan servicer",
+              "Update contact information when you move",
+              "Never ignore student loan communications",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Student loans generally cannot be discharged in bankruptcy and have serious consequences for default, including wage garnishment and tax refund seizure. Always communicate with your servicer if you're having trouble making payments.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you're struggling with federal student loan payments, contact your servicer immediately to discuss income-driven repayment plans or temporary forbearance options before missing payments.",
+          },
+        ],
+        keyTakeaways: [
+          "Federal student loans offer more protections and repayment options than private loans",
+          "Income-driven repayment plans can make payments more manageable",
+          "Loan forgiveness programs exist for public service and other qualifying employment",
+          "Never ignore student loan communications - options exist to help struggling borrowers",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of federal student loans over private student loans?",
+              options: [
+                "Federal loans always have lower interest rates",
+                "Federal loans offer more repayment options and borrower protections",
+                "Federal loans don't require repayment",
+                "Federal loans can be used for any purpose",
+              ],
+              correctAnswer: "Federal loans offer more repayment options and borrower protections",
+              explanation:
+                "Federal student loans offer income-driven repayment plans, forgiveness programs, deferment and forbearance options, and other borrower protections that private loans typically don't provide.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Personal Loans: Flexible Financing Options",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Unsecured Personal Loans",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Personal loans are versatile, unsecured loans that can be used for various purposes, from debt consolidation to home improvements. Understanding when personal loans make sense, how to qualify for the best rates, and alternatives to consider can help you make informed borrowing decisions.",
+          },
+          {
+            type: "list",
+            content: "Personal loan characteristics:",
+            items: [
+              "Unsecured: No collateral required",
+              "Fixed interest rates: Typically 6-36% APR",
+              "Fixed terms: Usually 2-7 years",
+              "Fixed monthly payments: Same amount each month",
+              "Origination fees: 1-8% of loan amount (some lenders charge none)",
+              "Quick funding: Often within 1-7 business days",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common uses for personal loans:",
+            items: [
+              "Debt consolidation: Combine multiple high-interest debts",
+              "Home improvements: Renovations and repairs",
+              "Medical expenses: Large medical bills or procedures",
+              "Major purchases: Appliances, furniture, electronics",
+              "Emergency expenses: Unexpected costs not covered by emergency fund",
+              "Wedding or vacation: Though not always recommended",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Personal loan cost comparison:",
+            formula: "Total Cost = (Monthly Payment × Number of Payments) + Origination Fee",
+            variables: {
+              "Example": "$15,000 loan for 5 years",
+              "Option A": "10% APR, 3% origination fee = $319/month, total $19,590",
+              "Option B": "12% APR, no origination fee = $334/month, total $20,040",
+              "Best Choice": "Option A saves $450 despite higher fee",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Debt Consolidation: Maria had $12,000 in credit card debt at an average 22% APR with $360 minimum payments. She got a personal loan at 11% APR for $12,000 with $261 monthly payments, saving $99 monthly and $3,500 in total interest.",
+          },
+          {
+            type: "list",
+            content: "Where to get personal loans:",
+            items: [
+              "Banks: Traditional banks, often require existing relationship",
+              "Credit unions: Often offer competitive rates to members",
+              "Online lenders: Quick application process, competitive rates",
+              "Peer-to-peer lending: Funded by individual investors",
+              "Credit card companies: May offer personal loans to cardholders",
+              "Avoid payday lenders and other predatory options",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors affecting personal loan approval:",
+            items: [
+              "Credit score: Higher scores get better rates (typically 600+ required)",
+              "Income: Stable employment and sufficient income",
+              "Debt-to-income ratio: Lower ratios improve approval odds",
+              "Credit history: Length and quality of credit history",
+              "Loan purpose: Some uses are viewed more favorably",
+              "Existing relationship: Banking relationship may help",
+            ],
+          },
+          {
+            type: "list",
+            content: "Personal loan alternatives:",
+            items: [
+              "0% APR credit cards: For shorter-term needs",
+              "Home equity loans/HELOC: Lower rates but home is collateral",
+              "401(k) loans: Borrow from retirement savings",
+              "Family loans: Informal arrangements with relatives",
+              "Payment plans: Direct arrangements with service providers",
+              "Savings: Use existing savings if available",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Smart Usage: Tom needed $8,000 for home repairs. Instead of a personal loan at 14% APR, he used a 0% APR balance transfer offer and paid it off in 15 months, saving over $800 in interest.",
+          },
+          {
+            type: "list",
+            content: "When personal loans make sense:",
+            items: [
+              "Consolidating high-interest debt at a lower rate",
+              "Financing necessary expenses when savings aren't sufficient",
+              "When you have a clear repayment plan",
+              "Interest rate is significantly lower than alternatives",
+              "You can afford the monthly payments comfortably",
+              "The loan serves a productive purpose",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to avoid personal loans:",
+            items: [
+              "For discretionary spending like vacations or luxury items",
+              "When you can't afford the monthly payments",
+              "If you haven't addressed underlying spending problems",
+              "When cheaper alternatives are available",
+              "For very short-term needs (under 6 months)",
+              "If it would push your debt-to-income ratio too high",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Personal loans have higher interest rates than secured loans because they're unsecured. Make sure the loan serves a productive purpose and that you can comfortably afford the payments.",
+          },
+          {
+            type: "tip",
+            content:
+              "Shop around with multiple lenders and compare the total cost of the loan, including any origination fees, not just the interest rate or monthly payment.",
+          },
+        ],
+        keyTakeaways: [
+          "Personal loans are unsecured with fixed rates and terms",
+          "Best used for debt consolidation or necessary expenses",
+          "Shop around for the best rates and lowest fees",
+          "Consider alternatives like 0% credit cards or home equity loans",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the best use for a personal loan?",
+              options: [
+                "Funding a luxury vacation",
+                "Consolidating high-interest credit card debt",
+                "Buying the latest smartphone",
+                "Investing in the stock market",
+              ],
+              correctAnswer: "Consolidating high-interest credit card debt",
+              explanation:
+                "Debt consolidation is one of the best uses for personal loans because it can reduce your overall interest rate and simplify payments, helping you pay off debt faster and save money.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Loan Shopping and Comparison",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Finding the Best Loan Terms",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Shopping for loans requires comparing multiple factors beyond just interest rates. Understanding how to evaluate loan offers, negotiate terms, and avoid common pitfalls can save you thousands of dollars over the life of your loan.",
+          },
+          {
+            type: "list",
+            content: "Key factors to compare:",
+            items: [
+              "APR: Annual Percentage Rate including all costs",
+              "Loan term: Length of repayment period",
+              "Monthly payment: Amount you'll pay each month",
+              "Total cost: Total amount you'll pay over the loan's life",
+              "Fees: Origination, application, prepayment penalties",
+              "Lender reputation: Customer service and reliability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Where to shop for loans:",
+            items: [
+              "Banks: Traditional banks where you have relationships",
+              "Credit unions: Often offer competitive rates to members",
+              "Online lenders: Convenient application, competitive rates",
+              "Peer-to-peer platforms: Alternative lending sources",
+              "Loan brokers: Can shop multiple lenders (watch for fees)",
+              "Manufacturer financing: For auto loans and specific purchases",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Loan comparison example:",
+            formula: "Compare total cost = (Monthly Payment × Term) + Fees",
+            variables: {
+              "Loan A": "$20,000 at 8% for 5 years, $50 fee = $24,332 total",
+              "Loan B": "$20,000 at 9% for 4 years, no fee = $23,598 total",
+              "Best Choice": "Loan B saves $734 despite higher rate",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Smart Shopping: David applied to 5 lenders within 14 days for an auto loan. The rates ranged from 5.5% to 8.9%. By choosing the lowest rate, he saved $2,100 over the loan term while the multiple inquiries only counted as one on his credit report.",
+          },
+          {
+            type: "list",
+            content: "Understanding rate shopping windows:",
+            items: [
+              "Multiple inquiries for same loan type within 14-45 days count as one",
+              "This allows you to shop around without hurting your credit score",
+              "Window varies by credit scoring model (14-45 days)",
+              "Only applies to mortgage, auto, and student loan shopping",
+              "Personal loan inquiries are typically counted individually",
+              "Get all applications in within the shortest window to be safe",
+            ],
+          },
+          {
+            type: "list",
+            content: "Pre-qualification vs. pre-approval:",
+            items: [
+              "Pre-qualification: Soft credit check, estimated terms",
+              "Pre-approval: Hard credit check, conditional approval",
+              "Pre-qualification doesn't guarantee final terms",
+              "Pre-approval gives you negotiating power",
+              "Use pre-qualification to compare options initially",
+              "Get pre-approval for serious shopping",
+            ],
+          },
+          {
+            type: "list",
+            content: "Negotiating loan terms:",
+            items: [
+              "Use competing offers to negotiate better rates",
+              "Ask about rate discounts (autopay, relationship discounts)",
+              "Negotiate fees, especially origination fees",
+              "Consider shorter terms for lower total cost",
+              "Ask about prepayment options and penalties",
+              "Don't be afraid to walk away from poor offers",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Negotiation Success: Lisa received a personal loan offer at 12% APR. She showed this to her credit union, which matched the rate and waived the origination fee, saving her $600 upfront and improving her monthly payment.",
+          },
+          {
+            type: "list",
+            content: "Red flags to avoid:",
+            items: [
+              "Guaranteed approval regardless of credit",
+              "Pressure to sign immediately without time to review",
+              "Requests for upfront fees before loan approval",
+              "Rates that seem too good to be true",
+              "Lenders who don't check your credit or income",
+              "High-pressure sales tactics or door-to-door solicitation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Documentation to prepare:",
+            items: [
+              "Recent pay stubs or income verification",
+              "Tax returns for self-employed borrowers",
+              "Bank statements showing assets and cash flow",
+              "Employment verification letter",
+              "List of debts and monthly payments",
+              "Identification and Social Security card",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Beware of loan scams that ask for upfront fees or guarantee approval regardless of credit. Legitimate lenders don't require payment before approving and funding your loan.",
+          },
+          {
+            type: "tip",
+            content:
+              "Create a loan comparison spreadsheet with APR, monthly payment, total cost, and fees for each offer. This makes it easy to see which loan truly offers the best value.",
+          },
+        ],
+        keyTakeaways: [
+          "Compare APR, not just interest rates, for true cost comparison",
+          "Shop multiple lenders within the rate shopping window",
+          "Use pre-approval to strengthen your negotiating position",
+          "Calculate total loan cost, including all fees, before deciding",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the benefit of shopping for loans within the rate shopping window?",
+              options: [
+                "You get guaranteed approval from all lenders",
+                "Multiple credit inquiries count as one for credit scoring",
+                "You automatically get the lowest available rate",
+                "Lenders are required to match competitors' offers",
+              ],
+              correctAnswer: "Multiple credit inquiries count as one for credit scoring",
+              explanation:
+                "When you shop for the same type of loan within 14-45 days, multiple hard inquiries are treated as a single inquiry for credit scoring purposes, allowing you to compare offers without damaging your credit score.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Loan Repayment Strategies",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Optimizing Your Loan Payoff",
+          },
+          {
+            type: "paragraph",
+            content:
+              "How you repay your loans can significantly impact the total cost and time to payoff. Understanding different repayment strategies, when to pay extra, and how to prioritize multiple loans can save you thousands in interest and help you become debt-free faster.",
+          },
+          {
+            type: "list",
+            content: "Basic repayment strategies:",
+            items: [
+              "Standard payments: Make required monthly payments on time",
+              "Bi-weekly payments: Pay half monthly amount every two weeks",
+              "Extra principal payments: Add money to principal each month",
+              "Lump sum payments: Use windfalls to pay down principal",
+              "Refinancing: Replace loan with better terms",
+              "Avalanche method: Pay extra on highest-rate loans first",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Bi-weekly payment impact:",
+            formula: "Bi-weekly = Monthly Payment ÷ 2, paid every 2 weeks",
+            variables: {
+              "Example": "$300,000 mortgage, 30 years, 4% APR",
+              "Monthly payments": "$1,432 for 30 years, $215,609 interest",
+              "Bi-weekly payments": "$716 every 2 weeks, $179,838 interest",
+              "Savings": "$35,771 less interest, 4.5 years shorter term",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Extra Payment Strategy: Sarah had a $15,000 auto loan at 6% APR with $290 monthly payments. By adding $50 extra each month toward principal, she paid off the loan 14 months early and saved $1,200 in interest.",
+          },
+          {
+            type: "list",
+            content: "When to pay extra on loans:",
+            items: [
+              "After building emergency fund and getting employer 401(k) match",
+              "When loan interest rate exceeds expected investment returns",
+              "For high-interest debt (typically above 6-8%)",
+              "When you have stable income and no other high-priority goals",
+              "To eliminate PMI on mortgages faster",
+              "For peace of mind and guaranteed return",
+            ],
+          },
+          {
+            type: "list",
+            content: "When NOT to pay extra on loans:",
+            items: [
+              "If you don't have an emergency fund",
+              "When loan rates are very low (under 4%)",
+              "If you're not maximizing retirement contributions",
+              "When you have higher-rate debt elsewhere",
+              "If extra payments would strain your budget",
+              "When loan interest is tax-deductible and you benefit",
+            ],
+          },
+          {
+            type: "list",
+            content: "Prioritizing multiple loans:",
+            items: [
+              "List all loans with balances, rates, and minimum payments",
+              "Pay minimums on all loans to avoid late fees",
+              "Apply extra payments to highest-rate loan first (avalanche)",
+              "Consider emotional factors (small balance payoffs for motivation)",
+              "Factor in tax deductibility of interest",
+              "Review and adjust strategy as situations change",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Multi-Loan Strategy: Mike had a $200,000 mortgage (3.5%), $25,000 student loans (5.5%), and $8,000 auto loan (7%). He focused extra payments on the auto loan first, then student loans, while making minimum payments on the low-rate mortgage.",
+          },
+          {
+            type: "list",
+            content: "Refinancing considerations:",
+            items: [
+              "Significantly lower interest rates available",
+              "Improved credit score since original loan",
+              "Changed financial circumstances",
+              "Want to change loan terms (shorter/longer)",
+              "Calculate break-even point including closing costs",
+              "Consider loss of benefits (student loan protections)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Loan payoff mistakes to avoid:",
+            items: [
+              "Paying extra without specifying it goes to principal",
+              "Neglecting emergency fund to pay off low-rate debt",
+              "Not considering tax implications of loan interest deductions",
+              "Paying off loans instead of investing when rates are very low",
+              "Not communicating with lender about payment allocation",
+              "Stopping extra payments when you're close to payoff",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tracking your progress:",
+            items: [
+              "Monitor principal balance reduction monthly",
+              "Calculate interest saved from extra payments",
+              "Track payoff timeline acceleration",
+              "Celebrate milestones (50% paid off, etc.)",
+              "Adjust strategy based on life changes",
+              "Plan for what to do with freed-up payments after payoff",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Always specify that extra payments should go toward principal, not future payments. Some lenders may apply extra money to advance your due date instead of reducing the principal balance.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic extra payments of even small amounts ($25-50) toward your highest-rate loan. Consistency is more important than the amount when building wealth and reducing debt.",
+          },
+        ],
+        keyTakeaways: [
+          "Extra payments toward principal can significantly reduce total interest paid",
+          "Bi-weekly payments are an easy way to make one extra payment per year",
+          "Prioritize extra payments on highest-rate loans first",
+          "Balance loan payoff with other financial priorities like emergency funds",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main benefit of making bi-weekly loan payments?",
+              options: [
+                "You pay less interest each payment",
+                "You make 26 payments per year instead of 12",
+                "The lender reduces your interest rate",
+                "You can skip payments during some months",
+              ],
+              correctAnswer: "You make 26 payments per year instead of 12",
+              explanation:
+                "Bi-weekly payments result in 26 payments per year (equivalent to 13 monthly payments), which means you make one extra payment annually, significantly reducing the loan term and total interest paid.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Avoiding Loan Scams and Predatory Lending",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Yourself from Dangerous Lending Practices",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Predatory lenders target vulnerable borrowers with deceptive practices and unfair loan terms. Understanding how to identify and avoid these scams protects you from financial harm and helps you find legitimate lending options when you need them.",
+          },
+          {
+            type: "list",
+            content: "Common loan scams and red flags:",
+            items: [
+              "Guaranteed approval regardless of credit history",
+              "Requests for upfront fees before loan approval",
+              "Pressure to sign immediately without time to review",
+              "Door-to-door or unsolicited phone/email offers",
+              "No physical address or proper licensing",
+              "Rates and terms that seem too good to be true",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of predatory loans to avoid:",
+            items: [
+              "Payday loans: Extremely high APRs (300-400%+)",
+              "Title loans: Risk losing your vehicle for small loan",
+              "Advance fee loans: Charge fees before providing loan",
+              "Loan packing: Adding unnecessary insurance or services",
+              "Equity stripping: Loans based on home equity, not ability to pay",
+              "Loan flipping: Repeatedly refinancing with high fees",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Predatory loan cost example:",
+            formula: "True APR = (Total Fees + Interest) ÷ Loan Amount ÷ Term × 365 × 100",
+            variables: {
+              "Payday loan": "$300 for 14 days with $45 fee",
+              "APR calculation": "($45 ÷ $300 ÷ 14) × 365 × 100 = 391% APR",
+              "Comparison": "Credit card cash advance typically 25-30% APR",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Scam Avoidance: Tom received a call offering a guaranteed $5,000 loan for just a $200 processing fee. He recognized this as a scam because legitimate lenders don't require upfront fees and hung up instead of providing his banking information.",
+          },
+          {
+            type: "list",
+            content: "Characteristics of legitimate lenders:",
+            items: [
+              "Licensed in your state (check with state regulators)",
+              "Physical address and proper contact information",
+              "Clear disclosure of all terms, rates, and fees",
+              "Allow time to review loan documents",
+              "Check your credit and verify income",
+              "Membership in industry associations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Protecting yourself when loan shopping:",
+            items: [
+              "Research lenders before applying",
+              "Never pay upfront fees for loan approval",
+              "Read all documents carefully before signing",
+              "Verify lender licensing with state authorities",
+              "Get all promises in writing",
+              "Trust your instincts if something feels wrong",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternatives to predatory loans:",
+            items: [
+              "Credit union small-dollar loans (PALs)",
+              "Payment plans with creditors",
+              "Employer paycheck advances",
+              "Borrowing from family or friends",
+              "Community assistance programs",
+              "Selling items or taking on extra work",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Predatory Loan Trap: Maria took a $500 payday loan and couldn't repay it in two weeks. After six rollovers, she had paid $450 in fees and still owed the original $500. A credit union PAL would have cost her $50 in interest for the same period.",
+          },
+          {
+            type: "list",
+            content: "If you've been victimized:",
+            items: [
+              "Document all communications and transactions",
+              "Contact your state attorney general's office",
+              "File complaints with Consumer Financial Protection Bureau",
+              "Consult with a consumer protection attorney",
+              "Report to Better Business Bureau",
+              "Warn others about the predatory lender",
+            ],
+          },
+          {
+            type: "list",
+            content: "Building alternatives to predatory lending:",
+            items: [
+              "Build emergency savings, even small amounts",
+              "Establish relationships with credit unions",
+              "Improve credit score for better loan options",
+              "Create multiple income streams for stability",
+              "Build support network of family and friends",
+              "Learn about community resources and assistance programs",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "If a lender guarantees approval without checking your credit or asks for money upfront, it's almost certainly a scam. Legitimate lenders always verify your ability to repay before approving loans.",
+          },
+          {
+            type: "tip",
+            content:
+              "Before working with any lender, check their licensing status with your state's financial regulatory agency. Most states have online databases where you can verify legitimate lenders.",
+          },
+        ],
+        keyTakeaways: [
+          "Legitimate lenders never guarantee approval or require upfront fees",
+          "Predatory loans often have extremely high costs and unfair terms",
+          "Research lenders and verify licensing before applying",
+          "Build emergency savings and credit union relationships for better options",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the biggest red flag of a loan scam?",
+              options: [
+                "Requiring a credit check",
+                "Asking for proof of income",
+                "Requesting upfront fees before loan approval",
+                "Offering competitive interest rates",
+              ],
+              correctAnswer: "Requesting upfront fees before loan approval",
+              explanation:
+                "Legitimate lenders never require upfront fees before approving and funding a loan. Any request for money before you receive your loan proceeds is a clear sign of a scam.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building Credit Through Responsible Borrowing",
+        duration: "5 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Using Loans to Strengthen Your Credit Profile",
+          },
+          {
+            type: "paragraph",
+            content:
+              "When managed responsibly, loans can be powerful tools for building and improving your credit score. Understanding how different types of loans affect your credit and implementing smart borrowing strategies can help you build a strong credit profile over time.",
+          },
+          {
+            type: "list",
+            content: "How loans affect your credit score:",
+            items: [
+              "Payment history (35%): On-time payments boost your score",
+              "Credit utilization (30%): Paying down balances improves score",
+              "Credit mix (10%): Variety of account types helps",
+              "Length of credit history (15%): Older accounts help",
+              "New credit (10%): Too many new accounts can hurt temporarily",
+              "Hard inquiries: Temporary small decrease when applying",
+            ],
+          },
+          {
+            type: "list",
+            content: "Best loans for building credit:",
+            items: [
+              "Credit-builder loans: Designed specifically for credit building",
+              "Secured credit cards: Low-risk way to establish credit",
+              "Auto loans: Installment credit with reasonable rates",
+              "Student loans: Long-term installment credit",
+              "Small personal loans: If you can get approved at reasonable rates",
+              "Authorized user accounts: Benefit from someone else's good credit",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Credit Building Success: Alex had no credit history and got a credit-builder loan for $1,000. After 12 months of on-time payments, his credit score reached 680, qualifying him for a regular credit card and auto loan with good rates.",
+          },
+          {
+            type: "list",
+            content: "Strategies for credit building through loans:",
+            items: [
+              "Always make payments on time - set up autopay",
+              "Keep credit utilization low on revolving accounts",
+              "Don't close old accounts in good standing",
+              "Mix installment loans with revolving credit",
+              "Pay more than minimums when possible",
+              "Monitor your credit report for accuracy",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit-builder loans explained:",
+            items: [
+              "Loan proceeds held in savings account until paid off",
+              "Make monthly payments to build payment history",
+              "Get access to funds after loan is fully paid",
+              "Typically offered by credit unions and community banks",
+              "Lower risk for lenders, good for building credit",
+              "Usually have reasonable interest rates and fees",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Credit Mix Strategy: Jennifer had only credit cards and wanted to improve her credit mix. She took a small personal loan and made automatic payments. Her credit score increased 25 points over six months due to the improved account variety.",
+          },
+          {
+            type: "list",
+            content: "Mistakes that hurt credit when borrowing:",
+            items: [
+              "Missing or late payments (biggest negative impact)",
+              "Maxing out credit cards or loans",
+              "Applying for too much credit at once",
+              "Closing old accounts in good standing",
+              "Not monitoring credit reports for errors",
+              "Using loans for purposes that don't improve financial position",
+            ],
+          },
+          {
+            type: "list",
+            content: "Timeline for credit improvement:",
+            items: [
+              "First credit score: 3-6 months of credit activity",
+              "Noticeable improvements: 3-6 months of good habits",
+              "Significant improvements: 6-12 months of consistent payments",
+              "Excellent credit: 2-7 years of responsible credit use",
+              "Recovery from negatives: 2-7 years depending on severity",
+              "Patience and consistency are key to success",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't take on debt solely to build credit. Only borrow what you need and can afford to repay. The goal is to build credit while maintaining financial health, not to accumulate unnecessary debt.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic payments for all loans to ensure you never miss a payment. Payment history is the most important factor in your credit score, and automation removes the risk of human error.",
+          },
+        ],
+        keyTakeaways: [
+          "On-time loan payments are the most important factor for building credit",
+          "A mix of installment loans and revolving credit helps your score",
+          "Credit-builder loans are designed specifically for establishing credit",
+          "Never borrow more than you can afford just to build credit",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important factor for building credit through loans?",
+              options: [
+                "Having many different types of loans",
+                "Borrowing large amounts of money",
+                "Making all payments on time",
+                "Paying off loans as quickly as possible",
+              ],
+              correctAnswer: "Making all payments on time",
+              explanation:
+                "Payment history accounts for 35% of your credit score and is the most important factor. Making all loan payments on time consistently is the best way to build and maintain good credit.",
+            },
+          ],
+        },
+      },
+    ],
+    "mortgages": [
+      {
+        title: "Mortgage Basics: Understanding Home Loans",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Your Guide to Home Financing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A mortgage is a loan secured by real estate, typically used to purchase a home. Understanding mortgage basics—including types, terms, and qualification requirements—is essential for making informed decisions about one of the largest financial commitments most people will ever make.",
+          },
+          {
+            type: "list",
+            content: "Key mortgage components:",
+            items: [
+              "Principal: The amount borrowed to purchase the home",
+              "Interest: The cost of borrowing, expressed as an annual rate",
+              "Term: The length of time to repay (typically 15 or 30 years)",
+              "Down payment: Upfront payment, typically 3-20% of home price",
+              "PMI: Private Mortgage Insurance for down payments under 20%",
+              "Escrow: Account for property taxes and insurance",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Monthly mortgage payment (PITI):",
+            formula: "PITI = Principal + Interest + Taxes + Insurance",
+            variables: {
+              "Principal & Interest": "Calculated using loan payment formula",
+              "Property Taxes": "Annual taxes ÷ 12",
+              "Insurance": "Homeowners insurance + PMI (if applicable)",
+              "Example": "$300,000 loan at 6.5% = $1,896 P&I + $500 taxes/insurance = $2,396 total",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Mortgage Example: Sarah buys a $400,000 home with 10% down ($40,000). Her $360,000 mortgage at 6% for 30 years has a $2,158 P&I payment. With taxes ($400) and insurance ($150), her total PITI is $2,708 monthly.",
+          },
+          {
+            type: "list",
+            content: "Types of mortgages:",
+            items: [
+              "Conventional loans: Not government-backed, typically require 5-20% down",
+              "FHA loans: Government-backed, 3.5% down, more flexible credit requirements",
+              "VA loans: For veterans, 0% down, no PMI required",
+              "USDA loans: For rural areas, 0% down for qualified buyers",
+              "Jumbo loans: For amounts exceeding conforming loan limits",
+              "Fixed-rate vs. adjustable-rate mortgages",
+            ],
+          },
+          {
+            type: "list",
+            content: "Fixed-rate vs. adjustable-rate mortgages:",
+            items: [
+              "Fixed-rate: Interest rate stays the same for entire loan term",
+              "Predictable payments, protection from rate increases",
+              "Typically higher initial rates than ARM",
+              "Adjustable-rate (ARM): Rate changes periodically",
+              "Lower initial rates, payments can increase over time",
+              "Common structures: 5/1, 7/1, 10/1 ARM",
+            ],
+          },
+          {
+            type: "list",
+            content: "Mortgage qualification factors:",
+            items: [
+              "Credit score: Higher scores get better rates (typically 620+ required)",
+              "Debt-to-income ratio: Total monthly debts vs. gross income",
+              "Employment history: Stable employment for 2+ years preferred",
+              "Down payment: Larger down payments improve terms",
+              "Assets: Cash reserves for closing costs and emergencies",
+              "Property appraisal: Home must appraise for loan amount",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Qualification Impact: Tom (credit score 760, 15% down) qualified for 6.25% APR. His brother Mike (credit score 640, 5% down) qualified for 7.75% APR on the same loan amount. Mike pays $180 more monthly and $64,800 more over 30 years.",
+          },
+          {
+            type: "list",
+            content: "Understanding mortgage points:",
+            items: [
+              "Discount points: Prepaid interest to reduce rate",
+              "One point = 1% of loan amount",
+              "Typically reduces rate by 0.25% per point",
+              "Origination points: Lender fees for processing",
+              "Break-even analysis: How long to recoup point costs",
+              "Consider points if staying in home long-term",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common mortgage terms:",
+            items: [
+              "Amortization: Gradual payoff of principal over time",
+              "Escrow: Account for taxes and insurance",
+              "LTV: Loan-to-value ratio (loan amount ÷ home value)",
+              "PMI: Private mortgage insurance for high LTV loans",
+              "Closing costs: Fees to complete the mortgage transaction",
+              "Rate lock: Guarantee of interest rate for specific period",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't focus solely on the monthly payment when choosing a mortgage. Consider the total cost over the loan's life, including interest, PMI, and fees. A slightly higher payment might save thousands long-term.",
+          },
+          {
+            type: "tip",
+            content:
+              "Get pre-approved for a mortgage before house hunting. This shows sellers you're a serious buyer and helps you understand your budget, making the home-buying process smoother.",
+          },
+        ],
+        keyTakeaways: [
+          "Mortgages are long-term loans secured by the property being purchased",
+          "Your credit score and down payment significantly affect rates and terms",
+          "Fixed-rate mortgages provide payment stability; ARMs offer lower initial rates",
+          "Total monthly payment includes principal, interest, taxes, and insurance (PITI)",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does PITI stand for in mortgage payments?",
+              options: [
+                "Principal, Interest, Taxes, Insurance",
+                "Payment, Interest, Title, Insurance",
+                "Principal, Income, Taxes, Investment",
+                "Property, Interest, Title, Income",
+              ],
+              correctAnswer: "Principal, Interest, Taxes, Insurance",
+              explanation:
+                "PITI stands for Principal, Interest, Taxes, and Insurance - the four main components that typically make up your total monthly mortgage payment.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Types of Mortgages and Loan Programs",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Choosing the Right Mortgage Program",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Different mortgage programs serve different needs and financial situations. Understanding the various types of mortgages available—from conventional loans to government-backed programs—helps you choose the option that best fits your circumstances and goals.",
+          },
+          {
+            type: "list",
+            content: "Conventional mortgages:",
+            items: [
+              "Not backed by government agencies",
+              "Conforming loans: Meet Fannie Mae/Freddie Mac guidelines",
+              "Non-conforming (jumbo) loans: Exceed conforming limits",
+              "Typically require 5-20% down payment",
+              "PMI required for down payments under 20%",
+              "Competitive rates for borrowers with good credit",
+            ],
+          },
+          {
+            type: "list",
+            content: "FHA loans (Federal Housing Administration):",
+            items: [
+              "Government-backed loans with flexible requirements",
+              "Down payment as low as 3.5%",
+              "Credit scores as low as 580 (with 3.5% down)",
+              "Credit scores 500-579 require 10% down",
+              "Mortgage insurance premium (MIP) required",
+              "Loan limits vary by area",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "FHA vs. Conventional comparison:",
+            formula: "Compare total monthly costs including insurance",
+            variables: {
+              "$300,000 home": "FHA 3.5% down vs. Conventional 10% down",
+              "FHA": "$10,500 down + $276/month MIP",
+              "Conventional": "$30,000 down + $200/month PMI",
+              "Trade-off": "Lower down payment vs. higher monthly costs",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "FHA Advantage: Maria had a 620 credit score and limited savings. FHA allowed her to buy with 3.5% down and competitive rates, while conventional loans required higher down payments or had much higher rates for her credit profile.",
+          },
+          {
+            type: "list",
+            content: "VA loans (Veterans Affairs):",
+            items: [
+              "Available to eligible veterans, active military, and spouses",
+              "No down payment required",
+              "No private mortgage insurance (PMI)",
+              "Competitive interest rates",
+              "VA funding fee (can be financed into loan)",
+              "Can be reused multiple times",
+            ],
+          },
+          {
+            type: "list",
+            content: "USDA loans (Rural Development):",
+            items: [
+              "For homes in eligible rural and suburban areas",
+              "No down payment required for qualified buyers",
+              "Income limits based on area median income",
+              "Property must be in USDA-eligible area",
+              "Upfront and annual guarantee fees",
+              "Competitive interest rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Adjustable-Rate Mortgages (ARMs):",
+            items: [
+              "Interest rate adjusts periodically after initial fixed period",
+              "Common types: 5/1, 7/1, 10/1 ARM",
+              "Lower initial rates than fixed-rate mortgages",
+              "Rate caps limit how much rate can increase",
+              "Payment shock risk when rates adjust upward",
+              "Best for borrowers planning to move or refinance",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "ARM Strategy: David chose a 7/1 ARM at 5.5% instead of a 30-year fixed at 6.5%. Planning to move in 5 years, he saved $200 monthly. When he sold after 6 years, he saved $14,400 in interest payments.",
+          },
+          {
+            type: "list",
+            content: "Specialty mortgage programs:",
+            items: [
+              "Interest-only mortgages: Pay only interest for initial period",
+              "Balloon mortgages: Large payment due at end of term",
+              "Reverse mortgages: For seniors 62+, convert equity to income",
+              "Construction loans: Short-term financing for building",
+              "Bridge loans: Temporary financing between home purchases",
+              "Portfolio loans: Kept by lender, more flexible underwriting",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing the right mortgage type:",
+            items: [
+              "Consider your down payment amount and savings",
+              "Evaluate your credit score and debt-to-income ratio",
+              "Think about how long you plan to stay in the home",
+              "Compare total costs, not just monthly payments",
+              "Consider your risk tolerance for rate changes",
+              "Factor in your military service or rural location eligibility",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be cautious with interest-only and balloon mortgages. These can lead to payment shock and potential foreclosure if you can't refinance or sell when the terms change.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you're eligible for VA or USDA loans, these programs often provide the best value with no down payment requirements and competitive rates. Always explore these options first if you qualify.",
+          },
+        ],
+        keyTakeaways: [
+          "Government-backed loans (FHA, VA, USDA) offer benefits for qualified borrowers",
+          "Conventional loans work well for borrowers with good credit and larger down payments",
+          "ARMs can save money if you plan to move or refinance before rate adjustments",
+          "Consider total costs and your long-term plans when choosing mortgage types",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of a VA loan?",
+              options: [
+                "Lower interest rates than all other loan types",
+                "No down payment required and no PMI",
+                "Available to anyone regardless of military service",
+                "Shorter loan terms than conventional mortgages",
+              ],
+              correctAnswer: "No down payment required and no PMI",
+              explanation:
+                "VA loans allow eligible veterans and service members to purchase homes with no down payment and no private mortgage insurance, making homeownership more accessible and affordable.",
+            },
+          ],
+        },
+      },
+      {
+        title: "The Mortgage Application Process",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "From Application to Closing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The mortgage application process involves multiple steps, from initial pre-qualification through final closing. Understanding each stage, required documentation, and potential obstacles helps you navigate the process smoothly and avoid delays that could jeopardize your home purchase.",
+          },
+          {
+            type: "list",
+            content: "Pre-qualification vs. pre-approval:",
+            items: [
+              "Pre-qualification: Informal estimate based on basic information",
+              "No credit check or document verification required",
+              "Gives rough idea of borrowing capacity",
+              "Pre-approval: Formal application with credit check and documentation",
+              "Conditional commitment from lender",
+              "Stronger position when making offers on homes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Required documentation:",
+            items: [
+              "Income verification: Pay stubs, W-2s, tax returns",
+              "Employment verification: Letter from employer",
+              "Asset documentation: Bank statements, investment accounts",
+              "Credit authorization: Permission to check credit report",
+              "Identification: Driver's license, Social Security card",
+              "Additional docs for self-employed: Profit/loss statements, business tax returns",
+            ],
+          },
+          {
+            type: "list",
+            content: "The mortgage application timeline:",
+            items: [
+              "Pre-approval: 1-3 days with complete documentation",
+              "Home shopping: Time varies based on market and preferences",
+              "Purchase contract: Negotiate terms and mortgage contingency",
+              "Formal application: Submit within days of contract",
+              "Processing and underwriting: 30-45 days typical",
+              "Closing: Final walkthrough and document signing",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Application Success: Jennifer gathered all documents before applying, responded quickly to lender requests, and maintained stable employment. Her loan closed in 35 days without delays, allowing her to meet the contract deadline.",
+          },
+          {
+            type: "list",
+            content: "The underwriting process:",
+            items: [
+              "Income verification: Confirm ability to make payments",
+              "Asset verification: Ensure sufficient funds for down payment and closing",
+              "Credit analysis: Review credit history and scores",
+              "Property appraisal: Confirm home value supports loan amount",
+              "Title search: Verify clear ownership and no liens",
+              "Final approval: All conditions met, clear to close",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common application obstacles:",
+            items: [
+              "Credit issues: Late payments, high debt-to-income ratios",
+              "Employment changes: Job changes during application process",
+              "Asset problems: Insufficient funds or unexplained deposits",
+              "Property issues: Appraisal problems or title defects",
+              "Documentation delays: Missing or incomplete paperwork",
+              "Debt increases: New credit accounts or large purchases",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Application Delay: Mark's loan was delayed because he changed jobs during underwriting. He had to provide additional employment documentation and a letter explaining the job change, adding 10 days to the process.",
+          },
+          {
+            type: "list",
+            content: "What NOT to do during the application process:",
+            items: [
+              "Don't change jobs or become self-employed",
+              "Don't make large purchases or open new credit accounts",
+              "Don't make large deposits without documentation",
+              "Don't co-sign loans for others",
+              "Don't ignore lender requests for information",
+              "Don't assume anything - communicate with your lender",
+            ],
+          },
+          {
+            type: "list",
+            content: "Working with mortgage professionals:",
+            items: [
+              "Loan officers: Help with application and product selection",
+              "Mortgage brokers: Shop multiple lenders for best terms",
+              "Underwriters: Review and approve loan applications",
+              "Processors: Gather documentation and coordinate with parties",
+              "Real estate agents: Help navigate purchase process",
+              "Choose experienced professionals with good reputations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Preparing for a smooth application:",
+            items: [
+              "Organize financial documents in advance",
+              "Avoid major financial changes during process",
+              "Respond quickly to lender requests",
+              "Stay in regular communication with your loan officer",
+              "Have backup plans for potential issues",
+              "Keep copies of all submitted documents",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't make any major financial changes during the mortgage process. Lenders verify employment and credit right before closing, and changes can delay or derail your loan approval.",
+          },
+          {
+            type: "tip",
+            content:
+              "Create a dedicated email folder for mortgage documents and communications. This keeps everything organized and makes it easy to find information when your lender requests updates or clarifications.",
+          },
+        ],
+        key
