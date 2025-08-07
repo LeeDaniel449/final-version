@@ -6355,3 +6355,1803 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             items: [
               "Reduced monthly rates for 6-12 months",
               "Waived fees or equipment charges",
+              "Free upgrades or additional services",
+              "Better contract terms",
+              "Payment plan arrangements",
+              "Loyalty discounts for long-term customers",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "The retention department has more authority to offer discounts than regular customer service. Always ask to be transferred to 'customer retention' or say you're 'considering canceling your service.'",
+          },
+        ],
+        keyTakeaways: [
+          "Preparation and research are key to successful negotiation",
+          "Be polite but persistent in your approach",
+          "Ask for the retention department for better offers",
+          "Be willing to walk away if you don't get a fair deal",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which department typically has the most authority to offer discounts?",
+              options: [
+                "Customer service",
+                "Billing department",
+                "Retention department",
+                "Technical support",
+              ],
+              correctAnswer: "Retention department",
+              explanation: "The retention department is specifically tasked with keeping customers from canceling, so they have more authority to offer discounts and special deals.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Negotiating Specific Services",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Service-Specific Negotiation Tips",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Different types of services require different negotiation approaches. Understanding the specific tactics that work best for each type of bill helps you achieve better results and save more money.",
+          },
+          {
+            type: "list",
+            content: "Cable and Internet negotiation:",
+            items: [
+              "Call when your promotional rate expires",
+              "Ask about current new customer promotions",
+              "Consider downgrading to a lower tier",
+              "Bundle services only if you'll use them all",
+              "Negotiate equipment rental fees",
+              "Be prepared to actually cancel if needed",
+            ],
+          },
+          {
+            type: "list",
+            content: "Cell phone plan negotiation:",
+            items: [
+              "Review your data usage patterns",
+              "Ask about loyalty discounts",
+              "Consider switching to a prepaid plan",
+              "Negotiate device payment plans",
+              "Look for employer or student discounts",
+              "Time negotiations around contract renewals",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom's cable promotional rate expired, increasing his bill from $49 to $89. He called retention, mentioned a competitor's $45 offer, and got a new 12-month promotion at $52/month, saving $444 annually.",
+          },
+          {
+            type: "list",
+            content: "Insurance premium negotiation:",
+            items: [
+              "Shop around and get competing quotes first",
+              "Ask about available discounts you might qualify for",
+              "Consider raising deductibles to lower premiums",
+              "Bundle policies for multi-policy discounts",
+              "Maintain good credit and driving records",
+              "Review coverage annually and adjust as needed",
+            ],
+          },
+          {
+            type: "list",
+            content: "Credit card negotiation:",
+            items: [
+              "Focus on interest rates and fees",
+              "Emphasize your payment history",
+              "Mention better offers from other cards",
+              "Ask for annual fee waivers",
+              "Request credit limit increases",
+              "Negotiate payment plans if you're struggling",
+            ],
+          },
+          {
+            type: "list",
+            content: "Medical bill negotiation:",
+            items: [
+              "Ask for itemized bills to check for errors",
+              "Request financial hardship discounts",
+              "Negotiate payment plans with no interest",
+              "Ask about prompt payment discounts",
+              "Consider hiring a medical billing advocate",
+              "Don't ignore bills - communicate with providers",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For subscription services, try the 'cancel and wait' strategy. Cancel your subscription and wait for the company to offer you a discount to come back. Many will email special offers within days.",
+          },
+        ],
+        keyTakeaways: [
+          "Different services require different negotiation approaches",
+          "Timing your negotiations around contract renewals is important",
+          "Always have competing offers ready as leverage",
+          "Medical bills often have the most negotiation flexibility",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When is the best time to negotiate your cable bill?",
+              options: [
+                "When you first sign up",
+                "When your promotional rate expires",
+                "During peak season",
+                "Never - rates are fixed",
+              ],
+              correctAnswer: "When your promotional rate expires",
+              explanation: "When promotional rates expire and your bill increases, companies are most motivated to offer new deals to prevent you from canceling.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Alternative Service Options",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Exploring Cheaper Alternatives",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Sometimes the best way to lower your bills is to switch to alternative services or providers. Understanding your options gives you leverage in negotiations and may lead to significant savings.",
+          },
+          {
+            type: "list",
+            content: "Cable TV alternatives:",
+            items: [
+              "Streaming services (Netflix, Hulu, Amazon Prime)",
+              "Live TV streaming (YouTube TV, Sling TV, Hulu Live)",
+              "Over-the-air antenna for local channels",
+              "Free streaming services (Tubi, Crackle, Pluto TV)",
+              "Library DVD collections",
+              "Sharing streaming accounts with family (where allowed)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Internet service alternatives:",
+            items: [
+              "Municipal broadband (if available)",
+              "Fixed wireless internet",
+              "Satellite internet (Starlink, HughesNet)",
+              "Mobile hotspot plans",
+              "Fiber optic providers",
+              "Internet-only plans (no cable bundle)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa cuts her $120 cable bill by switching to a $50 internet-only plan plus $30 in streaming services, saving $40/month ($480 annually) while getting more content she actually watches.",
+          },
+          {
+            type: "list",
+            content: "Cell phone alternatives:",
+            items: [
+              "Prepaid plans from major carriers",
+              "Mobile Virtual Network Operators (MVNOs)",
+              "Family plans to share costs",
+              "Wi-Fi calling to reduce minutes needed",
+              "Older phone models to reduce device costs",
+              "Employer-provided phones for business use",
+            ],
+          },
+          {
+            type: "list",
+            content: "Insurance alternatives:",
+            items: [
+              "Credit unions for auto and home insurance",
+              "Direct writers (GEICO, Progressive)",
+              "Regional insurance companies",
+              "Professional association group plans",
+              "Higher deductibles for lower premiums",
+              "Usage-based auto insurance programs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Subscription service alternatives:",
+            items: [
+              "Free versions with ads",
+              "Annual plans instead of monthly",
+              "Student or family discounts",
+              "Rotating subscriptions (cancel and resubscribe)",
+              "Free alternatives (Spotify free vs. premium)",
+              "Library access to magazines and digital content",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Calculate the true cost of bundles. Companies often make bundles seem cheaper, but you might save more by choosing only the services you actually need from different providers.",
+          },
+        ],
+        keyTakeaways: [
+          "Alternative services can provide significant savings",
+          "Streaming services often cost less than traditional cable",
+          "Prepaid and MVNO cell plans offer good value",
+          "Don't pay for services you don't actually use",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is an MVNO in cell phone service?",
+              options: [
+                "A major carrier like Verizon",
+                "A Mobile Virtual Network Operator that uses major carrier networks",
+                "A type of phone",
+                "A government program",
+              ],
+              correctAnswer: "A Mobile Virtual Network Operator that uses major carrier networks",
+              explanation: "MVNOs like Mint Mobile and Cricket use major carrier networks but offer service at lower prices with fewer frills.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Timing Your Negotiations",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "When to Negotiate for Best Results",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Timing can significantly impact your negotiation success. Understanding when companies are most motivated to offer deals and when you have the most leverage helps you achieve better results.",
+          },
+          {
+            type: "list",
+            content: "Best times to negotiate:",
+            items: [
+              "End of the month/quarter (sales quotas)",
+              "When promotional rates expire",
+              "Before contract renewal dates",
+              "After receiving a rate increase notice",
+              "During slow business periods",
+              "When competitors launch new promotions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Worst times to negotiate:",
+            items: [
+              "During peak customer service hours",
+              "Right after signing a new contract",
+              "During major outages or service issues",
+              "Holiday periods when staff is limited",
+              "When you're behind on payments",
+              "During company busy seasons",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "David waits until the last day of the month to call his internet provider. The sales rep, trying to meet monthly quotas, offers him a better deal than he expected, saving him $25/month.",
+          },
+          {
+            type: "list",
+            content: "Contract timing considerations:",
+            items: [
+              "Review contracts 30-60 days before expiration",
+              "Avoid automatic renewals if possible",
+              "Negotiate during the renewal window",
+              "Consider month-to-month options for flexibility",
+              "Mark calendar reminders for important dates",
+              "Read early termination fee policies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Seasonal negotiation opportunities:",
+            items: [
+              "Back-to-school promotions (August-September)",
+              "New Year deals (January)",
+              "Spring cleaning season (March-April)",
+              "Black Friday/holiday promotions",
+              "Tax season (people reviewing expenses)",
+              "Summer moving season (May-August)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Personal timing factors:",
+            items: [
+              "When you have time to research alternatives",
+              "Before major life changes (moving, job change)",
+              "When you're current on all payments",
+              "After improving your credit score",
+              "When you can afford to switch if needed",
+              "During calm, non-stressful periods",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set calendar reminders 60 days before your contracts expire. This gives you time to research alternatives and negotiate without being rushed into automatic renewals.",
+          },
+        ],
+        keyTakeaways: [
+          "End of month/quarter timing can work in your favor",
+          "Avoid negotiating during peak hours or busy periods",
+          "Plan negotiations around contract renewal dates",
+          "Personal timing matters - negotiate when you're prepared",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When might sales representatives be most motivated to offer deals?",
+              options: [
+                "Beginning of the month",
+                "End of the month when trying to meet quotas",
+                "During lunch hours",
+                "On weekends",
+              ],
+              correctAnswer: "End of the month when trying to meet quotas",
+              explanation: "Sales representatives often have monthly quotas and may be more willing to offer deals at the end of the month to meet their targets.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tracking Your Savings",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Measuring Your Success",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tracking your bill negotiation savings helps you see the impact of your efforts and motivates you to continue finding ways to reduce expenses. It also helps you identify which strategies work best.",
+          },
+          {
+            type: "list",
+            content: "What to track:",
+            items: [
+              "Before and after monthly costs",
+              "Annual savings calculations",
+              "Time spent on negotiations",
+              "Success rate by service type",
+              "Promotional period end dates",
+              "Next negotiation opportunities",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tracking methods:",
+            items: [
+              "Simple spreadsheet with before/after costs",
+              "Budgeting apps that track expenses",
+              "Calendar reminders for promotional expirations",
+              "Photo documentation of old vs. new bills",
+              "Notes about successful negotiation tactics",
+              "List of contact numbers and best representatives",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Over one year, Emma negotiated her cable bill (saved $300), cell phone (saved $180), and car insurance (saved $240), totaling $720 in annual savings - enough for a nice vacation!",
+          },
+          {
+            type: "list",
+            content: "Calculating your savings:",
+            items: [
+              "Monthly savings × 12 = annual savings",
+              "Include one-time fee waivers",
+              "Factor in promotional period lengths",
+              "Consider value of upgraded services at same price",
+              "Track cumulative savings over time",
+              "Calculate return on time invested",
+            ],
+          },
+          {
+            type: "list",
+            content: "Using savings effectively:",
+            items: [
+              "Put savings into emergency fund",
+              "Apply to debt payoff",
+              "Invest in retirement accounts",
+              "Save for specific goals",
+              "Don't let lifestyle inflation eat the savings",
+              "Celebrate your success appropriately",
+            ],
+          },
+          {
+            type: "list",
+            content: "Staying motivated:",
+            items: [
+              "Set annual savings goals",
+              "Share successes with friends/family",
+              "Reinvest time saved into more negotiations",
+              "Track cumulative lifetime savings",
+              "Focus on the purchasing power gained",
+              "Remember that small savings add up",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic transfers to move your monthly savings into a separate account immediately. This prevents lifestyle inflation and helps you see the real impact of your negotiation efforts.",
+          },
+        ],
+        keyTakeaways: [
+          "Track both monthly and annual savings from negotiations",
+          "Document successful tactics for future use",
+          "Put savings to work in emergency funds or investments",
+          "Set calendar reminders for when promotions expire",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best way to ensure your bill negotiation savings benefit you long-term?",
+              options: [
+                "Spend the savings on entertainment",
+                "Put savings into emergency fund or investments",
+                "Upgrade to more expensive services",
+                "Ignore the savings amount",
+              ],
+              correctAnswer: "Put savings into emergency fund or investments",
+              explanation: "Directing your savings into emergency funds or investments prevents lifestyle inflation and helps the savings compound over time.",
+            },
+          ],
+        },
+      },
+    ],
+    "investing": [
+      {
+        title: "Investment Fundamentals",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Risk and Return",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Investing is the process of putting money to work to generate returns over time. Understanding the fundamental relationship between risk and return is crucial for making informed investment decisions and building long-term wealth.",
+          },
+          {
+            type: "list",
+            content: "Key investment concepts:",
+            items: [
+              "Risk: The possibility of losing money or not meeting expectations",
+              "Return: The profit or loss from an investment",
+              "Liquidity: How easily you can convert investments to cash",
+              "Volatility: How much investment values fluctuate",
+              "Time horizon: How long you plan to hold investments",
+              "Diversification: Spreading risk across different investments",
+            ],
+          },
+          {
+            type: "list",
+            content: "Risk-return relationship:",
+            items: [
+              "Higher potential returns typically come with higher risk",
+              "Lower risk investments usually offer lower returns",
+              "Risk tolerance varies by individual",
+              "Time can help smooth out short-term volatility",
+              "Diversification can reduce risk without sacrificing returns",
+              "No investment is completely risk-free",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah invests $10,000 in a diversified stock portfolio. Over 10 years, it might average 8% returns but could lose 20% in bad years and gain 25% in good years. A savings account offers 2% with no volatility.",
+          },
+          {
+            type: "list",
+            content: "Types of investment risk:",
+            items: [
+              "Market risk: Overall market declines",
+              "Inflation risk: Purchasing power erosion",
+              "Interest rate risk: Bond values affected by rate changes",
+              "Company risk: Individual business problems",
+              "Liquidity risk: Difficulty selling investments",
+              "Currency risk: Foreign exchange fluctuations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Investment time horizons:",
+            items: [
+              "Short-term (1-3 years): Conservative, liquid investments",
+              "Medium-term (3-10 years): Moderate risk tolerance",
+              "Long-term (10+ years): Can accept higher volatility for growth",
+              "Retirement planning: Very long-term perspective",
+              "Emergency funds: Immediate liquidity needed",
+              "Goal-based investing: Match timeline to investment choice",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start investing early, even with small amounts. Time is your greatest asset in investing due to compound growth. A 25-year-old investing $200/month will have more at retirement than a 35-year-old investing $400/month.",
+          },
+        ],
+        keyTakeaways: [
+          "Higher returns typically come with higher risk",
+          "Time horizon affects appropriate risk level",
+          "Diversification helps manage risk",
+          "Starting early maximizes compound growth benefits",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the relationship between risk and return in investing?",
+              options: [
+                "Higher risk always means higher returns",
+                "Lower risk always means higher returns",
+                "Higher potential returns typically come with higher risk",
+                "Risk and return are unrelated",
+              ],
+              correctAnswer: "Higher potential returns typically come with higher risk",
+              explanation: "In general, investments with higher potential returns also carry higher risk, though higher risk doesn't guarantee higher returns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Understanding Index Funds",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "The Power of Passive Investing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Index funds are investment funds that track a specific market index, like the S&P 500. They offer broad diversification, low costs, and historically strong performance, making them ideal for beginning investors and long-term wealth building.",
+          },
+          {
+            type: "list",
+            content: "What are index funds:",
+            items: [
+              "Funds that track a specific market index",
+              "Own hundreds or thousands of stocks automatically",
+              "Passively managed (no stock picking)",
+              "Low expense ratios (typically 0.03-0.20%)",
+              "Available as mutual funds or ETFs",
+              "Provide instant diversification",
+            ],
+          },
+          {
+            type: "list",
+            content: "Popular index fund types:",
+            items: [
+              "S&P 500: 500 largest US companies",
+              "Total Stock Market: Entire US stock market",
+              "International: Foreign developed markets",
+              "Emerging Markets: Developing countries",
+              "Bond Index: Government and corporate bonds",
+              "Target Date: Age-appropriate mix that adjusts over time",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike invests $5,000 in an S&P 500 index fund. He instantly owns tiny pieces of 500 companies including Apple, Microsoft, and Amazon, with an expense ratio of just 0.04% annually ($2 per year).",
+          },
+          {
+            type: "list",
+            content: "Benefits of index funds:",
+            items: [
+              "Low costs increase your returns",
+              "Broad diversification reduces risk",
+              "No need to pick individual stocks",
+              "Historically outperform most active funds",
+              "Simple and easy to understand",
+              "Tax-efficient due to low turnover",
+            ],
+          },
+          {
+            type: "list",
+            content: "Index fund vs. active fund comparison:",
+            items: [
+              "Index funds: Track market, low fees, consistent performance",
+              "Active funds: Try to beat market, high fees, inconsistent results",
+              "85% of active funds underperform index funds over 15 years",
+              "Higher fees in active funds compound over time",
+              "Index funds remove manager risk",
+              "Active funds may have style drift",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to invest in index funds:",
+            items: [
+              "Through brokerage accounts (Vanguard, Fidelity, Schwab)",
+              "In 401(k) or IRA retirement accounts",
+              "Direct from fund companies",
+              "Through robo-advisors",
+              "As ETFs on stock exchanges",
+              "Set up automatic investing for consistency",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Focus on total stock market or S&P 500 index funds for your core holdings. These provide broad diversification and have the lowest costs. You can add international and bond funds as you learn more.",
+          },
+        ],
+        keyTakeaways: [
+          "Index funds provide broad diversification at low cost",
+          "They historically outperform most actively managed funds",
+          "Perfect for beginning investors and long-term wealth building",
+          "Focus on low expense ratios and broad market exposure",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main advantage of index funds over actively managed funds?",
+              options: [
+                "They always have higher returns",
+                "They have lower costs and historically outperform most active funds",
+                "They're more exciting to own",
+                "They only invest in technology stocks",
+              ],
+              correctAnswer: "They have lower costs and historically outperform most active funds",
+              explanation: "Index funds have much lower expense ratios than active funds and historically outperform about 85% of actively managed funds over long periods.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Dollar-Cost Averaging",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Investing Consistently Over Time",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Dollar-cost averaging is an investment strategy where you invest a fixed amount of money at regular intervals, regardless of market conditions. This approach helps reduce the impact of market volatility and removes emotion from investment decisions.",
+          },
+          {
+            type: "list",
+            content: "How dollar-cost averaging works:",
+            items: [
+              "Invest the same amount regularly (monthly, bi-weekly)",
+              "Buy more shares when prices are low",
+              "Buy fewer shares when prices are high",
+              "Average cost per share smooths out over time",
+              "Removes timing decisions from investing",
+              "Works automatically through payroll deductions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of dollar-cost averaging:",
+            items: [
+              "Reduces impact of market volatility",
+              "Removes emotion from investment decisions",
+              "Makes investing automatic and consistent",
+              "Doesn't require market timing skills",
+              "Builds discipline and good habits",
+              "Works well with index funds",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa invests $500 monthly in an index fund. When shares cost $50, she buys 10 shares. When they drop to $25, she buys 20 shares. Her average cost is $33.33 per share, better than the $37.50 average price.",
+          },
+          {
+            type: "list",
+            content: "Dollar-cost averaging scenarios:",
+            items: [
+              "Rising markets: You buy fewer shares as prices increase",
+              "Falling markets: You buy more shares at lower prices",
+              "Volatile markets: Smooths out the ups and downs",
+              "Sideways markets: Accumulates shares at consistent prices",
+              "Long-term: Benefits from overall market growth",
+              "Retirement accounts: Perfect for 401(k) contributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "When dollar-cost averaging works best:",
+            items: [
+              "Long-term investment horizons (5+ years)",
+              "Volatile or uncertain markets",
+              "When you have regular income to invest",
+              "For beginning investors learning discipline",
+              "In tax-advantaged retirement accounts",
+              "With broad market index funds",
+            ],
+          },
+          {
+            type: "list",
+            content: "Potential drawbacks:",
+            items: [
+              "May underperform lump-sum investing in rising markets",
+              "Requires discipline to continue during downturns",
+              "Transaction costs can add up with frequent small purchases",
+              "May delay full market participation",
+              "Doesn't guarantee profits or prevent losses",
+              "Less optimal than perfect market timing (impossible to achieve)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set up automatic investments from your checking account to your investment account. This makes dollar-cost averaging effortless and ensures you invest consistently regardless of market conditions or your emotions.",
+          },
+        ],
+        keyTakeaways: [
+          "Dollar-cost averaging reduces the impact of market volatility",
+          "Investing regularly removes emotion and timing from decisions",
+          "Works best for long-term investors with regular income",
+          "Automation makes the strategy effortless to maintain",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens when you use dollar-cost averaging and stock prices fall?",
+              options: [
+                "You lose money immediately",
+                "You buy more shares for the same dollar amount",
+                "You should stop investing",
+                "You buy fewer shares",
+              ],
+              correctAnswer: "You buy more shares for the same dollar amount",
+              explanation: "When prices fall, your fixed dollar amount buys more shares, which can lower your average cost per share over time.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Asset Allocation and Diversification",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Building a Balanced Portfolio",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Asset allocation is how you divide your investments among different asset classes like stocks, bonds, and cash. Proper diversification across and within asset classes helps manage risk while pursuing returns appropriate for your goals and timeline.",
+          },
+          {
+            type: "list",
+            content: "Major asset classes:",
+            items: [
+              "Stocks (equities): Ownership in companies, higher growth potential",
+              "Bonds (fixed income): Loans to companies/governments, more stable",
+              "Cash equivalents: Savings accounts, CDs, money market funds",
+              "Real estate: Property investments, REITs",
+              "Commodities: Gold, oil, agricultural products",
+              "International: Foreign stocks and bonds",
+            ],
+          },
+          {
+            type: "list",
+            content: "Age-based allocation guidelines:",
+            items: [
+              "20s-30s: 80-90% stocks, 10-20% bonds (aggressive growth)",
+              "40s: 70-80% stocks, 20-30% bonds (moderate growth)",
+              "50s: 60-70% stocks, 30-40% bonds (balanced)",
+              "60s+: 40-60% stocks, 40-60% bonds (conservative)",
+              "Rule of thumb: 100 minus your age = stock percentage",
+              "Adjust based on risk tolerance and goals",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "At age 30, Tom allocates his portfolio: 70% US stocks, 20% international stocks, 10% bonds. This gives him growth potential while starting to add stability as he approaches middle age.",
+          },
+          {
+            type: "list",
+            content: "Types of diversification:",
+            items: [
+              "Asset class: Stocks, bonds, real estate",
+              "Geographic: US, international, emerging markets",
+              "Sector: Technology, healthcare, finance, etc.",
+              "Company size: Large-cap, mid-cap, small-cap",
+              "Style: Growth vs. value stocks",
+              "Time: Dollar-cost averaging over time",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of diversification:",
+            items: [
+              "Reduces portfolio volatility",
+              "Protects against single investment failures",
+              "Smooths returns over time",
+              "Allows participation in different market segments",
+              "Reduces emotional investing decisions",
+              "Improves risk-adjusted returns",
+            ],
+          },
+          {
+            type: "list",
+            content: "Simple portfolio examples:",
+            items: [
+              "Three-fund portfolio: US stocks, international stocks, bonds",
+              "Target-date fund: Automatically adjusts allocation over time",
+              "Two-fund portfolio: Total stock market, total bond market",
+              "Four-fund portfolio: Add emerging markets and REITs",
+              "Lazy portfolios: Simple, low-maintenance allocations",
+              "Robo-advisor portfolios: Algorithm-based diversification",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start simple with a target-date fund or three-fund portfolio. These provide excellent diversification without complexity. You can always add more sophistication as you learn and your portfolio grows.",
+          },
+        ],
+        keyTakeaways: [
+          "Asset allocation should match your age and risk tolerance",
+          "Diversification reduces risk without sacrificing returns",
+          "Simple portfolios often work as well as complex ones",
+          "Rebalance periodically to maintain target allocations",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "According to the rule of thumb, what percentage of stocks should a 30-year-old have?",
+              options: ["30%", "50%", "70%", "90%"],
+              correctAnswer: "70%",
+              explanation: "The rule of thumb suggests 100 minus your age in stocks, so a 30-year-old would have 70% stocks and 30% bonds.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Rebalancing Your Portfolio",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Maintaining Your Target Allocation",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Rebalancing is the process of adjusting your portfolio back to your target asset allocation. Over time, different investments perform differently, causing your allocation to drift from your intended mix. Regular rebalancing helps maintain your desired risk level.",
+          },
+          {
+            type: "list",
+            content: "Why portfolios drift:",
+            items: [
+              "Different asset classes perform differently over time",
+              "Stocks might outperform bonds, increasing stock allocation",
+              "Some sectors or regions may outperform others",
+              "Without rebalancing, portfolio becomes riskier or more conservative",
+              "Market volatility causes constant allocation changes",
+              "New contributions may not maintain target ratios",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to rebalance:",
+            items: [
+              "Calendar-based: Quarterly, semi-annually, or annually",
+              "Threshold-based: When allocation drifts 5-10% from target",
+              "Combination approach: Check quarterly, rebalance if needed",
+              "Life event-based: Job change, marriage, approaching retirement",
+              "Market event-based: After major market movements",
+              "When making new contributions",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah's target is 70% stocks, 30% bonds. After a strong stock year, her portfolio is now 80% stocks, 20% bonds. She sells some stocks and buys bonds to return to her 70/30 target allocation.",
+          },
+          {
+            type: "list",
+            content: "Rebalancing methods:",
+            items: [
+              "Sell high-performing assets, buy underperforming ones",
+              "Direct new contributions to underweighted assets",
+              "Use dividends and distributions to buy underweighted assets",
+              "Automatic rebalancing through target-date funds",
+              "Robo-advisors can rebalance automatically",
+              "Rebalance within tax-advantaged accounts first",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of rebalancing:",
+            items: [
+              "Maintains your intended risk level",
+              "Forces you to sell high and buy low",
+              "Prevents portfolio from becoming too risky",
+              "Maintains diversification benefits",
+              "Removes emotion from investment decisions",
+              "Can improve long-term returns",
+            ],
+          },
+          {
+            type: "list",
+            content: "Rebalancing considerations:",
+            items: [
+              "Tax implications in taxable accounts",
+              "Transaction costs for frequent rebalancing",
+              "Don't rebalance too frequently (increases costs)",
+              "Consider rebalancing with new money first",
+              "Use tax-loss harvesting opportunities",
+              "Keep some cash for rebalancing opportunities",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Rebalance annually or when your allocation drifts more than 5-10% from your target. Use new contributions to rebalance when possible to avoid selling investments and triggering taxes.",
+          },
+        ],
+        keyTakeaways: [
+          "Rebalancing maintains your intended risk level",
+          "It forces disciplined buying low and selling high",
+          "Annual rebalancing is sufficient for most investors",
+          "Use new contributions to rebalance when possible",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main purpose of rebalancing a portfolio?",
+              options: [
+                "To maximize returns",
+                "To maintain your target asset allocation",
+                "To minimize taxes",
+                "To time the market",
+              ],
+              correctAnswer: "To maintain your target asset allocation",
+              explanation: "Rebalancing brings your portfolio back to your intended asset allocation, maintaining your desired risk level as different investments perform differently over time.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Investment Accounts and Taxes",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Choosing the Right Account Types",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Different types of investment accounts have different tax implications. Understanding these differences helps you choose the right accounts for your situation and maximize your after-tax returns over time.",
+          },
+          {
+            type: "list",
+            content: "Tax-advantaged retirement accounts:",
+            items: [
+              "401(k): Employer-sponsored, pre-tax contributions",
+              "Traditional IRA: Individual account, tax-deductible contributions",
+              "Roth IRA: After-tax contributions, tax-free withdrawals",
+              "Roth 401(k): After-tax contributions through employer",
+              "SEP-IRA: For self-employed individuals",
+              "HSA: Triple tax advantage for medical expenses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Taxable investment accounts:",
+            items: [
+              "Brokerage accounts: No contribution limits or restrictions",
+              "Taxed on dividends and capital gains annually",
+              "More flexibility for withdrawals",
+              "Good for goals before retirement",
+              "Tax-loss harvesting opportunities",
+              "Step-up in basis at death",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma maximizes her 401(k) match, then contributes to a Roth IRA, and finally invests in a taxable account for her house down payment goal. This optimizes her tax situation across different time horizons.",
+          },
+          {
+            type: "list",
+            content: "Account prioritization strategy:",
+            items: [
+              "1. 401(k) up to employer match (free money)",
+              "2. High-interest debt payoff",
+              "3. Roth IRA for young investors",
+              "4. Max out 401(k) contribution",
+              "5. HSA if available",
+              "6. Taxable accounts for additional savings",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tax-efficient investing strategies:",
+            items: [
+              "Hold tax-inefficient investments in retirement accounts",
+              "Keep tax-efficient index funds in taxable accounts",
+              "Use tax-loss harvesting in taxable accounts",
+              "Consider municipal bonds for high earners",
+              "Avoid frequent trading in taxable accounts",
+              "Coordinate asset location with allocation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Investment taxes in taxable accounts:",
+            items: [
+              "Dividends: Taxed annually at qualified dividend rates",
+              "Capital gains: Taxed when you sell investments",
+              "Short-term gains: Taxed as ordinary income (held <1 year)",
+              "Long-term gains: Preferential tax rates (held >1 year)",
+              "Tax-loss harvesting: Offset gains with losses",
+              "Wash sale rule: Can't rebuy same investment within 30 days",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Prioritize tax-advantaged accounts first, especially if you get an employer match. For young investors, Roth accounts are often better than traditional accounts due to decades of tax-free growth.",
+          },
+        ],
+        keyTakeaways: [
+          "Tax-advantaged accounts should be prioritized for retirement savings",
+          "Roth accounts are often better for young investors",
+          "Taxable accounts provide flexibility for non-retirement goals",
+          "Asset location matters - put tax-inefficient investments in retirement accounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be your first investment priority?",
+              options: [
+                "Taxable brokerage account",
+                "401(k) up to employer match",
+                "Real estate investment",
+                "Individual stocks",
+              ],
+              correctAnswer: "401(k) up to employer match",
+              explanation: "Getting the full employer match on your 401(k) is essentially free money and should be your first investment priority.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Common Investment Mistakes",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Avoiding Costly Errors",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Many beginning investors make predictable mistakes that can significantly hurt their long-term returns. Understanding these common pitfalls helps you avoid them and stay on track toward your financial goals.",
+          },
+          {
+            type: "list",
+            content: "Emotional investing mistakes:",
+            items: [
+              "Panic selling during market downturns",
+              "FOMO buying during market peaks",
+              "Trying to time the market",
+              "Chasing last year's hot investments",
+              "Checking portfolio values too frequently",
+              "Making decisions based on news headlines",
+            ],
+          },
+          {
+            type: "list",
+            content: "Portfolio construction mistakes:",
+            items: [
+              "Lack of diversification (putting all eggs in one basket)",
+              "Over-diversification (owning too many similar funds)",
+              "Ignoring fees and expense ratios",
+              "Not rebalancing regularly",
+              "Inappropriate asset allocation for age/goals",
+              "Investing in complex products you don't understand",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "During the 2020 market crash, Jake panicked and sold all his investments at a 30% loss. By the time he felt comfortable buying back in, the market had recovered and he missed the rebound, locking in his losses.",
+          },
+          {
+            type: "list",
+            content: "Behavioral mistakes:",
+            items: [
+              "Procrastination - waiting for the 'perfect' time to start",
+              "Analysis paralysis - over-researching instead of investing",
+              "Overconfidence after early success",
+              "Following tips from friends or social media",
+              "Day trading or frequent trading",
+              "Ignoring the power of compound growth",
+            ],
+          },
+          {
+            type: "list",
+            content: "Account and tax mistakes:",
+            items: [
+              "Not maximizing employer 401(k) match",
+              "Choosing wrong account types for your situation",
+              "Ignoring tax implications of investment decisions",
+              "Not taking advantage of tax-loss harvesting",
+              "Withdrawing from retirement accounts early",
+              "Not updating beneficiaries on accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to avoid these mistakes:",
+            items: [
+              "Educate yourself about investing basics",
+              "Start with simple, low-cost index funds",
+              "Automate your investments",
+              "Focus on time in market, not timing the market",
+              "Stick to your long-term plan",
+              "Ignore short-term market noise",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "The biggest mistake is not starting. Perfect is the enemy of good in investing. Start with a simple index fund and automate your contributions. You can always improve your strategy as you learn more.",
+          },
+        ],
+        keyTakeaways: [
+          "Emotional decisions are the biggest threat to investment success",
+          "Simple strategies often outperform complex ones",
+          "Starting early is more important than perfect timing",
+          "Automation helps avoid behavioral mistakes",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is often the biggest mistake new investors make?",
+              options: [
+                "Not diversifying enough",
+                "Choosing the wrong stocks",
+                "Making emotional decisions during market volatility",
+                "Not checking their portfolio daily",
+              ],
+              correctAnswer: "Making emotional decisions during market volatility",
+              explanation: "Emotional decisions like panic selling during downturns or FOMO buying during peaks are the biggest destroyers of long-term investment returns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Getting Started with Investing",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Your First Steps as an Investor",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Starting your investment journey can feel overwhelming, but it doesn't have to be complicated. With a few simple steps and the right approach, you can begin building wealth for your future, even with small amounts of money.",
+          },
+          {
+            type: "list",
+            content: "Before you start investing:",
+            items: [
+              "Build an emergency fund (3-6 months expenses)",
+              "Pay off high-interest debt (credit cards)",
+              "Establish stable income",
+              "Understand your risk tolerance",
+              "Define your investment goals and timeline",
+              "Learn basic investment concepts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing a brokerage account:",
+            items: [
+              "Low or no account fees",
+              "Commission-free stock and ETF trades",
+              "Good selection of low-cost index funds",
+              "User-friendly platform and mobile app",
+              "Educational resources for beginners",
+              "Popular options: Vanguard, Fidelity, Schwab",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Alex starts with $100/month into a target-date fund in his Roth IRA. The fund automatically diversifies across stocks and bonds and adjusts over time. He increases contributions with each raise.",
+          },
+          {
+            type: "list",
+            content: "Simple starter portfolios:",
+            items: [
+              "Target-date fund: One fund that does everything",
+              "Three-fund portfolio: US stocks, international stocks, bonds",
+              "S&P 500 index fund: Simple US stock market exposure",
+              "Total stock market fund: Entire US stock market",
+              "Robo-advisor: Algorithm manages diversified portfolio",
+              "Start simple, add complexity later",
+            ],
+          },
+          {
+            type: "list",
+            content: "Setting up automatic investing:",
+            items: [
+              "Link bank account to investment account",
+              "Set up automatic monthly transfers",
+              "Choose dollar-cost averaging approach",
+              "Start with amount you can afford consistently",
+              "Increase contributions with raises",
+              "Review and adjust annually",
+            ],
+          },
+          {
+            type: "list",
+            content: "First-year investor checklist:",
+            items: [
+              "Open appropriate investment accounts",
+              "Start with simple, diversified investments",
+              "Automate contributions",
+              "Learn while you invest",
+              "Avoid checking balances too frequently",
+              "Stay consistent through market ups and downs",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't wait until you have a large amount to start investing. Begin with whatever you can afford, even $25-50 per month. The habit of investing regularly is more important than the initial amount.",
+          },
+        ],
+        keyTakeaways: [
+          "Start with emergency fund and debt payoff first",
+          "Choose low-cost brokerages with good index fund selection",
+          "Begin with simple, diversified investments",
+          "Automate your investments for consistency",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do before you start investing?",
+              options: [
+                "Buy individual stocks",
+                "Build an emergency fund and pay off high-interest debt",
+                "Wait until you have $10,000",
+                "Study the market for years",
+              ],
+              correctAnswer: "Build an emergency fund and pay off high-interest debt",
+              explanation: "Before investing, you should have an emergency fund and pay off high-interest debt to ensure you have a solid financial foundation.",
+            },
+          ],
+        },
+      },
+    ],
+    "emergency-fund": [
+      {
+        title: "Why You Need an Emergency Fund",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Your Financial Safety Net",
+          },
+          {
+            type: "paragraph",
+            content:
+              "An emergency fund is money set aside specifically for unexpected expenses or financial emergencies. It acts as a financial safety net, protecting you from going into debt when life throws you curveballs. For young adults, this is often the first step toward financial security.",
+          },
+          {
+            type: "list",
+            content: "What qualifies as an emergency:",
+            items: [
+              "Job loss or reduced income",
+              "Medical emergencies or unexpected health expenses",
+              "Major car repairs or replacement",
+              "Home repairs (roof, plumbing, heating)",
+              "Family emergencies requiring travel",
+              "Unexpected tax bills or legal expenses",
+            ],
+          },
+          {
+            type: "list",
+            content: "What is NOT an emergency:",
+            items: [
+              "Vacation or travel expenses",
+              "Holiday gifts or celebrations",
+              "Sale items you 'can't pass up'",
+              "Routine car maintenance",
+              "Planned home improvements",
+              "Entertainment or dining out",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah's car breaks down and needs a $1,200 repair. Without an emergency fund, she'd have to put it on a credit card at 22% interest. With her emergency fund, she pays cash and avoids debt and interest charges.",
+          },
+          {
+            type: "list",
+            content: "Benefits of having an emergency fund:",
+            items: [
+              "Avoid going into debt for unexpected expenses",
+              "Reduce financial stress and anxiety",
+              "Maintain your lifestyle during income disruptions",
+              "Take advantage of opportunities (job changes, investments)",
+              "Sleep better knowing you're prepared",
+              "Protect your long-term financial goals",
+            ],
+          },
+          {
+            type: "list",
+            content: "Consequences of not having an emergency fund:",
+            items: [
+              "Forced to use high-interest credit cards",
+              "May need to borrow from family or friends",
+              "Might have to sell investments at a loss",
+              "Could face financial hardship from minor setbacks",
+              "Increased stress and relationship strain",
+              "Difficulty recovering from financial emergencies",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start building your emergency fund before focusing on other financial goals. Even $500 can prevent many common emergencies from becoming debt problems. Build it gradually - every dollar counts.",
+          },
+        ],
+        keyTakeaways: [
+          "Emergency funds prevent debt when unexpected expenses occur",
+          "True emergencies are unplanned and necessary expenses",
+          "Even a small emergency fund provides significant protection",
+          "Emergency funds reduce stress and protect long-term goals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of these would be considered a true emergency?",
+              options: [
+                "A vacation you really want to take",
+                "Your car breaking down and needing major repairs",
+                "A great sale on clothes",
+                "Holiday gifts for family",
+              ],
+              correctAnswer: "Your car breaking down and needing major repairs",
+              explanation: "A car breakdown requiring major repairs is unexpected, necessary, and urgent - the definition of a true emergency that warrants using your emergency fund.",
+            },
+          ],
+        },
+      },
+      {
+        title: "How Much to Save",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Determining Your Emergency Fund Target",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The amount you need in your emergency fund depends on your personal situation, expenses, and risk factors. While the standard advice is 3-6 months of expenses, your specific circumstances may require more or less.",
+          },
+          {
+            type: "list",
+            content: "Standard emergency fund guidelines:",
+            items: [
+              "3-6 months of essential expenses (most common advice)",
+              "3 months minimum for stable employment",
+              "6+ months for variable income or high-risk jobs",
+              "More if you're self-employed or commission-based",
+              "Consider your specific risk factors",
+              "Start with $1,000 as an initial goal",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors that increase your emergency fund need:",
+            items: [
+              "Unstable or seasonal employment",
+              "Self-employment or freelance work",
+              "Single income household",
+              "Health issues or chronic conditions",
+              "Older home or car requiring more repairs",
+              "Limited family support system",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike has essential monthly expenses of $3,000. As a freelance graphic designer with variable income, he aims for 6 months ($18,000) in his emergency fund rather than the standard 3 months ($9,000).",
+          },
+          {
+            type: "list",
+            content: "Calculating your emergency fund target:",
+            items: [
+              "List all essential monthly expenses",
+              "Include: rent, utilities, food, transportation, insurance",
+              "Exclude: entertainment, dining out, subscriptions",
+              "Multiply by 3-6 months based on your situation",
+              "Round up to the nearest $500 or $1,000",
+              "Adjust based on your comfort level",
+            ],
+          },
+          {
+            type: "list",
+            content: "Emergency fund building phases:",
+            items: [
+              "Phase 1: $500-1,000 starter emergency fund",
+              "Phase 2: 1 month of essential expenses",
+              "Phase 3: 3 months of essential expenses",
+              "Phase 4: 6 months of essential expenses",
+              "Phase 5: Adjust based on life changes",
+              "Celebrate each milestone achieved",
+            ],
+          },
+          {
+            type: "list",
+            content: "Young adult considerations:",
+            items: [
+              "Start smaller if you're just beginning ($500-1,000)",
+              "Focus on essential expenses, not total income",
+              "Consider living situation (parents vs. independent)",
+              "Account for student loan payments if applicable",
+              "Build gradually while establishing other habits",
+              "Adjust as your expenses and income change",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't let the full target amount overwhelm you. Start with a $500 goal, then $1,000, then work toward one month of expenses. Building it gradually makes the goal more achievable.",
+          },
+        ],
+        keyTakeaways: [
+          "3-6 months of essential expenses is the standard guideline",
+          "Your specific situation may require more or less",
+          "Start with smaller goals and build gradually",
+          "Focus on essential expenses, not total income",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "How much should someone with variable income typically save in their emergency fund?",
+              options: [
+                "1 month of expenses",
+                "3 months of expenses",
+                "6+ months of expenses",
+                "Whatever they can afford",
+              ],
+              correctAnswer: "6+ months of expenses",
+              explanation: "People with variable or unstable income should save more (6+ months) because they face higher risk of income disruption and may need more time to find new income sources.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Where to Keep Your Emergency Fund",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Choosing the Right Account",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Your emergency fund needs to be easily accessible when you need it, but you also want it to earn some interest while it sits there. The key is balancing accessibility, safety, and growth potential.",
+          },
+          {
+            type: "list",
+            content: "Emergency fund account requirements:",
+            items: [
+              "Easily accessible (liquid)",
+              "FDIC insured for safety",
+              "Earns some interest to fight inflation",
+              "No penalties for withdrawals",
+              "Separate from your checking account",
+              "Not subject to market volatility",
+            ],
+          },
+          {
+            type: "list",
+            content: "Best emergency fund account options:",
+            items: [
+              "High-yield savings accounts (4-5% APY)",
+              "Money market accounts",
+              "Online bank savings accounts",
+              "Credit union savings accounts",
+              "Short-term CDs (if you have multiple months saved)",
+              "Treasury bills or I-bonds (for portion of fund)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa keeps her $10,000 emergency fund in a high-yield online savings account earning 4.5% APY. She can access it within 1-2 business days if needed, and it earns $450 annually in interest.",
+          },
+          {
+            type: "list",
+            content: "Accounts to avoid for emergency funds:",
+            items: [
+              "Regular checking accounts (too accessible, low interest)",
+              "Stock market investments (too volatile)",
+              "Retirement accounts (penalties and taxes)",
+              "Long-term CDs (penalties for early withdrawal)",
+              "Cryptocurrency (too volatile and risky)",
+              "Under your mattress (no growth, not secure)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Online vs. traditional banks:",
+            items: [
+              "Online banks: Higher interest rates, lower fees",
+              "Traditional banks: Physical locations, immediate access",
+              "Online banks often offer 10-20x higher rates",
+              "Consider having accounts at both types",
+              "Online transfers typically take 1-3 business days",
+              "ATM access may be limited with online banks",
+            ],
+          },
+          {
+            type: "list",
+            content: "Emergency fund accessibility strategies:",
+            items: [
+              "Keep small amount ($500-1,000) in checking for immediate access",
+              "Majority in high-yield savings for better growth",
+              "Consider multiple accounts for different time frames",
+              "Have debit card or checks for emergency account",
+              "Know how to transfer money quickly",
+              "Test your access method before you need it",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Shop around for high-yield savings accounts and compare rates regularly. Online banks typically offer the best rates. Make sure the bank is FDIC insured for your protection.",
+          },
+        ],
+        keyTakeaways: [
+          "High-yield savings accounts are ideal for emergency funds",
+          "Balance accessibility with earning potential",
+          "Avoid volatile investments for emergency money",
+          "Online banks typically offer better interest rates",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important characteristic of an emergency fund account?",
+              options: [
+                "Highest possible returns",
+                "Easy accessibility when needed",
+                "Long-term growth potential",
+                "Tax advantages",
+              ],
+              correctAnswer: "Easy accessibility when needed",
+              explanation: "The primary purpose of an emergency fund is to be available when you need it quickly, making accessibility more important than maximizing returns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building Your Emergency Fund",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Strategies to Reach Your Goal",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Building an emergency fund requires a systematic approach and consistent effort. The key is to make it automatic and find ways to accelerate your savings without dramatically impacting your lifestyle.",
+          },
+          {
+            type: "list",
+            content: "Automatic saving strategies:",
+            items: [
+              "Set up automatic transfers from checking to savings",
+              "Direct deposit a portion of paycheck to emergency fund",
+              "Use apps that round up purchases and save the change",
+              "Save tax refunds and bonuses automatically",
+              "Treat emergency fund savings like a bill",
+              "Start small and increase gradually",
+            ],
+          },
+          {
+            type: "list",
+            content: "Finding money to save:",
+            items: [
+              "Track expenses to identify areas to cut",
+              "Cancel unused subscriptions and memberships",
+              "Reduce dining out and entertainment expenses",
+              "Shop smarter for groceries and necessities",
+              "Sell items you no longer need",
+              "Take on temporary side work or gigs",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom sets up a $200 automatic transfer every payday and saves his $50 weekly coffee shop habit. This saves him $400/month, building a $4,800 emergency fund in one year.",
+          },
+          {
+            type: "list",
+            content: "Accelerating your emergency fund:",
+            items: [
+              "Use windfalls: tax refunds, bonuses, gifts",
+              "Temporarily reduce other savings goals",
+              "Take on extra work or freelance projects",
+              "Sell unused items around your home",
+              "Participate in the gig economy",
+              "Challenge yourself with no-spend periods",
+            ],
+          },
+          {
+            type: "list",
+            content: "Staying motivated:",
+            items: [
+              "Set smaller milestone goals ($500, $1,000, etc.)",
+              "Track your progress visually",
+              "Celebrate reaching each milestone",
+              "Remember why you're building the fund",
+              "Find an accountability partner",
+              "Focus on the peace of mind it provides",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common obstacles and solutions:",
+            items: [
+              "Temptation to spend: Keep fund in separate bank",
+              "Slow progress: Start smaller, be consistent",
+              "Competing priorities: Emergency fund comes first",
+              "Irregular income: Save percentage, not fixed amount",
+              "Unexpected expenses: Don't give up, rebuild",
+              "Lack of motivation: Remember your 'why'",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with whatever amount you can manage, even $25 per month. The habit of saving regularly is more important than the amount. You can always increase it as your income grows or expenses decrease.",
+          },
+        ],
+        keyTakeaways: [
+          "Automation makes emergency fund building effortless",
+          "Look for ways to cut expenses and increase income",
+          "Use windfalls to accelerate your progress",
+          "Set smaller milestones to stay motivated",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best way to ensure you consistently build your emergency fund?",
+              options: [
+                "Save whatever is left over each month",
+                "Set up automatic transfers",
+                "Only save when you remember",
+                "Wait for large windfalls",
+              ],
+              correctAnswer: "Set up automatic transfers",
+              explanation: "Automatic transfers ensure consistent saving without relying on willpower or memory, making it the most effective way to build your emergency fund.",
+            },
+          ],
+        },
+      },
+    ],
+    "financial-goals": [
+      {
+        title: "Setting SMART Financial Goals",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Creating Clear, Achievable Goals",
+          },
+          {
+            type: "paragraph",
+            content:
+              "SMART goals are Specific, Measurable, Achievable, Relevant, and Time-bound. This framework helps you create clear financial objectives that you're more likely to achieve, rather than vague wishes that never materialize.",
+          },
+          {
+            type: "list",
+            content: "SMART goal components:",
+            items: [
+              "Specific: Clearly defined with exact details",
+              "Measurable: Quantifiable with numbers",
+              "Achievable: Realistic given your situation",
+              "Relevant: Important to your life and values",
+              "Time-bound: Has a specific deadline",
+            ],
+          },
+          {
+            type: "list",
+            content: "Examples of vague vs. SMART goals:",
+            items: [
+              "Vague: 'Save more money'",
+              "SMART: 'Save $5,000 for emergency fund by December 31st'",
+              "Vague: 'Pay off debt'",
+              "SMART: 'Pay off $3,000 credit card debt in 18 months'",
+              "Vague: 'Start investing'",
+              "SMART: 'Invest $200 monthly in index funds starting next month'",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Instead of 'I want to buy a car,' Sarah sets a SMART goal: 'Save $8,000 for a reliable used car down payment by June 2025 by saving $400 per month.' This gives her a clear target and timeline.",
+          },
+          {
+            type: "list",
+            content: "Making goals achievable:",
+            items: [
+              "Base goals on your actual income and expenses",
+              "Start with smaller goals to build confidence",
+              "Consider your other financial obligations",
+              "Account for unexpected expenses",
+              "Be realistic about your timeline",
+              "Allow for some flexibility in your plan",
+            ],
+          },
+          {
+            type: "list",
+            content: "Ensuring goals are relevant:",
+            items: [
+              "Align with your personal values",
+              "Support your life priorities",
+              "Consider your current life stage",
+              "Think about your future self",
+              "Don't copy others' goals blindly",
+              "Focus on what truly matters to you",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Write down your SMART goals and put them somewhere you'll see them regularly. This keeps them top of mind and increases your likelihood of achieving them.",
+          },
+        ],
+        keyTakeaways: [
+          "SMART goals are more likely to be achieved than vague wishes",
+          "Specific numbers and deadlines create accountability",
+          "Goals should be challenging but realistic",
+          "Relevance to your values increases motivation",
