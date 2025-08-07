@@ -914,7 +914,7 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           { type: "tip", content: "Use loan calculators to compare the total cost of different loan offers. A slightly higher rate with a shorter term might cost less overall than a lower rate with a longer term." },
         ],
         keyTakeaways: ["Compare APR, not just interest rates", "Shop with multiple lenders within a short timeframe", "Consider total cost over the life of the loan", "Avoid lenders with red flag practices"],
-        quiz: { questions: [{ question: "What's the most important factor to compare when shopping for loans?", options: ["Interest rate", "Monthly payment", "Annual Percentage Rate (APR)", "Loan term"], correctAnswer: "Annual Percentage Rate (APR)", explanation: "APR includes both the interest rate and fees, giving you the true cost of the loan for accurate comparison shopping." }] },
+        quiz: { questions: [{ question: "What's the most important factor to compare when shopping for loans?", options: ["Interest rate", "Monthly payment", "Annual Percentage Rate (APR)", "Loan term"], correctAnswer: "Annual Percentage Rate (APR)", explanation: "APR includes both the interest rate and fees, giving you the true annual cost of the loan for accurate comparison shopping." }] },
       },
       {
         title: "Loan Terms and Conditions",
@@ -980,30 +980,176 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         title: "Types of Mortgages",
         duration: "5 min",
         points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
         content: [
           { type: "heading", content: "Understanding Your Home Financing Options" },
-          { type: "paragraph", content: "Mortgages come in various types, each designed for different financial situations and homebuyer needs. Understanding the differences between mortgage types helps you choose the best option for your circumstances and can save you thousands of dollars over the life of your loan." },
-          { type: "list", content: "Fixed-rate mortgages:", items: ["Interest rate stays the same for entire loan term", "Predictable monthly payments for budgeting", "Protection against rising interest rates", "Typically 15-year or 30-year terms", "Higher initial rates than adjustable-rate mortgages", "Most popular choice for primary residences"] },
-          { type: "list", content: "Adjustable-rate mortgages (ARMs):", items: ["Interest rate changes periodically based on market conditions", "Lower initial rates than fixed-rate mortgages", "Payment amounts can increase or decrease", "Common types: 5/1, 7/1, 10/1 ARMs", "Rate caps limit how much rates can increase", "Good for short-term homeownership or falling rate environments"] },
-          { type: "example", content: "Sarah chooses a 30-year fixed mortgage at 6.5% for payment stability. Her friend Mike takes a 5/1 ARM starting at 5.5%, planning to sell within 5 years to take advantage of the lower initial rate." },
-          { type: "list", content: "Government-backed mortgages:", items: ["FHA loans: Low down payment (3.5%), easier qualification", "VA loans: No down payment for eligible veterans", "USDA loans: Rural area financing with no down payment", "Conventional loans: Not government-backed, typically require higher credit scores", "Jumbo loans: For expensive homes exceeding conforming loan limits", "Each has specific eligibility requirements and benefits"] },
-          { type: "list", content: "Specialty mortgage programs:", items: ["First-time homebuyer programs: Special rates and down payment assistance", "Interest-only mortgages: Pay only interest for initial period", "Balloon mortgages: Large payment due at end of term", "Reverse mortgages: For seniors to access home equity", "Construction loans: Financing for building new homes", "Portfolio loans: Kept by lender, more flexible underwriting"] },
-          { type: "list", content: "Choosing the right mortgage type:", items: ["Consider how long you plan to stay in the home", "Evaluate your risk tolerance for payment changes", "Compare total costs over expected ownership period", "Assess your current and future income stability", "Review down payment and closing cost requirements", "Understand qualification requirements for each type"] },
-          { type: "tip", content: "Don't just focus on the interest rate. Consider the total cost of the loan, including fees, over the time you expect to own the home." },
+          { type: "paragraph", content: "Mortgages come in various types, each designed for different financial situations and homebuyer needs. Understanding the differences between mortgage types helps you choose the best option for your circumstances." },
+          { type: "list", content: "Fixed-rate mortgages:", items: ["Interest rate stays the same for entire loan term", "Predictable monthly payments", "Protection against rising rates", "15-year or 30-year terms most common"] },
+          { type: "list", content: "Adjustable-rate mortgages (ARMs):", items: ["Interest rate changes periodically", "Lower initial rates", "Payment amounts can fluctuate", "Good for short-term ownership"] },
         ],
-        keyTakeaways: ["Fixed-rate mortgages offer payment stability", "ARMs can save money if you plan to move soon", "Government programs help buyers with limited down payments", "Choose based on your specific situation and plans"],
-        quiz: { questions: [{ question: "What's the main advantage of a fixed-rate mortgage?", options: ["Lower initial interest rate", "Predictable monthly payments", "No down payment required", "Faster loan approval"], correctAnswer: "Predictable monthly payments", explanation: "Fixed-rate mortgages provide payment stability because the interest rate and monthly payment remain the same throughout the loan term." }] },
+        keyTakeaways: ["Fixed-rate offers stability", "ARMs have lower initial rates", "Choose based on your plans"],
+        quiz: { questions: [{ question: "What's the main advantage of a fixed-rate mortgage?", options: ["Lower rate", "Predictable payments", "No down payment", "Faster approval"], correctAnswer: "Predictable payments", explanation: "Fixed-rate mortgages provide payment stability throughout the loan term." }] },
       },
+    ],
+    "retirement-planning": [
       {
-        title: "Down Payments and PMI",
+        title: "401(k) Basics",
+        duration: "5 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Understanding Employer-Sponsored Retirement Plans" },
+          { type: "paragraph", content: "A 401(k) is an employer-sponsored retirement savings plan that allows you to save and invest for retirement with tax advantages." },
+          { type: "list", content: "Key benefits:", items: ["Tax-deferred growth", "Employer matching", "High contribution limits", "Automatic payroll deduction"] },
+        ],
+        keyTakeaways: ["401(k) offers tax advantages", "Always get employer match", "Start early for compound growth"],
+        quiz: { questions: [{ question: "What's the most important 401(k) benefit?", options: ["High returns", "Employer match", "Tax deduction", "Easy access"], correctAnswer: "Employer match", explanation: "Employer matching is free money that significantly boosts your retirement savings." }] },
+      },
+    ],
+    "hsa": [
+      {
+        title: "HSA Fundamentals",
         duration: "4 min",
         points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
         content: [
-          { type: "heading", content: "Understanding Upfront Costs and Insurance" },
-          { type: "paragraph", content: "Down payments and private mortgage insurance (PMI) are crucial factors in home financing. Understanding how much you need to put down, the benefits of larger down payments, and how PMI works helps you plan for homeownership and potentially save money." },
-          { type: "list", content: "Down payment requirements by loan type:", items: ["Conventional loans: Typically 5-20% down", "FHA loans: As low as 3.5%", "VA loans: $0 down for eligible veterans", "USDA loans: $0 down for rural properties", "Jumbo loans: Usually 10-20% minimum", "First-time buyer programs: Often 3-5%"] },
-          { type: "list", content: "Benefits of larger down payments:", items: ["Lower monthly payments: Smaller loan amount", "No PMI requirement: Avoid insurance costs with 20%+ down", "Better interest rates: Some lenders offer rate discounts", "Stronger offers: More attractive to sellers", "More equity: Immediate ownership stake in home", "Lower debt-to-income ratio: Easier qualification"] },
-          { type: "example", content: "On a $300,000 home: 5% down ($15,000) requires PMI at $200/month. 20% down ($60,000) eliminates PMI, saving $2,400 annually." },
-          { type: "list", content: "Private Mortgage Insurance (PMI) basics:", items: ["Required when down payment is less than 20%", "Protects lender if borrower defaults", "Typically costs 0.3-1.5% of loan amount annually", "Can be paid monthly, upfront, or combination", "Automatically cancels at 78% loan-to
+          { type: "heading", content: "Triple Tax Advantage Accounts" },
+          { type: "paragraph", content: "Health Savings Accounts offer unique triple tax advantages: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses." },
+          { type: "list", content: "HSA benefits:", items: ["Tax deduction on contributions", "Tax-free investment growth", "Tax-free withdrawals for medical expenses", "No required distributions"] },
+        ],
+        keyTakeaways: ["HSAs offer triple tax benefits", "Great for long-term healthcare costs", "Can be used as retirement account"],
+        quiz: { questions: [{ question: "How many tax advantages do HSAs offer?", options: ["One", "Two", "Three", "Four"], correctAnswer: "Three", explanation: "HSAs offer triple tax advantages: deductible contributions, tax-free growth, and tax-free qualified withdrawals." }] },
+      },
+    ],
+    "insurance": [
+      {
+        title: "Life Insurance Basics",
+        duration: "5 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Protecting Your Family's Financial Future" },
+          { type: "paragraph", content: "Life insurance provides financial protection for your loved ones in case of your death. Understanding the types and how much you need is crucial for financial planning." },
+          { type: "list", content: "Types of life insurance:", items: ["Term life: Temporary coverage, lower cost", "Whole life: Permanent coverage with cash value", "Universal life: Flexible premiums and death benefits"] },
+        ],
+        keyTakeaways: ["Term life is usually best for most people", "Coverage should replace lost income", "Buy when young for lower rates"],
+        quiz: { questions: [{ question: "Which type of life insurance is typically recommended for most people?", options: ["Whole life", "Term life", "Universal life", "Variable life"], correctAnswer: "Term life", explanation: "Term life insurance provides the most coverage for the lowest cost, making it ideal for most people's needs." }] },
+      },
+    ],
+    "bill-negotiation": [
+      {
+        title: "Negotiation Strategies",
+        duration: "4 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Lower Your Monthly Bills Through Negotiation" },
+          { type: "paragraph", content: "Many bills can be negotiated lower with the right approach. Companies often prefer to keep customers at reduced rates rather than lose them entirely." },
+          { type: "list", content: "Bills you can negotiate:", items: ["Cable and internet", "Cell phone plans", "Insurance premiums", "Credit card interest rates", "Medical bills"] },
+        ],
+        keyTakeaways: ["Research competitor prices first", "Be polite but persistent", "Ask for supervisor if needed", "Get agreements in writing"],
+        quiz: { questions: [{ question: "What should you do before negotiating bills?", options: ["Threaten to cancel", "Research competitor prices", "Pay late", "Complain loudly"], correctAnswer: "Research competitor prices", explanation: "Knowing competitor prices gives you leverage and specific alternatives to reference during negotiations." }] },
+      },
+    ],
+    "investing": [
+      {
+        title: "Investment Fundamentals",
+        duration: "5 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Building Wealth Through Smart Investing" },
+          { type: "paragraph", content: "Investing allows your money to grow over time through compound returns. Understanding basic investment principles helps you build long-term wealth." },
+          { type: "list", content: "Key investment principles:", items: ["Start early for compound growth", "Diversify to reduce risk", "Invest regularly regardless of market conditions", "Keep costs low with index funds"] },
+        ],
+        keyTakeaways: ["Time in market beats timing the market", "Diversification reduces risk", "Low-cost index funds are ideal for beginners"],
+        quiz: { questions: [{ question: "What's the most important factor in investment success?", options: ["Picking individual stocks", "Market timing", "Starting early", "High returns"], correctAnswer: "Starting early", explanation: "Starting early allows compound growth to work over longer periods, which is the most powerful factor in building wealth." }] },
+      },
+    ],
+    "emergency-fund": [
+      {
+        title: "Emergency Fund Essentials",
+        duration: "4 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Your Financial Safety Net" },
+          { type: "paragraph", content: "An emergency fund is money set aside for unexpected expenses or income loss. It prevents you from going into debt when life throws you curveballs." },
+          { type: "list", content: "Emergency fund basics:", items: ["3-6 months of expenses", "Keep in high-yield savings", "Only use for true emergencies", "Replenish after using"] },
+        ],
+        keyTakeaways: ["Start with $1,000 minimum", "Build gradually over time", "Keep separate from other savings", "Provides peace of mind"],
+        quiz: { questions: [{ question: "How much should you have in an emergency fund?", options: ["1 month expenses", "3-6 months expenses", "1 year expenses", "$10,000"], correctAnswer: "3-6 months expenses", explanation: "Most financial experts recommend 3-6 months of expenses to cover most emergency situations." }] },
+      },
+    ],
+    "financial-goals": [
+      {
+        title: "Setting SMART Financial Goals",
+        duration: "4 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Creating Achievable Financial Objectives" },
+          { type: "paragraph", content: "SMART goals are Specific, Measurable, Achievable, Relevant, and Time-bound. This framework helps you create financial goals you can actually accomplish." },
+          { type: "list", content: "SMART goal components:", items: ["Specific: Clear and well-defined", "Measurable: Quantifiable progress", "Achievable: Realistic given your situation", "Relevant: Aligned with your values", "Time-bound: Has a deadline"] },
+        ],
+        keyTakeaways: ["Write goals down", "Make them specific and measurable", "Set realistic timelines", "Review and adjust regularly"],
+        quiz: { questions: [{ question: "What does the 'M' in SMART goals stand for?", options: ["Meaningful", "Measurable", "Motivating", "Manageable"], correctAnswer: "Measurable", explanation: "Measurable means you can track your progress and know when you've achieved the goal." }] },
+      },
+    ],
+    "sustainable-impact-investing": [
+      {
+        title: "ESG Investing Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          { type: "heading", content: "Investing with Your Values" },
+          { type: "paragraph", content: "ESG (Environmental, Social, Governance) investing considers non-financial factors alongside financial returns, allowing you to align your investments with your values." },
+          { type: "list", content: "ESG factors:", items: ["Environmental: Climate change, pollution, resource use", "Social: Labor practices, community impact, diversity", "Governance: Board composition, executive compensation, ethics"] },
+        ],
+        keyTakeaways: ["ESG doesn't mean sacrificing returns", "Many ESG funds available", "Consider your values in investing", "Research fund holdings carefully"],
+        quiz: { questions: [{ question: "What does ESG stand for?", options: ["Economic, Social, Growth", "Environmental, Social, Governance", "Ethical, Sustainable, Green", "Energy, Solar, Gas"], correctAnswer: "Environmental, Social, Governance", explanation: "ESG stands for Environmental, Social, and Governance factors that are considered in sustainable investing." }] },
+      },
+    ],
+    "taxes": [
+      {
+        title: "Tax Filing Basics",
+        duration: "5 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Understanding Your Tax Obligations" },
+          { type: "paragraph", content: "Filing taxes is an annual requirement for most working adults. Understanding the basics helps you file correctly and potentially save money through deductions and credits." },
+          { type: "list", content: "Key tax concepts:", items: ["Gross income: All income before deductions", "Adjusted Gross Income (AGI): Income after certain deductions", "Standard vs itemized deductions", "Tax credits vs deductions"] },
+        ],
+        keyTakeaways: ["Keep good records year-round", "Understand deductions vs credits", "File on time to avoid penalties", "Consider professional help for complex situations"],
+        quiz: { questions: [{ question: "What's better: a $1,000 tax deduction or a $1,000 tax credit?", options: ["Tax deduction", "Tax credit", "They're the same", "Depends on income"], correctAnswer: "Tax credit", explanation: "A tax credit reduces your tax bill dollar-for-dollar, while a deduction only reduces your taxable income." }] },
+      },
+    ],
+    "estate-planning": [
+      {
+        title: "Estate Planning Fundamentals",
+        duration: "5 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Planning for Your Legacy" },
+          { type: "paragraph", content: "Estate planning ensures your assets are distributed according to your wishes and can minimize taxes and legal complications for your heirs." },
+          { type: "list", content: "Basic estate planning documents:", items: ["Will: Directs asset distribution", "Power of attorney: Financial decisions if incapacitated", "Healthcare directive: Medical decisions if unable", "Beneficiary designations: On accounts and insurance"] },
+        ],
+        keyTakeaways: ["Everyone needs basic estate planning", "Update documents after major life events", "Consider professional help", "Don't delay - start with basics"],
+        quiz: { questions: [{ question: "What's the most basic estate planning document everyone should have?", options: ["Trust", "Will", "Power of attorney", "Healthcare directive"], correctAnswer: "Will", explanation: "A will is the fundamental document that directs how your assets should be distributed after death." }] },
+      },
+    ],
+    "financial-advisors": [
+      {
+        title: "Choosing a Financial Advisor",
+        duration: "5 min",
+        points: 15,
+        content: [
+          { type: "heading", content: "Finding Professional Financial Help" },
+          { type: "paragraph", content: "Financial advisors can provide valuable guidance, but it's important to understand the different types and how they're compensated to find the right fit for your needs." },
+          { type: "list", content: "Types of advisors:", items: ["Fee-only: Paid directly by clients", "Commission-based: Paid by product sales", "Fee-based: Combination of fees and commissions", "Robo-advisors: Automated investment management"] },
+        ],
+        keyTakeaways: ["Understand how advisors are paid", "Look for fiduciary standard", "Check credentials and background", "Start with your specific needs"],
+        quiz: { questions: [{ question: "Which type of advisor compensation structure has the fewest conflicts of interest?", options: ["Commission-based", "Fee-based", "Fee-only", "Product-based"], correctAnswer: "Fee-only", explanation: "Fee-only advisors are paid directly by clients and don't receive commissions, reducing conflicts of interest." }] },
+      },
+    ],
+  };
+
+  const moduleContent = lessons[moduleId];
+  if (!moduleContent || lessonIndex < 0 || lessonIndex >= moduleContent.length) {
+    return null;
+  }
+
+  return moduleContent[lessonIndex];
+}
