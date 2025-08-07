@@ -2242,6 +2242,12 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
               "High expense ratios can significantly erode your investment returns over time. Choose low-cost index funds or ETFs whenever possible.",
           },
           {
-            type: "tip",
+            type": "tip",
+            content:
+              "Use online tools like Morningstar or
+              "High expense ratios can significantly erode your investment returns over time. Choose low-cost index funds or ETFs whenever possible.",
+          },
+          {
+            type": "tip",
             content:
               "Use online tools like Morningstar or
