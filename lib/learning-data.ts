@@ -3144,4 +3144,1538 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           {
             type: "case-study",
             content:
-              "Cost-Effective Protection: The Johnson family has $800,000 net worth and $3M future earning potential. They increased their auto and home liability to $500
+              "Cost-Effective Protection: The Johnson family has $800,000 net worth and $3M future earning potential. They increased their auto and home liability to $500,000 each and added a $3M umbrella policy for $400 annually, protecting $3.8M in total exposure.",
+          },
+          {
+            type: "list",
+            content: "Situations umbrella insurance helps:",
+            items: [
+              "Serious auto accidents: Multi-million dollar injury claims",
+              "Home accidents: Guest injuries on your property",
+              "Dog bites: Significant medical and legal costs",
+              "Defamation claims: Social media posts, comments",
+              "Volunteer activities: Coaching, board service liability",
+              "International incidents: Coverage while traveling abroad",
+            ],
+          },
+          {
+            type: "list",
+            content: "Umbrella insurance limitations:",
+            items: [
+              "Doesn't cover intentional acts: Criminal behavior excluded",
+              "Business activities: Separate commercial coverage needed",
+              "Professional services: Malpractice requires separate coverage",
+              "Property damage: Only covers liability, not your own property",
+              "Underlying policy gaps: Won't cover what underlying policies exclude",
+              "Contract liability: Some contractual obligations excluded",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't assume your auto and homeowners liability limits are adequate. A single serious accident could result in a judgment that exceeds these limits by millions.",
+          },
+          {
+            type: "tip",
+            content:
+              "Umbrella insurance is one of the best insurance values available. For a few hundred dollars annually, you can get millions in additional liability protection.",
+          },
+        ],
+        keyTakeaways: [
+          "Umbrella insurance provides inexpensive protection against major lawsuits",
+          "Coverage should reflect your net worth plus future earning potential",
+          "Requires adequate underlying auto and homeowners liability coverage",
+          "Provides broader coverage and pays legal defense costs",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the primary purpose of umbrella liability insurance?",
+              options: [
+                "To replace your auto and homeowners insurance",
+                "To provide additional liability coverage above your other policies",
+                "To cover property damage to your own assets",
+                "To provide life insurance benefits",
+              ],
+              correctAnswer: "To provide additional liability coverage above your other policies",
+              explanation:
+                "Umbrella liability insurance provides additional liability coverage that kicks in after your underlying auto and homeowners liability limits are exhausted, protecting against large lawsuit judgments.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Insurance Claim Process",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Navigating Claims for Maximum Recovery",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Filing insurance claims can be stressful, but understanding the process and your rights helps ensure fair treatment and maximum recovery. Proper documentation and communication are key to successful claim resolution.",
+          },
+          {
+            type: "list",
+            content: "Steps in the claim process:",
+            items: [
+              "Report the claim: Contact insurer immediately after incident",
+              "Document everything: Photos, police reports, witness statements",
+              "Meet with adjuster: Cooperate but protect your interests",
+              "Get estimates: Multiple repair estimates for comparison",
+              "Review settlement: Ensure it covers all damages and expenses",
+              "Appeal if necessary: Challenge unfair claim denials or low settlements",
+            ],
+          },
+          {
+            type: "list",
+            content: "What to do immediately after an incident:",
+            items: [
+              "Ensure safety: Get medical attention if needed",
+              "Call police: For auto accidents and crimes",
+              "Take photos: Damage, scene, other vehicles, injuries",
+              "Collect information: Names, contact info, insurance details",
+              "Don't admit fault: Let insurance companies determine liability",
+              "Contact your insurer: Report claim as soon as possible",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Proper Documentation: After a hail storm damaged her roof, Maria took detailed photos, got three repair estimates, and kept receipts for temporary repairs. This documentation helped her get a fair settlement of $18,000 instead of the initial $12,000 offer.",
+          },
+          {
+            type: "list",
+            content: "Working with insurance adjusters:",
+            items: [
+              "Be cooperative but cautious: Answer questions honestly",
+              "Document conversations: Keep records of all communications",
+              "Don't sign quickly: Review settlement offers carefully",
+              "Get everything in writing: Verbal promises aren't binding",
+              "Know your policy: Understand coverage limits and deductibles",
+              "Consider public adjuster: For large or complex claims",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Claim Dispute Resolution: Tom's home fire claim was initially denied for 'suspicious circumstances.' He hired a public adjuster who found the insurer's investigation was flawed. After appeal, the claim was approved for $85,000, minus the public adjuster's 10% fee.",
+          },
+          {
+            type: "list",
+            content: "Common claim mistakes to avoid:",
+            items: [
+              "Delaying claim reporting: May void coverage",
+              "Inadequate documentation: Makes proving losses difficult",
+              "Accepting first offer: Initial offers are often low",
+              "Not reading policy: Misunderstanding coverage limits",
+              "Admitting fault: Can affect liability determination",
+              "Not keeping receipts: For additional living expenses or repairs",
+            ],
+          },
+          {
+            type: "list",
+            content: "When claims are denied:",
+            items: [
+              "Review denial letter: Understand specific reasons",
+              "Check policy language: Verify coverage interpretation",
+              "Gather additional evidence: Address insurer's concerns",
+              "File formal appeal: Follow insurer's appeal process",
+              "Contact state regulator: If insurer acts in bad faith",
+              "Consider legal help: For large claims or bad faith situations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of claim settlements:",
+            items: [
+              "Actual cash value: Replacement cost minus depreciation",
+              "Replacement cost: Full cost to repair or replace",
+              "Agreed value: Pre-determined amount (classic cars, art)",
+              "Functional replacement: Similar but not identical items",
+              "Cash settlement: Money instead of repairs",
+              "Repair settlement: Insurer arranges and pays for repairs",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't make permanent repairs before the adjuster inspects the damage, unless necessary to prevent further damage. Document any emergency repairs with photos and receipts.",
+          },
+          {
+            type: "tip",
+            content:
+              "Keep a claim diary documenting all conversations, meetings, and correspondence with your insurance company. This record can be valuable if disputes arise.",
+          },
+        ],
+        keyTakeaways: [
+          "Prompt reporting and thorough documentation are crucial for successful claims",
+          "Don't accept the first settlement offer without careful review",
+          "Understand your policy coverage and rights as a policyholder",
+          "Consider professional help for large or disputed claims",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do first after an incident that may result in an insurance claim?",
+              options: [
+                "Call your insurance company",
+                "Get repair estimates",
+                "Ensure safety and get medical attention if needed",
+                "Take photos of the damage",
+              ],
+              correctAnswer: "Ensure safety and get medical attention if needed",
+              explanation:
+                "Safety comes first. Ensure everyone is safe and get medical attention if needed before dealing with insurance matters. Then document the scene and contact your insurer.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Insurance Cost Reduction Strategies",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Lowering Premiums Without Sacrificing Protection",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Insurance is essential protection, but premiums can be a significant expense. Understanding how to reduce costs while maintaining adequate coverage helps you get the best value and free up money for other financial goals.",
+          },
+          {
+            type: "list",
+            content: "Universal cost reduction strategies:",
+            items: [
+              "Shop around regularly: Rates change, new companies enter markets",
+              "Bundle policies: Multi-policy discounts often 5-25%",
+              "Increase deductibles: Higher deductibles significantly lower premiums",
+              "Maintain good credit: Used for pricing in most states",
+              "Pay annually: Avoid monthly billing fees",
+              "Review coverage regularly: Drop unnecessary coverage, adjust limits",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Deductible impact on premiums:",
+            formula: "Premium Savings = (Higher Deductible - Lower Deductible) × Risk Factor",
+            variables: {
+              "Example": "Auto insurance, $500 vs $1,000 deductible",
+              "Typical Savings": "$200-400 annually",
+              "Break-even": "1-2 years if no claims",
+              "Self-insurance": "Save premium difference in emergency fund",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Bundling Benefits: Sarah saved $800 annually by bundling her auto, home, and umbrella policies with one insurer, receiving a 20% multi-policy discount while simplifying her insurance management.",
+          },
+          {
+            type: "list",
+            content: "Auto insurance specific savings:",
+            items: [
+              "Good driver discounts: Clean driving record rewards",
+              "Defensive driving courses: 5-10% discounts in many states",
+              "Low mileage discounts: Drive less, pay less",
+              "Safety features: Anti-lock brakes, airbags, anti-theft devices",
+              "Usage-based insurance: Telematics monitoring for safe drivers",
+              "Student discounts: Good grades, driver training courses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Home insurance specific savings:",
+            items: [
+              "Security systems: Burglar alarms, smoke detectors",
+              "Home improvements: New roof, plumbing, electrical updates",
+              "Claims-free discounts: Avoid small claims when possible",
+              "Age discounts: Senior citizen discounts available",
+              "Professional discounts: Some careers qualify for lower rates",
+              "Loyalty discounts: Long-term customer rewards",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Comprehensive Savings Strategy: The Martinez family implemented multiple strategies: increased deductibles ($300 savings), installed security system ($150 savings), bundled policies ($400 savings), and shopped around (found $200 better rate). Total annual savings: $1,050.",
+          },
+          {
+            type: "list",
+            content: "Life insurance cost reduction:",
+            items: [
+              "Buy when young and healthy: Rates increase with age",
+              "Choose term over whole life: Much lower premiums",
+              "Annual renewable term: Lowest initial cost",
+              "No-exam policies: Skip medical exam for small amounts",
+              "Group coverage: Through employer or associations",
+              "Quit smoking: Significant rate reductions after 12 months",
+            ],
+          },
+          {
+            type: "list",
+            content: "Health insurance optimization:",
+            items: [
+              "High-deductible plans: Lower premiums, HSA eligibility",
+              "In-network providers: Avoid balance billing",
+              "Generic medications: Much cheaper than brand names",
+              "Preventive care: Use free annual checkups and screenings",
+              "Health Savings Account: Triple tax advantage",
+              "Employer wellness programs: Premium discounts for participation",
+            ],
+          },
+          {
+            type: "list",
+            content: "When NOT to reduce insurance costs:",
+            items: [
+              "Inadequate liability limits: Don't skimp on liability coverage",
+              "Financially unstable insurers: Cheap rates mean nothing if they don't pay claims",
+              "Essential coverage: Don't drop needed protection to save money",
+              "Unrealistic deductibles: Don't choose deductibles you can't afford",
+              "Complex claims situations: May need full-service insurers",
+              "High-risk situations: May need specialized coverage",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't choose insurance based solely on price. The cheapest option may not provide adequate coverage or good service when you need to file a claim.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set a calendar reminder to shop for insurance annually. Even if you don't switch, you'll know you're getting competitive rates and may discover new discounts.",
+          },
+        ],
+        keyTakeaways: [
+          "Regular shopping and bundling can significantly reduce insurance costs",
+          "Higher deductibles are an effective way to lower premiums",
+          "Many discounts are available but must be requested",
+          "Don't sacrifice essential coverage just to save money",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's typically the most effective way to reduce insurance premiums?",
+              options: [
+                "Dropping coverage you don't think you need",
+                "Choosing the cheapest insurer available",
+                "Increasing your deductibles",
+                "Paying monthly instead of annually",
+              ],
+              correctAnswer: "Increasing your deductibles",
+              explanation:
+                "Increasing deductibles is typically the most effective way to reduce premiums because you're taking on more of the risk yourself, which insurers reward with lower rates. Just make sure you can afford the higher deductible if you need to file a claim.",
+            },
+          ],
+        },
+      },
+    ],
+    "hsa": [
+      {
+        title: "HSA Triple Tax Advantage",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "The Ultimate Tax-Advantaged Account",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Health Savings Accounts (HSAs) offer a unique triple tax advantage that no other account can match. Understanding how to maximize these benefits can significantly enhance your financial strategy for both healthcare costs and retirement planning.",
+          },
+          {
+            type: "list",
+            content: "The triple tax advantage explained:",
+            items: [
+              "Tax-deductible contributions: Reduce current year taxable income",
+              "Tax-free growth: Earnings grow without annual taxation",
+              "Tax-free withdrawals: For qualified medical expenses at any time",
+              "No other account offers all three benefits",
+              "Contributions reduce both income and payroll taxes",
+              "No required minimum distributions during your lifetime",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "HSA tax savings example:",
+            formula: "Tax Savings = Contribution × (Income Tax Rate + Payroll Tax Rate)",
+            variables: {
+              "Example": "$4,150 contribution, 22% income tax, 7.65% payroll tax",
+              "Income Tax Savings": "$4,150 × 0.22 = $913",
+              "Payroll Tax Savings": "$4,150 × 0.0765 = $317",
+              "Total Annual Savings": "$913 + $317 = $1,230",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Long-term HSA Growth: Maria contributes $4,150 annually to her HSA for 20 years, earning 7% returns. Her $83,000 in contributions grow to $170,000. All withdrawals for medical expenses are tax-free, creating $87,000 in tax-free growth.",
+          },
+          {
+            type: "list",
+            content: "HSA vs. other tax-advantaged accounts:",
+            items: [
+              "401(k): Tax-deferred, but withdrawals are taxed",
+              "Roth IRA: Tax-free growth and withdrawals, but no deduction",
+              "Traditional IRA: Tax-deductible, but withdrawals are taxed",
+              "FSA: Use-it-or-lose-it, limited carryover",
+              "HSA: Only account with triple tax advantage",
+              "HSA: No required distributions, funds never expire",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "HSA vs. 401(k) Comparison: David has $1,000 to invest. In a 401(k) at 22% tax bracket, he saves $220 in taxes now but pays $220 on $1,000 withdrawal later. In an HSA, he saves $220 now and pays $0 on medical withdrawals, keeping the full $1,000 plus growth.",
+          },
+          {
+            type: "list",
+            content: "Maximizing HSA tax benefits:",
+            items: [
+              "Contribute the maximum allowed annually",
+              "Use payroll deduction to avoid payroll taxes",
+              "Don't reimburse yourself immediately for medical expenses",
+              "Keep receipts for future reimbursement",
+              "Invest HSA funds for long-term growth",
+              "Use HSA as retirement account after age 65",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA contribution limits (2024):",
+            items: [
+              "Individual coverage: $4,150",
+              "Family coverage: $8,300",
+              "Catch-up contribution (55+): Additional $1,000",
+              "Employer contributions count toward limits",
+              "Contribution deadline: Tax filing deadline (April 15)",
+              "Pro-rated for partial year HDHP coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA tax advantages in retirement:",
+            items: [
+              "Age 65+: Withdrawals for any purpose (taxed as income)",
+              "Medical expenses: Always tax-free regardless of age",
+              "No required minimum distributions",
+              "Beneficiary options: Spouse continues HSA, others pay taxes",
+              "Estate planning: Can pass tax-free to spouse",
+              "Medicare premiums: Qualified medical expense",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "HSA contributions are only allowed if you have a qualifying High Deductible Health Plan (HDHP) and no other health coverage. Verify your plan qualifies before contributing.",
+          },
+          {
+            type: "tip",
+            content:
+              "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs offer a unique triple tax advantage no other account provides",
+          "Maximize contributions and let funds grow for long-term benefit",
+          "Keep medical receipts for future tax-free reimbursement",
+          "HSAs become powerful retirement accounts after age 65",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What makes HSAs unique among tax-advantaged accounts?",
+              options: [
+                "Highest contribution limits",
+                "No income restrictions",
+                "Triple tax advantage (deductible, growth, withdrawals)",
+                "Available to everyone",
+              ],
+              correctAnswer: "Triple tax advantage (deductible, growth, withdrawals)",
+              explanation:
+                "HSAs are unique because they offer a triple tax advantage: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses. No other account offers all three benefits.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Eligibility and Contribution Rules",
+        duration: "5 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Qualifying for HSA Benefits",
+          },
+          {
+            type: "paragraph",
+            content:
+              "HSA eligibility has specific requirements that must be met to contribute and maintain the account. Understanding these rules ensures you can take advantage of HSA benefits while avoiding penalties for ineligible contributions.",
+          },
+          {
+            type: "list",
+            content: "HSA eligibility requirements:",
+            items: [
+              "Enrolled in High Deductible Health Plan (HDHP)",
+              "No other health coverage (with limited exceptions)",
+              "Not enrolled in Medicare",
+              "Cannot be claimed as dependent on someone else's tax return",
+              "HDHP must be your only health coverage",
+              "Certain limited coverage is allowed (dental, vision, disability)",
+            ],
+          },
+          {
+            type: "list",
+            content: "2024 HDHP requirements:",
+            items: [
+              "Minimum deductible - Individual: $1,600",
+              "Minimum deductible - Family: $3,200",
+              "Maximum out-of-pocket - Individual: $8,050",
+              "Maximum out-of-pocket - Family: $16,100",
+              "Deductible must be met before plan pays (except preventive care)",
+              "Plan must be designated as HSA-qualified",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Pro-rated contributions for partial year:",
+            formula: "Allowed Contribution = (Months Eligible ÷ 12) × Annual Limit",
+            variables: {
+              "Example": "HDHP coverage starts July 1 (6 months eligible)",
+              "Individual Limit": "$4,150 annual limit",
+              "Pro-rated Amount": "(6 ÷ 12) × $4,150 = $2,075",
+              "Last Month Rule": "May allow full contribution if eligible Dec 31",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Eligibility Loss: John had an HDHP and HSA but added a low-deductible plan mid-year for better coverage. He became ineligible for HSA contributions from that point forward but could keep existing funds and use them for medical expenses.",
+          },
+          {
+            type: "list",
+            content: "Contribution timing and limits:",
+            items: [
+              "Contribution deadline: Tax filing deadline (typically April 15)",
+              "Can contribute for prior year until deadline",
+              "Employer contributions count toward annual limit",
+              "Catch-up contributions: $1,000 additional if age 55+",
+              "Both spouses can have HSAs if both have HDHP coverage",
+              "Cannot contribute once enrolled in Medicare",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Catch-up Contribution Strategy: At age 56, Susan can contribute $5,150 ($4,150 + $1,000 catch-up) to her individual HSA. Her husband, age 54, can contribute $4,150 to his separate HSA, totaling $9,300 in tax-deductible contributions for their family.",
+          },
+          {
+            type: "list",
+            content: "Common eligibility mistakes:",
+            items: [
+              "Having other health coverage: FSA, spouse's non-HDHP plan",
+              "Medicare enrollment: Automatically ends HSA eligibility",
+              "Dependent coverage: Being claimed on parent's tax return",
+              "Non-qualifying HDHP: Plan doesn't meet IRS requirements",
+              "Exceeding contribution limits: Results in penalties and taxes",
+              "Contributing after eligibility ends: Must stop immediately",
+            ],
+          },
+          {
+            type: "list",
+            content: "What to do with excess contributions:",
+            items: [
+              "Remove before tax deadline: Avoid penalties",
+              "Include earnings in removal: Must remove growth too",
+              "Pay taxes on earnings: Removed earnings are taxable",
+              "6% penalty: Applies to excess contributions left in account",
+              "Penalty continues: Until excess is removed",
+              "Professional help: Consider tax advisor for complex situations",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Carefully review all health coverage before contributing to an HSA. Even limited coverage like a healthcare FSA can disqualify you from HSA contributions.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
+          },
+        ],
+        keyTakeaways: [
+          "HSA eligibility requires enrollment in a qualifying HDHP with no other coverage",
+          "Contribution limits are annual maximums that include employer contributions",
+          "Eligibility can change during the year, affecting contribution amounts",
+          "Excess contributions result in penalties until removed",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens to your HSA if you become ineligible to contribute?",
+              options: [
+                "The account is closed and funds are forfeited",
+                "You must withdraw all funds immediately",
+                "You can keep existing funds but cannot add new contributions",
+                "The account converts to a regular savings account",
+              ],
+              correctAnswer: "You can keep existing funds but cannot add new contributions",
+              explanation:
+                "If you become ineligible for HSA contributions, you keep all existing funds and can continue using them for qualified medical expenses. You just cannot make new contributions while ineligible.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Investment Strategies for HSA Growth",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Growing Your HSA for Long-Term Benefits",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Many people treat HSAs like checking accounts, but they can be powerful investment vehicles. Understanding how to invest HSA funds and develop appropriate strategies can significantly multiply your healthcare dollars and retirement savings.",
+          },
+          {
+            type: "list",
+            content: "HSA investment basics:",
+            items: [
+              "Cash portion: Keep some funds liquid for immediate medical expenses",
+              "Investment threshold: Many providers require minimum cash balance",
+              "Investment options: Mutual funds, ETFs, sometimes individual stocks",
+              "Fees: Investment fees can vary significantly between providers",
+              "Time horizon: Consider when you'll need the funds",
+              "Risk tolerance: Balance growth potential with stability needs",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "HSA investment growth potential:",
+            formula: "Future Value = Present Value × (1 + Return Rate)^Years",
+            variables: {
+              "Example": "$10,000 invested for 20 years at 7% return",
+              "Future Value": "$10,000 × (1.07)^20 = $38,697",
+              "Tax-Free Growth": "All $28,697 in gains are tax-free for medical expenses",
+              "Comparison": "Taxable account would net ~$24,000 after taxes",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Long-term HSA Strategy: Dr. Martinez keeps $2,000 in cash for immediate needs and invests the remaining $15,000 HSA balance in low-cost index funds. Over 15 years, the invested portion grows to $41,000, all available tax-free for medical expenses.",
+          },
+          {
+            type: "list",
+            content: "HSA investment allocation strategies:",
+            items: [
+              "Conservative: 70% bonds, 30% stocks for near-term medical needs",
+              "Moderate: 60% stocks, 40% bonds for medium-term growth",
+              "Aggressive: 80-90% stocks for long-term retirement healthcare",
+              "Age-based: More conservative as you approach retirement",
+              "Target-date funds: Automatically adjust allocation over time",
+              "Index funds: Low-cost, diversified options",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "HSA Investment Success: Sarah, age 30, invests her HSA in 80% stock index funds, 20% bond funds. By age 65, her $50,000 in contributions grew to $400,000. She uses $100,000 for medical expenses tax-free and $300,000 for retirement income (taxed as ordinary income).",
+          },
+          {
+            type: "list",
+            content: "Choosing HSA investment providers:",
+            items: [
+              "Investment options: Variety and quality of fund choices",
+              "Fees: Account fees, investment expense ratios, transaction costs",
+              "Minimum balances: Required cash balance before investing",
+              "Online platform: Ease of use, research tools, mobile access",
+              "Customer service: Support quality and availability",
+              "Integration: Ability to pay medical bills directly from account",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA investment timing strategies:",
+            items: [
+              "Dollar-cost averaging: Regular monthly investments",
+              "Lump-sum investing: Invest large balances immediately",
+              "Rebalancing: Maintain target allocation periodically",
+              "Tax-loss harvesting: Not applicable in tax-free HSA",
+              "Withdrawal timing: Use oldest funds first for medical expenses",
+              "Retirement transition: Shift to more conservative allocation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common HSA investment mistakes:",
+            items: [
+              "Keeping everything in cash: Missing growth opportunities",
+              "Too aggressive allocation: Risk when medical needs arise",
+              "High-fee investments: Eroding returns with expensive funds",
+              "Frequent trading: Transaction costs and timing risks",
+              "Ignoring rebalancing: Allocation drift over time",
+              "Not considering time horizon: Mismatched risk and timeline",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA vs. other retirement accounts for investing:",
+            items: [
+              "HSA advantages: Triple tax benefit, no RMDs, medical expense flexibility",
+              "401(k) advantages: Higher contribution limits, employer matching",
+              "IRA advantages: More investment options, easier access",
+              "Optimal strategy: Maximize HSA first, then other accounts",
+              "Asset location: Consider tax efficiency across all accounts",
+              "Withdrawal coordination: Plan retirement income sources",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't invest HSA funds you'll need for medical expenses within the next 2-3 years. Market volatility could reduce your balance when you need the money most.",
+          },
+          {
+            type: "tip",
+            content:
+              "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs can be powerful investment vehicles for long-term growth",
+          "Keep some cash for immediate needs, invest the rest for growth",
+          "Choose low-cost, diversified investments appropriate for your timeline",
+          "Consider HSAs as retirement accounts with medical benefits",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best investment strategy for HSA funds you won't need for several years?",
+              options: [
+                "Keep everything in cash for safety",
+                "Invest in high-risk individual stocks",
+                "Use a diversified portfolio appropriate for your time horizon",
+                "Only invest in bonds for stability",
+              ],
+              correctAnswer: "Use a diversified portfolio appropriate for your time horizon",
+              explanation:
+                "For HSA funds you won't need for several years, a diversified portfolio matched to your time horizon and risk tolerance can maximize tax-free growth while managing risk appropriately.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Using HSA for Retirement Healthcare",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "HSAs as Retirement Healthcare Accounts",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Healthcare costs are one of the largest expenses in retirement, and HSAs provide the perfect vehicle to prepare for these costs. Understanding how to use HSAs strategically in retirement can significantly reduce your healthcare financial burden.",
+          },
+          {
+            type: "list",
+            content: "Healthcare costs in retirement:",
+            items: [
+              "Average retiree: $300,000+ in lifetime healthcare costs",
+              "Medicare doesn't cover everything: Deductibles, copays, long-term care",
+              "Medicare premiums: Part B, Part D, Medigap insurance",
+              "Long-term care: Average $50,000+ annually, not covered by Medicare",
+              "Dental and vision: Limited Medicare coverage",
+              "Healthcare inflation: Typically exceeds general inflation",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "HSA retirement healthcare funding:",
+            formula: "Healthcare Funding Goal = Annual Healthcare Costs × Years in Retirement",
+            variables: {
+              "Example": "$8,000 annual healthcare costs, 25 years retirement",
+              "Total Need": "$8,000 × 25 = $200,000",
+              "HSA Advantage": "All withdrawals tax-free for medical expenses",
+              "401(k) Comparison": "Would need $263,000 pre-tax (24% bracket)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Retirement Healthcare Strategy: Tom accumulated $150,000 in his HSA by retirement. He uses it to pay Medicare premiums ($2,400/year), supplemental insurance ($1,800/year), and out-of-pocket medical costs ($4,000/year), covering $8,200 annually in tax-free healthcare expenses.",
+          },
+          {
+            type: "list",
+            content: "Qualified medical expenses in retirement:",
+            items: [
+              "Medicare premiums: Parts A, B, C, and D",
+              "Medigap insurance premiums",
+              "Long-term care insurance premiums (with limits)",
+              "Long-term care services",
+              "Prescription medications",
+              "Dental and vision care",
+              "Medical equipment and supplies",
+              "Home modifications for medical needs",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Long-term Care Planning: Susan's mother needed nursing home care costing $60,000 annually. Susan used her $80,000 HSA to pay for two years of care tax-free, saving $19,200 in taxes compared to using taxable retirement accounts (24% bracket).",
+          },
+          {
+            type: "list",
+            content: "HSA withdrawal rules after age 65:",
+            items: [
+              "Medical expenses: Always tax-free, no penalties",
+              "Non-medical expenses: Taxed as ordinary income, no penalties",
+              "Functions like traditional IRA: For non-medical withdrawals",
+              "No required minimum distributions: Unlike traditional IRAs",
+              "Beneficiary options: Spouse continues HSA, others pay taxes",
+              "Keep receipts: Can reimburse old medical expenses tax-free",
+            ],
+          },
+          {
+            type: "list",
+            content: "Strategic HSA retirement planning:",
+            items: [
+              "Maximize contributions during working years",
+              "Invest for long-term growth",
+              "Pay current medical expenses out-of-pocket when possible",
+              "Keep all medical receipts for future reimbursement",
+              "Coordinate with other retirement accounts",
+              "Plan for increasing healthcare costs with age",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA vs. other retirement healthcare funding:",
+            items: [
+              "HSA: Tax-free for medical expenses, no RMDs",
+              "401(k)/IRA: Taxed as ordinary income on withdrawals",
+              "Roth IRA: Tax-free but better used for other expenses",
+              "Taxable accounts: Capital gains taxes on growth",
+              "HSA advantage: Only account designed for medical expenses",
+              "Optimal strategy: Use HSA first for medical costs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Planning for long-term care:",
+            items: [
+              "70% chance: Need some long-term care in lifetime",
+              "Average duration: 3 years for men, 3.7 years for women",
+              "Average cost: $50,000-$100,000+ annually",
+              "HSA benefits: Tax-free payments for qualified care",
+              "Long-term care insurance: Premiums may be HSA-eligible",
+              "Home care: Often preferred and HSA-eligible",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't assume Medicare will cover all your healthcare costs in retirement. Medicare has significant gaps that can result in substantial out-of-pocket expenses.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
+          },
+        ],
+        keyTakeaways: [
+          "Healthcare costs are a major retirement expense that HSAs can address tax-free",
+          "HSAs provide unique advantages for retirement healthcare funding",
+          "Long-term care is a significant risk that HSAs can help address",
+          "Start early and maximize contributions for best results",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens to HSA withdrawals for non-medical expenses after age 65?",
+              options: [
+                "They're tax-free like medical expenses",
+                "They're subject to a 20% penalty",
+                "They're taxed as ordinary income with no penalty",
+                "They're not allowed after age 65",
+              ],
+              correctAnswer: "They're taxed as ordinary income with no penalty",
+              explanation:
+                "After age 65, HSA withdrawals for non-medical expenses are taxed as ordinary income but have no penalty, making the HSA function like a traditional IRA for non-medical withdrawals.",
+            },
+          ],
+        },
+      },
+      {
+        title: "HSA vs. Other Healthcare Accounts",
+        duration: "5 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Comparing Healthcare Savings Options",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Several account types help with healthcare costs, each with different rules and benefits. Understanding the differences between HSAs, FSAs, and HRAs helps you choose the best options for your situation and maximize your healthcare savings.",
+          },
+          {
+            type: "list",
+            content: "Healthcare account comparison:",
+            items: [
+              "HSA: Triple tax advantage, funds never expire, requires HDHP",
+              "FSA: Tax-deductible, use-it-or-lose-it, available with any health plan",
+              "HRA: Employer-funded, employer owns account, varies by plan",
+              "MSA: Similar to HSA but for self-employed, less common",
+              "Dependent Care FSA: For childcare expenses, separate from healthcare FSA",
+              "Commuter FSA: For transportation costs, not healthcare-related",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "HSA vs. FSA tax savings comparison:",
+            formula: "Tax Savings = Contribution × (Income Tax Rate + Payroll Tax Rate)",
+            variables: {
+              "HSA Example": "$4,150 contribution saves $1,230 (22% + 7.65%)",
+              "FSA Example": "$3,200 contribution saves $948 (22% + 7.65%)",
+              "HSA Advantage": "Higher limits, funds roll over, investment growth",
+              "FSA Advantage": "Available with any health plan",
+            },
+          },
+          {
+            type: "list",
+            content: "Flexible Spending Account (FSA) details:",
+            items: [
+              "2024 limit: $3,200 for healthcare FSA",
+              "Use-it-or-lose-it: Must spend by plan year end",
+              "Grace period: Some plans allow 2.5 month extension",
+              "Carryover: Up to $640 can roll to next year",
+              "Immediate access: Full annual amount available January 1",
+              "Employer owned: Lose unused funds if you leave job",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Account Choice Strategy: Maria has an HDHP and chooses HSA over FSA. She contributes $4,150 to HSA, invests $3,000, and keeps $1,150 for current medical expenses. The invested portion grows tax-free for future healthcare needs.",
+          },
+          {
+            type: "list",
+            content: "Health Reimbursement Arrangement (HRA) details:",
+            items: [
+              "Employer-funded: Only employers contribute",
+              "Employer-owned: Employer sets rules and keeps unused funds",
+              "Tax-free reimbursements: For qualified medical expenses",
+              "Varies by employer: Different rules and contribution amounts",
+              "Not portable: Typically lose access when leaving job",
+              "Can supplement other coverage: Often used with high-deductible plans",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Multiple Account Strategy: John's employer offers both HSA and limited-purpose FSA. He maximizes his HSA ($4,150) and uses the FSA ($1,000) for dental and vision expenses, maximizing tax savings while preserving HSA funds for investment growth.",
+          },
+          {
+            type: "list",
+            content: "When to choose HSA over FSA:",
+            items: [
+              "Have qualifying HDHP coverage",
+              "Want to invest for long-term growth",
+              "Don't want use-it-or-lose-it pressure",
+              "Plan to change jobs (portability)",
+              "Want maximum contribution limits",
+              "Prefer account ownership and control",
+            ],
+          },
+          {
+            type: "list",
+            content: "When FSA might be better:",
+            items: [
+              "Don't have HDHP coverage",
+              "Have predictable annual medical expenses",
+              "Want immediate access to full annual amount",
+              "Employer offers generous FSA matching",
+              "Comfortable with use-it-or-lose-it rules",
+              "Need funds for current year expenses only",
+            ],
+          },
+          {
+            type: "list",
+            content: "Coordination strategies:",
+            items: [
+              "HSA + Limited FSA: Use FSA for dental/vision, HSA for everything else",
+              "HSA + HRA: Employer HRA pays first, HSA preserves funds",
+              "Dependent Care FSA: Separate account, can use with HSA",
+              "Maximize employer contributions: Take advantage of free money",
+              "Plan timing: Coordinate account funding with expected expenses",
+              "Keep records: Track expenses across multiple accounts",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "You cannot have both a healthcare FSA and HSA in the same year, except for limited-purpose FSAs that only cover dental and vision expenses.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs offer superior long-term benefits compared to FSAs",
+          "FSAs provide immediate access but have use-it-or-lose-it rules",
+          "Account choice depends on your health plan and financial strategy",
+          "Some accounts can be used together with proper planning",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the main disadvantage of FSAs compared to HSAs?",
+              options: [
+                "Lower contribution limits",
+                "No tax deduction for contributions",
+                "Use-it-or-lose-it rule",
+                "Not available through employers",
+              ],
+              correctAnswer: "Use-it-or-lose-it rule",
+              explanation:
+                "The main disadvantage of FSAs is the use-it-or-lose-it rule, where unused funds are forfeited at year-end (with limited exceptions). HSA funds never expire and roll over indefinitely.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Maximizing HSA Benefits",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Advanced HSA Optimization Strategies",
+          },
+          {
+            type: "paragraph",
+            content:
+              "To truly maximize HSA benefits, you need to go beyond basic contributions and think strategically about timing, investments, and long-term planning. These advanced strategies can significantly multiply your HSA's value over time.",
+          },
+          {
+            type: "list",
+            content: "Advanced HSA maximization strategies:",
+            items: [
+              "Pay medical expenses out-of-pocket when possible",
+              "Keep detailed records of all medical expenses",
+              "Invest HSA funds for long-term growth",
+              "Delay reimbursement to maximize tax-free growth",
+              "Use HSA for retirement healthcare planning",
+              "Coordinate with other tax-advantaged accounts",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Delayed reimbursement strategy value:",
+            formula: "Future Value = Medical Expense × (1 + Return Rate)^Years",
+            variables: {
+              "Example": "$2,000 medical expense, 7% return, 20 years",
+              "If Reimbursed Now": "$2,000 (no growth)",
+              "If Delayed": "$2,000 × (1.07)^20 = $7,739",
+              "Tax-Free Benefit": "All $5,739 growth is tax-free when withdrawn",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Receipt Banking Strategy: Over 10 years, Lisa accumulated $15,000 in medical receipts while letting her HSA grow to $35,000. At retirement, she can withdraw $15,000 tax-free using old receipts, while the remaining $20,000 continues growing for future medical needs.",
+          },
+          {
+            type: "list",
+            content: "HSA record-keeping best practices:",
+            items: [
+              "Digital storage: Scan and store receipts electronically",
+              "Cloud backup: Ensure receipts are safely stored",
+              "Detailed records: Date, provider, amount, type of expense",
+              "Organize by year: Make future retrieval easier",
+              "Keep forever: No time limit on reimbursement",
+              "Track reimbursements: Avoid double-dipping",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Family HSA Strategy: The Martinez family maximizes both spouses' HSAs ($8,300 each), invests 90% in stock funds, and pays all medical expenses out-of-pocket. After 15 years, their combined $249,000 contributions grew to $520,000, all available tax-free for medical expenses.",
+          },
+          {
+            type: "list",
+            content: "HSA investment optimization:",
+            items: [
+              "Low-cost index funds: Minimize fees to maximize growth",
+              "Age-appropriate allocation: More aggressive when young",
+              "Rebalancing: Maintain target allocation over time",
+              "Tax-loss harvesting: Not applicable in tax-free HSA",
+              "Dollar-cost averaging: Regular investment contributions",
+              "Provider comparison: Shop for best investment options and fees",
+            ],
+          },
+          {
+            type: "list",
+            content: "Qualified medical expense optimization:",
+            items: [
+              "Understand eligible expenses: IRS Publication 502",
+              "Over-the-counter medications: Now HSA-eligible",
+              "Menstrual products: Added as eligible expense",
+              "Alternative treatments: Acupuncture, chiropractic care",
+              "Medical equipment: CPAP machines, blood pressure monitors",
+              "Home modifications: Ramps, grab bars for medical needs",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA estate planning strategies:",
+            items: [
+              "Spouse beneficiary: HSA continues as spouse's HSA",
+              "Non-spouse beneficiary: Account becomes taxable to beneficiary",
+              "Charitable beneficiary: Tax-free transfer to charity",
+              "Multiple beneficiaries: Split account among beneficiaries",
+              "Estate planning documents: Include HSA in will/trust",
+              "Beneficiary updates: Review and update regularly",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common HSA optimization mistakes:",
+            items: [
+              "Using HSA like checking account: Missing investment growth",
+              "Not keeping receipts: Losing reimbursement opportunities",
+              "Paying fees unnecessarily: Not shopping for better providers",
+              "Wrong investment allocation: Too conservative or aggressive",
+              "Not maximizing contributions: Missing tax benefits",
+              "Forgetting catch-up contributions: Age 55+ additional $1,000",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA and retirement account coordination:",
+            items: [
+              "Contribution priority: HSA first due to triple tax advantage",
+              "Asset location: Consider HSA as bond allocation",
+              "Withdrawal sequencing: Use HSA for medical expenses first",
+              "Tax diversification: HSA provides tax-free bucket",
+              "Required distributions: HSA has no RMDs unlike traditional IRAs",
+              "Legacy planning: HSA benefits for spouse, taxes for others",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't use your HSA for non-medical expenses before age 65. The 20% penalty plus income taxes make this very expensive compared to other funding sources.",
+          },
+          {
+            type: "tip",
+            content:
+              "Think of your HSA as a retirement account that happens to have medical benefits. This mindset encourages long-term investing and maximizes the account's incredible tax advantages.",
+          },
+        ],
+        keyTakeaways: [
+          "Pay medical expenses out-of-pocket and let HSA funds grow when possible",
+          "Keep detailed records of medical expenses for future reimbursement",
+          "Invest HSA funds appropriately for long-term growth",
+          "Coordinate HSA strategy with overall retirement and tax planning",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best strategy for maximizing HSA growth?",
+              options: [
+                "Use HSA funds immediately for all medical expenses",
+                "Keep all HSA funds in cash for safety",
+                "Pay medical expenses out-of-pocket and invest HSA funds",
+                "Only contribute the minimum required amount",
+              ],
+              correctAnswer: "Pay medical expenses out-of-pocket and invest HSA funds",
+              explanation:
+                "The best strategy is to pay medical expenses out-of-pocket when possible, keep receipts for future reimbursement, and invest HSA funds for long-term tax-free growth. This maximizes the time your money grows tax-free.",
+            },
+          ],
+        },
+      },
+    ],
+    "estate-planning": [
+      {
+        title: "Estate Planning Essentials",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Legacy and Loved Ones",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate planning ensures your wishes are carried out and your loved ones are protected when you're no longer able to make decisions. It's not just for the wealthy - everyone needs basic estate planning documents to avoid costly legal complications and family disputes.",
+          },
+          {
+            type: "list",
+            content: "Core estate planning documents:",
+            items: [
+              "Will: Directs distribution of assets and names guardians for minor children",
+              "Durable Power of Attorney: Authorizes someone to handle financial matters",
+              "Healthcare Power of Attorney: Designates medical decision-maker",
+              "Living Will/Advance Directive: Specifies end-of-life care preferences",
+              "HIPAA Authorization: Allows access to medical information",
+              "Beneficiary designations: On retirement accounts, insurance, bank accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "What happens without estate planning:",
+            items: [
+              "State intestacy laws determine asset distribution",
+              "Court appoints guardian for minor children",
+              "Probate process becomes more complex and expensive",
+              "Family disputes over assets and decisions",
+              "No guidance for medical decisions if incapacitated",
+              "Potential tax inefficiencies and higher costs",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Cost of dying without a will:",
+            formula: "Probate Costs = Court Fees + Attorney Fees + Executor Fees + Time",
+            variables: {
+              "Court Fees": "$500-$2,000 depending on state",
+              "Attorney Fees": "3-7% of estate value",
+              "Executor Fees": "2-4% of estate value",
+              "Time Cost": "6 months to 2+ years to settle",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Intestacy Consequences: When Mark died without a will, his $300,000 estate went through probate costing $18,000 in fees. His assets were distributed by state law rather than his wishes, and his children's inheritance was delayed by 18 months.",
+          },
+          {
+            type: "list",
+            content: "Estate planning priorities by life stage:",
+            items: [
+              "Young adults: Basic will, power of attorney, beneficiary designations",
+              "New parents: Guardian designation, life insurance, updated wills",
+              "Mid-career: Trust planning, tax strategies, business succession",
+              "Pre-retirement: Healthcare directives, long-term care planning",
+              "Retirement: Legacy planning, charitable giving, tax optimization",
+              "All stages: Regular review and updates for life changes",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Comprehensive Planning Success: The Johnson family created wills, powers of attorney, and healthcare directives. When John became incapacitated, his wife could immediately access accounts and make medical decisions without court intervention, saving thousands in legal fees and family stress.",
+          },
+          {
+            type: "list",
+            content: "Common estate planning mistakes:",
+            items: [
+              "Procrastination: Waiting until it's too late",
+              "DIY documents: Using inadequate online forms",
+              "Outdated documents: Not updating for life changes",
+              "Forgetting beneficiaries: Not updating account designations",
+              "Inadequate funding: Creating trusts but not funding them",
+              "Poor communication: Not discussing plans with family",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to update your estate plan:",
+            items: [
+              "Marriage or divorce: Changes in spouse and beneficiaries",
+              "Birth or adoption: New children need protection",
+              "Death of beneficiary: Update designations and documents",
+              "Significant wealth change: May need different strategies",
+              "Moving states: Different laws may affect your plan",
+              "Tax law changes: May create new opportunities or requirements",
+            ],
+          },
+          {
+            type: "list",
+            content: "Estate planning team professionals:",
+            items: [
+              "Estate planning attorney: Creates legal documents and strategies",
+              "Financial advisor: Coordinates investments and insurance",
+              "Tax professional: Minimizes estate and income taxes",
+              "Insurance agent: Ensures adequate life and disability coverage",
+              "Trust officer: Manages trusts and estate administration",
+              "Family members: Executors, trustees, and beneficiaries",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't rely on online will templates for complex situations. While basic documents may work for simple estates, most people benefit from professional guidance to avoid costly mistakes.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start with basic documents even if your situation isn't perfect yet. Having a simple will and power of attorney is much better than having nothing at all.",
+          },
+        ],
+        keyTakeaways: [
+          "Everyone needs basic estate planning documents regardless of wealth",
+          "Dying without a will creates unnecessary costs and complications",
+          "Estate plans should be updated regularly for life changes",
+          "Professional guidance helps avoid costly mistakes",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens if you die without a will?",
+              options: [
+                "Your assets go to the government",
+                "Your spouse automatically gets everything",
+                "State intestacy laws determine who gets your assets",
+                "Your assets are donated to charity",
+              ],
+              correctAnswer: "State intestacy laws determine who gets your assets",
+              explanation:
+                "If you die without a will (intestate), state laws determine how your assets are distributed. This may not match your wishes and can create complications for your family.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Wills and Trusts",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Wills and Trust Structures",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Wills and trusts are fundamental estate planning tools that serve different purposes. Understanding when to use each, their benefits and limitations, helps you create an effective estate plan that protects your assets and provides for your beneficiaries.",
+          },
+          {
+            type: "list",
+            content: "Will basics:",
+            items: [
+              "Legal document directing asset distribution after death",
+              "Names executor to manage estate administration",
+              "Designates guardians for minor children",
+              "Must go through probate court process",
+              "Public record once filed with court",
+              "Can be contested by disgruntled heirs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of wills:",
+            items: [
+              "Simple will: Basic asset distribution, most common",
+              "Pour-over will: Works with trust, transfers remaining assets",
+              "Joint will: Single document for married couple (not recommended)",
+              "Living will: Healthcare directives (different from regular will)",
+              "Holographic will: Handwritten, valid in some states",
+              "Nuncupative will: Oral will, very limited validity",
+            ],
+          },
+          {
+            type: "list",
+            content: "Trust fundamentals:",
+            items: [
+              "Legal entity that holds assets for beneficiaries",
+              "Grantor: Person who creates and funds the trust",
+              "Trustee: Person or institution managing the trust",
+              "Beneficiaries: People who benefit from the trust",
+              "Trust document: Specifies terms and conditions",
+              "Can operate during lifetime and after death",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Will vs. Trust cost comparison:",
+            formula: "Total Cost = Setup Cost + Administration Cost + Probate Cost",
+            variables: {
+              "Simple Will": "$500 setup + $0 lifetime + $15,000 probate = $15,500",
+              "Revocable Trust": "$2,500 setup + $500 annual + $3,000 probate = $18,500 (20 years)",
+              "Break-even": "Depends on estate size and complexity",
+              "Trust Benefits": "Privacy, probate avoidance, incapacity planning",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Trust vs. Will Decision: Sarah has a $800,000 estate with rental properties. A revocable trust costs $3,000 to set up but avoids $24,000 in probate costs and provides privacy. The trust pays for itself while offering better protection.",
+          },
+          {
+            type: "list",
+            content: "Revocable (Living) Trust benefits:",
+            items: [
+              "Avoids probate: Faster, private asset transfer",
+              "Incapacity planning: Successor trustee takes over seamlessly",
+              "Privacy: Trust terms remain confidential",
+              "Multi-state property: Avoids probate in multiple states",
+              "Professional management: Can name corporate trustee",
+              "Flexibility: Can be changed or revoked during lifetime",
+            ],
+          },
+          {
+            type: "list",
+            content: "Irrevocable trust advantages:",
+            items: [
+              "Asset protection: Removes assets from your estate",
+              "Tax benefits: May reduce estate and income taxes",
+              "Medicaid planning: Can protect assets from long-term care costs",
+              "Generation-skipping: Benefits grandchildren while skipping children's estate taxes",
+              "Charitable benefits: Tax deductions for charitable trusts",
+              "Creditor protection: Assets generally protected from lawsuits",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Multi-Generational Trust: The Williams family created an irrevocable trust with $2 million, removing it from their taxable estate. The trust provides income to their children and preserves principal for grandchildren, saving an estimated $800,000 in estate taxes over two generations.",
+          },
+          {
+            type: "list",
+            content: "Common trust types:",
+            items: [
+              "Revocable living trust: Flexibility and probate avoidance",
+              "Irrevocable life insurance trust: Removes life insurance from estate",
+              "Charitable remainder trust: Income for life, remainder to charity",
+              "Qualified personal residence trust: Transfers home at discount",
+              "Generation-skipping trust: Benefits multiple generations",
+              "Special needs trust: Provides for disabled beneficiaries",
+            ],
+          },
+          {
+            type: "list",
+            content: "Trust funding requirements:",
+            items: [
+              "Real estate: Deed property into trust name",
+              "Bank accounts: Retitle accounts or name trust as beneficiary",
+              "Investment accounts: Transfer ownership to trust",
+              "Business interests: Assign ownership to trust",
+              "Personal property: Bill of sale or assignment",
+              "Life insurance: Name trust as beneficiary",
+            ],
+          },
+          {
+            type: "list",
+            content: "Will vs. Trust decision factors:",
+            items: [
+              "Estate size: Larger estates benefit more from trusts",
+              "Complexity: Multiple properties, businesses favor trusts",
+              "Privacy concerns: Trusts provide confidentiality",
+              "Incapacity planning: Trusts offer seamless management",
+              "Cost considerations: Trusts cost more upfront",
+              "Family dynamics: Trusts can provide more control",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Creating a trust without properly funding it is a common mistake. The trust only controls assets that are formally transferred into it.",
+          },
+          {
+            type: "tip",
+            content:
+              "Even with a trust, you still need a will (called a pour-over will) to handle any assets not in the trust and to name guardians for minor children.",
+          },
+        ],
+        keyTakeaways: [
+          "Wills go through probate, trusts generally avoid probate",
+          "Trusts provide better incapacity planning and privacy",
+          "Trust funding is crucial - unfunded trusts don't work",
+          "The choice depends on estate size, complexity, and goals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the main advantage of a revocable living trust over a will?",
+              options: [
+                "It's less expensive to create",
+                "It provides better tax benefits",
+                "It avoids probate and provides incapacity planning",
+                "It can't be contested by heirs",
+              ],
+              correctAnswer: "It avoids probate and provides incapacity planning",
+              explanation:
+                "The main advantages of a revocable living trust are avoiding probate (faster, private, less expensive) and providing seamless management if you become incapacitated.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Power of Attorney Documents",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Authorizing Others to Act on Your Behalf",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Power of attorney documents authorize trusted individuals to make decisions and take actions on your behalf when you cannot. These documents are crucial for incapacity planning and can prevent costly court proceedings if you become unable to manage your affairs.",
+          },
+          {
+            type: "list",
+            content: "Types of power of attorney:",
+            items: [
+              "Durable Financial Power of Attorney: Handles financial matters",
+              "Healthcare Power of Attorney: Makes medical decisions",
+              "Limited Power of Attorney: Specific purpose and time frame",
+              "Springing Power of Attorney: Becomes effective upon incapacity",
+              "General Power of Attorney: Broad authority, ends at incapacity",
+              "Special Power of Attorney: Limited to specific transactions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Financial power of attorney powers:",
+            items: [
+              "Banking: Access accounts, make deposits and withdrawals",
+              "Investments: Buy, sell, and manage investment accounts",
+              "Real estate: Buy, sell, mortgage, and manage property",
+              "Insurance: Pay premiums, file claims, change beneficiaries",
+              "Taxes: File returns, pay taxes, represent before IRS",
+              "Business: Operate business, sign contracts, make decisions",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Cost of not having power of attorney:",
+            formula: "Guardianship Cost = Court Fees + Attorney Fees + Ongoing Costs",
+            variables: {
+              "Initial Court Costs": "$2,000-$5,000",
+              "Attorney Fees": "$5,000-$15,000",
+              "Annual Reporting": "$1,000-$3,000 per year",
+              "Total First Year": "$8,000-$23,000",
+              "Power of Attorney Cost": "$200-$500",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Incapacity Without Planning: When Robert had a stroke, his family couldn't access his accounts to pay bills. They spent $12,000 and six months getting court-appointed guardianship. A $300 power of attorney would have avoided this entirely.",
+          },
+          {
+            type: "list",
+            content:
