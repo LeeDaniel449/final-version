@@ -3404,67 +3404,14 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
               "Long-term HSA Growth: Maria contributes $4,150 annually to her HSA for 20 years, earning 7% returns. Her $83,000 in contributions grow to $170,000. All withdrawals for medical expenses are tax-free, creating $87,000 in tax-free growth.",
           },
           {
-            type: "list",
-            content: "HSA vs. other tax-advantaged accounts:",
-            items: [
-              "401(k): Tax-deferred, but withdrawals are taxed",
-              "Roth IRA: Tax-free growth and withdrawals, but no deduction",
-              "Traditional IRA: Tax-deductible, but withdrawals are taxed",
-              "FSA: Use-it-or-lose-it, limited carryover",
-              "HSA: Only account with triple tax advantage",
-              "HSA: No required distributions, funds never expire",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "HSA vs. 401(k) Comparison: David has $1,000 to invest. In a 401(k) at 22% tax bracket, he saves $220 in taxes now but pays $220 on $1,000 withdrawal later. In an HSA, he saves $220 now and pays $0 on medical withdrawals, keeping the full $1,000 plus growth.",
-          },
-          {
-            type: "list",
-            content: "Maximizing HSA tax benefits:",
-            items: [
-              "Contribute the maximum allowed annually",
-              "Use payroll deduction to avoid payroll taxes",
-              "Don't reimburse yourself immediately for medical expenses",
-              "Keep receipts for future reimbursement",
-              "Invest HSA funds for long-term growth",
-              "Use HSA as retirement account after age 65",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA contribution limits (2024):",
-            items: [
-              "Individual coverage: $4,150",
-              "Family coverage: $8,300",
-              "Catch-up contribution (55+): Additional $1,000",
-              "Employer contributions count toward limits",
-              "Contribution deadline: Tax filing deadline (April 15)",
-              "Pro-rated for partial year HDHP coverage",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA tax advantages in retirement:",
-            items: [
-              "Age 65+: Withdrawals for any purpose (taxed as income)",
-              "Medical expenses: Always tax-free regardless of age",
-              "No required minimum distributions",
-              "Beneficiary options: Spouse continues HSA, others pay taxes",
-              "Estate planning: Can pass tax-free to spouse",
-              "Medicare premiums: Qualified medical expense",
-            ],
-          },
-          {
             type: "warning",
             content:
               "HSA contributions are only allowed if you have a qualifying High Deductible Health Plan (HDHP) and no other health coverage. Verify your plan qualifies before contributing.",
           },
           {
             type: "tip",
-              content:
-                "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
+            content:
+              "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
           },
         ],
         keyTakeaways: [
@@ -3529,71 +3476,14 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             ],
           },
           {
-            type: "calculation",
-            content: "Pro-rated contributions for partial year:",
-            formula: "Allowed Contribution = (Months Eligible ÷ 12) × Annual Limit",
-            variables: {
-              "Example": "HDHP coverage starts July 1 (6 months eligible)",
-              "Individual Limit": "$4,150 annual limit",
-              "Pro-rated Amount": "(6 ÷ 12) × $4,150 = $2,075",
-              "Last Month Rule": "May allow full contribution if eligible Dec 31",
-            },
-          },
-          {
-            type: "example",
-              content:
-                "Eligibility Loss: John had an HDHP and HSA but added a low-deductible plan mid-year for better coverage. He became ineligible for HSA contributions from that point forward but could keep existing funds and use them for medical expenses.",
-          },
-          {
-            type: "list",
-            content: "Contribution timing and limits:",
-            items: [
-              "Contribution deadline: Tax filing deadline (typically April 15)",
-              "Can contribute for prior year until deadline",
-              "Employer contributions count toward annual limit",
-              "Catch-up contributions: $1,000 additional if age 55+",
-              "Both spouses can have HSAs if both have HDHP coverage",
-              "Cannot contribute once enrolled in Medicare",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Catch-up Contribution Strategy: At age 56, Susan can contribute $5,150 ($4,150 + $1,000 catch-up) to her individual HSA. Her husband, age 54, can contribute $4,150 to his separate HSA, totaling $9,300 in tax-deductible contributions for their family.",
-          },
-          {
-            type: "list",
-            content: "Common eligibility mistakes:",
-            items: [
-              "Having other health coverage: FSA, spouse's non-HDHP plan",
-              "Medicare enrollment: Automatically ends HSA eligibility",
-              "Dependent coverage: Being claimed on parent's tax return",
-              "Non-qualifying HDHP: Plan doesn't meet IRS requirements",
-              "Exceeding contribution limits: Results in penalties and taxes",
-              "Contributing after eligibility ends: Must stop immediately",
-            ],
-          },
-          {
-            type: "list",
-            content: "What to do with excess contributions:",
-            items: [
-              "Remove before tax deadline: Avoid penalties",
-              "Include earnings in removal: Must remove growth too",
-              "Pay taxes on earnings: Removed earnings are taxable",
-              "6% penalty: Applies to excess contributions left in account",
-              "Penalty continues: Until excess is removed",
-              "Professional help: Consider tax advisor for complex situations",
-            ],
-          },
-          {
             type: "warning",
             content:
               "Carefully review all health coverage before contributing to an HSA. Even limited coverage like a healthcare FSA can disqualify you from HSA contributions.",
           },
           {
             type: "tip",
-              content:
-                "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
+            content:
+              "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
           },
         ],
         keyTakeaways: [
@@ -3657,84 +3547,14 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             },
           },
           {
-            type: "example",
-            content:
-              "Long-term HSA Strategy: Dr. Martinez keeps $2,000 in cash for immediate needs and invests the remaining $15,000 HSA balance in low-cost index funds. Over 15 years, the invested portion grows to $41,000, all available tax-free for medical expenses.",
-          },
-          {
-            type: "list",
-            content: "HSA investment allocation strategies:",
-            items: [
-              "Conservative: 70% bonds, 30% stocks for near-term medical needs",
-              "Moderate: 60% stocks, 40% bonds for medium-term growth",
-              "Aggressive: 80-90% stocks for long-term retirement healthcare",
-              "Age-based: More conservative as you approach retirement",
-              "Target-date funds: Automatically adjust allocation over time",
-              "Index funds: Low-cost, diversified options",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "HSA Investment Success: Sarah, age 30, invests her HSA in 80% stock index funds, 20% bond funds. By age 65, her $50,000 in contributions grew to $400,000. She uses $100,000 for medical expenses tax-free and $300,000 for retirement income (taxed as ordinary income).",
-          },
-          {
-            type: "list",
-            content: "Choosing HSA investment providers:",
-            items: [
-              "Investment options: Variety and quality of fund choices",
-              "Fees: Account fees, investment expense ratios, transaction costs",
-              "Minimum balances: Required cash balance before investing",
-              "Online platform: Ease of use, research tools, mobile access",
-              "Customer service: Support quality and availability",
-              "Integration: Ability to pay medical bills directly from account",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA investment timing strategies:",
-            items: [
-              "Dollar-cost averaging: Regular monthly investments",
-              "Lump-sum investing: Invest large balances immediately",
-              "Rebalancing: Maintain target allocation periodically",
-              "Tax-loss harvesting: Not applicable in tax-free HSA",
-              "Withdrawal timing: Use oldest funds first for medical expenses",
-              "Retirement transition: Shift to more conservative allocation",
-            ],
-          },
-          {
-            type: "list",
-            content: "Common HSA investment mistakes:",
-            items: [
-              "Keeping everything in cash: Missing growth opportunities",
-              "Too aggressive allocation: Risk when medical needs arise",
-              "High-fee investments: Eroding returns with expensive funds",
-              "Frequent trading: Transaction costs and timing risks",
-              "Ignoring rebalancing: Allocation drift over time",
-              "Not considering time horizon: Mismatched risk and timeline",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA vs. other retirement accounts for investing:",
-            items: [
-              "HSA advantages: Triple tax benefit, no RMDs, medical expense flexibility",
-              "401(k) advantages: Higher contribution limits, employer matching",
-              "IRA advantages: More investment options, easier access",
-              "Optimal strategy: Maximize HSA first, then other accounts",
-              "Asset location: Consider tax efficiency across all accounts",
-              "Withdrawal coordination: Plan retirement income sources",
-            ],
-          },
-          {
             type: "warning",
             content:
               "Don't invest HSA funds you'll need for medical expenses within the next 2-3 years. Market volatility could reduce your balance when you need the money most.",
           },
           {
             type: "tip",
-              content:
-                "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
+            content:
+              "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
           },
         ],
         keyTakeaways: [
@@ -3798,86 +3618,14 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             },
           },
           {
-            type: "example",
-            content:
-              "Retirement Healthcare Strategy: Tom accumulated $150,000 in his HSA by retirement. He uses it to pay Medicare premiums ($2,400/year), supplemental insurance ($1,800/year), and out-of-pocket medical costs ($4,000/year), covering $8,200 annually in tax-free healthcare expenses.",
-          },
-          {
-            type: "list",
-            content: "Qualified medical expenses in retirement:",
-            items: [
-              "Medicare premiums: Parts A, B, C, and D",
-              "Medigap insurance premiums",
-              "Long-term care insurance premiums (with limits)",
-              "Long-term care services",
-              "Prescription medications",
-              "Dental and vision care",
-              "Medical equipment and supplies",
-              "Home modifications for medical needs",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Long-term Care Planning: Susan's mother needed nursing home care costing $60,000 annually. Susan used her $80,000 HSA to pay for two years of care tax-free, saving $19,200 in taxes compared to using taxable retirement accounts (24% bracket).",
-          },
-          {
-            type: "list",
-            content: "HSA withdrawal rules after age 65:",
-            items: [
-              "Medical expenses: Always tax-free, no penalties",
-              "Non-medical expenses: Taxed as ordinary income, no penalties",
-              "Functions like traditional IRA: For non-medical withdrawals",
-              "No required minimum distributions: Unlike traditional IRAs",
-              "Beneficiary options: Spouse continues HSA, others pay taxes",
-              "Keep receipts: Can reimburse old medical expenses tax-free",
-            ],
-          },
-          {
-            type: "list",
-            content: "Strategic HSA retirement planning:",
-            items: [
-              "Maximize contributions during working years",
-              "Invest for long-term growth",
-              "Pay current medical expenses out-of-pocket when possible",
-              "Keep all medical receipts for future reimbursement",
-              "Coordinate with other retirement accounts",
-              "Plan for increasing healthcare costs with age",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA vs. other retirement healthcare funding:",
-            items: [
-              "HSA: Tax-free for medical expenses, no RMDs",
-              "401(k)/IRA: Taxed as ordinary income on withdrawals",
-              "Roth IRA: Tax-free but better used for other expenses",
-              "Taxable accounts: Capital gains taxes on growth",
-              "HSA advantage: Only account designed for medical expenses",
-              "Optimal strategy: Use HSA first for medical costs",
-            ],
-          },
-          {
-            type: "list",
-            content: "Planning for long-term care:",
-            items: [
-              "70% chance: Need some long-term care in lifetime",
-              "Average duration: 3 years for men, 3.7 years for women",
-              "Average cost: $50,000-$100,000+ annually",
-              "HSA benefits: Tax-free payments for qualified care",
-              "Long-term care insurance: Premiums may be HSA-eligible",
-              "Home care: Often preferred and HSA-eligible",
-            ],
-          },
-          {
             type: "warning",
             content:
               "Don't assume Medicare will cover all your healthcare costs in retirement. Medicare has significant gaps that can result in substantial out-of-pocket expenses.",
           },
           {
             type: "tip",
-              content:
-                "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
+            content:
+              "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
           },
         ],
         keyTakeaways: [
@@ -3941,84 +3689,14 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             },
           },
           {
-            type: "list",
-            content: "Flexible Spending Account (FSA) details:",
-            items: [
-              "2024 limit: $3,200 for healthcare FSA",
-              "Use-it-or-lose-it: Must spend by plan year end",
-              "Grace period: Some plans allow 2.5 month extension",
-              "Carryover: Up to $640 can roll to next year",
-              "Immediate access: Full annual amount available January 1",
-              "Employer owned: Lose unused funds if you leave job",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Account Choice Strategy: Maria has an HDHP and chooses HSA over FSA. She contributes $4,150 to HSA, invests $3,000, and keeps $1,150 for current medical expenses. The invested portion grows tax-free for future healthcare needs.",
-          },
-          {
-            type: "list",
-            content: "Health Reimbursement Arrangement (HRA) details:",
-            items: [
-              "Employer-funded: Only employers contribute",
-              "Employer-owned: Employer sets rules and keeps unused funds",
-              "Tax-free reimbursements: For qualified medical expenses",
-              "Varies by employer: Different rules and contribution amounts",
-              "Not portable: Typically lose access when leaving job",
-              "Can supplement other coverage: Often used with high-deductible plans",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Multiple Account Strategy: John's employer offers both HSA and limited-purpose FSA. He maximizes his HSA ($4,150) and uses the FSA ($1,000) for dental and vision expenses, maximizing tax savings while preserving HSA funds for investment growth.",
-          },
-          {
-            type: "list",
-            content: "When to choose HSA over FSA:",
-            items: [
-              "Have qualifying HDHP coverage",
-              "Want to invest for long-term growth",
-              "Don't want use-it-or-lose-it pressure",
-              "Plan to change jobs (portability)",
-              "Want maximum contribution limits",
-              "Prefer account ownership and control",
-            ],
-          },
-          {
-            type: "list",
-            content: "When FSA might be better:",
-            items: [
-              "Don't have HDHP coverage",
-              "Have predictable annual medical expenses",
-              "Want immediate access to full annual amount",
-              "Employer offers generous FSA matching",
-              "Comfortable with use-it-or-lose-it rules",
-              "Need funds for current year expenses only",
-            ],
-          },
-          {
-            type: "list",
-            content: "Coordination strategies:",
-            items: [
-              "HSA + Limited FSA: Use FSA for dental/vision, HSA for everything else",
-              "HSA + HRA: Employer HRA pays first, HSA preserves funds",
-              "Dependent Care FSA: Separate account, can use with HSA",
-              "Maximize employer contributions: Take advantage of free money",
-              "Plan timing: Coordinate account funding with expected expenses",
-              "Keep records: Track expenses across multiple accounts",
-            ],
-          },
-          {
             type: "warning",
             content:
               "You cannot have both a healthcare FSA and HSA in the same year, except for limited-purpose FSAs that only cover dental and vision expenses.",
           },
           {
             type: "tip",
-              content:
-                "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
+            content:
+              "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
           },
         ],
         keyTakeaways: [
@@ -4034,4 +3712,100 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
               options: [
                 "Lower contribution limits",
                 "No tax deduction for contributions",
-                "Use-it-or-lose-it rule
+                "Use-it-or-lose-it rule",
+                "Higher fees",
+              ],
+              correctAnswer: "Use-it-or-lose-it rule",
+              explanation:
+                "The main disadvantage of FSAs is the use-it-or-lose-it rule, where you forfeit unused funds at the end of the plan year (with limited carryover options), unlike HSAs where funds roll over indefinitely.",
+            },
+          ],
+        },
+      },
+      {
+        title: "HSA Record Keeping and Compliance",
+        duration: "4 min",
+        points: 12,
+        content: [
+          {
+            type: "heading",
+            content: "Maintaining Proper HSA Documentation",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Proper record keeping is essential for HSA compliance and maximizing benefits. Understanding what documentation to maintain and how to handle HSA transactions ensures you can take full advantage of tax benefits while avoiding penalties.",
+          },
+          {
+            type: "list",
+            content: "Required HSA records:",
+            items: [
+              "Medical receipts: All qualified medical expenses",
+              "HSA statements: Monthly or quarterly account statements",
+              "Contribution records: Payroll deductions, direct contributions",
+              "Investment records: Buy/sell transactions, dividend reinvestments",
+              "Distribution records: Withdrawals and reimbursements",
+              "Form 1099-SA: Annual distribution summary from HSA provider",
+            ],
+          },
+          {
+            type: "list",
+            content: "Qualified medical expenses:",
+            items: [
+              "Doctor visits and medical procedures",
+              "Prescription medications",
+              "Dental and vision care",
+              "Medical equipment and supplies",
+              "Health insurance premiums (limited situations)",
+              "Long-term care services and insurance",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Record Keeping Strategy: Sarah keeps all medical receipts in a dedicated folder and scans them to cloud storage. She tracks HSA expenses in a spreadsheet with date, amount, provider, and expense type. This system helps her maximize reimbursements and provides audit protection.",
+          },
+          {
+            type: "warning",
+            content:
+              "The IRS can audit HSA distributions up to 3 years after filing. Keep all medical receipts and HSA records for at least 3 years, or longer if you're saving receipts for future reimbursement.",
+          },
+          {
+            type: "tip",
+            content:
+              "Use HSA debit cards carefully - they make spending easy but can lead to non-qualified purchases. Save receipts for all HSA transactions and review statements regularly.",
+          },
+        ],
+        keyTakeaways: [
+          "Keep detailed records of all HSA contributions and distributions",
+          "Save receipts for all medical expenses, even if not immediately reimbursed",
+          "Review HSA statements regularly for accuracy",
+          "Understand qualified medical expense rules to avoid penalties",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "How long should you keep HSA records and receipts?",
+              options: [
+                "1 year",
+                "3 years minimum",
+                "7 years",
+                "Only until you're reimbursed",
+              ],
+              correctAnswer: "3 years minimum",
+              explanation:
+                "You should keep HSA records for at least 3 years due to the IRS audit statute of limitations. If you're saving receipts for future reimbursement, keep them indefinitely until you use them.",
+            },
+          ],
+        },
+      },
+    ],
+  }
+
+  const moduleContent = lessons[moduleId]
+  if (!moduleContent || lessonIndex < 0 || lessonIndex >= moduleContent.length) {
+    return null
+  }
+
+  return moduleContent[lessonIndex]
+}
