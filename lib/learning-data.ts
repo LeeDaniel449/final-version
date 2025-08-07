@@ -7032,4 +7032,1739 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
               "Two-fund portfolio: Total stock market, total bond market",
               "Four-fund portfolio: Add real estate investment trusts (REITs)",
               "Lazy portfolios: Simple, low-maintenance allocations",
-              "Robo-advisor portfolios: Automated allocation management
+              "Robo-advisor portfolios: Automated allocation management",
+            ],
+          },
+          {
+            type: "list",
+            content: "Rebalancing your portfolio:",
+            items: [
+              "Review allocation quarterly or semi-annually",
+              "Rebalance when allocations drift 5-10% from targets",
+              "Sell high-performing assets, buy underperforming ones",
+              "Use new contributions to rebalance",
+              "Consider tax implications in taxable accounts",
+              "Don't rebalance too frequently",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For young investors, a simple three-fund portfolio (total stock market, international stock, total bond market) provides excellent diversification with minimal complexity and low costs.",
+          },
+        ],
+        keyTakeaways: [
+          "Asset allocation should match your age and risk tolerance",
+          "Diversification helps manage risk across different investments",
+          "Young investors can afford more aggressive allocations",
+          "Simple portfolios often work better than complex ones",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "According to the rule of thumb, what percentage of stocks should a 25-year-old have?",
+              options: ["25%", "50%", "75%", "100%"],
+              correctAnswer: "75%",
+              explanation: "The rule of thumb suggests 100 minus your age in stocks, so a 25-year-old would have 75% stocks. However, young investors can often handle even higher stock allocations.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tax-Advantaged Investing",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Maximizing Tax Benefits",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tax-advantaged accounts allow your investments to grow with significant tax benefits. Understanding and maximizing these accounts is crucial for building long-term wealth efficiently.",
+          },
+          {
+            type: "list",
+            content: "Types of tax-advantaged accounts:",
+            items: [
+              "401(k): Employer-sponsored retirement plan",
+              "Traditional IRA: Tax-deductible contributions, taxed on withdrawal",
+              "Roth IRA: After-tax contributions, tax-free withdrawals",
+              "HSA: Triple tax advantage for medical expenses",
+              "529 Plans: Tax-free growth for education expenses",
+              "Taxable accounts: No tax advantages but more flexibility",
+            ],
+          },
+          {
+            type: "list",
+            content: "Investment account priority:",
+            items: [
+              "1. 401(k) up to employer match (free money)",
+              "2. High-interest debt payoff",
+              "3. Roth IRA contribution (if eligible)",
+              "4. Max out 401(k) contribution",
+              "5. HSA contribution (if eligible)",
+              "6. Taxable investment accounts",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake earns $60,000 and contributes $6,000 to his 401(k) and $6,000 to a Roth IRA. The 401(k) reduces his taxable income to $54,000, saving $1,440 in taxes (24% bracket). His Roth IRA grows tax-free for retirement.",
+          },
+          {
+            type: "list",
+            content: "Tax-efficient investing strategies:",
+            items: [
+              "Hold tax-inefficient investments in tax-advantaged accounts",
+              "Keep tax-efficient index funds in taxable accounts",
+              "Use tax-loss harvesting in taxable accounts",
+              "Consider Roth conversions in low-income years",
+              "Maximize contributions to tax-advantaged accounts first",
+              "Understand required minimum distributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Roth vs. Traditional decision factors:",
+            items: [
+              "Current tax rate vs. expected retirement tax rate",
+              "Income level and eligibility for deductions",
+              "Time horizon until retirement",
+              "Need for tax diversification",
+              "Estate planning considerations",
+              "Access to funds before retirement",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common tax-advantaged account mistakes:",
+            items: [
+              "Not getting full employer 401(k) match",
+              "Choosing wrong Roth vs. Traditional allocation",
+              "Not maximizing contributions when possible",
+              "Withdrawing from retirement accounts early",
+              "Not understanding contribution limits and deadlines",
+              "Ignoring HSA as retirement account",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Always get your full employer 401(k) match first - it's an immediate 100% return. Then consider Roth IRA contributions for tax-free growth, especially when you're young and in lower tax brackets.",
+          },
+        ],
+        keyTakeaways: [
+          "Tax-advantaged accounts provide significant benefits for long-term wealth",
+          "Always get full employer 401(k) match first",
+          "Young people often benefit more from Roth accounts",
+          "Maximize tax-advantaged contributions before taxable investing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be your first investment priority?",
+              options: ["Roth IRA", "401(k) up to employer match", "Taxable account", "Real estate"],
+              correctAnswer: "401(k) up to employer match",
+              explanation: "Getting the full employer 401(k) match should be your first priority because it's an immediate 100% return on your investment - free money you can't get anywhere else.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Investment Platforms and Brokers",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Choosing Where to Invest",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Selecting the right investment platform or broker is important for keeping costs low and accessing the investments you need. Modern brokers offer commission-free trading and low-cost index funds, making investing accessible to everyone.",
+          },
+          {
+            type: "list",
+            content: "Types of investment platforms:",
+            items: [
+              "Full-service brokers: Personal advice, higher fees",
+              "Discount brokers: Low-cost, self-directed investing",
+              "Robo-advisors: Automated portfolio management",
+              "Direct fund companies: Vanguard, Fidelity, Schwab",
+              "App-based platforms: Robinhood, M1 Finance, Acorns",
+              "Employer 401(k) platforms: Limited to plan options",
+            ],
+          },
+          {
+            type: "list",
+            content: "What to look for in a broker:",
+            items: [
+              "Commission-free stock and ETF trading",
+              "Low-cost index funds and ETFs",
+              "No account minimums or low minimums",
+              "Good mobile app and website",
+              "Research tools and educational resources",
+              "Strong customer service and security",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah opens accounts at Fidelity for her IRA (access to zero-fee index funds) and uses her employer's 401(k) platform. She avoids fees and has access to excellent low-cost investment options for building her portfolio.",
+          },
+          {
+            type: "list",
+            content: "Popular broker comparison:",
+            items: [
+              "Fidelity: Zero-fee index funds, excellent research",
+              "Vanguard: Low-cost index fund pioneer, investor-owned",
+              "Schwab: Comprehensive services, good customer service",
+              "E*TRADE: Strong platform, good for active traders",
+              "TD Ameritrade: Excellent research and education",
+              "Robinhood: Simple app, commission-free trading",
+            ],
+          },
+          {
+            type: "list",
+            content: "Robo-advisors for beginners:",
+            items: [
+              "Betterment: Simple, goal-based investing",
+              "Wealthfront: Tax-loss harvesting, financial planning",
+              "Vanguard Personal Advisor: Hybrid human/robo advice",
+              "Schwab Intelligent Portfolios: No advisory fees",
+              "M1 Finance: Fractional shares, automated rebalancing",
+              "Fees typically 0.25-0.50% annually",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags to avoid:",
+            items: [
+              "High account fees or trading commissions",
+              "Pressure to trade frequently",
+              "Complex products you don't understand",
+              "High-fee actively managed funds",
+              "Promises of guaranteed returns",
+              "Lack of regulatory oversight (SIPC insurance)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For most beginning investors, a discount broker like Fidelity, Vanguard, or Schwab provides everything you need at low cost. Start simple with index funds before exploring more complex investments.",
+          },
+        ],
+        keyTakeaways: [
+          "Choose brokers with commission-free trading and low-cost funds",
+          "Discount brokers offer excellent value for self-directed investors",
+          "Robo-advisors provide automated portfolio management",
+          "Avoid high fees and complex products when starting out",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's most important when choosing an investment broker?",
+              options: ["Fancy office locations", "Low costs and good fund selection", "Promises of high returns", "Complex trading tools"],
+              correctAnswer: "Low costs and good fund selection",
+              explanation: "Low costs and access to good investment options (like low-cost index funds) are the most important factors, as high fees can significantly reduce your long-term returns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Portfolio Rebalancing",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Maintaining Your Target Allocation",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Portfolio rebalancing involves adjusting your investments back to your target allocation when they drift due to market performance. This disciplined approach helps manage risk and can improve long-term returns by forcing you to buy low and sell high.",
+          },
+          {
+            type: "list",
+            content: "Why portfolios need rebalancing:",
+            items: [
+              "Different assets perform differently over time",
+              "Successful investments become larger portion of portfolio",
+              "Risk level changes as allocation drifts",
+              "May become too concentrated in one asset class",
+              "Rebalancing forces disciplined buy low, sell high behavior",
+              "Maintains your intended risk level",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to rebalance:",
+            items: [
+              "Time-based: Quarterly, semi-annually, or annually",
+              "Threshold-based: When allocation drifts 5-10% from target",
+              "Combination approach: Check quarterly, rebalance if needed",
+              "After major market movements",
+              "When making new contributions",
+              "Don't rebalance too frequently (increases costs)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike's target allocation is 70% stocks, 30% bonds. After a strong stock market year, his portfolio becomes 80% stocks, 20% bonds. He rebalances by selling some stocks and buying bonds to return to his 70/30 target.",
+          },
+          {
+            type: "list",
+            content: "Rebalancing methods:",
+            items: [
+              "Sell overweight assets, buy underweight assets",
+              "Use new contributions to buy underweight assets",
+              "Redirect dividends to underweight assets",
+              "Use automatic rebalancing features",
+              "Rebalance across all accounts for tax efficiency",
+              "Consider tax implications in taxable accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tax-efficient rebalancing:",
+            items: [
+              "Rebalance in tax-advantaged accounts first",
+              "Use new contributions to rebalance in taxable accounts",
+              "Harvest tax losses when selling in taxable accounts",
+              "Consider asset location (which assets in which accounts)",
+              "Don't let taxes prevent necessary rebalancing",
+              "Hold tax-inefficient assets in tax-advantaged accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Rebalancing mistakes to avoid:",
+            items: [
+              "Rebalancing too frequently (increases costs)",
+              "Letting emotions drive rebalancing decisions",
+              "Ignoring tax consequences in taxable accounts",
+              "Not rebalancing for years",
+              "Changing target allocation during market stress",
+              "Rebalancing without considering all accounts",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set a calendar reminder to review your portfolio quarterly, but only rebalance if your allocation has drifted significantly from your target. Use new contributions to rebalance when possible to avoid selling.",
+          },
+        ],
+        keyTakeaways: [
+          "Rebalancing maintains your target risk level",
+          "Forces disciplined buy low, sell high behavior",
+          "Don't rebalance too frequently - quarterly reviews are sufficient",
+          "Consider tax implications when rebalancing taxable accounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main purpose of portfolio rebalancing?",
+              options: ["Maximize returns", "Maintain target asset allocation", "Minimize taxes", "Time the market"],
+              correctAnswer: "Maintain target asset allocation",
+              explanation: "The main purpose of rebalancing is to maintain your target asset allocation and risk level as different investments perform differently over time.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Common Investment Mistakes",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Avoiding Costly Investment Errors",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Understanding common investment mistakes helps you avoid costly errors that can derail your long-term wealth building. Many of these mistakes are behavioral and can be prevented with knowledge and discipline.",
+          },
+          {
+            type: "list",
+            content: "Emotional investing mistakes:",
+            items: [
+              "Panic selling during market downturns",
+              "FOMO buying during market peaks",
+              "Trying to time the market",
+              "Chasing last year's hot investments",
+              "Letting fear prevent you from investing",
+              "Making investment decisions based on news headlines",
+            ],
+          },
+          {
+            type: "list",
+            content: "Cost-related mistakes:",
+            items: [
+              "Paying high fees for actively managed funds",
+              "Frequent trading and transaction costs",
+              "Not understanding expense ratios",
+              "Choosing expensive investment platforms",
+              "Ignoring tax implications of investment decisions",
+              "Not maximizing tax-advantaged accounts first",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "During the 2020 market crash, Tom panicked and sold all his investments at a 30% loss. By the time he felt comfortable investing again, the market had recovered and reached new highs. His emotional decision cost him significant returns.",
+          },
+          {
+            type: "list",
+            content: "Diversification mistakes:",
+            items: [
+              "Putting all money in one stock or sector",
+              "Over-concentrating in employer stock",
+              "Not including international diversification",
+              "Thinking you're diversified with multiple similar funds",
+              "Ignoring bond allocation when young",
+              "Not rebalancing as allocations drift",
+            ],
+          },
+          {
+            type: "list",
+            content: "Timing and behavioral mistakes:",
+            items: [
+              "Waiting for the 'perfect' time to start investing",
+              "Trying to predict market movements",
+              "Following investment fads and trends",
+              "Not investing consistently over time",
+              "Checking portfolio performance too frequently",
+              "Making major changes during market volatility",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to avoid investment mistakes:",
+            items: [
+              "Educate yourself about basic investment principles",
+              "Create an investment plan and stick to it",
+              "Automate investments to remove emotion",
+              "Focus on low-cost index funds",
+              "Don't check your portfolio daily",
+              "Remember that time in market beats timing the market",
+            ],
+          },
+          {
+            type: "list",
+            content: "Learning from mistakes:",
+            items: [
+              "Everyone makes investment mistakes - learn from them",
+              "Keep a investment journal to track decisions",
+              "Review what worked and what didn't annually",
+              "Don't let one mistake prevent future investing",
+              "Seek education and advice when needed",
+              "Stay humble and keep learning",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "The biggest investment mistake is not investing at all. Start with simple, low-cost index funds and automate your investments. Perfect is the enemy of good when it comes to investing.",
+          },
+        ],
+        keyTakeaways: [
+          "Emotional decisions are the biggest source of investment mistakes",
+          "High fees and frequent trading reduce long-term returns",
+          "Time in the market beats timing the market",
+          "Simple, consistent investing often works better than complex strategies",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is often the biggest investment mistake people make?",
+              options: ["Choosing the wrong stocks", "Not investing at all", "Investing too much", "Using the wrong broker"],
+              correctAnswer: "Not investing at all",
+              explanation: "The biggest mistake is not investing at all. Even imperfect investing is better than not investing, as time and compound growth are the most powerful factors in building wealth.",
+            },
+          ],
+        },
+      },
+    ],
+    "emergency-fund": [
+      {
+        title: "Why You Need an Emergency Fund",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Your Financial Safety Net",
+          },
+          {
+            type: "paragraph",
+            content:
+              "An emergency fund is money set aside specifically for unexpected expenses or financial emergencies. It's your first line of defense against going into debt when life throws you curveballs. For young adults, building an emergency fund should be a top financial priority.",
+          },
+          {
+            type: "list",
+            content: "What qualifies as an emergency:",
+            items: [
+              "Job loss or reduced income",
+              "Major medical expenses not covered by insurance",
+              "Car repairs needed for work transportation",
+              "Home repairs (if you own)",
+              "Family emergencies requiring travel",
+              "Unexpected tax bills or legal expenses",
+            ],
+          },
+          {
+            type: "list",
+            content: "What is NOT an emergency:",
+            items: [
+              "Vacation or travel expenses",
+              "Holiday gifts or celebrations",
+              "Sale items you 'can't pass up'",
+              "Routine car maintenance",
+              "Planned home improvements",
+              "Wedding or other planned events",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake's car breaks down and needs $800 in repairs to get to work. Without an emergency fund, he'd have to put it on a credit card at 22% interest. With an emergency fund, he pays cash and avoids debt and interest charges.",
+          },
+          {
+            type: "list",
+            content: "Benefits of having an emergency fund:",
+            items: [
+              "Prevents going into debt for unexpected expenses",
+              "Reduces financial stress and anxiety",
+              "Provides peace of mind and confidence",
+              "Allows you to take calculated risks (job changes, etc.)",
+              "Prevents you from touching long-term investments",
+              "Gives you negotiating power in financial situations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Consequences of not having an emergency fund:",
+            items: [
+              "Forced to use high-interest credit cards",
+              "May need to borrow from family or friends",
+              "Might have to sell investments at a loss",
+              "Could face late fees and penalties",
+              "Increased stress during already difficult times",
+              "May make poor financial decisions under pressure",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Think of your emergency fund as insurance you pay yourself. You hope you never need it, but you'll be grateful it's there when emergencies happen.",
+          },
+        ],
+        keyTakeaways: [
+          "Emergency funds prevent debt when unexpected expenses occur",
+          "True emergencies are unplanned and necessary expenses",
+          "Having an emergency fund reduces stress and provides options",
+          "It's your first line of defense against financial setbacks",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of these is a true emergency expense?",
+              options: ["Black Friday shopping", "Vacation to Europe", "Car repair needed for work", "Wedding expenses"],
+              correctAnswer: "Car repair needed for work",
+              explanation: "A car repair needed for work is a true emergency because it's unexpected, necessary, and affects your ability to earn income.",
+            },
+          ],
+        },
+      },
+      {
+        title: "How Much to Save",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Determining Your Emergency Fund Target",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The amount you need in your emergency fund depends on your personal situation, job stability, and monthly expenses. While the traditional advice is 3-6 months of expenses, your specific circumstances should guide your target amount.",
+          },
+          {
+            type: "list",
+            content: "Standard emergency fund guidelines:",
+            items: [
+              "3-6 months of essential expenses (most common advice)",
+              "3 months minimum for stable employment",
+              "6+ months for variable income or job uncertainty",
+              "More if you're self-employed or commission-based",
+              "Less if you have very stable income and good benefits",
+              "Consider your personal risk tolerance",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors that increase your emergency fund need:",
+            items: [
+              "Irregular or seasonal income",
+              "Job in volatile industry",
+              "Self-employment or freelance work",
+              "Single income household",
+              "Health issues or chronic conditions",
+              "Older home or car requiring more repairs",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah's monthly essential expenses are $2,500 (rent, food, utilities, insurance, minimum debt payments). She aims for a 4-month emergency fund of $10,000 because she works in a stable job but wants extra peace of mind.",
+          },
+          {
+            type: "list",
+            content: "Calculating your emergency fund target:",
+            items: [
+              "List all essential monthly expenses",
+              "Include: housing, food, utilities, insurance, transportation",
+              "Include: minimum debt payments, basic personal care",
+              "Exclude: entertainment, dining out, non-essential shopping",
+              "Multiply by 3-6 months based on your situation",
+              "Round up to a nice even number for motivation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Emergency fund for different life stages:",
+            items: [
+              "Young adults living at home: $1,000-2,500 starter fund",
+              "Recent graduates: 3 months of post-graduation expenses",
+              "Established career: 3-6 months of current expenses",
+              "Families with children: 6+ months due to higher expenses",
+              "Pre-retirees: 6-12 months as job replacement is harder",
+              "Retirees: 1-2 years of expenses for market volatility",
+            ],
+          },
+          {
+            type: "list",
+            content: "Starting small and building up:",
+            items: [
+              "Start with $500-1,000 mini emergency fund",
+              "Focus on this before other financial goals",
+              "Gradually increase to full 3-6 month target",
+              "Celebrate milestones along the way",
+              "Adjust target as life circumstances change",
+              "Don't let perfect be the enemy of good",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with a $1,000 starter emergency fund before focusing on other goals. This covers most small emergencies and gives you momentum to build the full fund.",
+          },
+        ],
+        keyTakeaways: [
+          "3-6 months of essential expenses is the standard guideline",
+          "Adjust based on job stability and personal circumstances",
+          "Start with a smaller starter fund and build up over time",
+          "Calculate based on essential expenses, not total income",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "How should you calculate your emergency fund target?",
+              options: [
+                "3-6 months of total income",
+                "3-6 months of essential expenses",
+                "One year of all expenses",
+                "Whatever feels comfortable",
+              ],
+              correctAnswer: "3-6 months of essential expenses",
+              explanation: "Emergency funds should be based on essential expenses (housing, food, utilities, insurance, minimum debt payments) rather than total income or all expenses.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Where to Keep Your Emergency Fund",
+        duration: "3 min",
+        points: 12,
+        content: [
+          {
+            type: "heading",
+            content: "Accessibility vs. Growth",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Your emergency fund needs to be easily accessible when you need it, but you also want it to earn some return while it sits there. The key is balancing accessibility with modest growth while keeping the money safe.",
+          },
+          {
+            type: "list",
+            content: "Best places for emergency funds:",
+            items: [
+              "High-yield savings accounts (4-5% APY)",
+              "Money market accounts with debit card access",
+              "Short-term CDs (if you won't need the money soon)",
+              "Treasury bills or I-bonds (for portion of fund)",
+              "Credit union savings accounts",
+              "Online banks typically offer better rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "What to look for:",
+            items: [
+              "FDIC or NCUA insurance (up to $250,000)",
+              "Easy access (online, ATM, or branch)",
+              "No monthly fees or minimum balance penalties",
+              "Competitive interest rate",
+              "Quick transfer capabilities",
+              "Good customer service and mobile app",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Maria keeps her $8,000 emergency fund in a high-yield savings account earning 4.5% APY. This earns her $360 per year while keeping the money completely accessible and FDIC insured.",
+          },
+          {
+            type: "list",
+            content: "Where NOT to keep emergency funds:",
+            items: [
+              "Stock market or investment accounts (too volatile)",
+              "Retirement accounts (penalties for early withdrawal)",
+              "Long-term CDs (liquidity restrictions)",
+              "Checking accounts (usually earn no interest)",
+              "Under your mattress (no growth, not secure)",
+              "Cryptocurrency (too volatile and risky)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Organizing your emergency fund:",
+            items: [
+              "Keep in separate account from daily spending money",
+              "Label the account clearly ('Emergency Fund')",
+              "Consider splitting between 2-3 accounts for security",
+              "Keep some cash at home for power outages, etc.",
+              "Make sure spouse/partner knows how to access it",
+              "Review and update account information annually",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Online banks typically offer the best rates for emergency funds. Just make sure you can access the money quickly when needed, either through transfers or ATM networks.",
+          },
+        ],
+        keyTakeaways: [
+          "High-yield savings accounts offer the best balance of access and growth",
+          "FDIC insurance protects your emergency fund up to $250,000",
+          "Avoid investing emergency funds in volatile assets",
+          "Keep the fund separate from your daily spending accounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the most important feature for an emergency fund account?",
+              options: ["Highest possible returns", "Easy accessibility when needed", "Long-term growth potential", "Tax advantages"],
+              correctAnswer: "Easy accessibility when needed",
+              explanation: "While earning some return is nice, the most important feature of an emergency fund is that you can access it quickly and easily when emergencies occur.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building Your Emergency Fund Fast",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Strategies to Accelerate Your Savings",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Building an emergency fund can feel overwhelming, but there are strategies to accelerate the process. The key is finding extra money in your budget and directing windfalls toward your emergency fund until you reach your target.",
+          },
+          {
+            type: "list",
+            content: "Quick ways to boost emergency fund savings:",
+            items: [
+              "Direct tax refunds to emergency fund",
+              "Save bonuses, overtime pay, or raises",
+              "Sell items you no longer need",
+              "Take on temporary side gigs or freelance work",
+              "Reduce expenses temporarily to free up money",
+              "Use cash-back rewards and rebates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Expense reduction strategies:",
+            items: [
+              "Cancel unused subscriptions and memberships",
+              "Eat out less and cook more meals at home",
+              "Find cheaper alternatives for entertainment",
+              "Negotiate bills (phone, internet, insurance)",
+              "Use coupons and shop sales strategically",
+              "Temporarily pause non-essential spending",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom gets a $2,400 tax refund, earns $800 from selling old electronics, and saves $200/month by eating out less. In just 3 months, he builds a $3,800 emergency fund from these efforts.",
+          },
+          {
+            type: "list",
+            content: "Income boosting ideas:",
+            items: [
+              "Freelance or consulting in your skill area",
+              "Drive for rideshare or delivery services",
+              "Tutor students in subjects you know well",
+              "Pet sitting or dog walking",
+              "Seasonal work (tax prep, retail during holidays)",
+              "Online surveys or micro-tasks (small amounts)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Automating emergency fund contributions:",
+            items: [
+              "Set up automatic transfers from checking to savings",
+              "Direct deposit a portion of paycheck to emergency fund",
+              "Use apps that round up purchases and save the change",
+              "Save any 'found money' (rebates, refunds, gifts)",
+              "Increase contributions when you get raises",
+              "Make it harder to access by using different bank",
+            ],
+          },
+          {
+            type: "list",
+            content: "Staying motivated while building:",
+            items: [
+              "Track progress visually with charts or apps",
+              "Celebrate milestones ($1,000, $2,500, etc.)",
+              "Remember why you're building the fund",
+              "Find an accountability partner",
+              "Focus on the peace of mind it will provide",
+              "Don't get discouraged by slow progress",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Treat building your emergency fund like a sprint, not a marathon. Temporarily reduce expenses and increase income to build it as quickly as possible, then return to normal spending patterns.",
+          },
+        ],
+        keyTakeaways: [
+          "Use windfalls and extra income to accelerate emergency fund building",
+          "Temporarily reduce expenses to free up more money for savings",
+          "Automate contributions to make saving effortless",
+          "Stay motivated by tracking progress and celebrating milestones",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best use of a tax refund when building an emergency fund?",
+              options: [
+                "Spend it on vacation",
+                "Buy new clothes",
+                "Put it directly into emergency fund",
+                "Invest it in stocks",
+              ],
+              correctAnswer: "Put it directly into emergency fund",
+              explanation: "Tax refunds are perfect for emergency fund building because they're 'found money' that you weren't counting on for regular expenses.",
+            },
+          ],
+        },
+      },
+    ],
+    "financial-goals": [
+      {
+        title: "Setting SMART Financial Goals",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Making Your Goals Achievable",
+          },
+          {
+            type: "paragraph",
+            content:
+              "SMART goals are Specific, Measurable, Achievable, Relevant, and Time-bound. This framework helps you create clear, actionable financial goals that you're more likely to achieve. For young adults, setting SMART financial goals provides direction and motivation for building wealth.",
+          },
+          {
+            type: "list",
+            content: "SMART goal components:",
+            items: [
+              "Specific: Clearly defined with exact details",
+              "Measurable: Quantifiable with numbers or milestones",
+              "Achievable: Realistic given your income and situation",
+              "Relevant: Important to your life and values",
+              "Time-bound: Has a specific deadline or timeframe",
+            ],
+          },
+          {
+            type: "list",
+            content: "Examples of vague vs. SMART goals:",
+            items: [
+              "Vague: 'Save more money' → SMART: 'Save $5,000 for emergency fund by December 31st'",
+              "Vague: 'Pay off debt' → SMART: 'Pay off $3,000 credit card debt in 18 months'",
+              "Vague: 'Start investing' → SMART: 'Invest $200/month in index funds starting next month'",
+              "Vague: 'Buy a house' → SMART: 'Save $25,000 for house down payment by age 28'",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah's SMART goal: 'Save $10,000 for a car down payment by June 2025 by setting aside $400 per month from my part-time job and reducing dining out expenses by $100 monthly.' This goal is specific, measurable, achievable, relevant, and time-bound.",
+          },
+          {
+            type: "list",
+            content: "Making goals specific:",
+            items: [
+              "Include exact dollar amounts",
+              "Specify what the money is for",
+              "Detail how you'll achieve the goal",
+              "Identify potential obstacles and solutions",
+              "Break large goals into smaller milestones",
+              "Write goals down clearly",
+            ],
+          },
+          {
+            type: "list",
+            content: "Making goals measurable:",
+            items: [
+              "Use specific numbers and percentages",
+              "Set milestone checkpoints",
+              "Track progress regularly",
+              "Use apps or spreadsheets to monitor",
+              "Celebrate when you hit milestones",
+              "Adjust if you're ahead or behind schedule",
+            ],
+          },
+          {
+            type: "list",
+            content: "Making goals achievable:",
+            items: [
+              "Base goals on your actual income and expenses",
+              "Start with smaller goals to build confidence",
+              "Consider your other financial obligations",
+              "Be realistic about timeline",
+              "Account for unexpected expenses",
+              "Don't set too many goals at once",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Write your SMART goals down and put them somewhere you'll see them regularly. This keeps them top of mind and increases your likelihood of achieving them.",
+          },
+        ],
+        keyTakeaways: [
+          "SMART goals are Specific, Measurable, Achievable, Relevant, and Time-bound",
+          "Vague goals are much less likely to be achieved",
+          "Break large goals into smaller, manageable milestones",
+          "Write goals down and review them regularly",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of these is a SMART financial goal?",
+              options: [
+                "Save more money",
+                "Get out of debt",
+                "Save $5,000 for emergency fund by December 31st",
+                "Start investing someday",
+              ],
+              correctAnswer: "Save $5,000 for emergency fund by December 31st",
+              explanation: "This goal is Specific ($5,000 for emergency fund), Measurable ($5,000), Achievable (depends on income), Relevant (emergency funds are important), and Time-bound (by December 31st).",
+            },
+          ],
+        },
+      },
+      {
+        title: "Short-term vs. Long-term Goals",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Balancing Immediate and Future Needs",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Financial goals can be categorized by timeframe: short-term (under 2 years), medium-term (2-10 years), and long-term (10+ years). Understanding these categories helps you prioritize goals and choose appropriate savings and investment strategies for each.",
+          },
+          {
+            type: "list",
+            content: "Short-term goals (under 2 years):",
+            items: [
+              "Emergency fund ($1,000-10,000)",
+              "Vacation or travel ($1,000-5,000)",
+              "Car down payment or repairs ($2,000-8,000)",
+              "Holiday and gift expenses ($500-2,000)",
+              "Moving expenses ($1,000-3,000)",
+              "Professional development or certification ($500-3,000)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Medium-term goals (2-10 years):",
+            items: [
+              "House down payment ($20,000-100,000+)",
+              "Wedding expenses ($10,000-50,000+)",
+              "Graduate school tuition ($20,000-100,000+)",
+              "Starting a business ($10,000-50,000+)",
+              "New car purchase ($15,000-40,000)",
+              "Major home improvements ($10,000-50,000)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike has three goals: $2,000 vacation fund (short-term), $30,000 house down payment (medium-term), and $1 million retirement (long-term). He saves the vacation money in a high-yield savings account, invests the house fund conservatively, and invests retirement money aggressively.",
+          },
+          {
+            type: "list",
+            content: "Long-term goals (10+ years):",
+            items: [
+              "Retirement savings ($500,000-2,000,000+)",
+              "Children's college education ($100,000-300,000+)",
+              "Paying off mortgage early",
+              "Financial independence/early retirement",
+              "Starting a family foundation or charity",
+              "Leaving an inheritance",
+            ],
+          },
+          {
+            type: "list",
+            content: "Strategies by goal timeframe:",
+            items: [
+              "Short-term: High-yield savings, CDs, money market accounts",
+              "Medium-term: Conservative investments, balanced funds, short-term bonds",
+              "Long-term: Growth investments, stock index funds, aggressive allocation",
+              "Match risk level to time horizon",
+              "Shorter timeframes need more stability",
+              "Longer timeframes can handle more volatility",
+            ],
+          },
+          {
+            type: "list",
+            content: "Prioritizing multiple goals:",
+            items: [
+              "Emergency fund first (short-term)",
+              "High-interest debt payoff (short-term)",
+              "Employer 401(k) match (long-term)",
+              "Other goals based on importance and timeline",
+              "Don't spread money too thin across too many goals",
+              "Focus on 3-5 main goals at a time",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't sacrifice long-term goals for short-term wants. Your future self will thank you for starting retirement savings early, even if it means waiting longer for that vacation or new car.",
+          },
+        ],
+        keyTakeaways: [
+          "Different timeframes require different savings strategies",
+          "Short-term goals need stability, long-term goals can handle risk",
+          "Prioritize emergency fund and debt payoff first",
+          "Don't spread money too thin across too many goals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best savings strategy for a vacation you want to take next year?",
+              options: [
+                "Invest in growth stocks",
+                "High-yield savings account",
+                "Retirement account",
+                "Cryptocurrency",
+              ],
+              correctAnswer: "High-yield savings account",
+              explanation: "For short-term goals (under 2 years), you need stability and accessibility, making high-yield savings accounts the best choice rather than volatile investments.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Goal Prioritization Framework",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Deciding What Comes First",
+          },
+          {
+            type: "paragraph",
+            content:
+              "When you have multiple financial goals, prioritization is crucial. A clear framework helps you decide which goals to focus on first, ensuring you build a solid financial foundation before pursuing wants and longer-term objectives.",
+          },
+          {
+            type: "list",
+            content: "Financial goal priority framework:",
+            items: [
+              "Tier 1: Financial survival (emergency fund, minimum debt payments)",
+              "Tier 2: Financial security (employer match, high-interest debt payoff)",
+              "Tier 3: Financial growth (additional retirement savings, investments)",
+              "Tier 4: Financial freedom (extra goals, wants, luxury items)",
+              "Complete each tier before moving to the next",
+              "Adjust based on personal circumstances",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tier 1 - Financial Survival:",
+            items: [
+              "$1,000 starter emergency fund",
+              "Make minimum payments on all debts",
+              "Cover basic living expenses (food, shelter, transportation)",
+              "Maintain health insurance coverage",
+              "Keep utilities and essential services active",
+              "These are non-negotiable priorities",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa has $500 in savings, $5,000 in credit card debt, and wants to save for a vacation. Following the framework, she first builds her $1,000 emergency fund (Tier 1), then focuses on paying off high-interest debt (Tier 2) before saving for vacation (Tier 4).",
+          },
+          {
+            type: "list",
+            content: "Tier 2 - Financial Security:",
+            items: [
+              "Get full employer 401(k) match (free money)",
+              "Pay off high-interest debt (credit cards, payday loans)",
+              "Build full emergency fund (3-6 months expenses)",
+              "Adequate insurance coverage (health, auto, renters)",
+              "These create your financial foundation",
+              "Focus here before pursuing other goals",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tier 3 - Financial Growth:",
+            items: [
+              "Max out retirement contributions (401k, IRA)",
+              "Pay off moderate-interest debt (student loans, car loans)",
+              "Save for medium-term goals (house down payment)",
+              "Build taxable investment accounts",
+              "Additional insurance (disability, life insurance)",
+              "Focus on wealth building and goal achievement",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tier 4 - Financial Freedom:",
+            items: [
+              "Vacation and travel funds",
+              "Luxury purchases and upgrades",
+              "Hobby and entertainment expenses",
+              "Charitable giving beyond basic level",
+              "Early mortgage payoff",
+              "These are wants, not needs",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "It's tempting to work on fun goals first, but building your financial foundation (Tiers 1-2) protects you from setbacks and makes achieving other goals easier and faster.",
+          },
+        ],
+        keyTakeaways: [
+          "Prioritize financial survival and security before growth and freedom",
+          "Complete each tier before moving to the next",
+          "Emergency funds and debt payoff come before fun goals",
+          "A solid foundation makes other goals easier to achieve",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "According to the priority framework, what should you focus on first?",
+              options: [
+                "Vacation savings",
+                "New car fund",
+                "$1,000 emergency fund",
+                "Investment account",
+              ],
+              correctAnswer: "$1,000 emergency fund",
+              explanation: "The $1,000 starter emergency fund is part of Tier 1 (Financial Survival) and should be prioritized before other goals to provide basic financial protection.",
+            },
+          ],
+        },
+      },
+    ],
+    "sustainable-impact-investing": [
+      {
+        title: "Understanding ESG Investing",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Environmental, Social, and Governance Factors",
+          },
+          {
+            type: "paragraph",
+            content:
+              "ESG investing considers Environmental, Social, and Governance factors alongside financial returns. This approach allows young adults to align their investments with their values while still pursuing competitive returns. ESG investing has grown rapidly as investors seek to make a positive impact.",
+          },
+          {
+            type: "list",
+            content: "Environmental factors:",
+            items: [
+              "Climate change and carbon emissions",
+              "Renewable energy and clean technology",
+              "Water and waste management",
+              "Biodiversity and ecosystem protection",
+              "Pollution prevention and control",
+              "Sustainable resource use",
+            ],
+          },
+          {
+            type: "list",
+            content: "Social factors:",
+            items: [
+              "Labor practices and employee treatment",
+              "Human rights and community relations",
+              "Product safety and quality",
+              "Data protection and privacy",
+              "Diversity, equity, and inclusion",
+              "Supply chain management",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah invests in an ESG index fund that excludes companies with poor environmental records and includes companies leading in renewable energy. She earns competitive returns while supporting businesses aligned with her environmental values.",
+          },
+          {
+            type: "list",
+            content: "Governance factors:",
+            items: [
+              "Board composition and independence",
+              "Executive compensation practices",
+              "Shareholder rights and transparency",
+              "Business ethics and anti-corruption",
+              "Risk management and oversight",
+              "Regulatory compliance",
+            ],
+          },
+          {
+            type: "list",
+            content: "ESG investment approaches:",
+            items: [
+              "Negative screening: Excluding harmful industries",
+              "Positive screening: Selecting ESG leaders",
+              "ESG integration: Incorporating ESG into analysis",
+              "Thematic investing: Focusing on specific themes",
+              "Impact investing: Targeting measurable social/environmental impact",
+              "Shareholder engagement: Using ownership to influence companies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits of ESG investing:",
+            items: [
+              "Align investments with personal values",
+              "Potentially reduce long-term risks",
+              "Support positive social and environmental change",
+              "Access to growing sustainable economy",
+              "Competitive financial returns",
+              "Increased transparency and accountability",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "ESG investing doesn't mean sacrificing returns. Many ESG funds have performed competitively with traditional investments while allowing you to invest according to your values.",
+          },
+        ],
+        keyTakeaways: [
+          "ESG considers environmental, social, and governance factors",
+          "Multiple approaches exist from screening to impact investing",
+          "Can align investments with personal values",
+          "ESG funds often perform competitively with traditional investments",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does ESG stand for in investing?",
+              options: [
+                "Economic, Social, Growth",
+                "Environmental, Social, Governance",
+                "Ethical, Sustainable, Green",
+                "Energy, Solar, Gas",
+              ],
+              correctAnswer: "Environmental, Social, Governance",
+              explanation: "ESG stands for Environmental, Social, and Governance - the three key factors considered in sustainable investing alongside financial returns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Impact Investing Fundamentals",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Investing for Measurable Social Impact",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Impact investing goes beyond ESG by specifically targeting investments that generate positive, measurable social and environmental impact alongside financial returns. This approach allows young adults to directly contribute to solving global challenges while building wealth.",
+          },
+          {
+            type: "list",
+            content: "Key characteristics of impact investing:",
+            items: [
+              "Intentionality: Deliberate intent to create positive impact",
+              "Measurability: Tracking and reporting impact metrics",
+              "Financial returns: Expecting competitive returns",
+              "Range of returns: From below-market to market-rate",
+              "Asset classes: Across stocks, bonds, private equity, real estate",
+              "Impact themes: Addressing specific social/environmental challenges",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common impact investing themes:",
+            items: [
+              "Clean energy and climate solutions",
+              "Affordable housing and community development",
+              "Healthcare access and medical innovation",
+              "Education and workforce development",
+              "Financial inclusion and microfinance",
+              "Sustainable agriculture and food security",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike invests in a green bond fund that finances renewable energy projects. He earns 4% annual returns while directly funding solar and wind projects that reduce carbon emissions and create clean energy jobs.",
+          },
+          {
+            type: "list",
+            content: "Types of impact investments:",
+            items: [
+              "Green bonds: Financing environmental projects",
+              "Social impact bonds: Funding social programs",
+              "Community development financial institutions (CDFIs)",
+              "Microfinance institutions supporting entrepreneurs",
+              "Sustainable real estate and infrastructure",
+              "Impact-focused mutual funds and ETFs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Measuring impact:",
+            items: [
+              "Environmental metrics: Carbon reduction, energy saved",
+              "Social metrics: Jobs created, people served",
+              "UN Sustainable Development Goals alignment",
+              "Third-party impact verification",
+              "Regular impact reporting from fund managers",
+              "Standardized impact measurement frameworks",
+            ],
+          },
+          {
+            type: "list",
+            content: "Getting started with impact investing:",
+            items: [
+              "Define your impact priorities and values",
+              "Research impact-focused funds and ETFs",
+              "Start with small allocations to test approaches",
+              "Look for funds with clear impact measurement",
+              "Consider both public and private market options",
+              "Review impact reports alongside financial performance",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with impact-focused mutual funds or ETFs that provide diversification and professional management while targeting specific impact themes that align with your values.",
+          },
+        ],
+        keyTakeaways: [
+          "Impact investing targets measurable positive impact alongside returns",
+          "Covers themes like clean energy, healthcare, and education",
+          "Impact measurement and reporting are essential components",
+          "Available across multiple asset classes and return expectations",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What distinguishes impact investing from traditional ESG investing?",
+              options: [
+                "Higher financial returns",
+                "Lower risk investments",
+                "Intentional focus on measurable positive impact",
+                "Only available to wealthy investors",
+              ],
+              correctAnswer: "Intentional focus on measurable positive impact",
+              explanation: "Impact investing specifically targets measurable positive social and environmental impact, going beyond ESG's consideration of these factors in investment analysis.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Green Bonds and Climate Investing",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Financing the Clean Energy Transition",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Green bonds are debt securities specifically designed to fund projects with environmental benefits. Climate investing more broadly includes any investment strategy focused on addressing climate change, from renewable energy to climate adaptation technologies.",
+          },
+          {
+            type: "list",
+            content: "What are green bonds:",
+            items: [
+              "Bonds that fund environmentally beneficial projects",
+              "Same structure as traditional bonds but earmarked for green projects",
+              "Issued by governments, corporations, and municipalities",
+              "Proceeds must be used for qualifying environmental projects",
+              "Regular reporting on environmental impact required",
+              "Growing market with increasing standardization",
+            ],
+          },
+          {
+            type: "list",
+            content: "Eligible green bond projects:",
+            items: [
+              "Renewable energy (solar, wind, hydroelectric)",
+              "Energy efficiency improvements",
+              "Clean transportation (electric vehicles, public transit)",
+              "Sustainable water and waste management",
+              "Green buildings and infrastructure",
+              "Climate change adaptation projects",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "The city of Los Angeles issues green bonds to fund solar panel installations on public buildings. Investors earn 3.5% annual interest while directly financing projects that reduce the city's carbon footprint and energy costs.",
+          },
+          {
+            type: "list",
+            content: "Climate investing opportunities:",
+            items: [
+              "Clean energy companies (solar, wind, battery storage)",
+              "Electric vehicle manufacturers and infrastructure",
+              "Energy efficiency technology companies",
+              "Sustainable agriculture and food technology",
+              "Water treatment and conservation companies",
+              "Climate adaptation and resilience solutions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Climate investing strategies:",
+            items: [
+              "Thematic ETFs focused on clean energy or climate solutions",
+              "Green bond funds and ETFs",
+              "Individual stocks of climate-focused companies",
+              "Private market climate funds (for accredited investors)",
+              "Real estate investment trusts (REITs) focused on green buildings",
+              "Commodity investments in renewable energy materials",
+            ],
+          },
+          {
+            type: "list",
+            content: "Risks and considerations:",
+            items: [
+              "Policy and regulatory changes affecting clean energy",
+              "Technology risks as new solutions develop",
+              "Market volatility in emerging sectors",
+              "Greenwashing - companies overstating environmental benefits",
+              "Concentration risk in specific themes or sectors",
+              "Long-term nature of climate transition",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Consider climate-focused ETFs for diversified exposure to the clean energy transition. These funds spread risk across multiple companies and technologies while targeting climate solutions.",
+          },
+        ],
+        keyTakeaways: [
+          "Green bonds fund specific environmental projects with measurable impact",
+          "Climate investing covers the broad transition to a low-carbon economy",
+          "Multiple investment vehicles available from bonds to stocks to ETFs",
+          "Consider both opportunities and risks in emerging climate sectors",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What makes a bond a 'green bond'?",
+              options: [
+                "It's issued by environmental organizations",
+                "Proceeds are earmarked for environmental projects",
+                "It has a green-colored certificate",
+                "It offers higher returns than regular bonds",
+              ],
+              correctAnswer: "Proceeds are earmarked for environmental projects",
+              explanation: "Green bonds are distinguished by the requirement that proceeds be used specifically for projects with environmental benefits, with regular reporting on impact.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Socially Responsible Investing (SRI)",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Aligning Investments with Values",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Socially Responsible Investing (SRI) uses social and environmental criteria to evaluate investments. This approach allows young adults to avoid companies whose practices conflict with their values while supporting businesses that contribute positively to society.",
+          },
+          {
+            type: "list",
+            content: "SRI screening approaches:",
+            items: [
+              "Negative screening: Excluding harmful industries or practices",
+              "Positive screening: Selecting companies with strong social/environmental records",
+              "Norms-based screening: Excluding companies violating international standards",
+              "Best-in-class: Choosing leaders within each industry",
+              "Thematic investing: Focusing on specific social/environmental themes",
+              "Integration: Incorporating ESG factors into traditional analysis",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common exclusions in SRI:",
+            items: [
+              "Tobacco and alcohol companies",
+              "Weapons and defense contractors",
+              "Fossil fuel companies",
+              "Companies with poor labor practices",
+              "Gambling and adult entertainment",
+              "Companies involved in human rights violations",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma chooses an SRI mutual fund that excludes tobacco, weapons, and fossil fuel companies while overweighting companies with strong diversity programs and environmental practices. She earns market-competitive returns while investing according to her values.",
+          },
+          {
+            type: "list",
+            content: "Positive SRI criteria:",
+            items: [
+              "Strong employee relations and workplace diversity",
+              "Environmental stewardship and sustainability",
+              "Community involvement and charitable giving",
+              "Ethical business practices and transparency",
+              "Product safety and consumer protection",
+              "Innovation in solving social problems",
+            ],
+          },
+          {
+            type: "list",
+            content: "SRI investment options:",
+            items: [
+              "SRI mutual funds and ETFs",
+              "Faith-based investing funds",
+              "Shareholder advocacy funds",
+              "Community development financial institutions",
+              "Individual stock selection using SRI criteria",
+              "Robo-advisors with SRI options",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits and challenges of SRI:",
+            items: [
+              "Benefits: Values alignment, potential risk reduction, positive impact",
+              "Challenges: Limited diversification, potential performance differences",
+              "Research shows competitive long-term performance",
+              "Growing number of SRI options available",
+              "Increasing mainstream acceptance",
+              "Better data and analysis tools available",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Many SRI funds now offer broad diversification and competitive performance. You don't have to sacrifice returns to invest according to your values - research shows SRI can perform as well as traditional investing.",
+          },
+        ],
+        keyTakeaways: [
+          "SRI uses social and environmental criteria to select investments",
+          "Multiple screening approaches from exclusions to positive selection",
+          "Growing number of SRI investment options available",
+          "Research shows competitive performance with traditional investing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is negative screening in SRI?",
+              options: [
+                "Looking for companies with negative returns",
+                "Excluding companies or industries that conflict with values",
+                "Investing only in declining industries",
+                "Focusing on companies with bad publicity",
+              ],
+              correctAnswer: "Excluding companies or industries that conflict with values",
+              explanation: "Negative screening involves excluding companies or entire industries (like tobacco or weapons) that conflict with the investor's social or environmental values.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building a Sustainable Portfolio",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Constructing Your Values-Based Investment Strategy",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Building a sustainable portfolio requires balancing your values with sound investment principles like diversification and cost management. Young adults can create portfolios that reflect their beliefs while still achieving their financial goals.",
+          },
+          {
+            type: "list",
+            content: "Steps to build a sustainable portfolio:",
+            items: [
+              "Define your values and impact priorities",
+              "Determine your risk tolerance and time horizon",
+              "Choose your sustainable investing approach (ESG, SRI, impact)",
+              "Select appropriate asset allocation",
+              "Research sustainable investment options",
+              "Monitor both financial and impact performance",
+            ],
+          },
+          {
+            type: "list",
+            content: "Asset allocation for sustainable portfolios:",
+            items: [
+              "Stocks: ESG index funds, thematic ETFs, individual sustainable stocks",
+              "Bonds: Green bonds, social impact bonds, ESG bond funds",
+              "Real estate: Green building REITs, sustainable development",
+              "Alternatives: Impact investing funds, community development",
+              "International: Global ESG funds, emerging market impact funds",
+              "Maintain diversification across asset classes",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Alex, age 26, builds a sustainable portfolio: 70% ESG stock funds (40% US, 20% international, 10% emerging markets), 20% green bonds, 10% sustainable real estate REITs. This provides diversification while aligning with his environmental values.",
+          },
+          {
+            type: "list",
+            content: "Sustainable investment fund options:",
+            items: [
+              "Broad ESG index funds (Vanguard ESG, iShares MSCI KLD 400)",
+              "Thematic ETFs (clean energy, water, sustainable agriculture)",
+              "Impact-focused mutual funds",
+              "Faith-based investing options",
+              "Shareholder engagement funds",
+              "Target-date funds with ESG focus",
+            ],
+          },
+          {
+            type: "list",
+            content: "Evaluating sustainable investments:",
+            items: [
+              "Review fund holdings and screening criteria",
+              "Examine expense ratios and fees",
+              "Assess financial performance vs. benchmarks",
+              "Evaluate impact measurement and reporting",
+              "Consider fund manager experience and philosophy",
+              "Check third-party ESG ratings and research",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common portfolio construction mistakes:",
+            items: [
+              "Over-concentrating in specific themes or sectors",
+              "Ignoring traditional investment principles",
+              "Paying excessive fees for sustainable options",
+              "Not diversifying across geographies and asset classes",
+              "Choosing funds based on marketing rather than substance",
+              "Neglecting to monitor and rebalance portfolio",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with broad ESG index funds for core holdings, then add thematic investments for specific impact areas you care about. This provides diversification while allowing you to target your values.",
+          },
+        ],
+        keyTakeaways: [
+          "Balance values with sound investment principles like diversification",
+          "Multiple sustainable investment options available across asset classes",
+          "Evaluate both financial performance and impact measurement",
+          "Avoid over-concentration in specific themes or sectors",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best approach for a young adult building their first sustainable portfolio?",
+              options: [
+                "Invest only in individual sustainable stocks",
+                "Start with broad ESG index funds for diversification",
+                "Focus entirely on one impact theme",
+                "Avoid all traditional investments",
+              ],
+              correctAnswer: "Start with broad ESG index funds for diversification",
+              explanation: "Broad ESG index funds provide diversification and professional management while incorporating sustainable criteria, making them ideal for beginning sustainable investors.",
+            },
+          ],
+        },
+      },
+    ],
+    "taxes": [
+      {
+        title: "Understanding Tax Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "How the Tax System Works",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Understanding basic tax concepts helps young adults make informed financial decisions and avoid costly mistakes. The U.S. tax system is progressive, meaning higher earners pay higher rates, but everyone benefits from understanding how taxes work.",
+          },
+          {
+            type: "list",
+            content: "Key tax terms:",
+            items: [
+              "Gross income: All income before deductions",
+              "Adjusted Gross Income (AGI): Income after above-the-line deductions",
+              "Taxable income: AGI minus deductions and exemptions",
+              "Tax liability: Amount of tax you owe",
+              "Tax
