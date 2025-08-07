@@ -8155,3 +8155,1857 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           "Specific numbers and deadlines create accountability",
           "Goals should be challenging but realistic",
           "Relevance to your values increases motivation",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of these is a SMART financial goal?",
+              options: [
+                "Save more money",
+                "Get out of debt",
+                "Save $3,000 for vacation by next December",
+                "Start investing someday",
+              ],
+              correctAnswer: "Save $3,000 for vacation by next December",
+              explanation: "This goal is Specific ($3,000 for vacation), Measurable ($3,000), Achievable (depends on income), Relevant (vacation), and Time-bound (by next December).",
+            },
+          ],
+        },
+      },
+      {
+        title: "Short-term vs. Long-term Goals",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Balancing Different Time Horizons",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Financial goals span different time periods, each requiring different strategies and approaches. Understanding how to balance short-term needs with long-term wealth building is crucial for financial success.",
+          },
+          {
+            type: "list",
+            content: "Short-term goals (1-2 years):",
+            items: [
+              "Emergency fund building",
+              "Vacation or travel funds",
+              "Holiday and gift expenses",
+              "Car maintenance and repairs",
+              "Small home improvements",
+              "Professional development courses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Medium-term goals (2-10 years):",
+            items: [
+              "House down payment",
+              "Car replacement",
+              "Wedding expenses",
+              "Starting a family",
+              "Career change or education",
+              "Major home renovations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Long-term goals (10+ years):",
+            items: [
+              "Retirement savings",
+              "Children's education funding",
+              "Paying off mortgage",
+              "Starting a business",
+              "Financial independence",
+              "Legacy planning",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma balances her goals: $100/month for vacation fund (short-term), $300/month for house down payment (medium-term), and $200/month for retirement (long-term). This ensures progress on all time horizons.",
+          },
+          {
+            type: "list",
+            content: "Strategies for different time horizons:",
+            items: [
+              "Short-term: High-yield savings, CDs, money market accounts",
+              "Medium-term: Conservative investments, balanced funds",
+              "Long-term: Growth investments, stock index funds",
+              "Match investment risk to time horizon",
+              "Longer timelines allow for more volatility",
+              "Shorter timelines require more stability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Balancing competing goals:",
+            items: [
+              "Prioritize by importance and urgency",
+              "Don't neglect long-term for short-term wants",
+              "Use percentage-based allocation",
+              "Adjust as circumstances change",
+              "Consider opportunity costs",
+              "Automate to reduce decision fatigue",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't sacrifice long-term wealth building for short-term wants. A good rule is to allocate at least 20% of your savings to long-term goals like retirement, even when working on shorter-term objectives.",
+          },
+        ],
+        keyTakeaways: [
+          "Different time horizons require different strategies",
+          "Balance short-term needs with long-term wealth building",
+          "Match investment risk to your timeline",
+          "Don't neglect retirement savings for shorter-term goals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which investment approach is most appropriate for a 10-year goal?",
+              options: [
+                "High-yield savings account",
+                "Conservative investments or balanced funds",
+                "Aggressive growth stocks",
+                "Cash under the mattress",
+              ],
+              correctAnswer: "Conservative investments or balanced funds",
+              explanation: "A 10-year timeline allows for some investment risk but requires more stability than very long-term goals, making conservative investments or balanced funds appropriate.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Prioritizing Your Goals",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Deciding What Comes First",
+          },
+          {
+            type: "paragraph",
+            content:
+              "With limited income and multiple financial goals, prioritization is essential. Understanding which goals should come first helps you make the biggest impact with your available resources and avoid spreading yourself too thin.",
+          },
+          {
+            type: "list",
+            content: "Financial goal hierarchy:",
+            items: [
+              "1. Emergency fund (starter amount)",
+              "2. High-interest debt payoff",
+              "3. Emergency fund completion",
+              "4. Retirement savings (especially with employer match)",
+              "5. Medium-term goals (house, car)",
+              "6. Additional retirement savings",
+              "7. Other long-term goals",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors in prioritization:",
+            items: [
+              "Urgency: How soon do you need this?",
+              "Impact: How much will this improve your life?",
+              "Cost of delay: What happens if you wait?",
+              "Opportunity: Are there time-sensitive benefits?",
+              "Risk: What are the consequences of not achieving this?",
+              "Resources required: How much money and time needed?",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake has $500/month to allocate. He prioritizes: $200 to emergency fund, $200 to credit card debt, $100 to retirement. Once debt is paid off, he'll redirect that $200 to house down payment savings.",
+          },
+          {
+            type: "list",
+            content: "Common prioritization mistakes:",
+            items: [
+              "Focusing on wants before needs",
+              "Ignoring high-interest debt",
+              "Skipping emergency fund for other goals",
+              "Not taking advantage of employer matching",
+              "Trying to work on too many goals at once",
+              "Letting perfectionism prevent starting",
+            ],
+          },
+          {
+            type: "list",
+            content: "Strategies for multiple goals:",
+            items: [
+              "Focus intensely on 1-3 goals at a time",
+              "Use percentage-based allocation",
+              "Automate contributions to prevent decision fatigue",
+              "Review and adjust priorities quarterly",
+              "Celebrate completed goals before adding new ones",
+              "Consider seasonal adjustments",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to adjust priorities:",
+            items: [
+              "Major life changes (job, marriage, children)",
+              "Income increases or decreases",
+              "Completing a major goal",
+              "Economic or market changes",
+              "Health or family emergencies",
+              "New opportunities or requirements",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't try to work on too many goals simultaneously. Focus on 2-3 priorities and make real progress rather than spreading your money too thin across many goals.",
+          },
+        ],
+        keyTakeaways: [
+          "Emergency funds and debt payoff typically come first",
+          "Consider urgency, impact, and cost of delay when prioritizing",
+          "Focus on fewer goals for better progress",
+          "Adjust priorities as life circumstances change",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should typically be your first financial priority?",
+              options: [
+                "Buying a house",
+                "Starting to invest",
+                "Building an emergency fund",
+                "Planning a vacation",
+              ],
+              correctAnswer: "Building an emergency fund",
+              explanation: "An emergency fund should typically be your first priority as it prevents you from going into debt when unexpected expenses occur, protecting all your other financial goals.",
+            },
+          ],
+        },
+      },
+    ],
+    "sustainable-impact-investing": [
+      {
+        title: "Introduction to ESG Investing",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Environmental, Social, and Governance Investing",
+          },
+          {
+            type: "paragraph",
+            content:
+              "ESG investing considers Environmental, Social, and Governance factors alongside financial returns when making investment decisions. This approach allows you to align your investments with your values while still pursuing competitive returns.",
+          },
+          {
+            type: "list",
+            content: "Environmental factors:",
+            items: [
+              "Climate change and carbon emissions",
+              "Renewable energy and clean technology",
+              "Water and waste management",
+              "Biodiversity and ecosystem protection",
+              "Pollution prevention and control",
+              "Resource efficiency and conservation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Social factors:",
+            items: [
+              "Labor practices and employee treatment",
+              "Human rights and community relations",
+              "Product safety and quality",
+              "Data protection and privacy",
+              "Diversity, equity, and inclusion",
+              "Supply chain management",
+            ],
+          },
+          {
+            type: "list",
+            content: "Governance factors:",
+            items: [
+              "Board composition and independence",
+              "Executive compensation practices",
+              "Shareholder rights and transparency",
+              "Business ethics and anti-corruption",
+              "Risk management and oversight",
+              "Regulatory compliance",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah invests in an ESG fund that excludes tobacco and weapons companies while favoring companies with strong environmental practices and diverse leadership. She earns competitive returns while supporting her values.",
+          },
+          {
+            type: "list",
+            content: "ESG investment approaches:",
+            items: [
+              "Negative screening: Excluding harmful industries",
+              "Positive screening: Selecting best-in-class companies",
+              "Thematic investing: Focusing on specific ESG themes",
+              "Integration: Incorporating ESG into traditional analysis",
+              "Shareholder engagement: Using ownership to influence companies",
+              "Impact investing: Targeting measurable social/environmental outcomes",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "ESG investing doesn't mean sacrificing returns. Many ESG funds have performed competitively with traditional funds while allowing you to invest according to your values.",
+          },
+        ],
+        keyTakeaways: [
+          "ESG considers environmental, social, and governance factors",
+          "Multiple approaches exist from screening to impact investing",
+          "Can align investments with personal values",
+          "Performance can be competitive with traditional investing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does ESG stand for in investing?",
+              options: [
+                "Economic, Social, Growth",
+                "Environmental, Social, Governance",
+                "Ethical, Sustainable, Green",
+                "Energy, Solar, Gas",
+              ],
+              correctAnswer: "Environmental, Social, Governance",
+              explanation: "ESG stands for Environmental, Social, and Governance - the three key factors considered in sustainable investing.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Impact Investing Fundamentals",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Investing for Measurable Social and Environmental Impact",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Impact investing goes beyond ESG by specifically targeting investments that generate positive, measurable social and environmental impact alongside financial returns. This approach allows you to directly contribute to solving global challenges through your investment choices.",
+          },
+          {
+            type: "list",
+            content: "Key characteristics of impact investing:",
+            items: [
+              "Intentionality: Deliberate intent to create positive impact",
+              "Measurability: Ability to measure and report impact",
+              "Financial returns: Expectation of financial returns",
+              "Range of returns: From below-market to market-rate",
+              "Asset classes: Across all asset classes and geographies",
+              "Impact management: Active management of impact outcomes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common impact investing themes:",
+            items: [
+              "Clean energy and climate solutions",
+              "Affordable housing and community development",
+              "Healthcare access and medical innovation",
+              "Education and workforce development",
+              "Financial inclusion and microfinance",
+              "Sustainable agriculture and food security",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike invests in a fund that provides microloans to small businesses in developing countries. He earns 4% returns while helping entrepreneurs create jobs and improve their communities' economic conditions.",
+          },
+          {
+            type: "list",
+            content: "Types of impact investments:",
+            items: [
+              "Green bonds: Financing environmental projects",
+              "Social impact bonds: Funding social programs",
+              "Community development financial institutions (CDFIs)",
+              "Microfinance institutions",
+              "Clean energy projects",
+              "Affordable housing developments",
+            ],
+          },
+          {
+            type: "list",
+            content: "Measuring impact:",
+            items: [
+              "Environmental metrics: Carbon reduction, energy saved",
+              "Social metrics: Jobs created, people served",
+              "Financial metrics: Loans provided, businesses supported",
+              "Third-party verification and reporting",
+              "Standardized frameworks (IRIS+, SDGs)",
+              "Regular impact reporting to investors",
+            ],
+          },
+          {
+            type: "list",
+            content: "Getting started with impact investing:",
+            items: [
+              "Define your impact priorities and values",
+              "Research available impact investment options",
+              "Consider impact-focused mutual funds or ETFs",
+              "Look into community development investments",
+              "Start small and learn as you go",
+              "Work with advisors experienced in impact investing",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with impact-focused mutual funds or ETFs if you're new to impact investing. These provide diversification and professional management while allowing you to create positive impact.",
+          },
+        ],
+        keyTakeaways: [
+          "Impact investing targets measurable positive outcomes",
+          "Can generate competitive financial returns",
+          "Covers various themes from climate to healthcare",
+          "Impact measurement and reporting are essential",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What distinguishes impact investing from traditional ESG investing?",
+              options: [
+                "Higher returns",
+                "Lower risk",
+                "Intentional focus on measurable positive impact",
+                "Only environmental focus",
+              ],
+              correctAnswer: "Intentional focus on measurable positive impact",
+              explanation: "Impact investing specifically targets measurable positive social and environmental outcomes, going beyond ESG's consideration of these factors in investment decisions.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Green Bonds and Climate Investing",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Financing the Transition to a Low-Carbon Economy",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Green bonds and climate investing focus specifically on financing projects and companies that address climate change and environmental challenges. This rapidly growing sector offers opportunities to support the clean energy transition while earning returns.",
+          },
+          {
+            type: "list",
+            content: "What are green bonds:",
+            items: [
+              "Bonds specifically earmarked for environmental projects",
+              "Proceeds fund climate and environmental solutions",
+              "Same credit risk as regular bonds from same issuer",
+              "Growing market with increasing issuance",
+              "Issued by governments, corporations, and municipalities",
+              "Third-party verification of green credentials",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of green bond projects:",
+            items: [
+              "Renewable energy (solar, wind, hydroelectric)",
+              "Energy efficiency improvements",
+              "Clean transportation (electric vehicles, public transit)",
+              "Sustainable water and waste management",
+              "Green buildings and infrastructure",
+              "Climate adaptation and resilience projects",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa invests in a green bond fund that finances solar farms, wind projects, and energy-efficient buildings. She earns 3.5% annually while supporting the transition to clean energy.",
+          },
+          {
+            type: "list",
+            content: "Climate investing opportunities:",
+            items: [
+              "Clean energy companies and projects",
+              "Electric vehicle and battery technology",
+              "Energy storage and grid modernization",
+              "Carbon capture and storage technologies",
+              "Sustainable agriculture and forestry",
+              "Water treatment and conservation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Climate investment vehicles:",
+            items: [
+              "Green bond funds and ETFs",
+              "Clean energy sector funds",
+              "Climate-focused mutual funds",
+              "ESG funds with climate focus",
+              "Direct investment in renewable energy projects",
+              "Climate-themed index funds",
+            ],
+          },
+          {
+            type: "list",
+            content: "Risks and considerations:",
+            items: [
+              "Technology risk: New technologies may not succeed",
+              "Policy risk: Changes in government support",
+              "Market risk: Sector volatility and competition",
+              "Greenwashing: Verify actual environmental impact",
+              "Concentration risk: Don't over-allocate to one sector",
+              "Long-term nature: Many projects have long payback periods",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Consider green bond funds for stable, fixed-income exposure to climate solutions. For growth potential, look at clean energy ETFs, but be prepared for higher volatility.",
+          },
+        ],
+        keyTakeaways: [
+          "Green bonds finance specific environmental projects",
+          "Climate investing covers renewable energy and clean technology",
+          "Multiple investment vehicles available for different risk levels",
+          "Verify actual environmental impact to avoid greenwashing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What do green bonds specifically finance?",
+              options: [
+                "Any profitable project",
+                "Environmental and climate projects",
+                "Technology companies",
+                "Government operations",
+              ],
+              correctAnswer: "Environmental and climate projects",
+              explanation: "Green bonds are specifically earmarked to finance projects that have positive environmental or climate benefits, such as renewable energy or energy efficiency projects.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Socially Responsible Investing (SRI)",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Aligning Investments with Personal Values",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Socially Responsible Investing (SRI) involves selecting investments based on ethical, social, and environmental criteria. This approach allows you to avoid industries or practices you find objectionable while supporting companies that align with your values.",
+          },
+          {
+            type: "list",
+            content: "Common SRI screening criteria:",
+            items: [
+              "Negative screens: Excluding tobacco, weapons, gambling",
+              "Positive screens: Selecting companies with good practices",
+              "Values-based screening: Aligning with personal beliefs",
+              "Religious screening: Following faith-based guidelines",
+              "Norm-based screening: Excluding human rights violators",
+              "Best-in-class: Choosing leaders within each sector",
+            ],
+          },
+          {
+            type: "list",
+            content: "Industries commonly excluded in SRI:",
+            items: [
+              "Tobacco and alcohol companies",
+              "Weapons and defense contractors",
+              "Gambling and adult entertainment",
+              "Fossil fuel companies",
+              "Companies with poor labor practices",
+              "Businesses involved in human rights violations",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "David chooses an SRI fund that excludes tobacco, weapons, and fossil fuels while favoring companies with strong environmental records and fair labor practices. His returns match the broader market while reflecting his values.",
+          },
+          {
+            type: "list",
+            content: "Positive SRI criteria:",
+            items: [
+              "Strong environmental stewardship",
+              "Fair labor practices and employee treatment",
+              "Community involvement and philanthropy",
+              "Diverse and inclusive leadership",
+              "Ethical business practices",
+              "Innovation in sustainable products",
+            ],
+          },
+          {
+            type: "list",
+            content: "SRI investment options:",
+            items: [
+              "SRI mutual funds and ETFs",
+              "Faith-based investment funds",
+              "Shareholder advocacy funds",
+              "Community development investments",
+              "Direct stock ownership with screening",
+              "Robo-advisors with SRI options",
+            ],
+          },
+          {
+            type: "list",
+            content: "Benefits and considerations:",
+            items: [
+              "Alignment with personal values and beliefs",
+              "Potential for competitive returns",
+              "Growing variety of investment options",
+              "May have higher fees than traditional funds",
+              "Possible concentration in certain sectors",
+              "Important to understand specific screening criteria",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Research the specific screening criteria of SRI funds to ensure they align with your values. Different funds may have different definitions of what constitutes socially responsible investing.",
+          },
+        ],
+        keyTakeaways: [
+          "SRI uses ethical and social criteria for investment selection",
+          "Can exclude objectionable industries or favor positive practices",
+          "Multiple screening approaches available",
+          "Performance can be competitive with traditional investing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is negative screening in SRI?",
+              options: [
+                "Looking for companies with poor performance",
+                "Excluding industries or companies based on ethical criteria",
+                "Investing only in declining sectors",
+                "Focusing on companies with negative news",
+              ],
+              correctAnswer: "Excluding industries or companies based on ethical criteria",
+              explanation: "Negative screening involves excluding certain industries or companies from investment consideration based on ethical, social, or environmental criteria.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Building a Sustainable Portfolio",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Creating a Diversified Sustainable Investment Strategy",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Building a sustainable portfolio requires balancing your values with sound investment principles like diversification and risk management. The goal is to create a portfolio that reflects your beliefs while still achieving your financial objectives.",
+          },
+          {
+            type: "list",
+            content: "Sustainable portfolio components:",
+            items: [
+              "ESG equity funds for stock exposure",
+              "Green bonds for fixed-income allocation",
+              "Impact investments for targeted outcomes",
+              "SRI funds aligned with your values",
+              "International sustainable funds for global exposure",
+              "Sector-specific funds (clean energy, water, etc.)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Portfolio construction principles:",
+            items: [
+              "Maintain diversification across asset classes",
+              "Consider geographic diversification",
+              "Balance growth and income investments",
+              "Match risk level to your timeline and tolerance",
+              "Don't sacrifice too much return for values alignment",
+              "Regular rebalancing to maintain target allocation",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma builds a sustainable portfolio: 60% ESG stock funds, 30% green bonds, 10% impact investments. This provides diversification while aligning with her environmental and social values.",
+          },
+          {
+            type: "list",
+            content: "Age-based sustainable allocation:",
+            items: [
+              "Young investors: Higher allocation to growth-oriented ESG funds",
+              "Middle-aged: Balanced mix of ESG stocks and green bonds",
+              "Pre-retirement: More conservative with green bonds and stable ESG funds",
+              "Retirement: Income focus with dividend-paying ESG stocks and bonds",
+              "Adjust based on personal risk tolerance",
+              "Consider target-date ESG funds for simplicity",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common portfolio mistakes to avoid:",
+            items: [
+              "Over-concentration in one sustainable theme",
+              "Ignoring traditional diversification principles",
+              "Paying excessive fees for sustainable options",
+              "Not researching fund holdings and criteria",
+              "Letting values override sound investment principles",
+              "Failing to monitor and rebalance regularly",
+            ],
+          },
+          {
+            type: "list",
+            content: "Monitoring your sustainable portfolio:",
+            items: [
+              "Track both financial and impact performance",
+              "Review fund holdings and screening criteria regularly",
+              "Stay informed about changes in fund management",
+              "Assess whether investments still align with your values",
+              "Compare performance to relevant benchmarks",
+              "Adjust allocation as your priorities evolve",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with broad-based ESG funds for your core holdings, then add more specialized sustainable investments as you learn more about the space and your preferences become clearer.",
+          },
+        ],
+        keyTakeaways: [
+          "Sustainable portfolios should maintain diversification principles",
+          "Balance values alignment with financial objectives",
+          "Consider age-appropriate allocation strategies",
+          "Monitor both financial and impact performance",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be the foundation of a sustainable investment portfolio?",
+              options: [
+                "Only impact investments",
+                "Broad-based ESG funds with proper diversification",
+                "Single-sector sustainable funds",
+                "Only green bonds",
+              ],
+              correctAnswer: "Broad-based ESG funds with proper diversification",
+              explanation: "A sustainable portfolio should start with broad-based ESG funds that provide diversification while incorporating sustainable principles, then add more specialized investments as appropriate.",
+            },
+          ],
+        },
+      },
+    ],
+    "taxes": [
+      {
+        title: "Understanding Tax Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "How the Tax System Works",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Understanding basic tax concepts helps you make informed financial decisions and avoid costly mistakes. For young adults, learning about taxes early can save money and reduce stress during tax season.",
+          },
+          {
+            type: "list",
+            content: "Key tax terms:",
+            items: [
+              "Gross income: All income before deductions",
+              "Adjusted Gross Income (AGI): Income after certain deductions",
+              "Taxable income: AGI minus standard or itemized deductions",
+              "Tax liability: Amount of tax you owe",
+              "Withholding: Taxes taken from your paycheck",
+              "Refund: Money returned if you overpaid taxes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of income:",
+            items: [
+              "Earned income: Wages, salaries, tips, self-employment",
+              "Investment income: Interest, dividends, capital gains",
+              "Passive income: Rental income, royalties",
+              "Retirement income: 401(k), IRA distributions",
+              "Other income: Unemployment, gambling winnings",
+              "Tax-free income: Municipal bond interest, Roth IRA withdrawals",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah earns $50,000 in wages, $500 in bank interest, and $200 in dividends. Her gross income is $50,700. After the standard deduction of $13,850, her taxable income is $36,850.",
+          },
+          {
+            type: "list",
+            content: "Progressive tax system:",
+            items: [
+              "Higher income is taxed at higher rates",
+              "Tax brackets determine rates for different income levels",
+              "Only income in each bracket is taxed at that rate",
+              "Marginal tax rate: Rate on your last dollar of income",
+              "Effective tax rate: Average rate on all your income",
+              "Understanding brackets helps with tax planning",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common tax misconceptions:",
+            items: [
+              "Myth: Higher bracket means all income taxed at higher rate",
+              "Truth: Only income in that bracket is taxed at the higher rate",
+              "Myth: Overtime or bonuses aren't worth it due to taxes",
+              "Truth: More income is always better, even after taxes",
+              "Myth: Getting a refund means you're good at taxes",
+              "Truth: Refunds mean you overpaid during the year",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't be afraid of moving into a higher tax bracket. Only the income above the bracket threshold is taxed at the higher rate, not your entire income.",
+          },
+        ],
+        keyTakeaways: [
+          "The US uses a progressive tax system with increasing rates",
+          "Only income in each bracket is taxed at that bracket's rate",
+          "Understanding AGI and taxable income helps with planning",
+          "Different types of income may be taxed differently",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "In a progressive tax system, what happens when you move to a higher tax bracket?",
+              options: [
+                "All your income is taxed at the higher rate",
+                "Only income above the bracket threshold is taxed at the higher rate",
+                "You pay less in taxes",
+                "Your previous income is taxed again",
+              ],
+              correctAnswer: "Only income above the bracket threshold is taxed at the higher rate",
+              explanation: "In a progressive tax system, only the income that falls within each bracket is taxed at that bracket's rate, not your entire income.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tax Forms and Documentation",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Tax Forms and Record Keeping",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Proper documentation and understanding of tax forms are essential for accurate tax filing. Knowing what forms you need and how to organize your tax documents can save time and prevent errors.",
+          },
+          {
+            type: "list",
+            content: "Common tax forms you'll receive:",
+            items: [
+              "W-2: Wages and tax withholding from employers",
+              "1099-INT: Interest income from banks",
+              "1099-DIV: Dividend income from investments",
+              "1099-B: Proceeds from broker transactions",
+              "1099-NEC: Non-employee compensation (freelance work)",
+              "1098: Mortgage interest paid",
+            ],
+          },
+          {
+            type: "list",
+            content: "Forms you'll file:",
+            items: [
+              "Form 1040: Main individual tax return",
+              "Schedule A: Itemized deductions",
+              "Schedule B: Interest and dividend income",
+              "Schedule C: Business income and expenses",
+              "Schedule D: Capital gains and losses",
+              "Form 8606: Nondeductible IRA contributions",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike receives a W-2 from his employer showing $45,000 in wages and $6,000 in federal tax withholding. He also gets a 1099-INT showing $150 in bank interest. He'll report both on his Form 1040.",
+          },
+          {
+            type: "list",
+            content: "Documents to keep for taxes:",
+            items: [
+              "All tax forms (W-2s, 1099s, etc.)",
+              "Receipts for deductible expenses",
+              "Bank and investment statements",
+              "Records of estimated tax payments",
+              "Previous year's tax return",
+              "Documentation for any tax credits claimed",
+            ],
+          },
+          {
+            type: "list",
+            content: "Record keeping best practices:",
+            items: [
+              "Create a dedicated tax folder or digital file",
+              "Organize documents by category",
+              "Keep records for at least 3 years after filing",
+              "Scan important documents for backup",
+              "Track deductible expenses throughout the year",
+              "Keep receipts for charitable donations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Digital organization tips:",
+            items: [
+              "Use cloud storage for backup",
+              "Create folders by tax year",
+              "Scan receipts with smartphone apps",
+              "Use spreadsheets to track deductible expenses",
+              "Set up automatic downloads from financial institutions",
+              "Consider tax preparation software for organization",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start organizing your tax documents in January. Create a system to collect and organize tax-related documents throughout the year to make filing season less stressful.",
+          },
+        ],
+        keyTakeaways: [
+          "Different forms report different types of income",
+          "Keep organized records throughout the year",
+          "Maintain tax documents for at least 3 years",
+          "Digital organization can simplify record keeping",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What form reports wages and tax withholding from your employer?",
+              options: ["1099-INT", "W-2", "1040", "Schedule A"],
+              correctAnswer: "W-2",
+              explanation: "Form W-2 reports wages, salaries, and tax withholding from your employer and is one of the most important tax documents for employees.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Deductions and Credits",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Reducing Your Tax Bill",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tax deductions and credits both reduce your tax bill, but they work differently. Understanding the difference and knowing what you qualify for can significantly impact your tax liability.",
+          },
+          {
+            type: "list",
+            content: "Deductions vs. Credits:",
+            items: [
+              "Deductions: Reduce your taxable income",
+              "Credits: Directly reduce your tax owed",
+              "Credits are generally more valuable than deductions",
+              "Example: $1,000 deduction saves $220 in 22% bracket",
+              "Example: $1,000 credit saves $1,000 in taxes",
+              "Some credits are refundable, some are not",
+            ],
+          },
+          {
+            type: "list",
+            content: "Standard vs. itemized deductions:",
+            items: [
+              "Standard deduction: Fixed amount based on filing status",
+              "2024 standard deduction: $13,850 (single), $27,700 (married)",
+              "Itemized deductions: Specific expenses you can deduct",
+              "Choose whichever is higher",
+              "Most taxpayers use the standard deduction",
+              "Itemizing makes sense if deductions exceed standard amount",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common itemized deductions:",
+            items: [
+              "State and local taxes (SALT) - limited to $10,000",
+              "Mortgage interest on home loans",
+              "Charitable contributions",
+              "Medical expenses exceeding 7.5% of AGI",
+              "Casualty and theft losses from disasters",
+              "Unreimbursed employee expenses (limited)",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa's itemized deductions total $16,000 ($8,000 mortgage interest, $5,000 state taxes, $3,000 charity). Since this exceeds the $13,850 standard deduction, she itemizes and saves taxes on an extra $2,150.",
+          },
+          {
+            type: "list",
+            content: "Common tax credits:",
+            items: [
+              "Earned Income Tax Credit (EITC) - for lower-income workers",
+              "Child Tax Credit - up to $2,000 per qualifying child",
+              "American Opportunity Tax Credit - for college expenses",
+              "Lifetime Learning Credit - for continuing education",
+              "Child and Dependent Care Credit - for childcare expenses",
+              "Saver's Credit - for retirement contributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Maximizing deductions and credits:",
+            items: [
+              "Keep detailed records of deductible expenses",
+              "Time charitable contributions strategically",
+              "Consider bunching deductions in alternating years",
+              "Maximize retirement contributions for deductions",
+              "Understand income limits for various credits",
+              "Don't overlook education-related credits",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Track your potential itemized deductions throughout the year. If you're close to the standard deduction amount, you might be able to time certain expenses to exceed the threshold.",
+          },
+        ],
+        keyTakeaways: [
+          "Credits are more valuable than deductions",
+          "Most people benefit from the standard deduction",
+          "Keep records of potential deductible expenses",
+          "Understand income limits for credits and deductions",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the difference between a tax deduction and a tax credit?",
+              options: [
+                "There is no difference",
+                "Deductions reduce taxable income, credits directly reduce tax owed",
+                "Credits reduce taxable income, deductions reduce tax owed",
+                "Deductions are always better than credits",
+              ],
+              correctAnswer: "Deductions reduce taxable income, credits directly reduce tax owed",
+              explanation: "Deductions reduce your taxable income (saving you taxes at your marginal rate), while credits directly reduce the amount of tax you owe dollar-for-dollar.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Filing Your Tax Return",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Completing and Submitting Your Return",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Filing your tax return accurately and on time is crucial to avoid penalties and interest. Understanding your options for filing and the process involved helps ensure a smooth tax season.",
+          },
+          {
+            type: "list",
+            content: "Filing options:",
+            items: [
+              "Free File: IRS program for simple returns",
+              "Tax preparation software (TurboTax, H&R Block, etc.)",
+              "Professional tax preparer or CPA",
+              "Paper filing (not recommended)",
+              "IRS Volunteer Income Tax Assistance (VITA)",
+              "Online tax services",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to file:",
+            items: [
+              "Tax deadline: Usually April 15th",
+              "File early if expecting a refund",
+              "Extension available until October 15th",
+              "Extension to file is not extension to pay",
+              "Estimated taxes due quarterly if self-employed",
+              "Amended returns can be filed if errors discovered",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom uses tax software to file his return in February. He e-files and chooses direct deposit for his $1,200 refund, which he receives within 3 weeks instead of waiting months for a paper check.",
+          },
+          {
+            type: "list",
+            content: "E-filing benefits:",
+            items: [
+              "Faster processing and refunds",
+              "Immediate confirmation of receipt",
+              "More accurate (software catches errors)",
+              "Direct deposit available for refunds",
+              "Electronic record keeping",
+              "Environmentally friendly",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common filing mistakes:",
+            items: [
+              "Math errors and incorrect calculations",
+              "Wrong or missing Social Security numbers",
+              "Incorrect bank account information for direct deposit",
+              "Missing signatures on paper returns",
+              "Filing with wrong status or exemptions",
+              "Forgetting to attach required forms",
+            ],
+          },
+          {
+            type: "list",
+            content: "After filing checklist:",
+            items: [
+              "Keep copies of your return and supporting documents",
+              "Track your refund status if expecting one",
+              "Pay any taxes owed by the deadline",
+              "Update withholding if needed for next year",
+              "Start organizing documents for next year",
+              "Consider tax planning strategies for next year",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "E-file your return for faster processing and fewer errors. If you're expecting a refund, filing early and choosing direct deposit gets your money fastest.",
+          },
+        ],
+        keyTakeaways: [
+          "E-filing is faster and more accurate than paper filing",
+          "File early if expecting a refund",
+          "Extensions are for filing, not paying taxes owed",
+          "Keep copies of returns and supporting documents",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the main benefit of e-filing your tax return?",
+              options: [
+                "It costs less money",
+                "Faster processing and fewer errors",
+                "You don't need to keep records",
+                "You can file after the deadline",
+              ],
+              correctAnswer: "Faster processing and fewer errors",
+              explanation: "E-filing provides faster processing, immediate confirmation, and the software helps catch errors before submission, making it superior to paper filing.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tax Planning Strategies",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Minimizing Your Tax Burden Legally",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tax planning involves making strategic decisions throughout the year to minimize your tax liability. Understanding basic tax planning strategies can save you money and help you keep more of what you earn.",
+          },
+          {
+            type: "list",
+            content: "Retirement account strategies:",
+            items: [
+              "Maximize 401(k) contributions to reduce current taxes",
+              "Consider Roth IRA for tax-free retirement income",
+              "Take advantage of employer matching",
+              "Use HSA for triple tax advantage",
+              "Consider traditional vs. Roth based on current/future tax rates",
+              "Don't forget catch-up contributions if over 50",
+            ],
+          },
+          {
+            type: "list",
+            content: "Investment tax strategies:",
+            items: [
+              "Hold investments over one year for long-term capital gains rates",
+              "Use tax-loss harvesting to offset gains",
+              "Consider tax-efficient index funds",
+              "Place tax-inefficient investments in retirement accounts",
+              "Time the sale of investments strategically",
+              "Understand wash sale rules",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma increases her 401(k) contribution from 6% to 10%, reducing her taxable income by $2,000. In the 22% tax bracket, this saves her $440 in taxes while boosting her retirement savings.",
+          },
+          {
+            type: "list",
+            content: "Timing strategies:",
+            items: [
+              "Accelerate deductions into high-income years",
+              "Defer income to lower-tax years if possible",
+              "Bunch charitable contributions in alternating years",
+              "Time medical expenses to exceed AGI threshold",
+              "Consider year-end tax moves",
+              "Plan around life changes (marriage, job change)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Business and side hustle strategies:",
+            items: [
+              "Track all business expenses for deductions",
+              "Consider home office deduction if applicable",
+              "Maximize business retirement plan contributions",
+              "Understand self-employment tax implications",
+              "Keep detailed records of business activities",
+              "Consider business structure for tax efficiency",
+            ],
+          },
+          {
+            type: "list",
+            content: "Year-end tax planning:",
+            items: [
+              "Review withholding and make adjustments",
+              "Maximize retirement contributions before deadline",
+              "Consider Roth IRA conversions",
+              "Harvest tax losses in investment accounts",
+              "Make charitable contributions before year-end",
+              "Prepay deductible expenses if beneficial",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start tax planning early in the year, not just at year-end. Many strategies require time to implement effectively, and waiting until December limits your options.",
+          },
+        ],
+        keyTakeaways: [
+          "Retirement contributions are powerful tax reduction tools",
+          "Investment timing can significantly impact taxes",
+          "Year-end planning provides last-minute opportunities",
+          "Keep detailed records for business deductions",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is tax-loss harvesting?",
+              options: [
+                "Avoiding all investment losses",
+                "Selling losing investments to offset taxable gains",
+                "Only investing in tax-free accounts",
+                "Waiting until retirement to sell investments",
+              ],
+              correctAnswer: "Selling losing investments to offset taxable gains",
+              explanation: "Tax-loss harvesting involves selling investments at a loss to offset capital gains, reducing your overall tax liability while maintaining your investment strategy.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Common Tax Mistakes to Avoid",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Preventing Costly Tax Errors",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Tax mistakes can be costly, resulting in penalties, interest, and missed opportunities for savings. Understanding common errors helps you avoid them and file accurate returns.",
+          },
+          {
+            type: "list",
+            content: "Filing and calculation errors:",
+            items: [
+              "Math errors in calculations",
+              "Wrong Social Security numbers",
+              "Incorrect filing status",
+              "Missing or incorrect bank account information",
+              "Forgetting to sign paper returns",
+              "Using outdated tax forms",
+            ],
+          },
+          {
+            type: "list",
+            content: "Income reporting mistakes:",
+            items: [
+              "Forgetting to report all income sources",
+              "Not reporting cash income or tips",
+              "Incorrectly reporting investment income",
+              "Missing 1099 forms from various sources",
+              "Failing to report side hustle income",
+              "Incorrectly handling cryptocurrency transactions",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake forgot to report $800 in freelance income because he didn't receive a 1099. The IRS matched the payment to his SSN and sent him a bill for additional taxes plus penalties and interest.",
+          },
+          {
+            type: "list",
+            content: "Deduction and credit errors:",
+            items: [
+              "Claiming ineligible deductions",
+              "Overstating charitable contributions",
+              "Missing valuable credits you qualify for",
+              "Incorrectly calculating education credits",
+              "Not keeping proper documentation",
+              "Double-counting the same expense",
+            ],
+          },
+          {
+            type: "list",
+            content: "Record keeping mistakes:",
+            items: [
+              "Not keeping receipts for deductions",
+              "Poor organization of tax documents",
+              "Throwing away important tax records too early",
+              "Not backing up digital records",
+              "Mixing personal and business expenses",
+              "Failing to track basis in investments",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to avoid mistakes:",
+            items: [
+              "Use tax software to catch errors",
+              "Double-check all numbers and calculations",
+              "Keep organized records throughout the year",
+              "Review your return before filing",
+              "Consider professional help for complex situations",
+              "File electronically when possible",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Take your time when preparing your return. Most errors come from rushing or not carefully reviewing the information before filing. Use tax software to help catch common mistakes.",
+          },
+        ],
+        keyTakeaways: [
+          "Math errors and missing information are common mistakes",
+          "Report all income, even if you don't receive a 1099",
+          "Keep detailed records to support deductions",
+          "Review your return carefully before filing",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do if you don't receive a 1099 for income you earned?",
+              options: [
+                "Don't report the income",
+                "Wait for the 1099 to arrive",
+                "Report the income anyway",
+                "Only report it if it's over $1,000",
+              ],
+              correctAnswer: "Report the income anyway",
+              explanation: "You must report all income you earned, regardless of whether you receive a 1099 form. The IRS may have records of payments made to you.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Tax Software and Professional Help",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Choosing the Right Tax Preparation Method",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Deciding how to prepare your taxes depends on the complexity of your situation, your comfort level, and your budget. Understanding your options helps you choose the best approach for your needs.",
+          },
+          {
+            type: "list",
+            content: "Tax software options:",
+            items: [
+              "Free options: IRS Free File, Credit Karma Tax",
+              "Paid software: TurboTax, H&R Block, TaxAct",
+              "Features: Error checking, interview format, e-filing",
+              "Mobile apps available for simple returns",
+              "Import capabilities from financial institutions",
+              "Audit support and guarantees available",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to use tax software:",
+            items: [
+              "Straightforward tax situation",
+              "W-2 income with standard deduction",
+              "Basic investment income",
+              "Comfortable with technology",
+              "Want to save money on preparation fees",
+              "Prefer to maintain control over the process",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Maria uses free tax software for her simple return with W-2 income and student loan interest. The software guides her through each step and e-files her return for free, saving her $200 in preparation fees.",
+          },
+          {
+            type: "list",
+            content: "When to consider professional help:",
+            items: [
+              "Complex tax situations (business, rental property)",
+              "Major life changes (marriage, divorce, new baby)",
+              "Large investment transactions",
+              "Tax problems or audits",
+              "Self-employment income",
+              "Multiple states or international income",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of tax professionals:",
+            items: [
+              "Certified Public Accountant (CPA): Highest credential",
+              "Enrolled Agent (EA): IRS-licensed tax specialist",
+              "Tax attorney: For legal tax issues",
+              "Annual Filing Season Program participants",
+              "Volunteer Income Tax Assistance (VITA): Free for eligible taxpayers",
+              "Chain tax preparers: Convenient but variable quality",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing a tax professional:",
+            items: [
+              "Check credentials and qualifications",
+              "Ask about fees upfront",
+              "Ensure they sign your return",
+              "Verify they have a PTIN (Preparer Tax ID)",
+              "Ask about their experience with your situation",
+              "Get references from other clients",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with tax software if your situation is straightforward. You can always switch to a professional if your taxes become more complex or if you encounter issues you can't handle.",
+          },
+        ],
+        keyTakeaways: [
+          "Tax software works well for straightforward situations",
+          "Professional help is valuable for complex tax situations",
+          "Check credentials when choosing a tax professional",
+          "Free options are available for simple returns",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When might you need professional tax help instead of using software?",
+              options: [
+                "You have only W-2 income",
+                "You have complex business income or major life changes",
+                "You want to save money",
+                "You're comfortable with technology",
+              ],
+              correctAnswer: "You have complex business income or major life changes",
+              explanation: "Complex situations like business income, rental properties, or major life changes often benefit from professional expertise that software may not adequately address.",
+            },
+          ],
+        },
+      },
+    ],
+    "estate-planning": [
+      {
+        title: "Estate Planning Basics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Why Estate Planning Matters",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate planning is the process of arranging for the management and disposal of your assets during your life and after death. While young adults often think estate planning is only for the wealthy or elderly, everyone needs basic estate planning documents.",
+          },
+          {
+            type: "list",
+            content: "What estate planning covers:",
+            items: [
+              "Distribution of assets after death",
+              "Care of minor children",
+              "Medical decisions if you're incapacitated",
+              "Financial decisions if you can't make them",
+              "Minimizing taxes and probate costs",
+              "Protecting beneficiaries from creditors",
+            ],
+          },
+          {
+            type: "list",
+            content: "Why young adults need estate planning:",
+            items: [
+              "Accidents and illnesses can happen at any age",
+              "Protects assets you've worked hard to build",
+              "Ensures your wishes are followed",
+              "Prevents family conflicts and confusion",
+              "Provides for dependents or loved ones",
+              "Avoids costly and time-consuming probate",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah, 28, has $50,000 in savings and a 401(k). Without a will, state law determines who inherits her assets, which might not align with her wishes to leave everything to her partner rather than her estranged parents.",
+          },
+          {
+            type: "list",
+            content: "Consequences of not having an estate plan:",
+            items: [
+              "State laws determine asset distribution",
+              "Court appoints guardian for minor children",
+              "Family members may fight over decisions",
+              "Higher costs and longer delays",
+              "No control over medical or financial decisions",
+              "Potential tax inefficiencies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Basic estate planning documents:",
+            items: [
+              "Will: Directs distribution of assets",
+              "Power of attorney: Financial decision-making",
+              "Healthcare directive: Medical decision-making",
+              "HIPAA authorization: Medical information access",
+              "Beneficiary designations: Retirement accounts, insurance",
+              "Trust documents (if applicable)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Start with basic documents like a will and power of attorney. Even simple estate planning is better than none, and you can always update your plan as your life changes.",
+          },
+        ],
+        keyTakeaways: [
+          "Estate planning is important at any age and wealth level",
+          "Basic documents protect you and your loved ones",
+          "Without planning, state laws determine asset distribution",
+          "Start simple and update as your situation changes",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Why do young adults need estate planning?",
+              options: [
+                "Only if they're wealthy",
+                "Accidents and illnesses can happen at any age",
+                "It's required by law",
+                "Only if they have children",
+              ],
+              correctAnswer: "Accidents and illnesses can happen at any age",
+              explanation: "Estate planning is important for young adults because unexpected events can occur at any age, and having documents in place protects both you and your loved ones.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Wills and Testaments",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Your Most Important Estate Planning Document",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A will is a legal document that specifies how you want your assets distributed after death and who should care for your minor children. It's the foundation of any estate plan and ensures your wishes are carried out.",
+          },
+          {
+            type: "list",
+            content: "What a will covers:",
+            items: [
+              "Distribution of assets and property",
+              "Appointment of executor to manage your estate",
+              "Guardianship of minor children",
+              "Care instructions for pets",
+              "Funeral and burial preferences",
+              "Forgiveness of debts owed to you",
+            ],
+          },
+          {
+            type: "list",
+            content: "What a will cannot do:",
+            items: [
+              "Override beneficiary designations on accounts",
+              "Distribute jointly owned property",
+              "Control assets in a trust",
+              "Make binding healthcare decisions",
+              "Avoid probate entirely",
+              "Provide for your own incapacity",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike's will leaves his house to his sister, his savings to his nephew, and appoints his brother as executor. He also names his sister as guardian for his young daughter and includes instructions for his pet's care.",
+          },
+          {
+            type: "list",
+            content: "Types of wills:",
+            items: [
+              "Simple will: Basic asset distribution",
+              "Pour-over will: Works with a trust",
+              "Joint will: Shared by married couples (not recommended)",
+              "Living will: Healthcare directives (different document)",
+              "Holographic will: Handwritten (limited validity)",
+              "Statutory will: State-provided forms",
+            ],
+          },
+          {
+            type: "list",
+            content: "Will requirements:",
+            items: [
+              "Must be in writing (except rare oral wills)",
+              "Signed by the testator (will maker)",
+              "Witnessed by required number of people",
+              "Witnesses must be disinterested parties",
+              "Testator must be of sound mind",
+              "Must follow state-specific requirements",
+            ],
+          },
+          {
+            type: "list",
+            content: "Updating your will:",
+            items: [
+              "Review every 3-5 years or after major life events",
+              "Marriage, divorce, birth of children",
+              "Significant changes in assets",
+              "Moving to a different state",
+              "Death of beneficiaries or executor",
+              "Changes in tax laws",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't delay creating a will because you think your situation isn't complex enough. Even a simple will is better than no will, and you can always update it as your life changes.",
+          },
+        ],
+        keyTakeaways: [
+          "A will is the foundation of estate planning",
+          "It controls asset distribution and child guardianship",
+          "Must meet specific legal requirements to be valid",
+          "Should be updated regularly as life changes",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What can a will NOT do?",
+              options: [
+                "Distribute your personal property",
+                "Name a guardian for minor children",
+                "Override beneficiary designations on retirement accounts",
+                "Appoint an executor",
+              ],
+              correctAnswer: "Override beneficiary designations on retirement accounts",
+              explanation: "Beneficiary designations on retirement accounts, life insurance, and other accounts override instructions in a will, which is why it's important to keep beneficiary forms updated.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Power of Attorney Documents",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Yourself During Incapacity",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Power of attorney documents allow someone you trust to make financial and healthcare decisions on your behalf if you become unable to do so. These documents are crucial for protecting your interests during temporary or permanent incapacity.",
+          },
+          {
+            type: "list",
+            content: "Types of power of attorney:",
+            items: [
+              "Financial power of attorney: Money and property decisions",
+              "Healthcare power of attorney: Medical decisions",
+              "Durable: Remains valid if you become incapacitated",
+              "Non-durable: Ends if you become incapacitated",
+              "Springing: Only takes effect upon incapacity",
+              "Immediate: Takes effect when signed",
+            ],
+          },
+          {
+            type: "list",
+            content: "Financial power of attorney covers:",
+            items: [
+              "Banking and investment transactions",
+              "Paying bills and managing expenses",
+              "Filing tax returns",
+              "Managing business interests",
+              "Buying and selling property",
+              "Making insurance decisions",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa is in a car accident and unconscious for two weeks. Her durable financial power of attorney allows her sister to pay her bills, manage her investments, and handle insurance claims while she recovers.",
+          },
+          {
+            type: "list",
+            content: "Healthcare power of attorney covers:",
+            items: [
+              "Medical treatment decisions",
+              "Choice of healthcare providers",
+              "Access to medical records",
+              "Decisions about life support",
+              "Mental health treatment",
+              "Long-term care arrangements",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing your agent:",
+            items: [
+              "Someone you trust completely",
+              "Financially responsible and organized",
+              "Available and willing to serve",
+              "Understands your values and wishes",
+              "Lives reasonably close to you",
+              "Consider naming alternate agents",
+            ],
+          },
+          {
+            type: "list",
+            content: "Important considerations:",
+            items: [
+              "Discuss your wishes with your chosen agent",
+              "Provide clear instructions and limitations",
+              "Keep documents easily accessible",
+              "Give copies to relevant parties",
+              "Review and update regularly",
+              "Consider separate agents for financial and healthcare decisions",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Choose your power of attorney agents carefully and have detailed conversations about your wishes. Make sure they understand the responsibility and are willing to act on your behalf.",
+          },
+        ],
+        keyTakeaways: [
+          "Power of attorney documents protect you during incapacity",
+          "Financial and healthcare decisions can be handled separately",
+          "Choose agents you trust completely",
+          "Durable powers of attorney remain valid during incapacity",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the difference between durable and non-durable power of attorney?",
+              options: [
+                "Durable costs more money",
+                "Durable remains valid if you become incapacitated",
+                "Non-durable covers more decisions",
+                "There is no difference",
+              ],
+              correctAnswer: "Durable remains valid if you become incapacitated",
+              explanation: "A durable power of attorney remains in effect even if you become incapacitated, while a non-durable power of attorney ends if you become unable to make decisions.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Healthcare Directives",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Advance Healthcare Planning",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Healthcare directives, also called advance directives or living wills, specify your wishes for medical treatment if you cannot communicate them yourself. These documents ensure your healthcare preferences are known and followed.",
+          },
+          {
+            type: "list",
+            content: "Types of healthcare directives:",
+            items: [
+              "Living will: Specific treatment preferences",
+              "Healthcare power of attorney: Designates decision-maker",
+              "HIPAA authorization: Medical information access",
+              "DNR order: Do not resuscitate instructions",
+              "POLST: Physician orders for life-sustaining treatment",
+              "Organ donation directives",
+            ],
+          },
+          {
+            type: "list",
+            content: "What living wills typically cover:",
+            items: [
+              "Life support and artificial nutrition",
+              "Resuscitation preferences",
+              "Pain management and comfort care",
+              "Specific medical procedures",
+              "Quality of life considerations",
+              "Religious or personal beliefs about treatment",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "David's living will states he doesn't want artificial life support if he's in a persistent vegetative state. When he's in a coma after an accident, his family and doctors know his wishes and can make decisions accordingly.",
+          },
+          {
+            type: "list",
+            content: "Important decisions to consider:",
+            items: [
+              "Artificial breathing and ventilators",
+              "Feeding tubes and artificial nutrition",
+              "Dialysis and other life-sustaining treatments",
+              "Antibiotics for life-threatening infections",
+              "Comfort care and pain medication",
