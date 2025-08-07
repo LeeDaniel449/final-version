@@ -53,12 +53,13 @@ import {
   Phone,
   Gamepad2,
   Heart,
-  Play,
   LogIn,
   PieChartIcon,
   UserPlus,
   Bell,
   Plus,
+  Wallet,
+  Banknote,
 } from "lucide-react"
 import { userDataManager, type BudgetCategory as UserBudgetCategory, type BudgetEntry } from "@/lib/user-data"
 import { TutorialProvider } from "@/components/tutorial/tutorial-provider"
@@ -147,6 +148,11 @@ function BudgetDashboardContent() {
     minPayment: "",
     interestRate: "",
   })
+  const [showAddIncomeDialog, setShowAddIncomeDialog] = useState(false)
+  const [newIncomeAmount, setNewIncomeAmount] = useState("")
+  const [incomeDescription, setIncomeDescription] = useState("")
+  const [totalIncome, setTotalIncome] = useState(0)
+  const [availableIncome, setAvailableIncome] = useState(0)
 
   const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
     const newNotification = {
@@ -171,6 +177,20 @@ function BudgetDashboardContent() {
     setUnreadCount(0)
   }
 
+  // Calculate income totals
+  const calculateIncomeData = useCallback(() => {
+    const incomeEntries = userBudgetEntries.filter((entry) => entry.type === "income")
+    const totalIncomeAmount = incomeEntries.reduce((sum, entry) => sum + entry.amount, 0)
+
+    // Calculate total budgeted amounts
+    const totalBudgetedAmount = userBudgetCategories.reduce((sum, cat) => sum + (cat.budgetAmount || 0), 0)
+
+    const available = totalIncomeAmount - totalBudgetedAmount
+
+    setTotalIncome(totalIncomeAmount)
+    setAvailableIncome(available)
+  }, [userBudgetEntries, userBudgetCategories])
+
   // Load user data
   const loadUserData = useCallback(() => {
     const signedUp = userDataManager.isUserSignedUp()
@@ -193,6 +213,41 @@ function BudgetDashboardContent() {
   useEffect(() => {
     loadUserData()
   }, [loadUserData])
+
+  useEffect(() => {
+    calculateIncomeData()
+  }, [calculateIncomeData])
+
+  // Handle adding income
+  const handleAddIncome = () => {
+    if (!isUserSignedUp) {
+      return
+    }
+
+    const amount = Number.parseFloat(newIncomeAmount)
+    if (amount > 0 && incomeDescription.trim()) {
+      userDataManager.addBudgetEntry({
+        amount,
+        category: "Income",
+        description: incomeDescription,
+        date: new Date().toISOString(),
+        type: "income",
+      })
+
+      // Refresh the data
+      loadUserData()
+      setShowAddIncomeDialog(false)
+      setNewIncomeAmount("")
+      setIncomeDescription("")
+
+      // Add notification
+      addNotification(
+        "Income Added Successfully! 💰",
+        `Added $${amount} income: ${incomeDescription}. Your available budget has increased!`,
+        "success",
+      )
+    }
+  }
 
   // Icon mapping for categories
   const getCategoryIcon = (categoryName: string) => {
@@ -490,6 +545,16 @@ function BudgetDashboardContent() {
 
     const amount = Number.parseFloat(newBudgetAmount)
     if (amount > 0) {
+      // Check if there's enough available income
+      if (amount > availableIncome) {
+        addNotification(
+          "Insufficient Income! ⚠️",
+          `You only have $${availableIncome.toLocaleString()} available income. Add more income or reduce the budget amount.`,
+          "warning",
+        )
+        return
+      }
+
       // Update the budget category
       userDataManager.updateBudgetCategory(selectedCategory, {
         budgetAmount: amount,
@@ -513,7 +578,7 @@ function BudgetDashboardContent() {
       // Add notification
       addNotification(
         "Budget Added Successfully! 🎉",
-        `You've set a budget of $${amount} for ${selectedCategory}. Your financial journey has begun!`,
+        `You've set a budget of $${amount} for ${selectedCategory}. Available income: $${(availableIncome - amount).toLocaleString()}`,
         "success",
       )
     }
@@ -535,82 +600,30 @@ function BudgetDashboardContent() {
     addNotification("Expense Added", `Added $${amount} expense for ${category}: ${description}`, "info")
   }
 
-  const handleRestartTutorial = () => {
-    // Only allow tutorial if user has started budgeting
-    if (!hasStartedBudgeting) {
-      addNotification(
-        "Tutorial Not Available",
-        "Please add your first budget to unlock the tutorial feature.",
-        "warning",
-      )
-      return
-    }
-
-    const budgetTutorialSteps = [
-      {
-        id: "welcome",
-        title: "Welcome to Smart Budget Dashboard! 💰",
-        content:
-          "This is your command center for managing finances with AI-powered insights. Let's explore the key features that will help you take control of your money.",
-        target: "[data-tutorial='budget-header']",
-        position: "bottom" as const,
-      },
-      {
-        id: "overview",
-        title: "Your Financial Overview",
-        content:
-          "These cards show your key budget metrics at a glance. Monitor your total budget, spending, remaining funds, and overall budget health.",
-        target: "[data-tutorial='overview-cards']",
-        position: "bottom" as const,
-      },
-      {
-        id: "charts",
-        title: "Interactive Charts & Visualizations",
-        content:
-          "Explore your spending patterns with dynamic charts. Switch between different views to understand your financial trends better.",
-        target: "[data-tutorial='interactive-charts']",
-        position: "bottom" as const,
-      },
-      {
-        id: "ai-insights",
-        title: "AI-Powered Insights",
-        content:
-          "Our machine learning algorithms analyze your spending patterns and provide personalized suggestions, detect anomalies, and identify opportunities to save money.",
-        target: "[data-tutorial='ai-insights']",
-        position: "bottom" as const,
-      },
-      {
-        id: "categories",
-        title: "Category Tracking",
-        content:
-          "View detailed breakdowns of your spending by category. See which areas you're over or under budget and track trends over time.",
-        target: "[data-tutorial='category-tabs']",
-        position: "top" as const,
-      },
-      {
-        id: "whatif",
-        title: "What-If Scenarios",
-        content:
-          "Test different spending scenarios to see how changes would affect your budget. Perfect for planning and making informed financial decisions.",
-        target: "[data-tutorial='category-tabs']",
-        position: "top" as const,
-      },
-    ]
-
-    // Add success notification when tutorial starts
-    addNotification(
-      "Tutorial Started! 🎓",
-      "Follow the guided tour to learn about all the budget dashboard features.",
-      "success",
-    )
-
-    startTutorial(budgetTutorialSteps)
-  }
-
   const getAIInsights = () => {
     if (!hasStartedBudgeting) return []
 
     const insights = []
+
+    // Income vs Budget insights
+    if (totalBudgeted > totalIncome) {
+      insights.push({
+        type: "warning",
+        title: "Budget Exceeds Income",
+        description: `Your total budget ($${totalBudgeted.toLocaleString()}) exceeds your income ($${totalIncome.toLocaleString()}). Consider adding more income or reducing budgets.`,
+        action: "Add Income",
+      })
+    }
+
+    // Low available income warning
+    if (availableIncome < totalIncome * 0.1 && totalIncome > 0) {
+      insights.push({
+        type: "warning",
+        title: "Low Available Income",
+        description: `You have only $${availableIncome.toLocaleString()} available income remaining. Consider reviewing your budget allocations.`,
+        action: "Review Budget",
+      })
+    }
 
     // Overspending categories
     const overspendingCategories = displayBudgetData.filter((cat) => cat.spent > cat.budgeted && cat.budgeted > 0)
@@ -794,7 +807,7 @@ function BudgetDashboardContent() {
                 </Link>
               </Button>
               <Button disabled variant="ghost" size="sm" className="text-gray-400 cursor-not-allowed">
-                <Play className="w-4 h-4 mr-1" />
+                <Zap className="w-4 h-4 mr-1" />
                 Tutorial
               </Button>
               <Badge className="bg-gray-100 text-gray-500 border-gray-200">
@@ -948,7 +961,7 @@ function BudgetDashboardContent() {
             </div>
             <div className="flex items-center gap-2">
               <Button disabled variant="ghost" size="sm" className="text-gray-400 cursor-not-allowed">
-                <Play className="w-4 h-4 mr-1" />
+                <Zap className="w-4 h-4 mr-1" />
                 Tutorial
               </Button>
               <Badge className="bg-yellow-100 text-yellow-700 border-yellow-200">
@@ -1005,62 +1018,56 @@ function BudgetDashboardContent() {
             </Card>
           </div>
 
-          {/* Budget Setup Prompt */}
+          {/* Income Setup Prompt */}
           <Card className="border-l-4 border-l-green-500 bg-gradient-to-r from-green-50 to-blue-50">
             <CardContent className="p-8 text-center">
               <div className="flex items-center justify-center mb-4">
-                <DollarSign className="h-12 w-12 text-green-600" />
+                <Wallet className="h-12 w-12 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold text-green-900 mb-2">Start Your Budget Tracking</h3>
+              <h3 className="text-2xl font-bold text-green-900 mb-2">Start by Adding Your Income</h3>
               <p className="text-green-800 mb-6 max-w-md mx-auto">
-                Add your first budget amount to begin tracking your finances and unlock all features including AI
-                insights and learning modules.
+                Add your paycheck or other income sources first, then allocate money to different budget categories.
               </p>
               <div className="flex gap-4 justify-center">
-                <Dialog open={showAddBudgetDialog} onOpenChange={setShowAddBudgetDialog}>
+                <Dialog open={showAddIncomeDialog} onOpenChange={setShowAddIncomeDialog}>
                   <DialogTrigger asChild>
                     <Button className="bg-green-600 hover:bg-green-700 text-white">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add First Budget
+                      <Banknote className="h-4 w-4 mr-2" />
+                      Add Income
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Add Your First Budget</DialogTitle>
+                      <DialogTitle>Add Income Source</DialogTitle>
                       <DialogDescription>
-                        Choose a category and set your monthly budget amount to get started.
+                        Add your paycheck, freelance income, or other income sources.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="category">Category</Label>
-                        <select
-                          id="category"
-                          value={selectedCategory}
-                          onChange={(e) => setSelectedCategory(e.target.value)}
-                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                        >
-                          <option value="housing">Housing</option>
-                          <option value="food">Food & Dining</option>
-                          <option value="transportation">Transportation</option>
-                          <option value="entertainment">Entertainment</option>
-                          <option value="utilities">Utilities</option>
-                          <option value="healthcare">Healthcare</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="amount">Monthly Budget Amount</Label>
+                        <Label htmlFor="income-amount">Income Amount ($)</Label>
                         <Input
-                          id="amount"
+                          id="income-amount"
                           type="number"
-                          placeholder="Enter amount (e.g., 1200)"
-                          value={newBudgetAmount}
-                          onChange={(e) => setNewBudgetAmount(e.target.value)}
+                          placeholder="Enter income amount (e.g., 3000)"
+                          value={newIncomeAmount}
+                          onChange={(e) => setNewIncomeAmount(e.target.value)}
                           className="border-green-300 focus:ring-green-500 focus:border-green-500"
                         />
                       </div>
-                      <Button onClick={handleAddBudget} className="w-full bg-green-600 hover:bg-green-700">
-                        Add Budget
+                      <div className="space-y-2">
+                        <Label htmlFor="income-description">Description</Label>
+                        <Input
+                          id="income-description"
+                          type="text"
+                          placeholder="e.g., Monthly Salary, Freelance Payment"
+                          value={incomeDescription}
+                          onChange={(e) => setIncomeDescription(e.target.value)}
+                          className="border-green-300 focus:ring-green-500 focus:border-green-500"
+                        />
+                      </div>
+                      <Button onClick={handleAddIncome} className="w-full bg-green-600 hover:bg-green-700">
+                        Add Income
                       </Button>
                     </div>
                   </DialogContent>
@@ -1118,7 +1125,7 @@ function BudgetDashboardContent() {
                 <div className="space-y-3">
                   <div className="p-3 bg-gray-50 rounded-lg border-l-4 border-l-gray-300">
                     <h4 className="font-medium text-gray-400">No insights available</h4>
-                    <p className="text-sm text-gray-400">Add budget amounts to get AI-powered insights</p>
+                    <p className="text-sm text-gray-400">Add income and budgets to get AI-powered insights</p>
                   </div>
                 </div>
               </CardContent>
@@ -1142,15 +1149,6 @@ function BudgetDashboardContent() {
             <p className="text-gray-600">AI-powered insights for smarter spending</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleRestartTutorial}
-              className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
-            >
-              <Play className="w-4 h-4 mr-1" />
-              Tutorial
-            </Button>
             <Badge className="bg-green-100 text-green-700 border-green-200">
               <Zap className="w-3 h-3 mr-1" />
               Real-time Sync
@@ -1214,6 +1212,7 @@ function BudgetDashboardContent() {
                             return <CreditCard className="w-4 h-4 text-red-500" />
                           if (title.includes("Tip") || title.includes("Daily"))
                             return <Lightbulb className="w-4 h-4 text-yellow-500" />
+                          if (title.includes("Income")) return <Banknote className="w-4 h-4 text-green-500" />
                           return <Bell className="w-4 h-4 text-blue-500" />
                         }
 
@@ -1323,6 +1322,47 @@ function BudgetDashboardContent() {
                 </div>
               )}
             </div>
+            <Dialog open={showAddIncomeDialog} onOpenChange={setShowAddIncomeDialog}>
+              <DialogTrigger asChild>
+                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  <Banknote className="w-4 h-4 mr-1" />
+                  Add Income
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Add Income Source</DialogTitle>
+                  <DialogDescription>Add your paycheck, freelance income, or other income sources.</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="income-amount">Income Amount ($)</Label>
+                    <Input
+                      id="income-amount"
+                      type="number"
+                      placeholder="Enter income amount (e.g., 3000)"
+                      value={newIncomeAmount}
+                      onChange={(e) => setNewIncomeAmount(e.target.value)}
+                      className="border-green-300 focus:ring-green-500 focus:border-green-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="income-description">Description</Label>
+                    <Input
+                      id="income-description"
+                      type="text"
+                      placeholder="e.g., Monthly Salary, Freelance Payment"
+                      value={incomeDescription}
+                      onChange={(e) => setIncomeDescription(e.target.value)}
+                      className="border-green-300 focus:ring-green-500 focus:border-green-500"
+                    />
+                  </div>
+                  <Button onClick={handleAddIncome} className="w-full bg-green-600 hover:bg-green-700">
+                    Add Income
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
             <Button
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               onClick={() => {
@@ -1351,7 +1391,6 @@ function BudgetDashboardContent() {
                 const moneyOptimizationTips = []
 
                 // Analyze spending efficiency
-                const totalIncome = displayMonthlyData[displayMonthlyData.length - 1]?.income || 0
                 const totalExpenses = displayBudgetData.reduce((sum, cat) => sum + cat.spent, 0)
                 const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0
 
@@ -1452,6 +1491,52 @@ function BudgetDashboardContent() {
             </Button>
           </div>
         </div>
+
+        {/* Income Overview */}
+        <Card className="border-l-4 border-l-green-500 bg-gradient-to-r from-green-50 to-blue-50">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-full">
+                  <Wallet className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-green-900">Income Overview</h3>
+                  <p className="text-green-700 text-sm">Track your income and budget allocation</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-green-900">${totalIncome.toLocaleString()}</div>
+                <div className="text-sm text-green-700">Total Income</div>
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className="text-lg font-semibold text-gray-900">${totalIncome.toLocaleString()}</div>
+                <div className="text-xs text-gray-600">Total Income</div>
+              </div>
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className="text-lg font-semibold text-blue-900">${totalBudgeted.toLocaleString()}</div>
+                <div className="text-xs text-gray-600">Budgeted</div>
+              </div>
+              <div className="text-center p-3 bg-white rounded-lg shadow-sm">
+                <div className={`text-lg font-semibold ${availableIncome >= 0 ? "text-green-900" : "text-red-900"}`}>
+                  ${availableIncome.toLocaleString()}
+                </div>
+                <div className="text-xs text-gray-600">Available</div>
+              </div>
+            </div>
+            {availableIncome < 0 && (
+              <Alert className="mt-4 border-red-200 bg-red-50">
+                <AlertTriangle className="h-4 w-4 text-red-600" />
+                <AlertDescription className="text-red-800">
+                  Your budget exceeds your income by ${Math.abs(availableIncome).toLocaleString()}. Consider adding more
+                  income or reducing budget allocations.
+                </AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6" data-tutorial="overview-cards">
@@ -1696,7 +1781,32 @@ function BudgetDashboardContent() {
                           <AlertDescription className="text-gray-700">{insight.description}</AlertDescription>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="ml-4 bg-transparent">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="ml-4 bg-transparent"
+                        onClick={() => {
+                          // Navigate based on the insight action type
+                          if (insight.action === "Add Income") {
+                            setShowAddIncomeDialog(true)
+                          } else if (insight.action === "Review Budget" || insight.action === "Review Categories") {
+                            // Stay on current page and scroll to categories tab
+                            const tabsElement = document.querySelector('[data-tutorial="category-tabs"]')
+                            if (tabsElement) {
+                              tabsElement.scrollIntoView({ behavior: "smooth" })
+                              // Switch to categories tab
+                              const categoriesTab = document.querySelector('[value="categories"]') as HTMLButtonElement
+                              if (categoriesTab) categoriesTab.click()
+                            }
+                          } else if (insight.action === "Allocate Savings" || insight.action === "Add Expenses") {
+                            // Navigate to goals and planning section
+                            window.location.href = "/goals"
+                          } else {
+                            // Default action - navigate to goals
+                            window.location.href = "/goals"
+                          }
+                        }}
+                      >
                         {insight.action}
                       </Button>
                     </div>
@@ -1709,12 +1819,96 @@ function BudgetDashboardContent() {
 
         {/* Category Details and Analysis */}
         <Tabs defaultValue="categories" className="space-y-4" data-tutorial="category-tabs">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5 relative">
+            <div className="absolute -top-8 right-0 text-xs text-green-600 font-medium">
+              Available Income: ${availableIncome.toLocaleString()}
+            </div>
+            <TabsTrigger value="income">Income</TabsTrigger>
             <TabsTrigger value="categories">Categories</TabsTrigger>
             <TabsTrigger value="transactions">Transactions</TabsTrigger>
             <TabsTrigger value="whatif">What-If</TabsTrigger>
             <TabsTrigger value="debt">Debt Payoff</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="income" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Banknote className="w-5 h-5 text-green-600" />
+                  Income Management
+                </CardTitle>
+                <CardDescription>Track your income sources and see how much is available for budgeting</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                      <div className="text-2xl font-bold text-green-900">${totalIncome.toLocaleString()}</div>
+                      <div className="text-sm text-green-700">Total Income</div>
+                    </div>
+                    <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="text-2xl font-bold text-blue-900">${totalBudgeted.toLocaleString()}</div>
+                      <div className="text-sm text-blue-700">Total Budgeted</div>
+                    </div>
+                    <div
+                      className={`p-4 rounded-lg border ${availableIncome >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
+                    >
+                      <div className={`text-2xl font-bold ${availableIncome >= 0 ? "text-green-900" : "text-red-900"}`}>
+                        ${availableIncome.toLocaleString()}
+                      </div>
+                      <div className={`text-sm ${availableIncome >= 0 ? "text-green-700" : "text-red-700"}`}>
+                        {availableIncome >= 0 ? "Available for Budget" : "Over Budget"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-gray-900">Recent Income Entries</h4>
+                    {userBudgetEntries.filter((entry) => entry.type === "income").length === 0 ? (
+                      <div className="text-center py-8">
+                        <Banknote className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-900 mb-2">No Income Entries Yet</h3>
+                        <p className="text-gray-600 mb-4">Add your first income source to start budgeting.</p>
+                        <Dialog open={showAddIncomeDialog} onOpenChange={setShowAddIncomeDialog}>
+                          <DialogTrigger asChild>
+                            <Button className="bg-green-600 hover:bg-green-700 text-white">
+                              <Plus className="h-4 w-4 mr-2" />
+                              Add First Income
+                            </Button>
+                          </DialogTrigger>
+                        </Dialog>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {userBudgetEntries
+                          .filter((entry) => entry.type === "income")
+                          .slice(-5)
+                          .map((entry) => (
+                            <div
+                              key={entry.id}
+                              className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="p-2 bg-green-100 rounded-lg">
+                                  <Banknote className="w-4 h-4 text-green-600" />
+                                </div>
+                                <div>
+                                  <h4 className="font-medium text-gray-900">{entry.description}</h4>
+                                  <p className="text-sm text-gray-600">{new Date(entry.date).toLocaleDateString()}</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <span className="font-medium text-green-900">+${entry.amount.toLocaleString()}</span>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
           <TabsContent value="categories" className="space-y-4">
             <Card>
@@ -1776,6 +1970,14 @@ function BudgetDashboardContent() {
                                   </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4">
+                                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                    <div className="text-sm text-blue-800">
+                                      Available Income: ${availableIncome.toLocaleString()}
+                                    </div>
+                                    <div className="text-xs text-blue-600 mt-1">
+                                      Current budget for {category.name}: ${category.budgeted.toLocaleString()}
+                                    </div>
+                                  </div>
                                   <div className="space-y-2">
                                     <Label htmlFor="edit-budget-amount">Monthly Budget Amount ($)</Label>
                                     <Input
@@ -1793,15 +1995,44 @@ function BudgetDashboardContent() {
                                     onClick={() => {
                                       const input = document.getElementById("edit-budget-amount") as HTMLInputElement
                                       const newBudget = Number.parseFloat(input.value)
+                                      const currentBudget = category.budgeted || 0
+                                      const budgetDifference = newBudget - currentBudget
+
                                       if (newBudget > 0) {
+                                        // Check if there's enough available income for the increase
+                                        if (budgetDifference > availableIncome) {
+                                          addNotification(
+                                            "Insufficient Income! ⚠️",
+                                            `You only have $${availableIncome.toLocaleString()} available income. The increase of $${budgetDifference.toLocaleString()} exceeds your available funds.`,
+                                            "warning",
+                                          )
+                                          return
+                                        }
+
                                         userDataManager.updateBudgetCategory(category.name.toLowerCase(), {
                                           budgetAmount: newBudget,
                                         })
                                         loadUserData()
+
+                                        // Close the dialog
+                                        const dialog = input.closest('[role="dialog"]') as HTMLElement
+                                        if (dialog) {
+                                          const closeButton = dialog.querySelector(
+                                            "[data-radix-collection-item]",
+                                          ) as HTMLButtonElement
+                                          if (closeButton) closeButton.click()
+                                        }
+
                                         addNotification(
                                           "Budget Updated! 💰",
-                                          `Updated budget for ${category.name} to $${newBudget}`,
+                                          `Updated budget for ${category.name} to $${newBudget.toLocaleString()}. Available income: $${(availableIncome - budgetDifference).toLocaleString()}`,
                                           "success",
+                                        )
+                                      } else {
+                                        addNotification(
+                                          "Invalid Amount",
+                                          "Please enter a valid budget amount greater than 0.",
+                                          "warning",
                                         )
                                       }
                                     }}
@@ -2114,7 +2345,7 @@ function BudgetDashboardContent() {
                           // Add success notification with detailed info
                           addNotification(
                             "Scenario Applied Successfully! 🎯",
-                            `Reduced ${categoryName} budget to $${Math.round(whatIfResults.newSpent)}. You'll save $${Math.round(whatIfResults.savings)} monthly ($${Math.round(whatIfResults.annualImpact)} annually)!`,
+                            `Reduced ${categoryName} budget to $${Math.round(whatIfResults.newSpent)}. You'll save $${Math.round(whatIfResults.savings)} monthly ($${Math.round(whatIfResults.annualImpact)} annually)! Available income increased by $${Math.round(whatIfResults.savings)}.`,
                             "success",
                           )
 

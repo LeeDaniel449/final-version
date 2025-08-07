@@ -1,3 +1,4 @@
+// User data management for the financial literacy app
 import { learningModules } from "./learning-data"
 
 interface UserProfile {
@@ -182,6 +183,11 @@ class UserDataManager {
       const updatedProfile = { ...currentProfile, ...profile }
       localStorage.setItem(this.STORAGE_KEYS.USER_PROFILE, JSON.stringify(updatedProfile))
       console.log("User profile saved:", updatedProfile)
+
+      // Dispatch event for UI updates
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("userDataUpdated"))
+      }
     } catch (error) {
       console.error("Error saving user profile:", error)
     }
@@ -298,7 +304,13 @@ class UserDataManager {
 
       // Set as current user and load their data
       this.setCurrentUser(user.profile.email || user.profile.username)
+      this.setUserSignedIn(true) // Make sure to set signed in status
       this.loadUserData(user)
+
+      // Dispatch sign-in event for UI updates
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("userSignedIn"))
+      }
 
       console.log("Authentication successful")
       return { success: true }
@@ -336,15 +348,25 @@ class UserDataManager {
     // Save current user data before signing out
     this.saveCurrentUserData()
 
-    // Clear sign-in status but keep user data
+    // Clear sign-in status and current session data
     this.setUserSignedIn(false)
     localStorage.removeItem(this.STORAGE_KEYS.CURRENT_USER)
+
+    // Clear current session progress data (but keep it saved for the user)
+    localStorage.removeItem(this.STORAGE_KEYS.USER_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
+    localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
+    localStorage.removeItem(this.STORAGE_KEYS.GOALS)
 
     // Clear remember me if not set
     const rememberMe = localStorage.getItem(this.STORAGE_KEYS.REMEMBER_ME) === "true"
     if (!rememberMe) {
       localStorage.removeItem(this.STORAGE_KEYS.REMEMBER_ME)
+      // Also clear the user profile if not remembering
+      localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
     }
+
+    console.log("User signed out and session data cleared")
   }
 
   isUserSignedUp(): boolean {
@@ -931,3 +953,54 @@ class UserDataManager {
 }
 
 export const userDataManager = new UserDataManager()
+
+// Export function for API routes to get user data
+export function getUserData() {
+  if (typeof window === "undefined") {
+    // Return default data for server-side rendering
+    return {
+      isSignedIn: false,
+      profile: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        age: "",
+        riskTolerance: "moderate",
+        investmentExperience: "beginner",
+        timeHorizon: "5-10 years",
+      },
+      budgetData: {
+        income: 0,
+        expenses: {},
+        savings: 0,
+        goals: [],
+      },
+      goals: [],
+      budgetCategories: [],
+      budgetEntries: [],
+      progress: {
+        completedModules: [],
+        completedLessons: 0,
+        totalXP: 0,
+        currentStreak: 0,
+        lastActiveDate: new Date().toISOString(),
+        achievements: [],
+        budgetEntries: 0,
+        budgetCategories: 0,
+        totalBudgetAmount: 0,
+        modules: {},
+      },
+    }
+  }
+
+  return {
+    isSignedIn: userDataManager.isUserSignedIn(),
+    profile: userDataManager.getUserProfile(),
+    budgetData: userDataManager.getBudgetData(),
+    goals: userDataManager.getGoals(),
+    budgetCategories: userDataManager.getBudgetCategories(),
+    budgetEntries: userDataManager.getBudgetEntries(),
+    progress: userDataManager.getUserProgress(),
+  }
+}

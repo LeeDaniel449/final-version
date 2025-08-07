@@ -1,37 +1,51 @@
 export interface LessonContent {
-  title: string;
-  duration: string;
-  points: number;
-  videoUrl?: string;
+  title: string
+  duration: string
+  points: number
+  videoUrl?: string
   content: Array<{
-    type: "heading" | "paragraph" | "list" | "example" | "tip" | "chart";
-    content: string;
-    items?: string[];
-  }>;
-  keyTakeaways?: string[];
+    type: "heading" | "paragraph" | "list" | "example" | "tip" | "chart" | "case-study" | "calculation" | "warning"
+    content: string
+    items?: string[]
+    formula?: string
+    variables?: Record<string, string>
+  }>
+  keyTakeaways?: string[]
   quiz?: {
     questions: Array<{
-      question: string;
-      options: string[];
-      correctAnswer: string;
-      explanation: string;
-    }>;
-  };
+      question: string
+      options: string[]
+      correctAnswer: string
+      explanation: string
+    }>
+  }
+  practiceExercise?: {
+    title: string
+    scenario: string
+    questions: Array<{
+      question: string
+      type: "input" | "select" | "calculate"
+      options?: string[]
+      correctAnswer: string | number
+      explanation: string
+    }>
+  }
 }
 
 export interface LearningModule {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  difficulty: "Beginner" | "Intermediate" | "Advanced";
-  progress: number;
-  lessons: number;
-  points: number;
-  icon: any;
-  color: string;
-  completed: boolean;
-  keyTopics?: string[];
+  id: string
+  title: string
+  description: string
+  duration: string
+  difficulty: "Beginner" | "Intermediate" | "Advanced"
+  progress: number
+  lessons: number
+  points: number
+  icon: any
+  color: string
+  completed: boolean
+  category: string
+  prerequisites?: string[]
 }
 
 export const learningModules: LearningModule[] = [
@@ -39,1117 +53,2195 @@ export const learningModules: LearningModule[] = [
     id: "basics",
     title: "Money Management Basics",
     description: "Learn the fundamentals of managing your money and building good financial habits",
-    duration: "15 min",
+    duration: "45 min",
     difficulty: "Beginner",
-    progress: 100,
-    lessons: 5,
-    points: 50,
+    progress: 0,
+    lessons: 8,
+    points: 120,
     icon: null,
     color: "bg-blue-500",
-    completed: true,
-    keyTopics: ["Money Flow", "Needs vs Wants", "Saving", "Mindset"],
+    completed: false,
+    category: "Fundamentals",
   },
   {
     id: "budgeting",
     title: "Budgeting Mastery",
     description: "Create and manage budgets that actually work for your lifestyle and goals",
-    duration: "22 min",
+    duration: "55 min",
     difficulty: "Beginner",
-    progress: 100,
-    lessons: 6,
-    points: 85,
+    progress: 0,
+    lessons: 9,
+    points: 135,
     icon: null,
     color: "bg-green-500",
-    completed: true,
-    keyTopics: ["50/30/20 Rule", "Zero-Based Budgeting", "Tracking Spending", "Irregular Expenses"],
+    completed: false,
+    category: "Fundamentals",
   },
   {
-    id: "saving",
-    title: "Smart Saving Strategies",
-    description: "Master the art of saving money with practical techniques and automation",
-    duration: "25 min",
+    id: "saving-emergency-funds",
+    title: "Saving & Emergency Funds",
+    description: "Master the art of saving money and building financial security through emergency funds",
+    duration: "50 min",
     difficulty: "Beginner",
-    progress: 100,
-    lessons: 6,
-    points: 90,
+    progress: 0,
+    lessons: 8,
+    points: 120,
     icon: null,
     color: "bg-purple-500",
-    completed: true,
-    keyTopics: ["Automation", "High-Yield Accounts", "52-Week Challenge", "Multiple Goals"],
+    completed: false,
+    category: "Fundamentals",
+  },
+  {
+    id: "credit-scores",
+    title: "Credit Scores & Reports",
+    description: "Understand credit scores, improve your credit, and leverage credit responsibly",
+    duration: "40 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 7,
+    points: 105,
+    icon: null,
+    color: "bg-indigo-500",
+    completed: false,
+    category: "Credit & Debt",
   },
   {
     id: "debt-management",
     title: "Debt Management & Payoff",
     description: "Learn proven strategies to pay off debt faster and avoid future debt traps",
-    duration: "30 min",
+    duration: "60 min",
     difficulty: "Intermediate",
-    progress: 100,
-    lessons: 7,
-    points: 105,
+    progress: 0,
+    lessons: 10,
+    points: 150,
     icon: null,
     color: "bg-red-500",
-    completed: true,
-    keyTopics: ["Debt Types", "Snowball Method", "Avalanche Method", "Consolidation", "Negotiation"],
-  },
-  {
-    id: "credit-scores",
-    title: "Credit Scores & Reports",
-    description: "Understand credit scores, reports, and how to improve your credit health",
-    duration: "28 min",
-    difficulty: "Intermediate",
-    progress: 100,
-    lessons: 6,
-    points: 95,
-    icon: null,
-    color: "bg-yellow-500",
-    completed: true,
-    keyTopics: ["Credit Scores", "Credit Reports", "Credit Improvement", "Credit Monitoring"],
+    completed: false,
+    category: "Credit & Debt",
   },
   {
     id: "loans",
     title: "Loans (Auto, Student, Personal)",
-    description: "Navigate auto, student, and personal loans with confidence",
-    duration: "32 min",
+    description: "Navigate different types of loans and make smart borrowing decisions",
+    duration: "45 min",
     difficulty: "Intermediate",
-    progress: 100,
-    lessons: 7,
-    points: 110,
+    progress: 0,
+    lessons: 8,
+    points: 120,
     icon: null,
-    color: "bg-lime-500",
-    completed: true,
-    keyTopics: ["Auto Loans", "Student Loans", "Personal Loans", "Loan Comparison"],
+    color: "bg-orange-500",
+    completed: false,
+    category: "Credit & Debt",
   },
   {
     id: "mortgages",
-    title: "Mortgages",
-    description: "Learn about mortgages, home buying, and refinancing",
-    duration: "35 min",
+    title: "Mortgages & Home Buying",
+    description: "Everything you need to know about mortgages and the home buying process",
+    duration: "70 min",
     difficulty: "Advanced",
-    progress: 100,
-    lessons: 8,
-    points: 125,
-    icon: null,
-    color: "bg-sky-500",
-    completed: true,
-    keyTopics: ["Mortgage Types", "Home Buying", "Refinancing", "Down Payments"],
-  },
-  {
-    id: "retirement-planning",
-    title: "Retirement Planning (401(k), IRA, Roth IRA)",
-    description: "Plan for retirement with 401(k), IRA, and Roth IRA strategies",
-    duration: "40 min",
-    difficulty: "Advanced",
-    progress: 100,
-    lessons: 9,
-    points: 140,
-    icon: null,
-    color: "bg-fuchsia-500",
-    completed: true,
-    keyTopics: ["401(k)", "Traditional IRA", "Roth IRA", "Retirement Strategies"],
-  },
-  {
-    id: "hsa",
-    title: "Health Savings Accounts (HSA)",
-    description: "Understand the benefits and uses of Health Savings Accounts",
-    duration: "20 min",
-    difficulty: "Intermediate",
-    progress: 100,
-    lessons: 5,
-    points: 75,
+    progress: 0,
+    lessons: 12,
+    points: 180,
     icon: null,
     color: "bg-teal-500",
-    completed: true,
-    keyTopics: ["HSA Basics", "HSA Benefits", "HSA Investments", "HSA Strategies"],
-  },
-  {
-    id: "insurance",
-    title: "Insurance (Life, Health, Auto, Home)",
-    description: "Learn about different types of insurance and how to choose the right policies",
-    duration: "35 min",
-    difficulty: "Intermediate",
-    progress: 100,
-    lessons: 7,
-    points: 115,
-    icon: null,
-    color: "bg-rose-500",
-    completed: true,
-    keyTopics: ["Life Insurance", "Health Insurance", "Auto Insurance", "Home Insurance"],
-  },
-  {
-    id: "bill-negotiation",
-    title: "Negotiating Bills & Expenses",
-    description: "Discover how to lower your monthly bills through negotiation and smart shopping",
-    duration: "25 min",
-    difficulty: "Intermediate",
-    progress: 100,
-    lessons: 6,
-    points: 90,
-    icon: null,
-    color: "bg-orange-500",
-    completed: true,
-    keyTopics: ["Negotiation Tactics", "Service Alternatives", "Tracking Savings"],
+    completed: false,
+    category: "Major Purchases",
   },
   {
     id: "investing",
     title: "Investment Fundamentals",
     description: "Build wealth through smart investing with index funds and diversification",
+    duration: "65 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 11,
+    points: 165,
+    icon: null,
+    color: "bg-indigo-600",
+    completed: false,
+    category: "Investing",
+  },
+  {
+    id: "retirement-planning",
+    title: "Retirement Planning (401k, IRA, Roth IRA)",
+    description: "Secure your financial future with comprehensive retirement planning strategies",
+    duration: "80 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 14,
+    points: 210,
+    icon: null,
+    color: "bg-emerald-600",
+    completed: false,
+    category: "Retirement",
+  },
+  {
+    id: "hsa",
+    title: "Health Savings Accounts (HSA)",
+    description: "Maximize the triple tax advantage of HSAs for healthcare and retirement",
     duration: "30 min",
     difficulty: "Intermediate",
-    progress: 100,
+    progress: 0,
+    lessons: 6,
+    points: 90,
+    icon: null,
+    color: "bg-cyan-500",
+    completed: false,
+    category: "Tax-Advantaged Accounts",
+  },
+  {
+    id: "insurance",
+    title: "Insurance (Life, Health, Auto, Home)",
+    description: "Protect your wealth and family with the right insurance coverage",
+    duration: "55 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 9,
+    points: 135,
+    icon: null,
+    color: "bg-slate-600",
+    completed: false,
+    category: "Protection",
+  },
+  {
+    id: "taxes",
+    title: "Tax Planning & Filing",
+    description: "Navigate the tax system, maximize deductions, and plan for tax efficiency",
+    duration: "60 min",
+    difficulty: "Advanced",
+    progress: 0,
+    lessons: 10,
+    points: 150,
+    icon: null,
+    color: "bg-amber-600",
+    completed: false,
+    category: "Tax Planning",
+  },
+  {
+    id: "estate-planning",
+    title: "Estate Planning Basics",
+    description: "Protect your legacy and ensure your wishes are carried out",
+    duration: "45 min",
+    difficulty: "Advanced",
+    progress: 0,
     lessons: 8,
     points: 120,
     icon: null,
-    color: "bg-indigo-500",
-    completed: true,
-    keyTopics: ["Risk and Return", "Index Funds", "Dollar-Cost Averaging", "Rebalancing"],
+    color: "bg-stone-600",
+    completed: false,
+    category: "Advanced Planning",
   },
   {
-    id: "emergency-fund",
-    title: "Emergency Fund Building",
-    description: "Create a financial safety net to protect yourself from unexpected expenses",
-    duration: "15 min",
-    difficulty: "Beginner",
-    progress: 100,
-    lessons: 4,
-    points: 60,
+    id: "financial-advisors",
+    title: "Working with Financial Advisors",
+    description: "Learn when and how to work with financial professionals",
+    duration: "35 min",
+    difficulty: "Intermediate",
+    progress: 0,
+    lessons: 6,
+    points: 90,
     icon: null,
-    color: "bg-teal-500",
-    completed: true,
-    keyTopics: ["Emergency Fund Basics", "How Much to Save", "Where to Keep Funds"],
-  },
-  {
-    id: "financial-goals",
-    title: "Setting Financial Goals",
-    description: "Learn to set and achieve realistic financial goals that motivate you",
-    duration: "12 min",
-    difficulty: "Beginner",
-    progress: 100,
-    lessons: 3,
-    points: 45,
-    icon: null,
-    color: "bg-pink-500",
-    completed: true,
-    keyTopics: ["SMART Goals", "Prioritizing Goals"],
+    color: "bg-violet-600",
+    completed: false,
+    category: "Professional Help",
   },
   {
     id: "sustainable-impact-investing",
     title: "Sustainable & Impact Investing",
     description: "Align your investments with your values while building wealth responsibly",
-    duration: "25 min",
-    difficulty: "Beginner",
-    progress: 100,
-    lessons: 5,
-    points: 90,
-    icon: null,
-    color: "bg-emerald-700",
-    completed: true,
-    keyTopics: ["ESG Investing", "Impact Investing", "Green Bonds", "SRI"],
-  },
-  {
-    id: "taxes",
-    title: "Filing Your Taxes",
-    description: "Learn how to file your taxes correctly and maximize your returns",
-    duration: "35 min",
-    difficulty: "Intermediate",
-    progress: 100,
-    lessons: 7,
-    points: 110,
-    icon: null,
-    color: "bg-amber-500",
-    completed: true,
-    keyTopics: ["Tax Basics", "Tax Forms", "Deductions", "Credits"],
-  },
-  {
-    id: "estate-planning",
-    title: "Estate Planning",
-    description: "Plan for the future with wills, trusts, and estate planning strategies",
     duration: "40 min",
     difficulty: "Advanced",
-    progress: 100,
-    lessons: 8,
-    points: 130,
+    progress: 0,
+    lessons: 7,
+    points: 105,
     icon: null,
-    color: "bg-stone-500",
-    completed: true,
-    keyTopics: ["Wills", "Trusts", "Estate Taxes", "Beneficiaries"],
+    color: "bg-emerald-700",
+    completed: false,
+    category: "Advanced Investing",
   },
-  {
-    id: "financial-advisors",
-    title: "Financial Advisors",
-    description: "Learn how to choose and work with financial advisors",
-    duration: "20 min",
-    difficulty: "Intermediate",
-    progress: 100,
-    lessons: 4,
-    points: 70,
-    icon: null,
-    color: "bg-slate-500",
-    completed: true,
-    keyTopics: ["Advisor Types", "Fees", "Finding Advisors", "Working with Advisors"],
-  },
-];
+]
 
 export function getModuleById(moduleId: string): LearningModule | null {
-  return learningModules.find((module) => module.id === moduleId) || null;
+  return learningModules.find((module) => module.id === moduleId) || null
 }
 
 export function getLessonContent(moduleId: string, lessonIndex: number): LessonContent | null {
   const lessons: Record<string, LessonContent[]> = {
-    "basics": [
-      {
-        title: "Understanding Money Flow",
-        duration: "5 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "How Money Moves In and Out of Your Life" },
-          { type: "paragraph", content: "Money flow is the movement of money into and out of your possession. It's essential to understand this flow to gain control over your finances. This involves tracking where your money comes from (income) and where it goes (expenses). By understanding your money flow, you can identify areas where you can save more and spend less, leading to better financial health." },
-          { type: "list", content: "Money comes in from:", items: ["Job or work income: Salaries, wages, tips", "Allowance from parents: Regular or occasional payments", "Side hustles: Freelancing, part-time work, selling items", "Gifts or birthday money: Cash or checks received as gifts", "Investments: Dividends, interest, capital gains"] },
-          { type: "list", content: "Money goes out for:", items: ["Basic needs: Housing, food, clothing, transportation", "Fun activities: Movies, games, eating out, entertainment", "School supplies: Books, materials, fees", "Savings for future goals: College, travel, emergency fund", "Unexpected expenses: Car repairs, medical bills, emergencies"] },
-          { type: "example", content: "If you earn $500 from a part-time job and spend $400 on various things, you have $100 left over. This leftover money can be saved for a future goal or used for something special. Consider putting a portion of it towards an emergency fund or a long-term investment." },
-          { type: "tip", content: "Track your money flow for one week using a budgeting app or a simple notebook. Categorize your income and expenses to see where your money is going. You'll be surprised by what you discover!" },
-        ],
-        keyTakeaways: ["Money flows in from various sources like work, gifts, and investments", "Money flows out for needs, wants, and savings", "Understanding your money flow helps you make informed financial decisions", "Tracking money flow reveals spending patterns and areas for improvement"],
-        quiz: { questions: [{ question: "What is the first step to taking control of your finances?", options: ["Getting a credit card", "Understanding how money flows in and out of your life", "Investing in stocks", "Getting a high-paying job"], correctAnswer: "Understanding how money flows in and out of your life", explanation: "Understanding your money flow helps you see where your money comes from and where it goes, which is essential for financial control." }] },
-      },
-      {
-        title: "Needs vs Wants",
-        duration: "5 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Learning to Tell the Difference" },
-          { type: "paragraph", content: "Distinguishing between needs and wants is a fundamental skill in personal finance. Needs are essential for survival and well-being, while wants are desires that enhance your lifestyle but are not necessary. Mastering this distinction helps you prioritize spending and make informed financial choices, especially when resources are limited." },
-          { type: "list", content: "Needs are things you must have:", items: ["Food and water: Nutritious meals and hydration", "Safe place to live: Housing that provides shelter and security", "Basic clothing: Adequate attire for different weather conditions", "Transportation to school/work: Reliable means of getting around", "Healthcare when sick: Access to medical care and prescriptions"] },
-          { type: "list", content: "Wants are things you'd like to have:", items: ["Latest smartphone or gadgets: Upgraded technology and devices", "Designer clothes or shoes: High-end fashion items", "Eating out at restaurants: Meals beyond basic sustenance", "Entertainment and games: Leisure activities and hobbies", "Luxury items and upgrades: Non-essential items that enhance comfort"] },
-          { type: "example", content: "You need a phone to stay connected with family and access important information, but you want the newest iPhone with all the latest features. A basic phone meets your need, while the iPhone is a want that costs significantly more." },
-          { type: "tip", content: "Before buying something, ask yourself: 'Do I need this or do I want this?' Wait 24 hours before buying wants to see if you still really want them. Often, the urge will pass, and you'll realize you don't need the item after all." },
-        ],
-        keyTakeaways: ["Needs are essential for survival and basic functioning", "Wants are nice to have but not necessary", "Always cover needs before spending on wants", "The 24-hour rule helps avoid impulse purchases"],
-        quiz: { questions: [{ question: "Which of these is a 'need' rather than a 'want'?", options: ["Designer sneakers", "Basic food for nutrition", "Gaming console", "Premium streaming subscriptions"], correctAnswer: "Basic food for nutrition", explanation: "Food is essential for survival, making it a need. The other options are wants that enhance life but aren't necessary." }] },
-      },
-      {
-        title: "The Power of Small Amounts",
-        duration: "5 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "How Small Money Adds Up Big" },
-          { type: "paragraph", content: "Small amounts of money might not seem important, but they can add up to surprising totals over time. This principle applies to both spending and saving. Being mindful of small expenses and consistently saving small amounts can make a significant difference in your financial well-being over the long term." },
-          { type: "example", content: "Buying a $5 coffee every weekday costs $25 per week, $100 per month, and $1,200 per year. That's enough for a nice vacation or a substantial contribution to your emergency fund!" },
-          { type: "list", content: "Small daily expenses that add up:", items: ["Snacks and drinks from vending machines", "Coffee or energy drinks", "App purchases and subscriptions", "Convenience store items", "Impulse purchases under $20"] },
-          { type: "list", content: "Small savings that grow big:", items: ["Saving loose change in a jar", "Setting aside $2-3 per day", "Keeping birthday money instead of spending it", "Saving money from not buying small items", "Putting away found money or refunds"] },
-          { type: "tip", content: "Try the 'latte factor' challenge: identify one small daily expense you can cut and save that money instead. Track how much you accumulate over a month - you'll be amazed!" },
-        ],
-        keyTakeaways: ["Small amounts of money add up to large totals over time", "Daily expenses can cost hundreds or thousands per year", "Small savings can build substantial emergency funds", "Being aware of small expenses helps control spending"],
-        quiz: { questions: [{ question: "If you spend $7 every weekday on lunch, how much do you spend per month (assuming 20 weekdays)?", options: ["$70", "$105", "$140", "$175"], correctAnswer: "$140", explanation: "$7 × 20 weekdays = $140 per month. Small daily expenses can quickly add up!" }] },
-      },
-      {
-        title: "Building Good Money Habits",
-        duration: "5 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Creating Habits That Build Wealth" },
-          { type: "paragraph", content: "Good money habits are like brushing your teeth – they become automatic and protect you over time. Building these habits early in life sets you up for financial success in the future. Consistency and discipline are key to developing and maintaining these habits." },
-          { type: "list", content: "Essential money habits to develop:", items: ["Track where your money goes", "Save something from every dollar you receive", "Think before you buy anything", "Compare prices before making purchases", "Set aside money for goals and emergencies"] },
-          { type: "example", content: "Maria started saving $10 from every $50 she received. After one year, she had saved over $500 without even noticing because it became a habit. She used that money to buy a new laptop for college." },
-          { type: "list", content: "How to build new money habits:", items: ["Start small: Even $1 saved is progress", "Be consistent: Do it every time you receive money", "Make it easy: Use apps or automatic transfers", "Track your progress: Celebrate small wins", "Don't give up if you miss a day: Just restart"] },
-          { type: "tip", content: "Pick one money habit to focus on for the next 30 days. Once it becomes automatic, add another habit. Building habits slowly makes them stick better." },
-        ],
-        keyTakeaways: ["Good money habits become automatic over time", "Start with small, manageable habits", "Consistency is more important than perfection", "Young people have time to benefit from compound habits"],
-        quiz: { questions: [{ question: "What's the most important factor in building good money habits?", options: ["Starting with large amounts", "Being perfect every day", "Consistency over time", "Having a high income"], correctAnswer: "Consistency over time", explanation: "Consistency is key to building lasting habits. Small, consistent actions compound over time to create significant results." }] },
-      },
-      {
-        title: "Your Money Mindset",
-        duration: "5 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "How You Think About Money Matters" },
-          { type: "paragraph", content: "Your mindset about money affects every financial decision you make. Developing a healthy money mindset early in life will serve you well for years to come. A positive and growth-oriented mindset can help you overcome financial challenges and achieve your goals." },
-          { type: "list", content: "Healthy money mindset beliefs:", items: ["Money is a tool to help achieve your goals", "You can learn to manage money well", "Saving money gives you freedom and choices", "It's okay to spend on things you value", "Everyone makes money mistakes - learn from them"] },
-          { type: "list", content: "Unhealthy money mindset beliefs:", items: ["Money is evil or bad", "I'm not good with money", "Rich people are greedy", "I deserve to buy whatever I want", "Money problems will solve themselves"] },
-          { type: "example", content: "Instead of thinking 'I can't afford it,' try thinking 'How can I afford it?' This shifts your mind to finding solutions rather than giving up." },
-          { type: "tip", content: "Pay attention to what you tell yourself about money. Replace negative thoughts with positive, growth-oriented ones. Your future self will thank you!" },
-        ],
-        keyTakeaways: ["Your money mindset affects all your financial decisions", "Healthy mindsets focus on learning and growth", "Money is a neutral tool - how you use it matters", "You can change your money mindset with practice"],
-        quiz: { questions: [{ question: "Which mindset is healthiest when facing a financial challenge?", options: ["I'm just not good with money", "Money problems will solve themselves", "How can I learn to handle this better?", "Rich people have all the luck"], correctAnswer: "How can I learn to handle this better?", explanation: "A growth mindset focuses on learning and improvement, which leads to better financial outcomes over time." }] },
-      },
-    ],
-    "budgeting": [
-      {
-        title: "The 50/30/20 Rule Explained",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "A Simple Framework for Budgeting Success" },
-          { type: "paragraph", content: "The 50/30/20 rule is a popular budgeting framework that divides your after-tax income into three categories: 50% for needs, 30% for wants, and 20% for savings and debt repayment. This rule provides a balanced approach to managing money while ensuring you save for the future and enjoy life today." },
-          { type: "list", content: "50% for Needs (Essential expenses):", items: ["Housing costs: Rent, mortgage, utilities, property taxes", "Transportation: Car payments, gas, insurance, public transit", "Groceries and basic food: Essential nutrition, not dining out", "Insurance premiums: Health, auto, renters/homeowners", "Minimum debt payments: Credit cards, loans, student debt"] },
-          { type: "list", content: "30% for Wants (Lifestyle expenses):", items: ["Dining out and entertainment: Restaurants, movies, concerts", "Hobbies and recreation: Sports, crafts, gaming", "Shopping for non-essentials: Clothes, gadgets, home decor", "Subscriptions and memberships: Streaming, gym, clubs", "Travel and vacations: Trips, weekend getaways"] },
-          { type: "list", content: "20% for Savings and Debt Repayment:", items: ["Emergency fund: 3-6 months of expenses", "Retirement savings: 401(k), IRA contributions", "Extra debt payments: Above minimum requirements", "Short-term savings goals: Vacation, car down payment", "Long-term investments: Index funds, stocks, bonds"] },
-          { type: "example", content: "Sarah earns $4,000 per month after taxes. Using the 50/30/20 rule: $2,000 goes to needs (rent, groceries, utilities), $1,200 to wants (dining out, entertainment), and $800 to savings and extra debt payments." },
-          { type: "tip", content: "If you're spending more than 50% on needs, look for ways to reduce housing or transportation costs. If you can't reach 20% savings, start with 10% and gradually increase it." },
-        ],
-        keyTakeaways: ["50% for needs ensures essential expenses are covered", "30% for wants allows for lifestyle enjoyment", "20% for savings builds long-term financial security", "Adjust percentages based on your specific situation"],
-        quiz: { questions: [{ question: "According to the 50/30/20 rule, what percentage should go to savings and debt repayment?", options: ["10%", "15%", "20%", "25%"], correctAnswer: "20%", explanation: "The 50/30/20 rule allocates 20% of after-tax income to savings and debt repayment to build long-term financial security." }] },
-      },
-      {
-        title: "Zero-Based Budgeting Method",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Give Every Dollar a Purpose" },
-          { type: "paragraph", content: "Zero-based budgeting means assigning every dollar of income to a specific category before the month begins. Your income minus all planned expenses should equal zero. This method ensures intentional spending and prevents money from being wasted on unplanned purchases." },
-          { type: "list", content: "Steps to create a zero-based budget:", items: ["Calculate your total monthly income after taxes", "List all fixed expenses: rent, insurance, loan payments", "Estimate variable expenses: groceries, gas, utilities", "Assign money to savings goals and emergency fund", "Allocate remaining funds to discretionary spending", "Adjust categories until income minus expenses equals zero"] },
-          { type: "example", content: "Mike earns $3,500/month. His budget: Housing $1,200, Transportation $400, Food $300, Insurance $200, Savings $500, Entertainment $300, Miscellaneous $600. Total: $3,500 - exactly zero left unassigned." },
-          { type: "list", content: "Benefits of zero-based budgeting:", items: ["Forces intentional decision-making about every dollar", "Prevents overspending by setting clear limits", "Ensures savings goals are prioritized", "Reveals areas where money might be wasted", "Creates accountability for financial decisions"] },
-          { type: "list", content: "Common zero-based budget categories:", items: ["Housing: Rent/mortgage, utilities, maintenance", "Transportation: Car payment, gas, insurance, repairs", "Food: Groceries, dining out budget", "Personal: Clothing, haircuts, personal care", "Savings: Emergency fund, retirement, goals", "Debt: Minimum payments plus extra payments", "Fun: Entertainment, hobbies, subscriptions"] },
-          { type: "tip", content: "Use budgeting apps like YNAB (You Need A Budget) or EveryDollar to make zero-based budgeting easier. Review and adjust your budget monthly based on actual spending." },
-        ],
-        keyTakeaways: ["Every dollar gets assigned to a specific category", "Income minus all planned expenses should equal zero", "Prevents wasteful spending and ensures intentional choices", "Requires monthly review and adjustment"],
-        quiz: { questions: [{ question: "In zero-based budgeting, what should your income minus expenses equal?", options: ["A positive number for flexibility", "Zero", "10% for unexpected expenses", "Whatever is left over"], correctAnswer: "Zero", explanation: "Zero-based budgeting assigns every dollar to a category, so income minus all planned expenses should equal zero." }] },
-      },
-      {
-        title: "Tracking Your Spending Effectively",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Know Where Every Dollar Goes" },
-          { type: "paragraph", content: "Tracking spending is the foundation of successful budgeting. Without knowing where your money actually goes, it's impossible to make informed financial decisions. Modern technology makes tracking easier than ever, but the key is finding a system you'll actually use consistently." },
-          { type: "list", content: "Methods for tracking spending:", items: ["Mobile apps: Mint, YNAB, PocketGuard for automatic categorization", "Bank and credit card statements: Review monthly for patterns", "Receipt tracking: Save and categorize all receipts", "Spreadsheets: Create custom categories and formulas", "Envelope method: Physical cash for different categories", "Photo logging: Take pictures of receipts and purchases"] },
-          { type: "list", content: "Key spending categories to track:", items: ["Housing: Rent, utilities, maintenance, insurance", "Transportation: Gas, car payments, repairs, public transit", "Food: Groceries, restaurants, coffee, snacks", "Healthcare: Insurance, medications, doctor visits", "Personal care: Haircuts, clothing, toiletries", "Entertainment: Movies, subscriptions, hobbies", "Miscellaneous: Gifts, donations, unexpected expenses"] },
-          { type: "example", content: "Lisa tracks spending using her phone app. She discovered she spent $180/month on coffee and takeout - money she could redirect to her emergency fund. Small purchases were her biggest budget leak." },
-          { type: "list", content: "Tips for successful spending tracking:", items: ["Check in daily: Review purchases while they're fresh", "Categorize immediately: Don't let receipts pile up", "Set up automatic alerts: Get notified of large purchases", "Review weekly: Look for patterns and surprises", "Use multiple methods: Combine apps with manual review", "Be honest: Track everything, even embarrassing purchases"] },
-          { type: "tip", content: "Start with just one week of detailed tracking to see your patterns. Many people are shocked by how much they spend on small, frequent purchases." },
-        ],
-        keyTakeaways: ["Tracking reveals actual spending patterns vs. perceived spending", "Technology makes tracking easier but consistency is key", "Small purchases often add up to significant amounts", "Regular review helps identify areas for improvement"],
-        quiz: { questions: [{ question: "What's the most important factor in successful spending tracking?", options: ["Using the most expensive app", "Tracking only large purchases", "Consistency in recording all expenses", "Waiting until month-end to review"], correctAnswer: "Consistency in recording all expenses", explanation: "Consistent tracking of all expenses, no matter how small, provides the most accurate picture of spending patterns." }] },
-      },
-      {
-        title: "Handling Irregular Expenses",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Planning for Non-Monthly Expenses" },
-          { type: "paragraph", content: "Irregular expenses are costs that don't occur monthly but happen predictably throughout the year. These expenses often derail budgets because people forget to plan for them. By identifying and saving for irregular expenses monthly, you can avoid financial stress when they occur." },
-          { type: "list", content: "Common irregular expenses:", items: ["Annual insurance premiums: Auto, health, life insurance", "Holiday and birthday gifts: Christmas, birthdays, weddings", "Car maintenance: Oil changes, tire replacement, repairs", "Home maintenance: HVAC service, appliance repairs", "Medical expenses: Annual checkups, dental cleanings", "Subscriptions: Annual software, membership renewals", "Seasonal expenses: Winter clothes, summer activities"] },
-          { type: "list", content: "Strategies for managing irregular expenses:", items: ["Create a sinking fund: Save monthly for known expenses", "Use a separate savings account: Keep irregular expense money separate", "Calculate annual costs: Divide by 12 for monthly savings amount", "Set up automatic transfers: Make saving for these expenses automatic", "Track due dates: Use a calendar to anticipate expenses", "Build a buffer: Save slightly more than calculated amounts"] },
-          { type: "example", content: "Tom knows his car insurance costs $1,200 annually. Instead of scrambling for $1,200 twice a year, he saves $100 monthly in a separate account. When the bill comes, the money is ready." },
-          { type: "list", content: "Steps to plan for irregular expenses:", items: ["List all non-monthly expenses from the past year", "Estimate annual cost for each category", "Divide annual costs by 12 for monthly savings needed", "Set up automatic transfers to a dedicated savings account", "Review and adjust estimates quarterly", "Celebrate when you can pay irregular expenses without stress"] },
-          { type: "tip", content: "Review your bank statements from the past year to identify irregular expenses you might have forgotten. Add 10-20% buffer to your estimates for unexpected costs." },
-        ],
-        keyTakeaways: ["Irregular expenses are predictable but often forgotten", "Saving monthly prevents financial stress when bills come", "Separate accounts help keep irregular expense money safe", "Planning ahead gives you control over your finances"],
-        quiz: { questions: [{ question: "If your annual car insurance costs $900, how much should you save monthly?", options: ["$50", "$75", "$90", "$100"], correctAnswer: "$75", explanation: "$900 ÷ 12 months = $75 per month. Saving monthly for irregular expenses prevents budget stress." }] },
-      },
-      {
-        title: "Budget Adjustments and Reviews",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Keeping Your Budget Flexible and Realistic" },
-          { type: "paragraph", content: "A budget is a living document that should evolve with your life circumstances. Regular reviews and adjustments ensure your budget remains realistic and helpful rather than restrictive and frustrating. The goal is progress, not perfection." },
-          { type: "list", content: "When to review your budget:", items: ["Monthly: Compare actual spending to budgeted amounts", "After major life changes: New job, move, relationship changes", "Seasonally: Adjust for seasonal expense variations", "When consistently overspending in categories", "When income changes significantly", "Before setting new financial goals"] },
-          { type: "list", content: "Signs your budget needs adjustment:", items: ["Consistently overspending in multiple categories", "Feeling deprived or restricted by budget limits", "Life circumstances have changed significantly", "Not making progress toward financial goals", "Budget categories don't match actual spending patterns", "Stress about money has increased since budgeting"] },
-          { type: "example", content: "After three months, Jenny realized her grocery budget of $200 was unrealistic for her family of four. She adjusted it to $300 and reduced entertainment spending to compensate, making her budget more sustainable." },
-          { type: "list", content: "How to make effective budget adjustments:", items: ["Analyze spending patterns before making changes", "Adjust one category at a time to see the impact", "Ensure total expenses don't exceed income", "Consider seasonal variations in expenses", "Get input from family members affected by changes", "Test adjustments for at least one month before further changes"] },
-          { type: "tip", content: "Don't abandon your budget if it's not perfect. Instead, view overspending as data that helps you create a more realistic budget next month." },
-        ],
-        keyTakeaways: ["Budgets should be adjusted regularly based on actual spending", "Perfect budgets don't exist - aim for progress over perfection", "Life changes require budget modifications", "Regular reviews prevent small problems from becoming big ones"],
-        quiz: { questions: [{ question: "How often should you review your budget?", options: ["Once a year", "Every six months", "Monthly", "Only when problems arise"], correctAnswer: "Monthly", explanation: "Monthly budget reviews allow you to catch issues early and make necessary adjustments before they become major problems." }] },
-      },
-      {
-        title: "Budgeting Tools and Apps",
-        duration: "3 min",
-        points: 10,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Technology to Simplify Your Budget" },
-          { type: "paragraph", content: "Modern budgeting tools and apps can automate much of the tedious work involved in managing money. The key is choosing tools that match your budgeting style and actually using them consistently. The best budgeting tool is the one you'll actually use." },
-          { type: "list", content: "Popular budgeting apps and their strengths:", items: ["Mint: Free, automatic categorization, bill reminders", "YNAB (You Need A Budget): Zero-based budgeting, goal tracking", "PocketGuard: Prevents overspending, shows available money", "Personal Capital: Investment tracking, net worth monitoring", "EveryDollar: Simple zero-based budgeting interface", "Goodbudget: Digital envelope budgeting method"] },
-          { type: "list", content: "Features to look for in budgeting tools:", items: ["Automatic transaction import from banks", "Customizable spending categories", "Goal setting and progress tracking", "Bill reminders and due date alerts", "Mobile app for on-the-go tracking", "Security features and bank-level encryption", "Reporting and spending analysis tools"] },
-          { type: "example", content: "Mark uses YNAB for detailed budgeting and Mint for automatic expense tracking. The combination gives him both control and convenience without duplicate work." },
-          { type: "list", content: "Non-app budgeting tools:", items: ["Spreadsheets: Google Sheets, Excel templates", "Pen and paper: Simple but effective for some people", "Envelope method: Physical cash in labeled envelopes", "Bank account separation: Different accounts for different purposes", "Automatic transfers: Set up recurring savings transfers", "Calendar reminders: For bill due dates and budget reviews"] },
-          { type: "tip", content: "Try free versions of apps before paying for premium features. Many people find that basic features are sufficient for effective budgeting." },
-        ],
-        keyTakeaways: ["The best budgeting tool is the one you'll actually use", "Automation can simplify budgeting but requires initial setup", "Free tools are often sufficient for basic budgeting needs", "Combine multiple tools if it improves your system"],
-        quiz: { questions: [{ question: "What's the most important factor when choosing a budgeting app?", options: ["The most expensive option", "The one with the most features", "The one you'll actually use consistently", "The one your friends recommend"], correctAnswer: "The one you'll actually use consistently", explanation: "Consistency is more important than features. The best budgeting tool is the one that fits your habits and that you'll use regularly." }] },
-      },
-    ],
-    "saving": [
-      {
-        title: "Automating Your Savings",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Make Saving Effortless and Consistent" },
-          { type: "paragraph", content: "Automation is the secret weapon of successful savers. By setting up automatic transfers and systems, you remove the temptation to spend money before saving it. Automation makes saving a priority rather than an afterthought, helping you build wealth consistently over time." },
-          { type: "list", content: "Types of savings automation:", items: ["Direct deposit splits: Portion of paycheck goes directly to savings", "Automatic transfers: Scheduled moves from checking to savings", "Round-up programs: Spare change from purchases goes to savings", "Employer retirement plans: 401(k) contributions before you see the money", "Automatic investment plans: Regular investments in index funds", "Goal-based savings: Automatic transfers to specific goal accounts"] },
-          { type: "list", content: "Benefits of automated saving:", items: ["Removes emotional decision-making from saving", "Ensures consistent progress toward financial goals", "Takes advantage of 'pay yourself first' principle", "Reduces temptation to spend money earmarked for savings", "Creates positive financial habits without willpower", "Compounds over time for significant wealth building"] },
-          { type: "example", content: "Sarah sets up automatic transfers of $200 every payday to her high-yield savings account. After one year, she has $5,200 saved without thinking about it. The automation made saving painless and consistent." },
-          { type: "list", content: "How to set up savings automation:", items: ["Start with a small amount you won't miss ($25-50)", "Choose transfer dates right after payday", "Use separate savings accounts for different goals", "Set up automatic increases annually (raise your savings rate)", "Monitor accounts monthly to ensure transfers are working", "Adjust amounts as income changes"] },
-          { type: "tip", content: "Start with automating just $25 per paycheck. Once you don't miss it, increase the amount. Small, consistent automation beats large, sporadic manual savings." },
-        ],
-        keyTakeaways: ["Automation removes willpower from the savings equation", "Start small and increase automated amounts over time", "Direct deposit splits ensure you save before spending", "Consistency through automation builds substantial wealth"],
-        quiz: { questions: [{ question: "What's the main benefit of automating your savings?", options: ["Higher interest rates", "Removes emotional decision-making", "Guarantees investment returns", "Eliminates all financial risk"], correctAnswer: "Removes emotional decision-making", explanation: "Automation removes the daily decision of whether to save or spend, making saving consistent and effortless." }] },
-      },
-      {
-        title: "High-Yield Savings Accounts",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Maximize Your Savings Growth" },
-          { type: "paragraph", content: "High-yield savings accounts offer significantly higher interest rates than traditional savings accounts, helping your money grow faster while remaining safe and accessible. Understanding how to find and use these accounts can accelerate your savings goals without additional risk." },
-          { type: "list", content: "Benefits of high-yield savings accounts:", items: ["Higher interest rates: Often 10-20x higher than traditional banks", "FDIC insured: Same safety as traditional savings accounts", "Easy access: Online transfers and ATM access available", "No investment risk: Principal is guaranteed", "Compound interest: Earnings generate their own earnings", "Flexible: No lock-up periods like CDs"] },
-          { type: "list", content: "Where to find high-yield savings accounts:", items: ["Online banks: Ally, Marcus, Capital One 360", "Credit unions: Often offer competitive rates to members", "Traditional banks: Some offer high-yield options", "Fintech companies: New companies with competitive rates", "Comparison websites: Bankrate, NerdWallet for rate shopping", "Bank promotions: Temporary higher rates for new customers"] },
-          { type: "example", content: "Traditional bank savings: $10,000 at 0.01% = $1 per year. High-yield savings: $10,000 at 4.5% = $450 per year. The difference of $449 annually adds up significantly over time." },
-          { type: "list", content: "What to look for in high-yield accounts:", items: ["Competitive interest rate: Compare current rates regularly", "No monthly fees: Avoid accounts with maintenance charges", "Low minimum balance: $0-100 minimum to avoid fees", "Easy online access: Mobile app and website functionality", "ATM access: Reimbursement for out-of-network ATM fees", "Customer service: Good support when you need help"] },
-          { type: "list", content: "Best uses for high-yield savings:", items: ["Emergency funds: Safe, accessible money for emergencies", "Short-term goals: Money needed within 1-5 years", "Large purchase funds: Car, home down payment, vacation", "Irregular expense funds: Annual insurance, holiday gifts", "Cash portion of investment portfolio: Conservative allocation", "Temporary parking: Money between investments"] },
-          { type: "tip", content: "Interest rates change frequently. Review your account rates every 6 months and be willing to switch banks if you find significantly better rates elsewhere." },
-        ],
-        keyTakeaways: ["High-yield accounts offer much better returns than traditional savings", "Online banks typically offer the highest rates", "FDIC insurance provides the same safety as traditional banks", "Best for emergency funds and short-term savings goals"],
-        quiz: { questions: [{ question: "What's the main advantage of high-yield savings accounts over traditional savings?", options: ["No FDIC insurance needed", "Higher interest rates", "Unlimited withdrawals", "Investment growth potential"], correctAnswer: "Higher interest rates", explanation: "High-yield savings accounts offer significantly higher interest rates while maintaining the same safety and accessibility as traditional accounts." }] },
-      },
-      {
-        title: "The 52-Week Savings Challenge",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "A Fun Way to Build Your Savings Habit" },
-          { type: "paragraph", content: "The 52-week savings challenge is a popular method that gradually increases your savings throughout the year. Starting small and building momentum, this challenge helps develop consistent saving habits while accumulating a substantial amount by year-end." },
-          { type: "list", content: "How the traditional 52-week challenge works:", items: ["Week 1: Save $1", "Week 2: Save $2", "Week 3: Save $3", "Continue increasing by $1 each week", "Week 52: Save $52", "Total saved: $1,378 by year-end"] },
-          { type: "list", content: "Variations of the 52-week challenge:", items: ["Reverse challenge: Start with $52, end with $1", "Double challenge: Save $2, $4, $6, etc. (total $2,756)", "Bi-weekly challenge: Follow the schedule every two weeks", "Monthly challenge: Save $1 in January, $2 in February, etc.", "Percentage challenge: Save 1% of income week 1, 2% week 2", "Custom amounts: Adjust dollar amounts to fit your budget"] },
-          { type: "example", content: "Maria chose the reverse 52-week challenge, starting with $52 in January when she had holiday money, then decreasing amounts as the year progressed. This made the challenge easier to complete during expensive months." },
-          { type: "list", content: "Tips for success with savings challenges:", items: ["Use a separate savings account for challenge money", "Set up automatic transfers to match the schedule", "Track progress visually with a chart or app", "Find an accountability partner or group", "Adjust amounts if the standard challenge is too difficult", "Celebrate milestones along the way"] },
-          { type: "list", content: "Benefits of structured savings challenges:", items: ["Creates a fun, game-like approach to saving", "Builds consistent saving habits gradually", "Provides clear goals and progress tracking", "Generates momentum as amounts increase", "Results in substantial savings by completion", "Can be customized to any income level"] },
-          { type: "tip", content: "If the increasing amounts become difficult later in the year, switch to the reverse version or create your own custom amounts that work with your budget." },
-        ],
-        keyTakeaways: ["Structured challenges make saving fun and engaging", "Starting small builds momentum and habits", "Various challenge formats accommodate different budgets", "Consistency matters more than the specific amounts"],
-        quiz: { questions: [{ question: "How much money do you save in the traditional 52-week challenge?", options: ["$1,000", "$1,200", "$1,378", "$1,500"], correctAnswer: "$1,378", explanation: "The traditional 52-week challenge saves $1 + $2 + $3... + $52 = $1,378 total by the end of the year." }] },
-      },
-      {
-        title: "Saving for Multiple Goals",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Balancing Competing Financial Priorities" },
-          { type: "paragraph", content: "Most people have multiple financial goals competing for their savings dollars. Learning to prioritize and allocate money across different goals ensures progress on all fronts while maintaining motivation. The key is creating a system that balances urgent needs with long-term dreams." },
-          { type: "list", content: "Common multiple savings goals:", items: ["Emergency fund: 3-6 months of expenses for security", "Retirement: Long-term wealth building for future", "Home down payment: 10-20% of home purchase price", "Vacation fund: Annual or special trip savings", "Car replacement: Future vehicle purchase", "Education: College, certification, or skill development", "Wedding: Engagement, ceremony, and honeymoon costs"] },
-          { type: "list", content: "Strategies for multiple goal saving:", items: ["Prioritize by urgency: Emergency fund first, then others", "Use percentage allocation: Divide savings among goals", "Separate accounts: One account per goal for clarity", "Automate all goals: Set up transfers for each priority", "Focus method: Fully fund one goal before starting others", "Hybrid approach: Minimum to all goals, extra to priority"] },
-          { type: "example", content: "Jake allocates his $500 monthly savings: $200 to emergency fund (until complete), $150 to retirement, $100 to vacation fund, $50 to car replacement. Once emergency fund is complete, that $200 goes to home down payment." },
-          { type: "list", content: "Goal prioritization framework:", items: ["Tier 1: Emergency fund and high-interest debt payoff", "Tier 2: Employer 401(k) match and essential insurance", "Tier 3: Medium-term goals (1-5 years) like home, car", "Tier 4: Long-term wealth building and retirement", "Tier 5: Lifestyle goals like vacations and hobbies", "Adjust tiers based on personal circumstances"] },
-          { type: "list", content: "Tools for managing multiple goals:", items: ["Goal-based savings accounts: Separate account per goal", "Savings apps: Qapital, Digit for automatic allocation", "Spreadsheet tracking: Monitor progress across all goals", "Visual progress charts: See advancement toward each goal", "Regular review meetings: Monthly assessment of priorities", "Automatic rebalancing: Adjust allocations as goals change"] },
-          { type: "tip", content: "Don't try to save for too many goals at once. Start with 2-3 priorities and add more as your income increases or goals are completed." },
-        ],
-        keyTakeaways: ["Prioritize goals by urgency and importance", "Use separate accounts to track progress clearly", "Automate savings to all priority goals", "Adjust allocations as circumstances change"],
-        quiz: { questions: [{ question: "What should typically be your first savings priority?", options: ["Vacation fund", "Emergency fund", "Retirement", "Home down payment"], correctAnswer: "Emergency fund", explanation: "Emergency funds provide financial security and should typically be the first priority before other savings goals." }] },
-      },
-      {
-        title: "Overcoming Savings Obstacles",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Breaking Through Common Savings Barriers" },
-          { type: "paragraph", content: "Many people struggle to save money despite good intentions. Understanding common obstacles and having strategies to overcome them is crucial for building long-term savings success. Most barriers are psychological rather than financial." },
-          { type: "list", content: "Common savings obstacles:", items: ["Living paycheck to paycheck: No money left after expenses", "Lifestyle inflation: Spending increases with income", "Lack of clear goals: No motivation to save", "Instant gratification: Wanting things now vs. later", "Social pressure: Keeping up with others' spending", "Unexpected expenses: Emergencies derailing savings plans", "Low income: Feeling like there's nothing to save"] },
-          { type: "list", content: "Strategies to overcome savings obstacles:", items: ["Start micro-saving: Even $5-10 per week builds habits", "Automate before you see it: Direct deposit to savings", "Find your 'why': Connect savings to meaningful goals", "Use the 24-hour rule: Wait before non-essential purchases", "Create accountability: Share goals with trusted friends", "Build emergency buffer: Small fund prevents savings raids", "Increase income: Side hustles, skills, job advancement"] },
-          { type: "example", content: "Lisa felt she couldn't save on her tight budget. She started saving loose change and $1 bills in a jar. After 6 months, she had $200 and realized saving was possible. This success motivated her to find $25/month to automate." },
-          { type: "list", content: "Mindset shifts for better saving:", items: ["Pay yourself first: Savings is a bill to yourself", "Progress over perfection: Small amounts count", "Delayed gratification: Future self will thank you", "Abundance thinking: Focus on what you can save, not can't", "Value-based spending: Align purchases with priorities", "Long-term perspective: Small amounts compound significantly"] },
-          { type: "list", content: "Practical obstacle solutions:", items: ["Too little income: Focus on increasing earnings", "Too many expenses: Audit and cut unnecessary spending", "No motivation: Set specific, meaningful goals", "Lack of discipline: Use automation and barriers", "Social pressure: Find like-minded friends", "Perfectionism: Accept that some saving is better than none"] },
-          { type: "tip", content: "If you truly can't save money, focus first on increasing income or reducing expenses. Even $10/month saved builds the habit and mindset for future success." },
-        ],
-        keyTakeaways: ["Most savings obstacles are psychological, not financial", "Start small to build confidence and habits", "Automation removes willpower from the equation", "Focus on progress, not perfection"],
-        quiz: { questions: [{ question: "What's the best first step if you feel you can't save any money?", options: ["Wait until you earn more", "Start with very small amounts", "Focus only on cutting expenses", "Give up on saving"], correctAnswer: "Start with very small amounts", explanation: "Starting with small amounts builds the saving habit and mindset, proving that saving is possible even on a tight budget." }] },
-      },
-      {
-        title: "Advanced Savings Strategies",
-        duration: "5 min",
-        points: 20,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Sophisticated Techniques for Serious Savers" },
-          { type: "paragraph", content: "Once you've mastered basic saving habits, advanced strategies can accelerate your progress and optimize your savings for maximum growth. These techniques require more planning but can significantly impact your long-term financial success." },
-          { type: "list", content: "Advanced savings strategies:", items: ["Tax-advantaged accounts: HSAs, IRAs, 401(k)s for tax benefits", "CD laddering: Staggered certificates for higher rates", "I-bonds: Inflation-protected government savings bonds", "Money market accounts: Higher yields with check-writing", "Savings account churning: Moving money for signup bonuses", "Geographic arbitrage: Living in lower-cost areas"] },
-          { type: "list", content: "Tax-advantaged savings vehicles:", items: ["Health Savings Account (HSA): Triple tax advantage", "Traditional IRA: Tax deduction now, taxed in retirement", "Roth IRA: After-tax contributions, tax-free growth", "401(k): Employer match and tax deferral", "529 plans: Tax-free growth for education expenses", "Flexible Spending Account (FSA): Pre-tax healthcare dollars"] },
-          { type: "example", content: "David maximizes his HSA contribution ($3,650 annually), earning a tax deduction, tax-free growth, and tax-free withdrawals for medical expenses. This triple tax benefit makes HSAs the ultimate savings vehicle for eligible individuals." },
-          { type: "list", content: "Yield optimization techniques:", items: ["Rate chasing: Moving money to highest-yield accounts", "Promotional rates: Taking advantage of new customer bonuses", "Credit union shopping: Finding local institutions with high rates", "Online bank comparison: Regularly comparing rates", "Tiered account strategies: Using multiple accounts for rate tiers", "Timing strategies: Moving money based on rate cycles"] },
-          { type: "list", content: "Advanced goal-based strategies:", items: ["Sinking funds: Monthly saving for annual expenses", "Opportunity funds: Money set aside for investments", "Sabbatical funds: Saving for career breaks or education", "Business funds: Capital for entrepreneurial ventures", "Real estate funds: Down payments and investment properties", "Legacy funds: Money for children's future or inheritance"] },
-          { type: "tip", content: "Don't let advanced strategies overwhelm you. Master basic automated saving first, then gradually add sophisticated techniques as your savings grow." },
-        ],
-        keyTakeaways: ["Tax-advantaged accounts provide significant benefits", "Advanced strategies require more planning but offer better returns", "Yield optimization can meaningfully increase savings growth", "Focus on mastering basics before adding complexity"],
-        quiz: { questions: [{ question: "Which account offers the best tax advantages for healthcare expenses?", options: ["Traditional IRA", "Roth IRA", "Health Savings Account (HSA)", "401(k)"], correctAnswer: "Health Savings Account (HSA)", explanation: "HSAs offer triple tax advantages: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses." }] },
-      },
-    ],
     "debt-management": [
       {
         title: "Understanding Different Types of Debt",
-        duration: "5 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        duration: "8 min",
+        points: 24,
         content: [
-          { type: "heading", content: "Good Debt vs. Bad Debt: Know the Difference" },
-          { type: "paragraph", content: "Not all debt is created equal. Understanding the different types of debt and their characteristics helps you prioritize which debts to pay off first and which debts might actually benefit your financial situation. This knowledge is crucial for developing an effective debt management strategy." },
-          { type: "list", content: "Good debt characteristics:", items: ["Helps build wealth over time: Appreciating assets", "Tax deductible interest: Reduces your tax burden", "Low interest rates: Typically under 6-8%", "Improves earning potential: Education, business investment", "Builds credit history: Responsible use improves credit score", "Leverages your money: Uses borrowed funds to acquire valuable assets"] },
-          { type: "list", content: "Examples of good debt:", items: ["Mortgages: Real estate typically appreciates over time", "Student loans: Education increases earning potential", "Business loans: Can generate income and build wealth", "Investment property loans: Rental income and appreciation", "Home equity loans for improvements: Increase home value", "Low-interest car loans: If needed for income generation"] },
-          { type: "list", content: "Bad debt characteristics:", items: ["High interest rates: Often 15-25% or higher", "Depreciating assets: Items lose value over time", "No tax benefits: Interest payments aren't deductible", "Consumption-based: Used for lifestyle rather than investment", "Minimum payments trap: Designed to keep you paying", "Compound interest works against you: Debt grows rapidly"] },
-          { type: "list", content: "Examples of bad debt:", items: ["Credit card debt: High interest, often for consumption", "Payday loans: Extremely high interest rates and fees", "Auto loans for expensive cars: Rapid depreciation", "Personal loans for vacations: No lasting value", "Store credit cards: High rates for retail purchases", "Cash advances: Very high interest and fees"] },
-          { type: "example", content: "Sarah has a $200,000 mortgage at 3.5% (good debt building equity) and $5,000 in credit card debt at 22% (bad debt for consumption). She should prioritize paying off the credit card while making regular mortgage payments." },
-          { type: "tip", content: "Focus on eliminating bad debt first, especially high-interest credit cards. Good debt can often be managed with minimum payments while you tackle more expensive debt." },
+          {
+            type: "heading",
+            content: "The Complete Debt Landscape",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Not all debt is created equal. Understanding the different types of debt, their characteristics, and how they impact your financial health is crucial for making informed borrowing decisions and creating effective payoff strategies.",
+          },
+          {
+            type: "list",
+            content: "Secured vs. Unsecured Debt:",
+            items: [
+              "Secured debt: Backed by collateral (home, car, etc.)",
+              "Lower interest rates due to reduced lender risk",
+              "Collateral can be repossessed if payments are missed",
+              "Examples: Mortgages, auto loans, home equity loans",
+              "Unsecured debt: No collateral backing the loan",
+              "Higher interest rates due to increased lender risk",
+              "Examples: Credit cards, personal loans, student loans",
+            ],
+          },
+          {
+            type: "list",
+            content: "Good Debt vs. Bad Debt:",
+            items: [
+              "Good debt: Helps build wealth or increase income potential",
+              "Mortgages: Build equity and provide tax benefits",
+              "Student loans: Invest in education and earning potential",
+              "Business loans: Generate income and build assets",
+              "Bad debt: Depreciating assets or consumption",
+              "Credit card debt: High interest, no asset backing",
+              "Auto loans: Depreciating asset, though sometimes necessary",
+              "Payday loans: Extremely high interest, predatory terms",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Debt-to-Income Ratio Calculation:",
+            formula: "DTI = (Total Monthly Debt Payments ÷ Gross Monthly Income) × 100",
+            variables: {
+              "Total Monthly Debt Payments": "All minimum debt payments",
+              "Gross Monthly Income": "Income before taxes",
+              "Good DTI": "Below 36% total, below 28% for housing",
+              "Concerning DTI": "Above 40%",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Debt Portfolio Analysis: Sarah has a $1,500 mortgage (good debt building equity), $300 student loan (good debt from education), $200 car payment (necessary but depreciating), and $150 credit card minimum (bad debt from consumption). Total: $2,150 monthly on $6,000 income = 36% DTI.",
+          },
+          {
+            type: "list",
+            content: "Common types of consumer debt:",
+            items: [
+              "Credit cards: Revolving credit, variable rates (15-25% APR)",
+              "Personal loans: Fixed payments, fixed rates (6-36% APR)",
+              "Auto loans: Secured by vehicle (3-10% APR)",
+              "Student loans: Federal (3-6% APR) vs. Private (4-12% APR)",
+              "Home equity loans/HELOC: Secured by home (4-8% APR)",
+              "Payday loans: Short-term, extremely high cost (400%+ APR)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Debt characteristics to evaluate:",
+            items: [
+              "Interest rate (APR): Total cost of borrowing",
+              "Payment terms: Length and flexibility of repayment",
+              "Fees: Origination, late payment, prepayment penalties",
+              "Tax implications: Deductible interest vs. non-deductible",
+              "Collateral requirements: What you risk losing",
+              "Credit impact: How it affects your credit score",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Debt Prioritization: Mark had $5,000 in credit cards (22% APR), $15,000 student loans (4% APR), and $200,000 mortgage (3.5% APR). He focused extra payments on credit cards first due to high interest, while maintaining minimums on the lower-rate 'good debt.'",
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid payday loans, title loans, and other predatory lending products. These often trap borrowers in cycles of debt with extremely high costs and aggressive collection practices.",
+          },
+          {
+            type: "tip",
+            content:
+              "Before taking on any new debt, calculate the total cost over the life of the loan, not just the monthly payment. A longer loan term might have lower payments but much higher total interest costs.",
+          },
         ],
-        keyTakeaways: ["Good debt helps build wealth and has tax benefits", "Bad debt has high interest rates and funds consumption", "Prioritize paying off bad debt before good debt", "Understanding debt types guides your payoff strategy"],
-        quiz: { questions: [{ question: "Which of these is typically considered 'good debt'?", options: ["Credit card debt", "Payday loans", "Mortgage for primary residence", "Personal loan for vacation"], correctAnswer: "Mortgage for primary residence", explanation: "Mortgages are considered good debt because they help build wealth through real estate ownership and typically have low, tax-deductible interest rates." }] },
+        keyTakeaways: [
+          "Secured debt typically has lower rates but puts collateral at risk",
+          "Good debt builds wealth; bad debt finances consumption",
+          "Interest rates and terms vary dramatically between debt types",
+          "Debt-to-income ratio is a key measure of financial health",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of the following is typically considered 'good debt'?",
+              options: [
+                "Credit card debt for vacation expenses",
+                "A mortgage on your primary residence",
+                "A payday loan for emergency expenses",
+                "An auto loan for a luxury car",
+              ],
+              correctAnswer: "A mortgage on your primary residence",
+              explanation:
+                "A mortgage is considered good debt because it helps you build equity in an appreciating asset (your home) and often provides tax benefits through deductible interest.",
+            },
+          ],
+        },
       },
       {
-        title: "The Debt Snowball Method",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        title: "Debt Avalanche vs. Debt Snowball Methods",
+        duration: "7 min",
+        points: 21,
         content: [
-          { type: "heading", content: "Build Momentum by Starting Small" },
-          { type: "paragraph", content: "The debt snowball method focuses on paying off your smallest debts first while making minimum payments on larger debts. This approach prioritizes psychological wins over mathematical optimization, helping you build momentum and stay motivated throughout your debt payoff journey." },
-          { type: "list", content: "How the debt snowball method works:", items: ["List all debts from smallest to largest balance", "Make minimum payments on all debts", "Put any extra money toward the smallest debt", "Once smallest debt is paid off, celebrate the win", "Take the payment from paid-off debt and add it to the next smallest", "Repeat until all debts are eliminated"] },
-          { type: "list", content: "Benefits of the debt snowball method:", items: ["Quick psychological wins build motivation", "Simplifies decision-making: Always pay smallest first", "Reduces number of monthly payments quickly", "Creates visible progress early in the process", "Builds confidence and momentum", "Less likely to give up compared to other methods"] },
-          { type: "example", content: "Mike has debts: $500 store card, $2,000 personal loan, $8,000 car loan, $15,000 student loan. Using snowball method, he pays off the $500 card first, then applies that payment to the $2,000 loan, building momentum with each victory." },
-          { type: "list", content: "Steps to implement debt snowball:", items: ["Create a complete list of all debts and balances", "Arrange debts from smallest to largest balance", "Calculate minimum payments for all debts", "Find extra money in budget for debt payments", "Focus all extra payments on smallest debt", "Track progress and celebrate each debt elimination"] },
-          { type: "list", content: "When debt snowball works best:", items: ["You need motivation to stick with debt payoff", "You have multiple small debts to eliminate", "You've struggled with debt payoff in the past", "Psychological wins are important to you", "You want to simplify your monthly payments", "You prefer emotional satisfaction over mathematical optimization"] },
-          { type: "tip", content: "The debt snowball method may cost more in interest than other methods, but if it helps you actually eliminate your debt, it's the right choice for you." },
+          {
+            type: "heading",
+            content: "Strategic Debt Payoff Methods",
+          },
+          {
+            type: "paragraph",
+              content:
+                "The debt avalanche and debt snowball are two proven strategies for paying off multiple debts. Each has distinct advantages and works better for different personality types and financial situations. Understanding both helps you choose the right approach.",
+          },
+          {
+            type: "list",
+            content: "Debt Avalanche Method:",
+            items: [
+              "Pay minimums on all debts",
+              "Put extra money toward highest interest rate debt first",
+              "Once highest rate debt is paid off, move to next highest",
+              "Mathematically optimal - saves the most money",
+              "Best for disciplined people motivated by numbers",
+              "Can take longer to see initial progress",
+            ],
+          },
+          {
+            type: "list",
+            content: "Debt Snowball Method:",
+            items: [
+              "Pay minimums on all debts",
+              "Put extra money toward smallest balance first",
+              "Once smallest debt is paid off, move to next smallest",
+              "Provides quick psychological wins",
+              "Best for people motivated by visible progress",
+              "May cost more in total interest over time",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Comparing payoff methods:",
+            formula: "Total Interest = Sum of (Balance × Rate × Time) for each debt",
+            variables: {
+              Balance: "Outstanding amount owed",
+              Rate: "Annual interest rate",
+              Time: "Years to pay off",
+              "Avalanche": "Usually results in lower total interest",
+              "Snowball": "May result in higher total interest but faster motivation",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Method Comparison: $2,000 credit card (24% APR), $5,000 personal loan (12% APR), $1,500 store card (18% APR). Avalanche order: Credit card → Store card → Personal loan. Snowball order: Store card → Credit card → Personal loan.",
+          },
+          {
+            type: "case-study",
+            content:
+              "Real-World Results: Twin sisters with identical $25,000 debt loads. Amy used avalanche method, saved $2,100 in interest over 3 years. Beth used snowball, paid $1,800 more in interest but stayed motivated and finished 2 months faster due to consistency.",
+          },
+          {
+            type: "list",
+            content: "Hybrid approaches:",
+            items: [
+              "Avalanche with small debt exception: Pay off debts under $500 first",
+              "Snowball with high-rate exception: Tackle rates over 25% first",
+              "Emotional debt first: Pay off debts causing the most stress",
+              "Time-based hybrid: Switch methods after achieving early wins",
+              "Balance-adjusted avalanche: Consider both rate and balance size",
+              "Seasonal approach: Use tax refunds/bonuses for largest impact",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing the right method for you:",
+            items: [
+              "Avalanche if: You're motivated by math and saving money",
+              "Avalanche if: You have discipline and long-term focus",
+              "Snowball if: You need quick wins to stay motivated",
+              "Snowball if: You've failed at debt payoff before",
+              "Hybrid if: You want to balance math and psychology",
+              "Consider your personality and past financial behavior",
+            ],
+          },
+          {
+            type: "list",
+            content: "Maximizing either method:",
+            items: [
+              "List all debts with balances, rates, and minimum payments",
+              "Find extra money through budgeting and expense reduction",
+              "Automate minimum payments to avoid late fees",
+              "Put any windfall money toward debt payoff",
+              "Track progress visually with charts or apps",
+              "Celebrate milestones to maintain motivation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common mistakes with both methods:",
+            items: [
+              "Not making minimum payments on all debts",
+              "Adding new debt while paying off existing debt",
+              "Switching methods frequently without giving one a chance",
+              "Not having a plan for extra payments",
+              "Ignoring the psychological aspects of debt payoff",
+              "Stopping the plan when motivation wanes",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "The best debt payoff method is the one you'll actually stick with. If you're unsure, try the snowball method first for quick wins, then switch to avalanche once you build momentum and confidence.",
+          },
         ],
-        keyTakeaways: ["Focus on smallest debts first for quick wins", "Psychological momentum is more important than math optimization", "Each paid-off debt increases your available payment for the next", "Celebration and motivation are key to long-term success"],
-        quiz: { questions: [{ question: "In the debt snowball method, which debt do you pay off first?", options: ["Highest interest rate", "Largest balance", "Smallest balance", "Most recent debt"], correctAnswer: "Smallest balance", explanation: "The debt snowball method prioritizes paying off the smallest balance first to create quick wins and build psychological momentum." }] },
+        keyTakeaways: [
+          "Debt avalanche saves more money by targeting highest interest rates first",
+          "Debt snowball provides quicker psychological wins by eliminating small debts",
+          "Hybrid approaches can balance mathematical optimization with motivation",
+          "The best method is the one you'll consistently follow",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the primary advantage of the debt avalanche method?",
+              options: [
+                "It provides quick psychological wins",
+                "It's easier to understand and follow",
+                "It saves the most money in total interest",
+                "It works better for people with many small debts",
+              ],
+              correctAnswer: "It saves the most money in total interest",
+              explanation:
+                "The debt avalanche method is mathematically optimal because it targets the highest interest rate debts first, minimizing the total amount of interest paid over time.",
+            },
+          ],
+        },
       },
       {
-        title: "The Debt Avalanche Method",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        title: "Creating a Debt Payoff Plan",
+        duration: "8 min",
+        points: 24,
         content: [
-          { type: "heading", content: "Minimize Interest with Mathematical Precision" },
-          { type: "paragraph", content: "The debt avalanche method prioritizes paying off debts with the highest interest rates first. This mathematically optimal approach minimizes the total interest paid over time, potentially saving thousands of dollars compared to other methods. It requires more discipline but offers superior financial results." },
-          { type: "list", content: "How the debt avalanche method works:", items: ["List all debts from highest to lowest interest rate", "Make minimum payments on all debts", "Put any extra money toward the highest interest rate debt", "Once highest rate debt is paid off, move to next highest", "Continue until all debts are eliminated", "Ignore balance amounts - focus only on interest rates"] },
-          { type: "list", content: "Benefits of the debt avalanche method:", items: ["Minimizes total interest paid over time", "Mathematically optimal debt payoff strategy", "Saves the most money in the long run", "Reduces the time needed to become debt-free", "Most efficient use of extra payment dollars", "Prevents high-interest debt from compounding"] },
-          { type: "example", content: "Lisa has: $1,000 at 24% (credit card), $5,000 at 18% (personal loan), $10,000 at 6% (car loan). Using avalanche method, she pays off the 24% debt first, saving hundreds in interest compared to paying off smaller balances first." },
-          { type: "list", content: "Steps to implement debt avalanche:", items: ["List all debts with their interest rates", "Arrange debts from highest to lowest interest rate", "Calculate minimum payments for all debts", "Determine extra money available for debt payments", "Apply all extra payments to highest rate debt", "Track progress and stay disciplined with the plan"] },
-          { type: "list", content: "When debt avalanche works best:", items: ["You're motivated by saving money rather than quick wins", "You have strong discipline and patience", "You understand the mathematical benefits", "You have high-interest debt (credit cards, personal loans)", "You want to minimize total interest paid", "You can stay motivated without frequent victories"] },
-          { type: "list", content: "Challenges of debt avalanche method:", items: ["May take longer to see first debt eliminated", "Requires more discipline and patience", "Less psychological satisfaction early on", "Can be discouraging if highest rate debt is large", "Temptation to give up without quick wins", "Requires understanding of interest rate impact"] },
-          { type: "tip", content: "If you're torn between snowball and avalanche methods, consider a hybrid approach: pay off one small debt for motivation, then switch to avalanche method for the rest." },
+          {
+            type: "heading",
+            content: "Building Your Debt Freedom Roadmap",
+          },
+          {
+            type: "paragraph",
+              content:
+                "A successful debt payoff plan requires more than just choosing avalanche or snowball. You need a comprehensive strategy that includes budgeting, timeline planning, motivation systems, and contingency plans for setbacks.",
+          },
+          {
+            type: "list",
+            content: "Step 1: Complete debt inventory:",
+            items: [
+              "List every debt with current balance",
+              "Record interest rates (APR) for each debt",
+              "Note minimum monthly payments",
+              "Include account numbers and contact information",
+              "Calculate total debt amount",
+              "Identify secured vs. unsecured debts",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Debt payoff timeline calculation:",
+            formula: "Months to Payoff = -log(1 - (Balance × Rate/12) / Payment) / log(1 + Rate/12)",
+            variables: {
+              Balance: "Current debt balance",
+              Rate: "Annual interest rate (as decimal)",
+              Payment: "Monthly payment amount",
+              Result: "Number of months to pay off debt",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Debt Inventory Example: Credit Card A: $3,500 balance, 22% APR, $105 minimum. Credit Card B: $1,200 balance, 18% APR, $36 minimum. Personal Loan: $8,000 balance, 12% APR, $200 minimum. Total debt: $12,700, Total minimums: $341/month.",
+          },
+          {
+            type: "list",
+            content: "Step 2: Analyze your budget for extra payments:",
+            items: [
+              "Review monthly income and expenses",
+              "Identify areas to cut spending temporarily",
+              "Look for ways to increase income",
+              "Calculate available money for extra debt payments",
+              "Set realistic but aggressive payment goals",
+              "Plan for irregular income or expenses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Step 3: Choose and implement your strategy:",
+            items: [
+              "Select avalanche, snowball, or hybrid method",
+              "Create payment schedule and timeline",
+              "Set up automatic payments for minimums",
+              "Plan how to allocate extra payments",
+              "Create visual tracking system",
+              "Set milestone rewards and celebrations",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Complete Plan Example: Maria had $18,000 in debt across 4 accounts. She found $400/month extra through budgeting, chose debt avalanche, and created a 3.5-year payoff plan. She automated minimums, tracked progress monthly, and celebrated each debt elimination.",
+          },
+          {
+            type: "list",
+            content: "Step 4: Build motivation and accountability systems:",
+            items: [
+              "Share goals with supportive friends or family",
+              "Join online debt payoff communities",
+              "Create visual progress charts or thermometers",
+              "Set up milestone rewards (non-debt creating)",
+              "Track multiple metrics (balance, payments made, interest saved)",
+              "Plan how to handle setbacks and maintain motivation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Step 5: Plan for obstacles and setbacks:",
+            items: [
+              "Build small emergency fund ($1,000) before aggressive payoff",
+              "Plan for irregular expenses that might derail progress",
+              "Have strategies for income loss or reduction",
+              "Know when to pause debt payoff for true emergencies",
+              "Prepare mentally for the length of the journey",
+              "Have backup plans if primary strategy isn't working",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tools and resources for debt payoff:",
+            items: [
+              "Debt payoff calculators and apps",
+              "Spreadsheet templates for tracking",
+              "Automatic payment systems",
+              "Budgeting apps that track debt progress",
+              "Online communities and support groups",
+              "Financial counseling services (often free)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Monitoring and adjusting your plan:",
+            items: [
+              "Review progress monthly",
+              "Adjust timeline based on actual results",
+              "Celebrate milestones and victories",
+              "Modify strategy if life circumstances change",
+              "Track total interest saved",
+              "Plan for life after debt payoff",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't sacrifice your emergency fund or retirement contributions for debt payoff unless the debt is extremely high interest (over 25% APR). Balance debt payoff with other financial priorities.",
+          },
+          {
+            type: "tip",
+            content:
+              "Create a 'debt thermometer' visual showing your progress. Color in sections as you pay off debt - this simple visual can provide powerful motivation during difficult months.",
+          },
         ],
-        keyTakeaways: ["Focus on highest interest rate debts first", "Mathematically optimal for minimizing total interest", "Requires discipline but saves the most money", "Best for people motivated by financial optimization"],
-        quiz: { questions: [{ question: "What is the primary advantage of the debt avalanche method?", options: ["Quick psychological wins", "Simplest to understand", "Minimizes total interest paid", "Reduces number of payments fastest"], correctAnswer: "Minimizes total interest paid", explanation: "The debt avalanche method is mathematically optimal and minimizes the total amount of interest you'll pay over the life of your debts." }] },
+        keyTakeaways: [
+          "A complete debt inventory is the foundation of any payoff plan",
+          "Find extra payment money through budgeting and income increases",
+          "Build motivation systems and plan for obstacles",
+          "Regular monitoring and adjustment keep you on track",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be your first step when creating a debt payoff plan?",
+              options: [
+                "Choose between avalanche and snowball methods",
+                "Create a complete inventory of all your debts",
+                "Cut all discretionary spending immediately",
+                "Apply for a debt consolidation loan",
+              ],
+              correctAnswer: "Create a complete inventory of all your debts",
+              explanation:
+                "You can't create an effective payoff strategy without knowing exactly what you owe, the interest rates, and minimum payments for each debt. This inventory is the foundation of your plan.",
+            },
+          ],
+        },
       },
       {
-        title: "Debt Consolidation Strategies",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        title: "Debt Consolidation Options",
+        duration: "7 min",
+        points: 21,
         content: [
-          { type: "heading", content: "Simplify and Potentially Save with Consolidation" },
-          { type: "paragraph", content: "Debt consolidation involves combining multiple debts into a single payment, often with a lower interest rate. This strategy can simplify your finances and potentially save money, but it's important to understand the different options and their pros and cons before proceeding." },
-          { type: "list", content: "Types of debt consolidation:", items: ["Personal loans: Unsecured loans to pay off multiple debts", "Balance transfer credit cards: 0% intro APR for transferred balances", "Home equity loans: Use home equity for lower rates", "401(k) loans: Borrow against retirement savings", "Debt management plans: Work with credit counseling agencies", "Peer-to-peer lending: Online platforms connecting borrowers and lenders"] },
-          { type: "list", content: "Benefits of debt consolidation:", items: ["Single monthly payment simplifies budgeting", "Potentially lower interest rates save money", "Fixed payment schedule provides certainty", "May improve credit score over time", "Reduces stress of managing multiple payments", "Can accelerate debt payoff with lower rates"] },
-          { type: "example", content: "Tom has three credit cards totaling $15,000 at rates of 22%, 19%, and 24%. He consolidates with a personal loan at 12%, reducing his interest rate and creating one manageable payment of $450/month." },
-          { type: "list", content: "Risks and considerations:", items: ["May extend repayment period, increasing total interest", "Fees and closing costs can offset savings", "Risk of running up new debt on cleared cards", "May require collateral (home equity loans)", "Could negatively impact credit score initially", "Not addressing underlying spending habits"] },
-          { type: "list", content: "When consolidation makes sense:", items: ["You qualify for significantly lower interest rates", "You're struggling to manage multiple payments", "You have good credit to qualify for better terms", "You're committed to not creating new debt", "The math shows clear savings over time", "You want to simplify your financial life"] },
-          { type: "list", content: "Steps for successful consolidation:", items: ["Calculate total debt and current interest rates", "Shop around for best consolidation terms", "Compare total costs including fees", "Ensure you qualify for advertised rates", "Close or restrict access to paid-off accounts", "Create a plan to avoid new debt accumulation"] },
-          { type: "tip", content: "Consolidation only works if you address the spending habits that created the debt. Otherwise, you may end up with both the consolidation loan and new debt." },
+          {
+            type: "heading",
+            content: "Simplifying and Reducing Your Debt Burden",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Debt consolidation can simplify payments and potentially reduce interest costs by combining multiple debts into a single payment. However, consolidation isn't always the best solution and requires careful evaluation of terms, costs, and your ability to avoid accumulating new debt.",
+          },
+          {
+            type: "list",
+            content: "Types of debt consolidation:",
+            items: [
+              "Personal loans: Unsecured loans to pay off multiple debts",
+              "Balance transfer credit cards: 0% or low APR promotional rates",
+              "Home equity loans/HELOC: Use home equity to pay off debt",
+              "401(k) loans: Borrow from retirement savings",
+              "Debt management plans: Work with credit counseling agency",
+              "Debt settlement: Negotiate reduced payoffs (damages credit)",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Consolidation savings calculation:",
+            formula: "Monthly Savings = Current Total Payments - New Consolidated Payment",
+            variables: {
+              "Current Total Payments": "Sum of all current minimum payments",
+              "New Consolidated Payment": "Payment on consolidation loan",
+              "Interest Savings": "Difference in total interest over loan life",
+              "Break-even Point": "When savings exceed consolidation costs",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Consolidation Example: $15,000 across 3 credit cards averaging 20% APR with $450 total minimums. Personal loan at 12% APR for $15,000 = $334 monthly payment. Monthly savings: $116, plus significant interest savings over time.",
+          },
+          {
+            type: "list",
+            content: "Personal loan consolidation:",
+            items: [
+              "Pros: Fixed rate, fixed payment, clear payoff date",
+              "Pros: Often lower rates than credit cards",
+              "Cons: May require good credit for best rates",
+              "Cons: Origination fees (1-8% of loan amount)",
+              "Best for: People with good credit and high-rate debt",
+              "Typical rates: 6-36% APR depending on credit",
+            ],
+          },
+          {
+            type: "list",
+            content: "Balance transfer credit cards:",
+            items: [
+              "Pros: 0% APR promotional periods (12-21 months)",
+              "Pros: Can provide significant interest savings",
+              "Cons: Balance transfer fees (3-5% of amount)",
+              "Cons: High rates after promotional period ends",
+              "Best for: People who can pay off debt during 0% period",
+              "Requires: Good credit and disciplined payoff plan",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Balance Transfer Success: Jake transferred $8,000 in credit card debt to a 0% APR card for 18 months. With a 3% transfer fee ($240), he saved over $2,000 in interest by paying off the debt during the promotional period.",
+          },
+          {
+            type: "list",
+            content: "Home equity consolidation:",
+            items: [
+              "Pros: Lowest interest rates, tax-deductible interest",
+              "Pros: Large borrowing capacity",
+              "Cons: Home is collateral - risk of foreclosure",
+              "Cons: Closing costs and fees",
+              "Best for: Homeowners with significant equity",
+              "Warning: Don't use home equity for consumption debt",
+            ],
+          },
+          {
+            type: "list",
+            content: "When consolidation makes sense:",
+            items: [
+              "You qualify for significantly lower interest rates",
+              "You can simplify multiple payments into one",
+              "You have a plan to avoid accumulating new debt",
+              "The total cost (including fees) is lower than current debt",
+              "You're committed to paying off the consolidated debt",
+              "You have stable income to make the new payments",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to avoid consolidation:",
+            items: [
+              "You haven't addressed the spending habits that created debt",
+              "The new loan has higher total costs than current debt",
+              "You're considering risky options like 401(k) loans",
+              "You're likely to accumulate new debt on paid-off cards",
+              "The consolidation loan has variable rates that could increase",
+              "You're using secured debt to pay off unsecured debt",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Consolidation only works if you change the behaviors that created the debt. Many people consolidate debt only to accumulate new debt on the paid-off credit cards, making their situation worse.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you consolidate credit card debt, consider closing the paid-off cards or reducing their credit limits to prevent the temptation to accumulate new debt.",
+          },
         ],
-        keyTakeaways: ["Consolidation can simplify payments and reduce interest rates", "Success requires discipline to avoid new debt", "Compare all costs including fees before consolidating", "Address underlying spending habits for long-term success"],
-        quiz: { questions: [{ question: "What's the biggest risk of debt consolidation?", options: ["Higher interest rates", "Damage to credit score", "Running up new debt on cleared accounts", "Longer repayment terms"], correctAnswer: "Running up new debt on cleared accounts", explanation: "The biggest risk is accumulating new debt on the accounts you just paid off, leaving you with both the consolidation loan and new debt." }] },
+        keyTakeaways: [
+          "Consolidation can reduce rates and simplify payments",
+          "Balance transfer cards offer temporary 0% rates for qualified borrowers",
+          "Home equity options have low rates but put your home at risk",
+          "Success requires changing spending habits, not just moving debt around",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the biggest risk of debt consolidation?",
+              options: [
+                "Higher interest rates on the new loan",
+                "Accumulating new debt on paid-off credit cards",
+                "Longer repayment terms",
+                "Balance transfer fees",
+              ],
+              correctAnswer: "Accumulating new debt on paid-off credit cards",
+              explanation:
+                "The biggest risk is that people consolidate debt but don't change their spending habits, leading to new debt accumulation on the paid-off credit cards while still owing the consolidation loan.",
+            },
+          ],
+        },
       },
       {
         title: "Negotiating with Creditors",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Work with Creditors to Find Solutions" },
-          { type: "paragraph", content: "When facing financial hardship, many people don't realize that creditors are often willing to negotiate payment terms, interest rates, or even settle debts for less than the full amount. Understanding how to approach these negotiations can provide significant relief and help you regain control of your finances." },
-          { type: "list", content: "What creditors may be willing to negotiate:", items: ["Lower interest rates: Temporary or permanent reductions", "Payment plans: Extended terms or lower monthly payments", "Hardship programs: Special arrangements for financial difficulties", "Settlement amounts: Accepting less than full balance owed", "Fee waivers: Removing late fees or over-limit charges", "Payment deferrals: Temporary suspension of payments"] },
-          { type: "list", content: "When to consider negotiating:", items: ["You're experiencing temporary financial hardship", "You're consistently late on payments", "You're considering bankruptcy", "You have a lump sum available for settlement", "Interest rates are significantly higher than current market rates", "You're facing collection actions"] },
-          { type: "example", content: "After losing her job, Maria called her credit card company and explained her situation. They offered a hardship program with reduced payments for 6 months and waived late fees, giving her time to find new employment." },
-          { type: "list", content: "How to prepare for negotiations:", items: ["Document your financial hardship with proof", "Calculate what you can realistically afford to pay", "Research the creditor's typical hardship programs", "Gather account information and payment history", "Prepare a clear explanation of your situation", "Have a specific proposal ready to present"] },
-          { type: "list", content: "Negotiation strategies that work:", items: ["Be honest about your financial situation", "Remain calm and professional throughout", "Ask to speak with a supervisor if needed", "Get any agreement in writing before paying", "Don't agree to terms you can't maintain", "Be prepared to walk away if terms aren't reasonable"] },
-          { type: "list", content: "Important considerations:", items: ["Settled debts may be reported as taxable income", "Negotiations may temporarily hurt your credit score", "Some agreements may require lump sum payments", "Not all creditors will negotiate", "Professional help may be worth the cost", "Document all communications and agreements"] },
-          { type: "tip", content: "Call creditors before you miss payments if possible. They're more willing to work with you if you're proactive about financial difficulties rather than reactive." },
-        ],
-        keyTakeaways: ["Creditors often prefer negotiation over collection actions", "Be proactive and honest about financial hardships", "Get all agreements in writing before making payments", "Consider tax implications of settled debts"],
-        quiz: { questions: [{ question: "When is the best time to negotiate with creditors?", options: ["After missing several payments", "Before you miss any payments", "Only when facing bankruptcy", "After accounts go to collections"], correctAnswer: "Before you miss any payments", explanation: "Creditors are most willing to work with you when you're proactive about financial difficulties rather than waiting until you've already missed payments." }] },
-      },
-      {
-        title: "Preventing Future Debt Problems",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Build Systems to Stay Debt-Free" },
-          { type: "paragraph", content: "Successfully paying off debt is only half the battle - preventing future debt problems is equally important. Building strong financial systems and habits helps ensure you don't fall back into the debt trap and can maintain your financial freedom long-term." },
-          { type: "list", content: "Essential debt prevention strategies:", items: ["Build and maintain an emergency fund", "Live below your means consistently", "Use credit cards responsibly or not at all", "Create and stick to a realistic budget", "Increase income through skills and career development", "Avoid lifestyle inflation as income grows"] },
-          { type: "list", content: "Emergency fund importance:", items: ["Prevents borrowing for unexpected expenses", "Provides peace of mind and financial security", "Should cover 3-6 months of essential expenses", "Keep in easily accessible savings account", "Replenish immediately after using", "Start with $1,000 minimum emergency fund"] },
-          { type: "example", content: "After paying off $20,000 in credit card debt, James built a $10,000 emergency fund. When his car needed $2,500 in repairs, he paid cash instead of using credit cards, preventing a return to debt." },
-          { type: "list", content: "Responsible credit card use:", items: ["Pay full balance every month without exception", "Keep utilization below 30% of credit limits", "Use cards for convenience, not to afford purchases", "Set up automatic payments to avoid late fees", "Monitor statements regularly for errors or fraud", "Consider using debit cards or cash instead"] },
-          { type: "list", content: "Budgeting for debt prevention:", items: ["Include irregular expenses in monthly budget", "Plan for annual expenses like insurance and taxes", "Build in buffer for unexpected costs", "Review and adjust budget monthly", "Track spending to identify problem areas", "Use sinking funds for known future expenses"] },
-          { type: "list", content: "Warning signs of debt trouble:", items: ["Making only minimum payments on credit cards", "Using credit for basic necessities", "Borrowing to pay other debts", "Maxing out credit limits", "Applying for new credit frequently", "Losing sleep over money worries"] },
-          { type: "tip", content: "If you're tempted to use credit cards, try the 24-hour rule: wait a full day before making any non-essential purchase. Often, the urge will pass." },
-        ],
-        keyTakeaways: ["Emergency funds prevent most debt emergencies", "Live below your means to avoid future debt", "Use credit responsibly or avoid it entirely", "Monitor warning signs and address them quickly"],
-        quiz: { questions: [{ question: "What's the most important factor in preventing future debt problems?", options: ["Having multiple credit cards", "Earning a high income", "Building and maintaining an emergency fund", "Using balance transfer offers"], correctAnswer: "Building and maintaining an emergency fund", explanation: "An emergency fund prevents most situations that lead people back into debt by providing cash for unexpected expenses." }] },
-      },
-      {
-        title: "Advanced Debt Strategies",
-        duration: "5 min",
-        points: 20,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Sophisticated Approaches for Complex Situations" },
-          { type: "paragraph", content: "For those with complex debt situations or who have mastered basic debt management, advanced strategies can provide additional tools for optimization. These approaches require more knowledge and careful consideration but can offer significant benefits in the right circumstances." },
-          { type: "list", content: "Advanced debt strategies:", items: ["Strategic bankruptcy: Chapter 7 vs Chapter 13 considerations", "Tax loss harvesting: Using investment losses to offset gains", "Debt arbitrage: Borrowing at low rates to invest at higher returns", "Credit card churning: Maximizing rewards while avoiding debt", "Asset protection strategies: Protecting wealth from creditors", "Business debt vs personal debt optimization"] },
-          { type: "list", content: "Bankruptcy considerations:", items: ["Chapter 7: Liquidation of assets to discharge debts", "Chapter 13: Reorganization with 3-5 year payment plan", "Means test determines eligibility for Chapter 7", "Credit impact lasts 7-10 years", "Some debts cannot be discharged", "Professional legal advice is essential"] },
-          { type: "example", content: "Dr. Smith has $300,000 in student loans at 6% and $50,000 in savings. Instead of paying off loans early, she invests in index funds expecting 8% returns, creating positive arbitrage of 2% annually." },
-          { type: "list", content: "Debt arbitrage strategies:", items: ["Borrow at low rates to invest at higher expected returns", "Requires discipline to actually invest borrowed money", "Works best with tax-advantaged accounts", "Consider tax implications of investment gains", "Only for sophisticated investors who understand risks", "Market risk can turn positive arbitrage negative"] },
-          { type: "list", content: "Business debt optimization:", items: ["Separate business and personal credit profiles", "Use business credit to preserve personal credit", "Take advantage of business tax deductions", "Consider equipment financing vs cash purchases", "Understand personal guarantees on business debt", "Build business credit history for better terms"] },
-          { type: "list", content: "Advanced credit strategies:", items: ["Credit card churning for signup bonuses", "Manufactured spending to meet bonus requirements", "Balance transfer arbitrage with 0% APR offers", "Credit limit optimization for utilization ratios", "Authorized user strategies for credit building", "Business credit cards for expense management"] },
-          { type: "tip", content: "Advanced strategies carry higher risks and complexity. Master basic debt management first, and consider professional advice before implementing sophisticated approaches." },
-        ],
-        keyTakeaways: ["Advanced strategies require sophisticated understanding", "Bankruptcy should be last resort with professional guidance", "Debt arbitrage can work but carries investment risk", "Business debt offers different opportunities than personal debt"],
-        quiz: { questions: [{ question: "What is debt arbitrage?", options: ["Negotiating lower interest rates", "Consolidating multiple debts", "Borrowing at low rates to invest at higher expected returns", "Paying off debt early"], correctAnswer: "Borrowing at low rates to invest at higher expected returns", explanation: "Debt arbitrage involves borrowing money at a low interest rate and investing it at a higher expected return, profiting from the difference." }] },
-      },
-    ],
-    "credit-scores": [
-      {
-        title: "How Credit Scores Work",
-        duration: "5 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Understanding the Credit Score System" },
-          { type: "paragraph", content: "Credit scores are three-digit numbers that represent your creditworthiness to lenders. Understanding how these scores are calculated and what factors influence them is crucial for building and maintaining good credit, which affects your ability to borrow money and the interest rates you'll pay." },
-          { type: "list", content: "Credit score ranges and meanings:", items: ["800-850: Excellent credit - best rates and terms available", "740-799: Very good credit - access to favorable rates", "670-739: Good credit - most loans available at decent rates", "580-669: Fair credit - higher rates, limited options", "300-579: Poor credit - difficulty getting approved, very high rates"] },
-          { type: "list", content: "FICO score factors and weights:", items: ["Payment history (35%): On-time vs late payments", "Credit utilization (30%): How much credit you're using", "Length of credit history (15%): Age of accounts", "Credit mix (10%): Variety of credit types", "New credit (10%): Recent credit inquiries and accounts"] },
-          { type: "example", content: "Sarah has a 750 credit score because she pays all bills on time (35%), keeps credit card balances under 10% of limits (30%), has accounts open for 8+ years (15%), has both credit cards and a car loan (10%), and rarely applies for new credit (10%)." },
-          { type: "list", content: "Different credit scoring models:", items: ["FICO Score: Most widely used by lenders", "VantageScore: Alternative model used by some lenders", "Industry-specific scores: Auto loans, mortgages, credit cards", "FICO Score versions: FICO 8, FICO 9, FICO 10", "Educational scores: May differ from lender scores", "Credit monitoring scores: Often different from actual FICO"] },
-          { type: "list", content: "What credit scores affect:", items: ["Interest rates on loans and credit cards", "Approval odds for credit applications", "Security deposits for utilities and rentals", "Insurance premiums in some states", "Employment opportunities in certain fields", "Cell phone plan requirements"] },
-          { type: "tip", content: "Focus on the two biggest factors: pay all bills on time (35%) and keep credit utilization low (30%). These alone account for 65% of your credit score." },
-        ],
-        keyTakeaways: ["Credit scores range from 300-850 with higher being better", "Payment history and credit utilization are most important factors", "Different scoring models may give different scores", "Good credit saves money through lower interest rates"],
-        quiz: { questions: [{ question: "Which factor has the biggest impact on your credit score?", options: ["Credit utilization", "Payment history", "Length of credit history", "Credit mix"], correctAnswer: "Payment history", explanation: "Payment history accounts for 35% of your credit score, making it the most important factor in determining your creditworthiness." }] },
-      },
-      {
-        title: "Reading Your Credit Report",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Decoding Your Credit Report Information" },
-          { type: "paragraph", content: "Your credit report contains detailed information about your credit history that lenders use to make decisions. Learning to read and understand your credit report helps you identify errors, track your progress, and understand what lenders see when they review your credit." },
-          { type: "list", content: "Main sections of a credit report:", items: ["Personal information: Name, address, SSN, employment", "Credit accounts: All current and past credit accounts", "Credit inquiries: Who has checked your credit recently", "Public records: Bankruptcies, tax liens, judgments", "Collections: Accounts sent to collection agencies", "Dispute information: Results of credit report disputes"] },
-          { type: "list", content: "Credit account information includes:", items: ["Account type: Credit card, mortgage, auto loan, etc.", "Date opened: When the account was first established", "Credit limit or loan amount: Maximum borrowing limit", "Current balance: Amount currently owed", "Payment history: Record of on-time and late payments", "Account status: Open, closed, paid as agreed, etc."] },
-          { type: "example", content: "John's credit report shows his Chase credit card opened in 2019 with a $5,000 limit, current balance of $1,200, and 36 months of on-time payments. This positive information helps his credit score." },
-          { type: "list", content: "Understanding payment history codes:", items: ["Current/OK: Account is current with no late payments", "30, 60, 90, 120+: Days late on payments", "CO: Charge-off (account written off as bad debt)", "R: Repossession of collateral", "F: Foreclosure on mortgage", "BK: Bankruptcy notation"] },
-          { type: "list", content: "Credit inquiry types:", items: ["Hard inquiries: Credit applications that may lower score", "Soft inquiries: Credit checks that don't affect score", "Promotional inquiries: Pre-approved offers", "Account review inquiries: Existing lenders checking credit", "Employment inquiries: Background checks for jobs", "Insurance inquiries: Checking credit for insurance rates"] },
-          { type: "list", content: "How to get free credit reports:", items: ["AnnualCreditReport.com: Official free annual reports", "Credit card companies: Many provide free monthly reports", "Credit monitoring services: Free and paid options", "Credit Karma, Credit Sesame: Free credit monitoring", "Bank and credit union services: Often included with accounts", "After credit denial: Free report within 60 days"] },
-          { type: "tip", content: "Check your credit report from all three bureaus (Experian, Equifax, TransUnion) annually, as they may contain different information." },
-        ],
-        keyTakeaways: ["Credit reports contain detailed history of all credit accounts", "Payment history codes show your payment patterns", "Hard inquiries can temporarily lower your score", "Free credit reports are available from multiple sources"],
-        quiz: { questions: [{ question: "How often can you get a free credit report from each bureau?", options: ["Monthly", "Quarterly", "Annually", "Only after being denied credit"], correctAnswer: "Annually", explanation: "You're entitled to one free credit report from each of the three major credit bureaus (Experian, Equifax, TransUnion) annually through AnnualCreditReport.com." }] },
-      },
-      {
-        title: "Improving Your Credit Score",
-        duration: "5 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Proven Strategies to Boost Your Credit" },
-          { type: "paragraph", content: "Improving your credit score takes time and consistent effort, but the financial benefits are substantial. Understanding which strategies have the biggest impact and how long they take to work helps you prioritize your efforts and set realistic expectations for credit improvement." },
-          { type: "list", content: "Quick credit score improvements (1-2 months):", items: ["Pay down credit card balances to lower utilization", "Pay off collections or charge-offs if possible", "Dispute and remove credit report errors", "Become an authorized user on someone's good account", "Pay all bills on time going forward", "Request credit limit increases to lower utilization"] },
-          { type: "list", content: "Medium-term improvements (3-6 months):", items: ["Establish consistent on-time payment history", "Keep old accounts open to maintain credit history length", "Diversify credit mix with different account types", "Limit new credit applications to avoid hard inquiries", "Negotiate pay-for-delete agreements with collectors", "Use credit builder loans or secured credit cards"] },
-          { type: "example", content: "Maria had a 620 credit score with $8,000 in credit card debt on $10,000 limits (80% utilization). She paid down balances to $2,000 (20% utilization) and saw her score jump to 680 within two months." },
-          { type: "list", content: "Long-term credit building (6+ months):", items: ["Maintain perfect payment history over time", "Allow credit history length to naturally increase", "Gradually build credit limits through responsible use", "Recover from negative marks as they age", "Build relationships with lenders for better terms", "Establish business credit separate from personal credit"] },
-          { type: "list", content: "Credit utilization optimization:", items: ["Keep total utilization under 30% of all limits", "Aim for under 10% utilization for excellent scores", "Pay balances before statement closing dates", "Spread balances across multiple cards if needed", "Request credit limit increases annually", "Consider making multiple payments per month"] },
-          { type: "list", content: "Common credit improvement mistakes:", items: ["Closing old credit cards (reduces available credit)", "Paying off and closing accounts (shortens credit history)", "Applying for too much new credit at once", "Ignoring credit reports and not checking for errors", "Only making minimum payments on credit cards", "Not understanding how credit utilization is calculated"] },
-          { type: "tip", content: "The fastest way to improve your credit score is to pay down credit card balances. Even a 50-point improvement in utilization can boost your score significantly within 1-2 months." },
-        ],
-        keyTakeaways: ["Credit utilization has the fastest impact on scores", "Payment history improvements take time to show results", "Keep old accounts open to maintain credit history", "Avoid common mistakes that can hurt your progress"],
-        quiz: { questions: [{ question: "What's the fastest way to improve your credit score?", options: ["Apply for new credit cards", "Close old accounts", "Pay down credit card balances", "Wait for negative marks to fall off"], correctAnswer: "Pay down credit card balances", explanation: "Paying down credit card balances reduces your credit utilization ratio, which can improve your credit score within 1-2 months." }] },
-      },
-      {
-        title: "Credit Monitoring and Protection",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Stay Alert to Protect Your Credit" },
-          { type: "paragraph", content: "Credit monitoring helps you track changes to your credit reports and scores, alerting you to potential fraud or errors. With identity theft and credit fraud on the rise, having a system to monitor your credit is essential for protecting your financial reputation and catching problems early." },
-          { type: "list", content: "Benefits of credit monitoring:", items: ["Early detection of identity theft and fraud", "Alerts when new accounts are opened in your name", "Notification of significant score changes", "Regular updates on credit report changes", "Peace of mind about credit status", "Help with credit improvement tracking"] },
-          { type: "list", content: "Free credit monitoring options:", items: ["Credit Karma: Free scores and monitoring from TransUnion and Equifax", "Credit Sesame: Free credit monitoring and financial tools", "Bank and credit card services: Many offer free monitoring", "Annual Credit Report: Free annual reports from all three bureaus", "Government services: Identity theft protection resources", "Credit bureau free services: Basic monitoring from each bureau"] },
-          { type: "example", content: "Tom received a credit monitoring alert that a new credit card was opened in his name. He immediately contacted the credit card company and credit bureaus, preventing thousands in fraudulent charges and protecting his credit score." },
-          { type: "list", content: "Paid credit monitoring features:", items: ["Three-bureau monitoring: Coverage from all major bureaus", "Daily credit report updates: More frequent monitoring", "Identity theft insurance: Financial protection against fraud", "Credit score simulators: See impact of potential changes", "Dark web monitoring: Alerts if personal info found online", "Professional fraud resolution: Expert help with identity theft"] },
-          { type: "list", content: "Credit protection strategies:", items: ["Freeze your credit reports when not applying for credit", "Set up fraud alerts on your credit reports", "Monitor bank and credit card statements regularly", "Use strong, unique passwords for financial accounts", "Be cautious about sharing personal information", "Shred documents containing sensitive information"] },
-          { type: "list", content: "What to do if you find errors:", items: ["Document the error with screenshots or copies", "Dispute directly with credit bureaus online or by mail", "Contact the creditor reporting the incorrect information", "Keep records of all dispute communications", "Follow up if disputes aren't resolved in 30 days", "Consider professional help for complex disputes"] },
-          { type: "tip", content: "Credit freezes are free and provide the strongest protection against new account fraud. Unfreeze temporarily when you need to apply for credit." },
-        ],
-        keyTakeaways: ["Credit monitoring provides early fraud detection", "Free options are available and often sufficient", "Credit freezes offer the strongest fraud protection", "Act quickly when you discover errors or fraud"],
-        quiz: { questions: [{ question: "What provides the strongest protection against credit fraud?", options: ["Credit monitoring services", "Fraud alerts", "Credit freezes", "Identity theft insurance"], correctAnswer: "Credit freezes", explanation: "Credit freezes prevent new accounts from being opened in your name, providing the strongest protection against identity theft and credit fraud." }] },
-      },
-      {
-        title: "Building Credit from Scratch",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Establishing Your First Credit History" },
-          { type: "paragraph", content: "Building credit from scratch can seem challenging since you need credit to get credit, but there are several strategies specifically designed for people with no credit history. Starting early and using the right approach helps you build a strong credit foundation for your financial future." },
-          { type: "list", content: "Options for building first-time credit:", items: ["Secured credit cards: Backed by a cash deposit", "Student credit cards: Designed for college students", "Authorized user status: Added to someone else's account", "Credit builder loans: Loans designed to build credit", "Store credit cards: Often easier to qualify for", "Co-signed loans: Someone with good credit co-signs"] },
-          { type: "list", content: "How secured credit cards work:", items: ["Make a refundable security deposit ($200-500 typical)", "Deposit usually equals your credit limit", "Use like a regular credit card for purchases", "Pay the full balance each month to avoid interest", "After 6-12 months, may upgrade to unsecured card", "Deposit is returned when account is closed or upgraded"] },
-          { type: "example", content: "Alex, a college student with no credit, got a secured card with a $300 deposit. After using it responsibly for 8 months, making small purchases and paying in full, his credit score reached 720 and he qualified for an unsecured card." },
-          { type: "list", content: "Authorized user strategy:", items: ["Ask family member with excellent credit to add you", "Their payment history appears on your credit report", "Choose someone who pays on time and keeps low balances", "You don't need access to the actual card", "Can build credit without applying for your own card", "Remove yourself if the primary user's habits worsen"] },
-          { type: "list", content: "Best practices for new credit users:", items: ["Start with one credit account and use it responsibly", "Keep balances low (under 30% of credit limit)", "Pay the full statement balance every month", "Set up automatic payments to avoid late fees", "Monitor your credit score and report regularly", "Don't apply for multiple cards at once"] },
-          { type: "list", content: "Timeline for building credit:", items: ["Month 1-3: Establish accounts and begin using credit", "Month 3-6: Credit score begins to appear and improve", "Month 6-12: Score stabilizes with consistent good habits", "Year 1-2: Qualify for better credit products and rates", "Year 2+: Excellent credit with continued responsible use", "Long-term: Maintain good habits for lifelong benefits"] },
-          { type: "tip", content: "Start building credit as early as legally possible (age 18) since length of credit history is 15% of your credit score and takes time to develop." },
-        ],
-        keyTakeaways: ["Secured credit cards are excellent for building first credit", "Authorized user status can jumpstart your credit history", "Start early since credit history length matters", "Responsible use from the beginning builds excellent credit"],
-        quiz: { questions: [{ question: "What's typically required for a secured credit card?", options: ["Excellent credit score", "Co-signer", "Refundable security deposit", "Proof of income"], correctAnswer: "Refundable security deposit", explanation: "Secured credit cards require a refundable security deposit that typically serves as your credit limit, making them accessible to people with no credit history." }] },
-      },
-      {
-        title: "Advanced Credit Strategies",
-        duration: "5 min",
-        points: 20,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Sophisticated Credit Optimization Techniques" },
-          { type: "paragraph", content: "Once you've mastered basic credit management, advanced strategies can help you optimize your credit profile for maximum benefit. These techniques require more knowledge and careful execution but can provide significant advantages in terms of credit scores, available credit, and financial opportunities." },
-          { type: "list", content: "Advanced credit optimization strategies:", items: ["Credit card churning: Maximizing signup bonuses responsibly", "Balance transfer arbitrage: Profiting from 0% APR offers", "Credit limit optimization: Strategic increases across accounts", "Utilization timing: Manipulating statement dates for lower utilization", "Business credit building: Separate business credit profile", "Credit piggybacking: Advanced authorized user strategies"] },
-          { type: "list", content: "Credit card churning considerations:", items: ["Requires excellent credit (750+ score typically)", "Must meet minimum spending requirements for bonuses", "Track application timing to avoid too many inquiries", "Understand each card's rules and restrictions", "Cancel or downgrade cards before annual fees", "Don't let churning hurt your credit fundamentals"] },
-          { type: "example", content: "David, with an 800+ credit score, strategically applies for 2-3 premium credit cards per year, earning $2,000+ in signup bonuses while maintaining excellent credit by spacing applications and meeting spending requirements responsibly." },
-          { type: "list", content: "Business credit advantages:", items: ["Separate credit profile from personal credit", "Higher credit limits for business needs", "Business-specific rewards and benefits", "Potential tax advantages for business expenses", "Protects personal credit from business debt", "Builds business credit history for future financing"] },
-          { type: "list", content: "Advanced utilization strategies:", items: ["Multiple payment dates to keep utilization low", "All-zero-except-one (AZEO) strategy for maximum scores", "Balance spreading across multiple cards", "Timing large purchases around statement cycles", "Using business cards for high utilization", "Prepaying balances before statement closes"] },
-          { type: "list", content: "Credit limit optimization techniques:", items: ["Request increases every 6-12 months", "Time requests after positive account activity", "Use soft pull increase options when available", "Shift credit limits between cards with same issuer", "Understand each bank's increase policies", "Document income increases to support requests"] },
-          { type: "list", content: "Risks of advanced strategies:", items: ["Complexity can lead to mistakes and missed payments", "Too many inquiries can temporarily lower scores", "Annual fees can outweigh benefits if not managed", "Requires significant time and attention to detail", "Market changes can affect strategy effectiveness", "May not be worth the effort for modest benefits"] },
-          { type: "tip", content: "Advanced credit strategies should only be pursued after mastering basic credit management. The fundamentals (on-time payments, low utilization) matter more than optimization techniques." },
-        ],
-        keyTakeaways: ["Advanced strategies require excellent credit and careful execution", "Business credit provides additional opportunities", "Credit churning can be profitable but carries risks", "Master the basics before attempting advanced techniques"],
-        quiz: { questions: [{ question: "What credit score is typically needed for advanced credit strategies like churning?", options: ["650+", "700+", "750+", "800+"], correctAnswer: "750+", explanation: "Advanced credit strategies like churning typically require excellent credit (750+ score) to qualify for premium cards and manage multiple applications successfully." }] },
-      },
-    ],
-    "loans": [
-      {
-        title: "Understanding Auto Loans",
-        duration: "5 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Navigate Car Financing with Confidence" },
-          { type: "paragraph", content: "Auto loans are secured loans where the vehicle serves as collateral. Understanding how auto loans work, what affects your rates, and how to get the best deal can save you thousands of dollars over the life of your loan. Whether buying new or used, the right approach to auto financing is crucial." },
-          { type: "list", content: "Types of auto loans:", items: ["Bank loans: Traditional banks offering competitive rates", "Credit union loans: Often the best rates for members", "Dealer financing: Convenient but potentially more expensive", "Online lenders: Quick approval with competitive rates", "Manufacturer financing: Special promotions from car companies", "Personal loans: Unsecured option for older vehicles"] },
-          { type: "list", content: "Factors affecting auto loan rates:", items: ["Credit score: Higher scores get better rates", "Loan term: Shorter terms typically have lower rates", "Down payment: Larger down payments reduce rates", "Vehicle age: Newer cars often qualify for better rates", "Debt-to-income ratio: Lower ratios improve approval odds", "Employment history: Stable income helps qualification"] },
-          { type: "example", content: "Sarah with a 750 credit score gets a 4.5% rate on a 5-year loan, while her friend with a 620 score gets 8.5%. On a $25,000 loan, Sarah saves over $2,500 in interest over the loan term." },
-          { type: "list", content: "Auto loan shopping strategies:", items: ["Get pre-approved before shopping: Know your budget and rates", "Compare offers from multiple lenders: Banks, credit unions, online", "Negotiate the car price separately from financing", "Consider shorter loan terms to save on interest", "Make a substantial down payment (20% if possible)", "Read all terms carefully before signing"] },
-          { type: "list", content: "Common auto loan mistakes:", items: ["Focusing only on monthly payment instead of total cost", "Not shopping around for the best rates", "Taking the longest loan term available", "Rolling negative equity into a new loan", "Buying unnecessary add-ons and warranties", "Not reading the fine print on loan terms"] },
-          { type: "list", content: "New vs. used car financing:", items: ["New cars: Lower rates, longer terms, full warranty", "Used cars: Higher rates, shorter terms, potential issues", "Certified pre-owned: Balance of new and used benefits", "Age limits: Many lenders won't finance very old cars", "Mileage restrictions: High-mileage cars may not qualify", "Inspection requirements: Some lenders require inspections"] },
-          { type: "tip", content: "Get financing pre-approval before visiting dealerships. This gives you negotiating power and prevents dealers from marking up your interest rate." },
-        ],
-        keyTakeaways: ["Shop around for the best auto loan rates", "Credit score significantly impacts your interest rate", "Focus on total cost, not just monthly payments", "Pre-approval gives you negotiating power"],
-        quiz: { questions: [{ question: "What typically offers the best auto loan rates?", options: ["Dealership financing", "Credit unions", "Online lenders", "Manufacturer financing"], correctAnswer: "Credit unions", explanation: "Credit unions typically offer the most competitive auto loan rates to their members, often beating banks and other lenders." }] },
-      },
-      {
-        title: "Student Loan Basics",
-        duration: "5 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Understanding Education Financing Options" },
-          { type: "paragraph", content: "Student loans help finance higher education but can create long-term financial obligations. Understanding the different types of student loans, their terms, and repayment options is crucial for making informed decisions about education financing and managing debt after graduation." },
-          { type: "list", content: "Types of federal student loans:", items: ["Direct Subsidized Loans: Need-based, government pays interest while in school", "Direct Unsubsidized Loans: Not need-based, interest accrues immediately", "Direct PLUS Loans: For parents and graduate students", "Direct Consolidation Loans: Combine multiple federal loans", "Perkins Loans: Low-interest loans for exceptional need (discontinued)", "Work-Study Programs: Part-time jobs to help pay for school"] },
-          { type: "list", content: "Private student loan features:", items: ["Credit-based approval: Requires good credit or cosigner", "Variable or fixed interest rates: Rates can change over time", "Fewer repayment options: Limited flexibility compared to federal", "No federal protections: Fewer borrower benefits", "Higher borrowing limits: Can cover full cost of attendance", "Immediate repayment: May require payments while in school"] },
-          { type: "example", content: "Mike takes $30,000 in federal loans at 5% interest. With income-driven repayment, his payments start at $200/month based on his entry-level salary, compared to $318/month on the standard 10-year plan." },
-          { type: "list", content: "Federal loan benefits:", items: ["Fixed interest rates: Rates don't change over loan life", "Income-driven repayment: Payments based on income", "Loan forgiveness programs: Public service and teacher forgiveness", "Deferment and forbearance: Temporary payment relief", "No prepayment penalties: Pay off early without fees", "Death and disability discharge: Loans forgiven in extreme cases"] },
-          { type: "list", content: "Student loan repayment options:", items: ["Standard Repayment: Fixed payments over 10 years", "Income-Based Repayment (IBR): Payments based on income", "Pay As You Earn (PAYE): Lower payments for new borrowers", "Revised Pay As You Earn (REPAYE): Available to all borrowers", "Income-Contingent Repayment (ICR): Payments based on income and family size", "Extended Repayment: Lower payments over 25 years"] },
-          { type: "list", content: "Smart borrowing strategies:", items: ["Borrow only what you need: Minimize future debt burden", "Exhaust federal options first: Better terms than private loans", "Understand your career prospects: Borrow based on expected income", "Consider community college: Reduce overall education costs", "Apply for scholarships and grants: Free money doesn't need repayment", "Work part-time: Reduce borrowing needs"] },
-          { type: "tip", content: "Complete the FAFSA (Free Application for Federal Student Aid) every year to maximize your eligibility for federal loans, grants, and work-study programs." },
-        ],
-        keyTakeaways: ["Federal loans offer better terms and protections than private loans", "Income-driven repayment plans can make payments manageable", "Borrow only what you need for education expenses", "Understand repayment options before borrowing"],
-        quiz: { questions: [{ question: "What's the main advantage of federal student loans over private loans?", options: ["Higher borrowing limits", "Lower interest rates always", "Better repayment options and protections", "No credit check required"], correctAnswer: "Better repayment options and protections", explanation: "Federal student loans offer income-driven repayment plans, loan forgiveness programs, and other borrower protections that private loans typically don't provide." }] },
-      },
-      {
-        title: "Personal Loan Fundamentals",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Unsecured Borrowing for Various Needs" },
-          { type: "paragraph", content: "Personal loans are unsecured loans that can be used for almost any purpose. They typically have fixed interest rates and monthly payments, making them predictable for budgeting. Understanding when personal loans make sense and how to get the best terms can help you use this financial tool effectively." },
-          { type: "list", content: "Common uses for personal loans:", items: ["Debt consolidation: Combine high-interest credit card debt", "Home improvements: Renovations and repairs", "Medical expenses: Large healthcare bills", "Wedding expenses: One-time celebration costs", "Emergency expenses: Unexpected financial needs", "Major purchases: Appliances, furniture, electronics"] },
-          { type: "list", content: "Personal loan characteristics:", items: ["Unsecured: No collateral required", "Fixed interest rates: Rate stays the same throughout loan", "Fixed monthly payments: Same payment amount each month", "Set loan terms: Typically 2-7 years", "Lump sum funding: Receive all money at once", "Origination fees: Some lenders charge upfront fees"] },
-          { type: "example", content: "Lisa consolidates $15,000 in credit card debt at 22% interest with a personal loan at 12% interest. Her monthly payment drops from $450 to $350, and she'll save over $8,000 in interest." },
-          { type: "list", content: "Factors affecting personal loan rates:", items: ["Credit score: Higher scores get better rates (typically 580+ required)", "Income: Higher income improves approval odds", "Debt-to-income ratio: Lower ratios get better terms", "Employment history: Stable employment helps approval", "Loan amount: Larger loans may have better rates", "Loan term: Shorter terms typically have lower rates"] },
-          { type: "list", content: "Where to get personal loans:", items: ["Banks: Traditional lenders with relationship benefits", "Credit unions: Often competitive rates for members", "Online lenders: Quick approval and funding", "Peer-to-peer platforms: Borrowers matched with investors", "Finance companies: May accept lower credit scores", "Credit cards: Cash advances (usually not recommended)"] },
-          { type: "list", content: "Personal loan pros and cons:", items: ["Pros: Fixed rates, predictable payments, no collateral", "Pros: Can consolidate debt, improve credit utilization", "Pros: Faster than home equity loans", "Cons: Higher rates than secured loans", "Cons: Origination fees and prepayment penalties possible", "Cons: Requires good credit for best rates"] },
-          { type: "tip", content: "Shop around with multiple lenders and check rates within a 14-45 day window to minimize the impact on your credit score from multiple inquiries." },
-        ],
-        keyTakeaways: ["Personal loans offer fixed rates and predictable payments", "Best used for debt consolidation or one-time expenses", "Credit score significantly affects your interest rate", "Shop around for the best rates and terms"],
-        quiz: { questions: [{ question: "What's the most common use for personal loans?", options: ["Home purchases", "Car purchases", "Debt consolidation", "Business expenses"], correctAnswer: "Debt consolidation", explanation: "Debt consolidation is the most popular use for personal loans, allowing borrowers to combine high-interest credit card debt into a single, lower-rate payment." }] },
-      },
-      {
-        title: "Loan Shopping and Comparison",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Finding the Best Loan Terms and Rates" },
-          { type: "paragraph", content: "Shopping for loans requires comparing multiple factors beyond just interest rates. Understanding how to evaluate loan offers, what questions to ask lenders, and how to negotiate terms can save you significant money over the life of your loan." },
-          { type: "list", content: "Key factors to compare:", items: ["Annual Percentage Rate (APR): True cost including fees", "Interest rate: Base rate before fees", "Loan term: Length of repayment period", "Monthly payment: Amount due each month", "Total interest paid: Cost over life of loan", "Fees: Origination, prepayment, late payment fees"] },
-          { type: "list", content: "Types of lenders to consider:", items: ["Banks: Traditional lenders with branch locations", "Credit unions: Member-owned with competitive rates", "Online lenders: Convenient with quick approval", "Peer-to-peer lenders: Individual investors fund loans", "Finance companies: May work with lower credit scores", "Employer credit unions: Special rates for employees"] },
-          { type: "example", content: "Comparing two $20,000 personal loans: Lender A offers 8% APR for 5 years ($405/month, $4,300 total interest). Lender B offers 10% APR for 4 years ($507/month, $4,336 total interest). Despite higher payments, both have similar total costs." },
-          { type: "list", content: "Questions to ask lenders:", items: ["What is the APR including all fees?", "Are there prepayment penalties?", "What fees are charged (origination, late, etc.)?", "How long is the approval process?", "What credit score is required?", "Can I change my payment due date?"] },
-          { type: "list", content: "Loan shopping timeline:", items: ["Check your credit score first: Know what to expect", "Research lenders online: Compare rates and terms", "Get pre-qualified: Soft credit check for estimated rates", "Apply to 2-3 lenders: Within 14-45 day window", "Compare final offers: Look at total cost, not just rate", "Choose and finalize: Complete application with best offer"] },
-          { type: "list", content: "Red flags to avoid:", items: ["Guaranteed approval regardless of credit", "Upfront fees before loan approval", "Pressure to decide immediately", "Rates much higher than advertised", "Unclear or hidden fees", "Unlicensed lenders or brokers"] },
-          { type: "tip", content: "Use loan calculators to compare the total cost of different loan offers. A slightly higher rate with a shorter term might cost less overall than a lower rate with a longer term." },
-        ],
-        keyTakeaways: ["Compare APR, not just interest rates", "Shop with multiple lenders within a short timeframe", "Consider total cost over the life of the loan", "Avoid lenders with red flag practices"],
-        quiz: { questions: [{ question: "What's the most important factor to compare when shopping for loans?", options: ["Interest rate", "Monthly payment", "Annual Percentage Rate (APR)", "Loan term"], correctAnswer: "Annual Percentage Rate (APR)", explanation: "APR includes both the interest rate and fees, giving you the true annual cost of the loan for accurate comparison shopping." }] },
-      },
-      {
-        title: "Loan Terms and Conditions",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Understanding Your Loan Agreement" },
-          { type: "paragraph", content: "Loan terms and conditions define your rights and obligations as a borrower. Understanding these terms before signing helps you avoid surprises and ensures you can meet your obligations. Key terms can significantly impact the total cost and flexibility of your loan." },
-          { type: "list", content: "Essential loan terms to understand:", items: ["Principal: The amount you're borrowing", "Interest rate: The cost of borrowing money", "APR: Annual percentage rate including fees", "Term: Length of time to repay the loan", "Monthly payment: Fixed amount due each month", "Maturity date: When the loan must be fully paid"] },
-          { type: "list", content: "Important fees and penalties:", items: ["Origination fee: Upfront cost to process the loan", "Late payment fee: Penalty for missing payments", "Prepayment penalty: Fee for paying off loan early", "Returned payment fee: Cost for bounced payments", "Loan modification fee: Cost to change loan terms", "Default fees: Additional costs if you stop paying"] },
-          { type: "example", content: "John's loan has a 2% origination fee on a $10,000 loan ($200 fee), but no prepayment penalty. He can pay extra toward principal without fees, potentially saving hundreds in interest." },
-          { type: "list", content: "Repayment terms to review:", items: ["Payment due date: When monthly payments are due", "Grace period: Time after due date before late fees", "Payment methods: How you can make payments", "Autopay discounts: Rate reductions for automatic payments", "Payment allocation: How payments are applied to principal and interest", "Missed payment consequences: What happens if you don't pay"] },
-          { type: "list", content: "Borrower rights and protections:", items: ["Right to prepay: Pay off loan early without penalty", "Truth in Lending disclosures: Clear cost information", "Fair Debt Collection Practices Act: Protection from harassment", "Right to dispute errors: Challenge incorrect information", "Cooling-off period: Time to cancel certain loans", "Privacy protections: How your information is used"] },
-          { type: "list", content: "Default and collection terms:", items: ["Default definition: What constitutes loan default", "Acceleration clause: Entire balance becomes due", "Collection procedures: Steps lender takes to collect", "Credit reporting: How defaults affect credit score", "Legal remedies: Lender's right to sue for payment", "Rehabilitation options: Ways to cure default"] },
-          { type: "tip", content: "Read the entire loan agreement before signing, not just the summary. Ask questions about any terms you don't understand - it's better to clarify now than be surprised later." },
-        ],
-        keyTakeaways: ["Understand all fees and penalties before signing", "Know your rights as a borrower", "Clarify payment terms and due dates", "Understand consequences of missed payments"],
-        quiz: { questions: [{ question: "What does APR include that interest rate doesn't?", options: ["Principal amount", "Monthly payment", "Fees and costs", "Loan term"], correctAnswer: "Fees and costs", explanation: "APR (Annual Percentage Rate) includes both the interest rate and fees, giving you the true annual cost of the loan." }] },
-      },
-      {
-        title: "Loan Repayment Strategies",
-        duration: "4 min",
-        points: 15,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Optimize Your Loan Payoff Strategy" },
-          { type: "paragraph", content: "How you repay your loans can significantly impact the total interest you pay and how quickly you become debt-free. Understanding different repayment strategies and when to use them helps you save money and achieve financial freedom faster." },
-          { type: "list", content: "Basic repayment strategies:", items: ["Make minimum payments: Meet basic obligations", "Pay extra toward principal: Reduce interest and loan term", "Bi-weekly payments: Make 26 payments per year instead of 12", "Round up payments: Pay $550 instead of $523", "Apply windfalls: Use tax refunds, bonuses for extra payments", "Refinance: Get better terms with improved credit"] },
-          { type: "list", content: "Benefits of paying extra principal:", items: ["Reduces total interest paid over loan life", "Shortens loan term significantly", "Builds equity faster (for secured loans)", "Provides psychological satisfaction", "Frees up future cash flow sooner", "Reduces financial stress and risk"] },
-          { type: "example", content: "On a $20,000 auto loan at 6% for 5 years, paying an extra $50/month saves $1,200 in interest and pays off the loan 10 months early." },
-          { type: "list", content: "When to prioritize loan payoff:", items: ["High interest rates: Focus on loans above 7-8%", "No better investment options: When returns are uncertain", "Peace of mind: Psychological benefit of being debt-free", "Approaching retirement: Reduce fixed expenses", "Variable rate loans: Before rates potentially increase", "No prepayment penalties: When extra payments are free"] },
-          { type: "list", content: "When to make minimum payments:", items: ["Low interest rates: Below 4-5% especially", "Better investment opportunities: Higher expected returns available", "No emergency fund: Build savings first", "High-interest debt exists: Pay off credit cards first", "Tax-deductible interest: Student loans, mortgages", "Employer 401(k) match: Get free money first"] },
-          { type: "list", content: "Refinancing considerations:", items: ["Improved credit score: May qualify for better rates", "Interest rates have dropped: Market conditions improved", "Income has increased: May qualify for better terms", "Want to change loan term: Shorter or longer repayment", "Remove cosigner: Qualify on your own", "Switch from variable to fixed rate: Reduce uncertainty"] },
-          { type: "tip", content: "Before paying extra on loans, ensure you have an emergency fund and are getting any employer 401(k) match. These should typically come before aggressive loan payoff." },
-        ],
-        keyTakeaways: ["Extra principal payments can save significant interest", "Prioritize high-interest loans for extra payments", "Consider refinancing when your situation improves", "Balance loan payoff with other financial goals"],
-        quiz: { questions: [{ question: "What's typically the best first step before aggressively paying off low-interest loans?", options: ["Refinancing the loans", "Building an emergency fund", "Investing in stocks", "Getting a second job"], correctAnswer: "Building an emergency fund", explanation: "An emergency fund should typically be established before aggressively paying off low-interest loans to provide financial security." }] },
-      },
-      {
-        title: "Avoiding Loan Scams and Predatory Lending",
-        duration: "5 min",
-        points: 20,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        content: [
-          { type: "heading", content: "Protect Yourself from Harmful Lending Practices" },
-          { type: "paragraph", content: "Predatory lenders target vulnerable borrowers with unfair, deceptive, or abusive loan terms. Understanding how to identify and avoid these practices protects you from financial harm and helps you find legitimate lending options that serve your best interests." },
-          { type: "list", content: "Common predatory lending practices:", items: ["Payday loans: Extremely high APRs (300-400%+)", "Title loans: Risk losing your car for small loans", "Rent-to-own agreements: Excessive costs for furniture/electronics", "Advance fee scams: Upfront fees for guaranteed loans", "Loan flipping: Repeatedly refinancing with fees", "Asset-based lending: Loans based on collateral, not ability to pay"] },
-          { type: "list", content: "Red flags to watch for:", items: ["Guaranteed approval regardless of credit", "Pressure to sign immediately", "Door-to-door or phone solicitation", "Requests for upfront fees", "Rates much higher than market average", "Unclear or missing loan terms"] },
-          { type: "example", content: "Maria needs $500 for car repairs. A payday lender offers the money for a $75 fee due in two weeks (391% APR). Instead, she borrows from her credit union at 12% APR, saving hundreds in fees." },
-          { type: "list", content: "Alternatives to predatory loans:", items: ["Credit union loans: Member-owned with fair rates", "Bank personal loans: Traditional lending with regulation", "Credit card cash advance: Usually better than payday loans", "Borrow from family/friends: No interest if possible", "Employer advances: Payroll advances or emergency loans", "Community assistance programs: Local help for emergencies"] },
-          { type: "list", content: "How to verify legitimate lenders:", items: ["Check state licensing: Verify lender is licensed", "Research online reviews: Look for complaint patterns", "Verify physical address: Legitimate business location", "Check Better Business Bureau: Look for accreditation and complaints", "Read all disclosures: Truth in Lending Act requirements", "Compare with known lenders: Banks, credit unions, established online lenders"] },
-          { type: "list", content: "Legal protections for borrowers:", items: ["Truth in Lending Act: Requires clear disclosure of terms", "Fair Debt Collection Practices Act: Limits collection harassment", "Equal Credit Opportunity Act: Prevents discrimination", "Fair Credit Reporting Act: Protects credit information", "State usury laws: Limits on interest rates", "Military Lending Act: Special protections for service members"] },
-          { type: "list", content: "What to do if you're a victim:", items: ["Document everything: Keep all communications and paperwork", "Contact your state attorney general: File complaints", "Report to Consumer Financial Protection Bureau: Federal oversight", "Consult with attorney: Legal options for recovery", "Contact credit bureaus: Dispute incorrect information", "Seek credit counseling: Help with debt management"] },
-          { type: "tip", content: "If a loan offer seems too good to be true or you're being pressured to decide quickly, walk away. Legitimate lenders give you time to review terms and shop around." },
-        ],
-        keyTakeaways: ["Avoid lenders offering guaranteed approval with upfront fees", "Research lenders thoroughly before borrowing", "Know your legal protections as a borrower", "Seek help if you become a victim of predatory lending"],
-        quiz: { questions: [{ question: "What's a major red flag of predatory lending?", options: ["Requiring good credit", "Offering competitive rates", "Requesting upfront fees for guaranteed approval", "Providing clear loan terms"], correctAnswer: "Requesting upfront fees for guaranteed approval", explanation: "Legitimate lenders don't charge upfront fees for loan approval. This is a common tactic used by predatory lenders and scammers." }] },
-      },
-    ],
-    "mortgages": [
-      {
-        title: "Types of Mortgages",
-        duration: "5 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Understanding Your Home Financing Options" },
-          { type: "paragraph", content: "Mortgages come in various types, each designed for different financial situations and homebuyer needs. Understanding the differences between mortgage types helps you choose the best option for your circumstances." },
-          { type: "list", content: "Fixed-rate mortgages:", items: ["Interest rate stays the same for entire loan term", "Predictable monthly payments", "Protection against rising rates", "15-year or 30-year terms most common"] },
-          { type: "list", content: "Adjustable-rate mortgages (ARMs):", items: ["Interest rate changes periodically", "Lower initial rates", "Payment amounts can fluctuate", "Good for short-term ownership"] },
-        ],
-        keyTakeaways: ["Fixed-rate offers stability", "ARMs have lower initial rates", "Choose based on your plans"],
-        quiz: { questions: [{ question: "What's the main advantage of a fixed-rate mortgage?", options: ["Lower rate", "Predictable payments", "No down payment", "Faster approval"], correctAnswer: "Predictable payments", explanation: "Fixed-rate mortgages provide payment stability throughout the loan term." }] },
-      },
-    ],
-    "retirement-planning": [
-      {
-        title: "401(k) Basics",
-        duration: "5 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Understanding Employer-Sponsored Retirement Plans" },
-          { type: "paragraph", content: "A 401(k) is an employer-sponsored retirement savings plan that allows you to save and invest for retirement with tax advantages." },
-          { type: "list", content: "Key benefits:", items: ["Tax-deferred growth", "Employer matching", "High contribution limits", "Automatic payroll deduction"] },
-        ],
-        keyTakeaways: ["401(k) offers tax advantages", "Always get employer match", "Start early for compound growth"],
-        quiz: { questions: [{ question: "What's the most important 401(k) benefit?", options: ["High returns", "Employer match", "Tax deduction", "Easy access"], correctAnswer: "Employer match", explanation: "Employer matching is free money that significantly boosts your retirement savings." }] },
-      },
-    ],
-    "hsa": [
-      {
-        title: "HSA Fundamentals",
-        duration: "4 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Triple Tax Advantage Accounts" },
-          { type: "paragraph", content: "Health Savings Accounts offer unique triple tax advantages: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses." },
-          { type: "list", content: "HSA benefits:", items: ["Tax deduction on contributions", "Tax-free investment growth", "Tax-free withdrawals for medical expenses", "No required distributions"] },
-        ],
-        keyTakeaways: ["HSAs offer triple tax benefits", "Great for long-term healthcare costs", "Can be used as retirement account"],
-        quiz: { questions: [{ question: "How many tax advantages do HSAs offer?", options: ["One", "Two", "Three", "Four"], correctAnswer: "Three", explanation: "HSAs offer triple tax advantages: deductible contributions, tax-free growth, and tax-free qualified withdrawals." }] },
-      },
-    ],
-    "insurance": [
-      {
-        title: "Life Insurance Basics",
-        duration: "5 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Protecting Your Family's Financial Future" },
-          { type: "paragraph", content: "Life insurance provides financial protection for your loved ones in case of your death. Understanding the types and how much you need is crucial for financial planning." },
-          { type: "list", content: "Types of life insurance:", items: ["Term life: Temporary coverage, lower cost", "Whole life: Permanent coverage with cash value", "Universal life: Flexible premiums and death benefits"] },
-        ],
-        keyTakeaways: ["Term life is usually best for most people", "Coverage should replace lost income", "Buy when young for lower rates"],
-        quiz: { questions: [{ question: "Which type of life insurance is typically recommended for most people?", options: ["Whole life", "Term life", "Universal life", "Variable life"], correctAnswer: "Term life", explanation: "Term life insurance provides the most coverage for the lowest cost, making it ideal for most people's needs." }] },
-      },
-    ],
-    "bill-negotiation": [
-      {
-        title: "Negotiation Strategies",
-        duration: "4 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Lower Your Monthly Bills Through Negotiation" },
-          { type: "paragraph", content: "Many bills can be negotiated lower with the right approach. Companies often prefer to keep customers at reduced rates rather than lose them entirely." },
-          { type: "list", content: "Bills you can negotiate:", items: ["Cable and internet", "Cell phone plans", "Insurance premiums", "Credit card interest rates", "Medical bills"] },
-        ],
-        keyTakeaways: ["Research competitor prices first", "Be polite but persistent", "Ask for supervisor if needed", "Get agreements in writing"],
-        quiz: { questions: [{ question: "What should you do before negotiating bills?", options: ["Threaten to cancel", "Research competitor prices", "Pay late", "Complain loudly"], correctAnswer: "Research competitor prices", explanation: "Knowing competitor prices gives you leverage and specific alternatives to reference during negotiations." }] },
-      },
-    ],
-    "investing": [
-      {
-        title: "Investment Fundamentals",
-        duration: "5 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Building Wealth Through Smart Investing" },
-          { type: "paragraph", content: "Investing allows your money to grow over time through compound returns. Understanding basic investment principles helps you build long-term wealth." },
-          { type: "list", content: "Key investment principles:", items: ["Start early for compound growth", "Diversify to reduce risk", "Invest regularly regardless of market conditions", "Keep costs low with index funds"] },
-        ],
-        keyTakeaways: ["Time in market beats timing the market", "Diversification reduces risk", "Low-cost index funds are ideal for beginners"],
-        quiz: { questions: [{ question: "What's the most important factor in investment success?", options: ["Picking individual stocks", "Market timing", "Starting early", "High returns"], correctAnswer: "Starting early", explanation: "Starting early allows compound growth to work over longer periods, which is the most powerful factor in building wealth." }] },
-      },
-    ],
-    "emergency-fund": [
-      {
-        title: "Emergency Fund Essentials",
-        duration: "4 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Your Financial Safety Net" },
-          { type: "paragraph", content: "An emergency fund is money set aside for unexpected expenses or income loss. It prevents you from going into debt when life throws you curveballs." },
-          { type: "list", content: "Emergency fund basics:", items: ["3-6 months of expenses", "Keep in high-yield savings", "Only use for true emergencies", "Replenish after using"] },
-        ],
-        keyTakeaways: ["Start with $1,000 minimum", "Build gradually over time", "Keep separate from other savings", "Provides peace of mind"],
-        quiz: { questions: [{ question: "How much should you have in an emergency fund?", options: ["1 month expenses", "3-6 months expenses", "1 year expenses", "$10,000"], correctAnswer: "3-6 months expenses", explanation: "Most financial experts recommend 3-6 months of expenses to cover most emergency situations." }] },
-      },
-    ],
-    "financial-goals": [
-      {
-        title: "Setting SMART Financial Goals",
-        duration: "4 min",
-        points: 15,
-        content: [
-          { type: "heading", content: "Creating Achievable Financial Objectives" },
-          { type: "paragraph", content: "SMART goals are Specific, Measurable, Achievable, Relevant, and Time-bound. This framework helps you create financial goals you can actually accomplish." },
-          { type: "list", content: "SMART goal components:", items: ["Specific: Clear and well-defined", "Measurable: Quantifiable progress", "Achievable: Realistic given your situation", "Relevant: Aligned with your values", "Time-bound: Has a deadline"] },
-        ],
-        keyTakeaways: ["Write goals down", "Make them specific and measurable", "Set realistic timelines", "Review and adjust regularly"],
-        quiz: { questions: [{ question: "What does the 'M' in SMART goals stand for?", options: ["Meaningful", "Measurable", "Motivating", "Manageable"], correctAnswer: "Measurable", explanation: "Measurable means you can track your progress and know when you've achieved the goal." }] },
-      },
-    ],
-    "sustainable-impact-investing": [
-      {
-        title: "ESG Investing Basics",
-        duration: "5 min",
+        duration: "6 min",
         points: 18,
         content: [
-          { type: "heading", content: "Investing with Your Values" },
-          { type: "paragraph", content: "ESG (Environmental, Social, Governance) investing considers non-financial factors alongside financial returns, allowing you to align your investments with your values." },
-          { type: "list", content: "ESG factors:", items: ["Environmental: Climate change, pollution, resource use", "Social: Labor practices, community impact, diversity", "Governance: Board composition, executive compensation, ethics"] },
+          {
+            type: "heading",
+            content: "Working with Creditors to Find Solutions",
+          },
+          {
+            type: "paragraph",
+              content:
+                "When facing financial hardship, negotiating with creditors can provide relief through modified payment plans, reduced interest rates, or other accommodations. Creditors often prefer working with you rather than dealing with defaults and collections.",
+          },
+          {
+            type: "list",
+            content: "When to contact creditors:",
+            items: [
+              "Before you miss any payments (proactive approach)",
+              "When you anticipate income reduction or job loss",
+              "After a major life event (medical emergency, divorce)",
+              "When current payments are unsustainable",
+              "If you're considering bankruptcy",
+              "When you have a lump sum available for settlement",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of hardship programs:",
+            items: [
+              "Payment deferrals: Temporary pause on payments",
+              "Reduced payment plans: Lower monthly payments",
+              "Interest rate reductions: Temporary or permanent rate cuts",
+              "Fee waivers: Elimination of late fees or penalties",
+              "Extended payment terms: Longer repayment period",
+              "Principal reductions: Rare, but possible in extreme cases",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Negotiation Success: After job loss, Tom contacted his credit card company before missing payments. They offered a 6-month hardship program with 50% reduced payments and 0% interest, giving him time to find new employment.",
+          },
+          {
+            type: "list",
+            content: "Preparation for creditor negotiations:",
+            items: [
+              "Gather all account information and payment history",
+              "Document your financial hardship with specific details",
+              "Calculate what you can realistically afford to pay",
+              "Research the creditor's typical hardship programs",
+              "Prepare a specific proposal or request",
+              "Have alternative proposals ready if first is rejected",
+            ],
+          },
+          {
+            type: "list",
+            content: "Negotiation strategies and tips:",
+            items: [
+              "Be honest about your situation and provide documentation",
+              "Emphasize your desire to pay and avoid default",
+              "Ask to speak with the hardship or retention department",
+              "Be persistent but polite - you may need multiple calls",
+              "Get any agreement in writing before making payments",
+              "Keep detailed records of all communications",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Medical Debt Negotiation: After a $25,000 hospital bill, Sarah negotiated a payment plan of $200/month with no interest. When she received an inheritance, she negotiated a lump-sum settlement for $15,000, saving $10,000.",
+          },
+          {
+            type: "list",
+            content: "What creditors want to hear:",
+            items: [
+              "Specific reasons for your financial hardship",
+              "Your commitment to paying what you owe",
+              "A realistic timeline for when your situation will improve",
+              "Specific payment amounts you can afford",
+              "Documentation supporting your hardship claims",
+              "Your preference to work with them rather than default",
+            ],
+          },
+          {
+            type: "list",
+            content: "Settlement negotiations:",
+            items: [
+              "Typically only available for severely delinquent accounts",
+              "May require lump-sum payment of reduced amount",
+              "Can significantly damage your credit score",
+              "May result in taxable income for forgiven debt",
+              "Should be last resort before bankruptcy",
+              "Get settlement terms in writing before paying",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common negotiation mistakes:",
+            items: [
+              "Waiting until after missing payments to contact creditors",
+              "Not getting agreements in writing",
+              "Agreeing to payments you can't actually afford",
+              "Not understanding the credit impact of settlements",
+              "Failing to follow through on negotiated agreements",
+              "Not keeping detailed records of conversations",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be cautious of debt settlement companies that charge fees to negotiate on your behalf. You can negotiate directly with creditors for free, and many settlement companies make situations worse.",
+          },
+          {
+            type: "tip",
+            content:
+              "Call creditors during business hours on weekdays when you're more likely to reach experienced representatives who have authority to approve hardship programs.",
+          },
         ],
-        keyTakeaways: ["ESG doesn't mean sacrificing returns", "Many ESG funds available", "Consider your values in investing", "Research fund holdings carefully"],
-        quiz: { questions: [{ question: "What does ESG stand for?", options: ["Economic, Social, Growth", "Environmental, Social, Governance", "Ethical, Sustainable, Green", "Energy, Solar, Gas"], correctAnswer: "Environmental, Social, Governance", explanation: "ESG stands for Environmental, Social, and Governance factors that are considered in sustainable investing." }] },
+        keyTakeaways: [
+          "Contact creditors before missing payments for best negotiation outcomes",
+          "Hardship programs can provide temporary relief during financial difficulties",
+          "Be prepared with documentation and realistic payment proposals",
+          "Get all agreements in writing before making any payments",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When is the best time to contact creditors about payment difficulties?",
+              options: [
+                "After missing several payments",
+                "Before you miss any payments",
+                "Only when accounts go to collections",
+                "After consulting with a debt settlement company",
+              ],
+              correctAnswer: "Before you miss any payments",
+              explanation:
+                "Contacting creditors proactively, before missing payments, shows good faith and makes them more likely to work with you on hardship programs or modified payment plans.",
+            },
+          ],
+        },
       },
-    ],
-    "taxes": [
       {
-        title: "Tax Filing Basics",
-        duration: "5 min",
-        points: 15,
+        title: "Avoiding Debt Traps and Predatory Lending",
+        duration: "7 min",
+        points: 21,
         content: [
-          { type: "heading", content: "Understanding Your Tax Obligations" },
-          { type: "paragraph", content: "Filing taxes is an annual requirement for most working adults. Understanding the basics helps you file correctly and potentially save money through deductions and credits." },
-          { type: "list", content: "Key tax concepts:", items: ["Gross income: All income before deductions", "Adjusted Gross Income (AGI): Income after certain deductions", "Standard vs itemized deductions", "Tax credits vs deductions"] },
+          {
+            type: "heading",
+            content: "Protecting Yourself from Dangerous Debt Products",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Predatory lenders target vulnerable consumers with high-cost, high-risk debt products that can trap borrowers in cycles of debt. Understanding these products and their alternatives helps you avoid financial traps that can take years to escape.",
+          },
+          {
+            type: "list",
+            content: "Common predatory lending products:",
+            items: [
+              "Payday loans: Short-term, extremely high-cost loans",
+              "Title loans: Secured by vehicle title, risk losing car",
+              "Rent-to-own agreements: Extremely high effective interest rates",
+              "Cash advances: High fees and immediate interest charges",
+              "Subprime credit cards: High fees and rates for poor credit",
+              "Installment loans: High-rate loans marketed to poor credit borrowers",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "True cost of payday loans:",
+            formula: "APR = (Fee ÷ Loan Amount) × (365 ÷ Loan Term) × 100",
+            variables: {
+              Fee: "Cost to borrow (e.g., $15 per $100)",
+              "Loan Amount": "Amount borrowed",
+              "Loan Term": "Days until repayment",
+              "Typical APR": "300-400% for payday loans",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Payday Loan Trap: $300 loan with $45 fee due in 14 days = 391% APR. If you can't repay, you pay another $45 to roll over. After 6 rollovers, you've paid $315 in fees on a $300 loan and still owe the principal.",
+          },
+          {
+            type: "list",
+            content: "Red flags of predatory lending:",
+            items: [
+              "Extremely high interest rates or fees",
+              "Pressure to sign immediately without time to review",
+              "No credit check or 'guaranteed approval' claims",
+              "Balloon payments or unaffordable payment schedules",
+              "Encouragement to lie on applications",
+              "Aggressive sales tactics or door-to-door solicitation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternatives to predatory loans:",
+            items: [
+              "Credit union small-dollar loans (PALs)",
+              "Payment plans with creditors or service providers",
+              "Employer paycheck advances",
+              "Borrowing from family or friends",
+              "Community assistance programs",
+              "Selling items or taking on extra work",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Payday Loan Escape: Maria was trapped in a payday loan cycle, paying $50 every two weeks on a $300 loan. She contacted a credit union, got a $500 PAL at 18% APR, paid off the payday loan, and saved over $1,000 annually.",
+          },
+          {
+            type: "list",
+            content: "Credit card debt traps to avoid:",
+            items: [
+              "Making only minimum payments on high balances",
+              "Cash advances with immediate interest and high fees",
+              "Balance transfer offers with high post-promotional rates",
+              "Store cards with deferred interest promotions",
+              "Credit limit increases that encourage more spending",
+              "Multiple cards from the same issuer (shared limits)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Building emergency alternatives:",
+            items: [
+              "Start with $25-50 emergency fund",
+              "Use automatic savings to build gradually",
+              "Keep emergency fund in separate account",
+              "Consider credit union membership for better loan options",
+              "Build relationships with family/friends for emergency help",
+              "Develop multiple income streams for stability",
+            ],
+          },
+          {
+            type: "list",
+            content: "Legal protections and resources:",
+            items: [
+              "Truth in Lending Act requires disclosure of loan terms",
+              "Fair Debt Collection Practices Act limits collector behavior",
+              "State laws may cap interest rates or regulate lenders",
+              "Consumer Financial Protection Bureau accepts complaints",
+              "Legal aid societies provide free legal assistance",
+              "Credit counseling agencies offer free debt advice",
+            ],
+          },
+          {
+            type: "list",
+            content: "Escaping existing debt traps:",
+            items: [
+              "Stop the cycle - don't renew or roll over loans",
+              "Seek help from nonprofit credit counseling",
+              "Consider debt management plans",
+              "Look into local emergency assistance programs",
+              "Negotiate payment plans with original creditors",
+              "Consult with bankruptcy attorney if situation is severe",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never use one high-cost loan to pay off another. This creates a dangerous cycle that becomes increasingly difficult to escape and can lead to financial ruin.",
+          },
+          {
+            type: "tip",
+            content:
+              "If you're considering a payday loan, try asking your employer for a paycheck advance first. Many employers will advance a portion of earned wages at no cost.",
+          },
         ],
-        keyTakeaways: ["Keep good records year-round", "Understand deductions vs credits", "File on time to avoid penalties", "Consider professional help for complex situations"],
-        quiz: { questions: [{ question: "What's better: a $1,000 tax deduction or a $1,000 tax credit?", options: ["Tax deduction", "Tax credit", "They're the same", "Depends on income"], correctAnswer: "Tax credit", explanation: "A tax credit reduces your tax bill dollar-for-dollar, while a deduction only reduces your taxable income." }] },
+        keyTakeaways: [
+          "Predatory loans have extremely high costs and can trap borrowers in debt cycles",
+          "Always calculate the true APR of any loan before borrowing",
+          "Build emergency savings and explore alternatives before using high-cost loans",
+          "Legal protections exist, and free help is available through nonprofit agencies",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the typical APR range for payday loans?",
+              options: ["25-50%", "75-150%", "200-300%", "300-400%"],
+              correctAnswer: "300-400%",
+              explanation:
+                "Payday loans typically have APRs of 300-400% or higher when fees are calculated on an annual basis, making them one of the most expensive forms of credit available.",
+            },
+          ],
+        },
       },
-    ],
-    "estate-planning": [
       {
-        title: "Estate Planning Fundamentals",
-        duration: "5 min",
-        points: 15,
+        title: "Building Wealth After Debt Freedom",
+        duration: "6 min",
+        points: 18,
         content: [
-          { type: "heading", content: "Planning for Your Legacy" },
-          { type: "paragraph", content: "Estate planning ensures your assets are distributed according to your wishes and can minimize taxes and legal complications for your heirs." },
-          { type: "list", content: "Basic estate planning documents:", items: ["Will: Directs asset distribution", "Power of attorney: Financial decisions if incapacitated", "Healthcare directive: Medical decisions if unable", "Beneficiary designations: On accounts and insurance"] },
+          {
+            type: "heading",
+            content: "Transitioning from Debt Payoff to Wealth Building",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Achieving debt freedom is a major milestone, but it's just the beginning of your wealth-building journey. The discipline and habits you developed during debt payoff can be redirected toward building assets and achieving financial independence.",
+          },
+          {
+            type: "list",
+            content: "Immediate steps after debt payoff:",
+            items: [
+              "Celebrate your achievement - you've accomplished something major!",
+              "Redirect debt payments to emergency fund completion",
+              "Increase retirement contributions significantly",
+              "Review and update your budget for new priorities",
+              "Consider increasing insurance coverage",
+              "Set new financial goals beyond debt elimination",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Wealth building acceleration:",
+            formula: "Monthly Wealth Building = Former Debt Payments + Additional Savings",
+            variables: {
+              "Former Debt Payments": "Money previously going to debt",
+              "Additional Savings": "Extra money from lifestyle optimization",
+              "Wealth Building Rate": "Percentage of income going to assets",
+              "Time to FI": "Years to financial independence",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Post-Debt Transition: Sarah was paying $800/month toward debt. After payoff, she allocated $400 to emergency fund completion, $300 to retirement investing, and $100 to a vacation fund. Her wealth building accelerated dramatically.",
+          },
+          {
+            type: "list",
+            content: "Priority order for post-debt money:",
+            items: [
+              "Complete emergency fund (3-6 months expenses)",
+              "Maximize employer 401(k) match if not already",
+              "Pay off any remaining low-balance, high-interest debt",
+              "Increase retirement contributions to 15% of income",
+              "Save for other financial goals (down payment, education)",
+              "Invest in diversified portfolio for long-term growth",
+            ],
+          },
+          {
+            type: "list",
+            content: "Advanced wealth building strategies:",
+            items: [
+              "Real estate investing (rental properties, REITs)",
+              "Business ownership and entrepreneurship",
+              "Tax-advantaged investing (HSA, 529 plans)",
+              "Alternative investments (private equity, angel investing)",
+              "Financial education and professional development",
+              "Estate planning and wealth transfer strategies",
+            ],
+          },
+          {
+            type: "list",
+            content: "Avoiding debt relapse:",
+            items: [
+              "Maintain a detailed budget and track expenses",
+              "Avoid lifestyle inflation as income increases",
+              "Use credit cards responsibly (pay in full, low utilization)",
+              "Set clear financial boundaries with family and friends",
+              "Automate savings and investments",
+              "Regularly review and update your financial plan",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Wealth Building Success: After paying off $40,000 in debt, Tom redirected his $1,000 monthly payments to real estate investing. He bought a rental property, generating passive income and building long-term wealth.",
+          },
+          {
+            type: "list",
+            content: "Long-term financial independence:",
+            items: [
+              "Calculate your financial independence number (25x annual expenses)",
+              "Track your progress toward FI with net worth and savings rate",
+              "Consider early retirement or semi-retirement options",
+              "Plan for healthcare and long-term care expenses",
+              "Create a fulfilling and meaningful life beyond work",
+              "Give back to your community and support causes you care about",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't let debt freedom lead to overconfidence or reckless spending. Maintain the discipline and habits that got you out of debt to build lasting wealth.",
+          },
+          {
+            type: "tip",
+            content:
+              "Celebrate your debt payoff by treating yourself to something you've wanted, but don't let it derail your long-term financial goals. A small reward can reinforce positive behavior.",
+          },
         ],
-        keyTakeaways: ["Everyone needs basic estate planning", "Update documents after major life events", "Consider professional help", "Don't delay - start with basics"],
-        quiz: { questions: [{ question: "What's the most basic estate planning document everyone should have?", options: ["Trust", "Will", "Power of attorney", "Healthcare directive"], correctAnswer: "Will", explanation: "A will is the fundamental document that directs how your assets should be distributed after death." }] },
+        keyTakeaways: [
+          "Redirect debt payments to emergency fund and retirement savings",
+          "Increase savings rate and invest for long-term growth",
+          "Avoid lifestyle inflation and maintain good financial habits",
+          "Plan for financial independence and a fulfilling life beyond debt",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should be your first priority after paying off debt?",
+              options: [
+                "Buying a new car or house",
+                "Taking a long vacation",
+                "Completing your emergency fund",
+                "Investing in high-risk stocks",
+              ],
+              correctAnswer: "Completing your emergency fund",
+              explanation:
+                "Completing your emergency fund provides a financial safety net and prevents you from going back into debt for unexpected expenses. It's the foundation for building long-term wealth.",
+            },
+          ],
+        },
       },
     ],
-    "financial-advisors": [
+    loans: [
       {
-        title: "Choosing a Financial Advisor",
-        duration: "5 min",
-        points: 15,
+        title: "Understanding Loans: An Overview",
+        duration: "7 min",
+        points: 20,
         content: [
-          { type: "heading", content: "Finding Professional Financial Help" },
-          { type: "paragraph", content: "Financial advisors can provide valuable guidance, but it's important to understand the different types and how they're compensated to find the right fit for your needs." },
-          { type: "list", content: "Types of advisors:", items: ["Fee-only: Paid directly by clients", "Commission-based: Paid by product sales", "Fee-based: Combination of fees and commissions", "Robo-advisors: Automated investment management"] },
+          {
+            type: "heading",
+            content: "The Basics of Borrowing",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Loans are a fundamental part of the financial landscape, enabling individuals and businesses to make large purchases or investments they couldn't otherwise afford. Understanding the mechanics of loans, including interest rates, terms, and fees, is crucial for making informed borrowing decisions.",
+          },
+          {
+            type: "list",
+            content: "Key loan components:",
+            items: [
+              "Principal: The original amount borrowed",
+              "Interest rate: The cost of borrowing, expressed as APR",
+              "Loan term: The length of time to repay the loan",
+              "Fees: Origination, late payment, prepayment penalties",
+              "Collateral: Assets pledged to secure the loan (if secured)",
+              "Amortization: The repayment schedule (how principal and interest are paid)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of loans:",
+            items: [
+              "Secured loans: Backed by collateral (mortgages, auto loans)",
+              "Unsecured loans: Not backed by collateral (personal loans, credit cards)",
+              "Installment loans: Fixed payments over a set term",
+              "Revolving credit: Credit cards with variable balances and payments",
+              "Fixed-rate loans: Interest rate remains constant",
+              "Variable-rate loans: Interest rate fluctuates with market conditions",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Loan payment calculation:",
+            formula: "M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1]",
+            variables: {
+              M: "Monthly payment",
+              P: "Principal loan amount",
+              i: "Monthly interest rate (annual rate ÷ 12)",
+              n: "Number of months (loan term in years × 12)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Loan Example: $10,000 loan at 8% APR for 5 years = $202.76 monthly payment. Total paid: $12,165.60. Total interest: $2,165.60.",
+          },
+          {
+            type: "list",
+            content: "Factors affecting loan eligibility:",
+            items: [
+              "Credit score: Lenders use scores to assess risk",
+              "Income: Ability to repay the loan",
+              "Debt-to-income ratio: Existing debt vs. income",
+              "Employment history: Stability and reliability",
+              "Collateral: Value and liquidity of assets (if secured)",
+              "Loan purpose: How the money will be used",
+            ],
+          },
+          {
+            type: "list",
+            content: "Loan application process:",
+            items: [
+              "Research lenders and compare terms",
+              "Gather required documentation (income, assets, ID)",
+              "Complete application online or in person",
+              "Undergo credit check and verification",
+              "Receive loan approval or denial",
+              "Review loan agreement and sign",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid borrowing more than you can comfortably afford to repay. Overborrowing can lead to financial stress, missed payments, and damage to your credit score.",
+          },
+          {
+            type: "tip",
+            content:
+              "Shop around with multiple lenders to compare interest rates and terms. Even a small difference in APR can save you thousands of dollars over the life of the loan.",
+          },
         ],
-        keyTakeaways: ["Understand how advisors are paid", "Look for fiduciary standard", "Check credentials and background", "Start with your specific needs"],
-        quiz: { questions: [{ question: "Which type of advisor compensation structure has the fewest conflicts of interest?", options: ["Commission-based", "Fee-based", "Fee-only", "Product-based"], correctAnswer: "Fee-only", explanation: "Fee-only advisors are paid directly by clients and don't receive commissions, reducing conflicts of interest." }] },
+        keyTakeaways: [
+          "Loans involve borrowing principal and repaying with interest",
+          "Secured loans have lower rates but put collateral at risk",
+          "Credit score, income, and DTI affect loan eligibility",
+          "Shop around and compare terms before taking out a loan",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the primary difference between a secured and unsecured loan?",
+              options: [
+                "Secured loans have lower interest rates",
+                "Secured loans require collateral",
+                "Unsecured loans have longer repayment terms",
+                "Unsecured loans are easier to qualify for",
+              ],
+              correctAnswer: "Secured loans require collateral",
+              explanation:
+                "Secured loans are backed by collateral, such as a home or car, which the lender can repossess if you fail to repay the loan. Unsecured loans have no collateral.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Auto Loans: Financing Your Vehicle",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Navigating Auto Financing",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Auto loans are used to finance the purchase of a vehicle. Understanding the factors that affect auto loan rates, the different types of lenders, and strategies for negotiating the best deal can save you thousands of dollars over the life of the loan.",
+          },
+          {
+            type: "list",
+            content: "Factors affecting auto loan rates:",
+            items: [
+              "Credit score: Higher scores get lower rates",
+              "Loan term: Shorter terms have lower rates",
+              "Down payment: Larger down payments reduce risk",
+              "Vehicle type: New cars often have better rates",
+              "Lender type: Banks, credit unions, dealerships",
+              "Market interest rates: Overall economic conditions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of auto loan lenders:",
+            items: [
+              "Banks: Offer competitive rates, require good credit",
+              "Credit unions: Often have lower rates for members",
+              "Dealerships: Convenient, but rates may be higher",
+              "Online lenders: Offer quick approvals and competitive rates",
+              "Finance companies: Specialize in loans for borrowers with poor credit",
+              "Buy-here-pay-here dealerships: High rates, last resort option",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Impact of interest rate on total cost:",
+            formula: "Total Paid = Monthly Payment × Loan Term",
+            variables: {
+              "Monthly Payment": "Calculated using loan payment formula",
+              "Loan Term": "Number of months to repay the loan",
+              "Interest Savings": "Difference in total paid with lower rate",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Rate Impact: $25,000 auto loan for 60 months. At 4% APR, total paid = $28,317. At 8% APR, total paid = $30,417. A 4% rate difference costs $2,100 more.",
+          },
+          {
+            type: "list",
+            content: "Strategies for negotiating auto loans:",
+            items: [
+              "Get pre-approved from a bank or credit union",
+              "Shop around with multiple lenders",
+              "Negotiate the vehicle price separately from financing",
+              "Make a large down payment",
+              "Choose a shorter loan term",
+              "Consider a certified pre-owned vehicle",
+            ],
+          },
+          {
+            type: "list",
+            content: "Auto loan red flags:",
+            items: [
+              "High-pressure sales tactics",
+              "Hidden fees or add-ons",
+              "Long loan terms (over 60 months)",
+              "Interest rates significantly above market average",
+              "Negative equity rollovers (adding old loan to new loan)",
+              "Spot delivery scams (signing before financing is approved)",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid long auto loan terms (over 60 months). While they lower monthly payments, you'll pay significantly more in interest and risk being upside down on your loan (owing more than the car is worth).",
+          },
+          {
+            type: "tip",
+            content:
+              "Focus on the out-the-door price, not just the monthly payment. Dealers often manipulate loan terms to make payments seem lower while increasing the total cost.",
+          },
+        ],
+        keyTakeaways: [
+          "Credit score, loan term, and down payment affect auto loan rates",
+          "Shop around with multiple lenders to compare offers",
+          "Negotiate the vehicle price separately from financing",
+          "Avoid long loan terms and high-pressure sales tactics",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the best strategy for negotiating an auto loan?",
+              options: [
+                "Focus solely on the monthly payment",
+                "Let the dealer handle all financing",
+                "Get pre-approved from a bank or credit union",
+                "Choose the longest loan term possible",
+              ],
+              correctAnswer: "Get pre-approved from a bank or credit union",
+              explanation:
+                "Getting pre-approved gives you a baseline interest rate and allows you to negotiate from a position of strength, knowing you have financing options outside the dealership.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Student Loans: Funding Your Education",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Student Loan Options",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Student loans help finance higher education, but they can also create a significant debt burden. Understanding the different types of student loans, repayment options, and strategies for managing debt is crucial for long-term financial success.",
+          },
+          {
+            type: "list",
+            content: "Federal vs. Private Student Loans:",
+            items: [
+              "Federal loans: Government-backed, fixed rates, income-driven repayment",
+              "Private loans: From banks or credit unions, variable or fixed rates",
+              "Federal loans offer more borrower protections and flexibility",
+              "Private loans may have higher rates and stricter terms",
+              "Maximize federal loans before considering private options",
+              "Compare terms and rates carefully before borrowing",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of federal student loans:",
+            items: [
+              "Direct Subsidized Loans: Interest doesn't accrue during school",
+              "Direct Unsubsidized Loans: Interest accrues during school",
+              "Direct PLUS Loans: For parents or graduate students",
+              "Perkins Loans: Low-interest loans for high-need students (discontinued)",
+              "Federal loans have borrowing limits based on year in school",
+              "Complete FAFSA to determine eligibility for federal aid",
+            ],
+          },
+          {
+            type: "list",
+            content: "Student loan repayment options:",
+            items: [
+              "Standard Repayment: Fixed payments over 10 years",
+              "Graduated Repayment: Payments start low, increase over time",
+              "Extended Repayment: Fixed or graduated payments over 25 years",
+              "Income-Driven Repayment (IDR): Payments based on income and family size",
+              "IDR options: IBR, PAYE, REPAYE, ICR",
+              "Public Service Loan Forgiveness (PSLF): For qualifying public service jobs",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Income-Driven Repayment (IDR) calculation:",
+            formula: "Annual Payment = Discretionary Income × Percentage",
+            variables: {
+              "Discretionary Income": "Income above a certain threshold",
+              Percentage: "10-20% depending on IDR plan",
+              "Loan Forgiveness": "Balance forgiven after 20-25 years",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "IDR Example: $50,000 loan, $60,000 income, $30,000 discretionary income. At 10% IBR, annual payment = $3,000 or $250/month. Remaining balance forgiven after 20 years.",
+          },
+          {
+            type: "list",
+            content: "Strategies for managing student loan debt:",
+            items: [
+              "Choose the repayment plan that best fits your income and goals",
+              "Make extra payments when possible to reduce principal",
+              "Consider loan consolidation to simplify payments",
+              "Explore loan forgiveness programs if eligible",
+              "Refinance private loans to lower interest rates",
+              "Avoid deferment and forbearance unless absolutely necessary",
+            ],
+          },
+          {
+            type: "list",
+            content: "Student loan red flags:",
+            items: [
+              "Borrowing more than you need",
+              "Using student loans for non-educational expenses",
+              "Ignoring loan terms and repayment options",
+              "Defaulting on student loans (severe consequences)",
+              "Consolidating federal loans into private loans (losing protections)",
+              "Paying for 'student loan forgiveness' services (often scams)",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Defaulting on student loans can have severe consequences, including wage garnishment, tax refund offset, and damage to your credit score. Contact your loan servicer immediately if you're struggling to make payments.",
+          },
+          {
+            type: "tip",
+            content:
+              "Use the Education Department's Loan Simulator to estimate your monthly payments and loan forgiveness eligibility under different repayment plans.",
+          },
+        ],
+        keyTakeaways: [
+          "Federal loans offer more borrower protections than private loans",
+          "Income-driven repayment plans can lower monthly payments",
+          "Loan forgiveness programs are available for certain professions",
+          "Avoid defaulting on student loans - explore all repayment options",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which type of student loan generally offers the most borrower protections and flexible repayment options?",
+              options: [
+                "Private student loans",
+                "Direct Subsidized Loans",
+                "Direct PLUS Loans",
+                "Perkins Loans",
+              ],
+              correctAnswer: "Direct Subsidized Loans",
+              explanation:
+                "Direct Subsidized Loans, along with other federal student loans, offer more borrower protections such as income-driven repayment plans and potential loan forgiveness options.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Personal Loans: Borrowing for Various Needs",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Personal Loan Options",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Personal loans are unsecured installment loans that can be used for various purposes, such as debt consolidation, home improvements, or unexpected expenses. Understanding the terms, rates, and fees associated with personal loans is crucial for making informed borrowing decisions.",
+          },
+          {
+            type: "list",
+            content: "Common uses for personal loans:",
+            items: [
+              "Debt consolidation: Paying off high-interest debt",
+              "Home improvements: Renovations or repairs",
+              "Unexpected expenses: Medical bills, car repairs",
+              "Major purchases: Furniture, appliances",
+              "Wedding expenses: Funding a wedding or honeymoon",
+              "Moving expenses: Relocation costs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors affecting personal loan rates:",
+            items: [
+              "Credit score: Higher scores get lower rates",
+              "Income: Ability to repay the loan",
+              "Debt-to-income ratio: Existing debt vs. income",
+              "Loan amount: Larger loans may have higher rates",
+              "Loan term: Shorter terms often have lower rates",
+              "Lender type: Banks, credit unions, online lenders",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Personal loan affordability calculation:",
+            formula: "Affordable Payment = (Gross Monthly Income × DTI Limit) - Existing Debt Payments",
+            variables: {
+              "Gross Monthly Income": "Income before taxes",
+              "DTI Limit": "Maximum acceptable debt-to-income ratio (36-43%)",
+              "Existing Debt Payments": "All current monthly debt payments",
+              "Affordable Loan Amount": "Maximum loan you can afford",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Affordability Example: $5,000 monthly income, 36% DTI limit, $1,000 existing debt payments. Affordable payment = ($5,000 × 0.36) - $1,000 = $800/month. Use loan calculator to find maximum loan amount with $800 payment.",
+          },
+          {
+            type: "list",
+            content: "Personal loan application process:",
+            items: [
+              "Check credit score and review credit reports",
+              "Shop around with multiple lenders",
+              "Gather required documentation (income, ID, bank statements)",
+              "Complete application online or in person",
+              "Receive loan approval or denial",
+              "Review loan agreement and sign",
+            ],
+          },
+          {
+            type: "list",
+            content: "Personal loan red flags:",
+            items: [
+              "High interest rates (over 36% APR)",
+              "Origination fees exceeding 5% of loan amount",
+              "Prepayment penalties",
+              "Variable interest rates",
+              "Unnecessary add-on products (credit insurance)",
+              "High-pressure sales tactics",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid using personal loans for discretionary spending or purchases you can't afford. Personal loans should be used for needs, not wants.",
+          },
+          {
+            type: "tip",
+            content:
+              "Check your credit score before applying for a personal loan. Knowing your score helps you understand what interest rates you're likely to qualify for.",
+          },
+        ],
+        keyTakeaways: [
+          "Personal loans can be used for various purposes",
+          "Credit score, income, and DTI affect personal loan rates",
+          "Shop around and compare terms before borrowing",
+          "Avoid high-interest rates, fees, and unnecessary add-ons",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the most important factor in determining your personal loan interest rate?",
+              options: [
+                "Your income",
+                "Your credit score",
+                "The loan amount",
+                "The loan term",
+              ],
+              correctAnswer: "Your credit score",
+              explanation:
+                "Your credit score is the primary factor lenders use to assess risk and determine your interest rate. Higher credit scores qualify for lower rates.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Mortgages: Financing Your Home",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Mortgage Options",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Mortgages are used to finance the purchase of a home. Understanding the different types of mortgages, loan terms, and factors that affect mortgage rates is crucial for making informed home buying decisions.",
+          },
+          {
+            type: "list",
+            content: "Types of mortgages:",
+            items: [
+              "Fixed-rate mortgages: Interest rate remains constant",
+              "Adjustable-rate mortgages (ARMs): Rate adjusts periodically",
+              "Conventional mortgages: Not government-backed",
+              "FHA loans: Insured by Federal Housing Administration",
+              "VA loans: Guaranteed by Department of Veterans Affairs",
+              "USDA loans: For rural and suburban homebuyers",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key mortgage terms:",
+            items: [
+              "Principal: The amount borrowed",
+              "Interest rate: The cost of borrowing",
+              "Loan term: Length of time to repay",
+              "Down payment: Percentage of purchase price paid upfront",
+              "Closing costs: Fees for processing the loan",
+              "Private mortgage insurance (PMI): Required with low down payments",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Mortgage affordability calculation:",
+            formula: "Affordable Home Price = (Gross Annual Income × Housing Ratio) ÷ (Mortgage Factor)",
+            variables: {
+              "Gross Annual Income": "Income before taxes",
+              "Housing Ratio": "Maximum income for housing costs (28%)",
+              "Mortgage Factor": "Based on interest rate and loan term",
+              "Affordable Home Price": "Maximum home price you can afford",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Affordability Example: $80,000 annual income, 28% housing ratio, 6% interest rate, 30-year term. Affordable home price = ($80,000 × 0.28) ÷ 0.006 = $373,333.",
+          },
+          {
+            type: "list",
+            content: "Steps in the home buying process:",
+            items: [
+              "Get pre-approved for a mortgage",
+              "Work with a real estate agent",
+              "Search for homes and make an offer",
+              "Undergo home inspection and appraisal",
+              "Secure financing and finalize loan",
+              "Close the deal and take ownership",
+            ],
+          },
+          {
+            type: "list",
+            content: "Mortgage red flags:",
+            items: [
+              "High interest rates or fees",
+              "Pressure to sign quickly without reviewing",
+              "Hidden costs or balloon payments",
+              "Lenders who don't verify income or assets",
+              "Encouragement to take on more debt than you can afford",
+              "Steering towards subprime loans",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid taking out a mortgage that exceeds your ability to repay. Foreclosure can have devastating financial and emotional consequences.",
+          },
+          {
+            type: "tip",
+            content:
+              "Save a down payment of at least 20% to avoid private mortgage insurance (PMI) and secure a lower interest rate.",
+          },
+        ],
+        keyTakeaways: [
+          "Fixed-rate mortgages offer predictable payments",
+          "FHA and VA loans help first-time homebuyers",
+          "Down payment and credit score affect mortgage rates",
+          "Shop around and get pre-approved before house hunting",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the primary benefit of a fixed-rate mortgage?",
+              options: [
+                "Lower initial interest rates",
+                "Predictable monthly payments",
+                "Faster equity building",
+                "Tax deductions on interest",
+              ],
+              correctAnswer: "Predictable monthly payments",
+              explanation:
+                "Fixed-rate mortgages offer the stability of knowing your interest rate and monthly payments will remain constant throughout the loan term, making budgeting easier.",
+            },
+          ],
+        },
       },
     ],
-  };
-
-  const moduleContent = lessons[moduleId];
-  if (!moduleContent || lessonIndex < 0 || lessonIndex >= moduleContent.length) {
-    return null;
-  }
-
-  return moduleContent[lessonIndex];
-}
+    investing: [
+      {
+        title: "Investment Fundamentals",
+        duration: "7 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "The Basics of Investing",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Investing is the process of allocating money with the expectation of generating future income or profit. Understanding the basic principles of investing, including risk, return, and diversification, is crucial for building long-term wealth.",
+          },
+          {
+            type: "list",
+            content: "Key investment concepts:",
+            items: [
+              "Risk: The possibility of losing money",
+              "Return: The profit or income generated from an investment",
+              "Diversification: Spreading investments across different asset classes",
+              "Asset allocation: Dividing investments based on risk tolerance and goals",
+              "Compounding: Earning returns on both principal and interest",
+              "Inflation: The rate at which the general level of prices for goods and services is rising",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common investment asset classes:",
+            items: [
+              "Stocks: Represent ownership in a company",
+              "Bonds: Represent debt owed by a government or corporation",
+              "Real estate: Physical property that can generate income",
+              "Commodities: Raw materials like oil, gold, and agricultural products",
+              "Mutual funds: Pools of money invested in a variety of assets",
+              "Exchange-Traded Funds (ETFs): Similar to mutual funds but trade like stocks",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Calculating investment return:",
+            formula: "Return = (Ending Value - Beginning Value + Income) ÷ Beginning Value × 100",
+            variables: {
+              "Ending Value": "Value of investment at the end of the period",
+              "Beginning Value": "Value of investment at the start of the period",
+              Income: "Dividends, interest, or other income received",
+              Return: "Percentage return on investment",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Return Example: $1,000 investment grows to $1,200 and pays $50 in dividends. Return = ($1,200 - $1,000 + $50) ÷ $1,000 × 100 = 25%.",
+          },
+          {
+            type: "list",
+            content: "Risk tolerance assessment:",
+            items: [
+              "Conservative: Low risk, low return (bonds, CDs)",
+              "Moderate: Balanced risk and return (mix of stocks and bonds)",
+              "Aggressive: High risk, high return (primarily stocks)",
+              "Time horizon: Longer time horizons allow for more risk",
+              "Financial goals: Higher goals require more risk",
+              "Personal comfort level: How well you handle market volatility",
+            ],
+          },
+          {
+            type: "list",
+            content: "Investment account types:",
+            items: [
+              "Taxable accounts: No tax advantages, but flexible",
+              "401(k)s: Employer-sponsored retirement plans",
+              "IRAs: Individual retirement accounts (Traditional and Roth)",
+              "HSAs: Health Savings Accounts (triple tax advantage)",
+              "529 plans: Education savings accounts",
+              "UTMAs/UGMAs: Custodial accounts for minors",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Avoid investing in products you don't understand. Research thoroughly and seek professional advice before investing in complex or high-risk investments.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start investing early, even with small amounts. The power of compounding can significantly increase your returns over time.",
+          },
+        ],
+        keyTakeaways: [
+          "Investing involves risk, return, and diversification",
+          "Asset allocation depends on risk tolerance and goals",
+          "Compounding is a powerful force for wealth building",
+          "Choose investment accounts that align with your tax situation",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is diversification in investing?",
+              options: [
+                "Investing in a single stock",
+                "Investing in a variety of asset classes",
+                "Investing only in low-risk assets",
+                "Investing only in high-growth stocks",
+              ],
+              correctAnswer: "Investing in a variety of asset classes",
+              explanation:
+                "Diversification involves spreading your investments across different asset classes, such as stocks, bonds, and real estate, to reduce risk and improve potential returns.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Stocks: Ownership in Companies",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Stocks and the Stock Market",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Stocks represent ownership in a company and offer the potential for capital appreciation and dividend income. Understanding how stocks are valued, the different types of stocks, and strategies for investing in the stock market is crucial for building long-term wealth.",
+          },
+          {
+            type: "list",
+            content: "Key stock market concepts:",
+            items: [
+              "Shares: Units of ownership in a company",
+              "Market capitalization: Total value of a company's outstanding shares",
+              "Stock exchanges: Marketplaces for buying and selling stocks",
+              "Stock indexes: Measure the performance of a group of stocks",
+              "Dividends: Payments made to shareholders from company profits",
+              "Capital gains: Profit from selling a stock for more than you paid",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of stocks:",
+            items: [
+              "Common stock: Most common type, voting rights",
+              "Preferred stock: No voting rights, but higher dividend priority",
+              "Large-cap stocks: Companies with large market capitalization",
+              "Small-cap stocks: Companies with small market capitalization",
+              "Growth stocks: Companies expected to grow rapidly",
+              "Value stocks: Companies undervalued by the market",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Price-to-Earnings (P/E) Ratio:",
+            formula: "P/E Ratio = Stock Price ÷ Earnings per Share",
+            variables: {
+              "Stock Price": "Current market price of one share",
+              "Earnings per Share": "Company's profit divided by outstanding shares",
+              "High P/E": "May indicate overvaluation",
+              "Low P/E": "May indicate undervaluation",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "P/E Ratio Example: Stock trading at $50 with $2 earnings per share. P/E Ratio = $50 ÷ $2 = 25. Compare to industry average to determine if overvalued or undervalued.",
+          },
+          {
+            type: "list",
+            content: "Strategies for investing in stocks:",
+            items: [
+              "Buy and hold: Purchase stocks and hold for the long term",
+              "Dollar-cost averaging: Invest a fixed amount regularly",
+              "Value investing: Buy undervalued stocks with strong fundamentals",
+              "Growth investing: Buy stocks with high growth potential",
+              "Dividend investing: Buy stocks that pay consistent dividends",
+              "Index investing: Invest in a broad market index like the S&P 500",
+            ],
+          },
+          {
+            type: "list",
+            content: "Stock market risks:",
+            items: [
+              "Market risk: Overall market decline",
+              "Company-specific risk: Problems with a particular company",
+              "Volatility: Price fluctuations",
+              "Inflation risk: Loss of purchasing power",
+              "Interest rate risk: Rising rates can lower stock values",
+              "Liquidity risk: Difficulty selling stocks quickly",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "The stock market can be volatile. Be prepared for fluctuations and avoid making emotional decisions based on short-term market movements.",
+          },
+          {
+            type: "tip",
+            content:
+              "Diversify your stock portfolio across different sectors and industries to reduce risk.",
+          },
+        ],
+        keyTakeaways: [
+          "Stocks represent ownership in companies",
+          "Different types of stocks have different characteristics",
+          "P/E ratio helps assess stock valuation",
+          "Diversification reduces stock market risk",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does a stock index measure?",
+              options: [
+                "The value of a single stock",
+                "The performance of a group of stocks",
+                "The overall economy",
+                "The interest rates on bonds",
+              ],
+              correctAnswer: "The performance of a group of stocks",
+              explanation:
+                "A stock index, such as the S&P 500 or Dow Jones Industrial Average, measures the performance of a selected group of stocks, providing a benchmark for the overall stock market.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Bonds: Lending to Governments and Corporations",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Bonds and Fixed Income",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Bonds represent debt owed by a government or corporation and offer a fixed income stream through interest payments. Understanding bond yields, ratings, and risks is crucial for incorporating bonds into a diversified investment portfolio.",
+          },
+          {
+            type: "list",
+            content: "Key bond concepts:",
+            items: [
+              "Principal: The amount borrowed by the issuer",
+              "Coupon rate: The annual interest rate paid on the bond",
+              "Maturity date: The date when the principal is repaid",
+              "Yield: The return on investment, taking into account the purchase price",
+              "Bond rating: Assessment of creditworthiness by rating agencies",
+              "Bond prices: Inversely related to interest rates",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of bonds:",
+            items: [
+              "Government bonds: Issued by national governments (Treasury bonds)",
+              "Municipal bonds: Issued by state and local governments",
+              "Corporate bonds: Issued by corporations",
+              "High-yield bonds: Higher risk, higher return (junk bonds)",
+              "Inflation-protected bonds: Protect against inflation (TIPS)",
+              "Zero-coupon bonds: No interest payments, sold at a discount",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Current Yield Calculation:",
+            formula: "Current Yield = Annual Interest Payment ÷ Current Bond Price × 100",
+            variables: {
+              "Annual Interest Payment": "Total interest paid per year",
+              "Current Bond Price": "Market price of the bond",
+              "Current Yield": "Percentage return based on current price",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Current Yield Example: Bond with $1,000 face value, 5% coupon rate, and current price of $950. Current Yield = $50 ÷ $950 × 100 = 5.26%.",
+          },
+          {
+            type: "list",
+            content: "Factors affecting bond prices:",
+            items: [
+              "Interest rate changes: Rising rates lower bond prices",
+              "Inflation: Higher inflation erodes bond returns",
+              "Credit rating changes: Downgrades lower bond prices",
+              "Economic conditions: Recession can lower bond prices",
+              "Supply and demand: Market forces affect bond prices",
+              "Maturity date: Longer-term bonds are more sensitive to rate changes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Bond investment strategies:",
+            items: [
+              "Buy and hold: Purchase bonds and hold until maturity",
+              "Bond laddering: Stagger bond maturities for regular income",
+              "Diversify across different bond types",
+              "Consider bond funds or ETFs for diversification",
+              "Reinvest interest payments to compound returns",
+              "Monitor credit ratings and economic conditions",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Bond prices can fluctuate, especially with longer-term bonds. Be prepared for potential losses if you need to sell bonds before maturity.",
+          },
+          {
+            type: "tip",
+            content:
+              "Consider investing in Treasury Inflation-Protected Securities (TIPS) to protect your bond portfolio from inflation.",
+          },
+        ],
+        keyTakeaways: [
+          "Bonds represent debt owed by governments or corporations",
+          "Bond yields and prices are inversely related",
+          "Bond ratings assess creditworthiness",
+          "Diversification reduces bond portfolio risk",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens to bond prices when interest rates rise?",
+              options: [
+                "Bond prices increase",
+                "Bond prices decrease",
+                "Bond prices remain the same",
+                "Bond prices become more volatile",
+              ],
+              correctAnswer: "Bond prices decrease",
+              explanation:
+                "Bond prices and interest rates have an inverse relationship. When interest rates rise, existing bonds with lower coupon rates become less attractive, causing their prices to fall.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Mutual Funds and ETFs: Diversified Investing",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Pooled Investments",
+          },
+          {
+            type: "paragraph",
+              content:
+                "Mutual funds and Exchange-Traded Funds (ETFs) offer diversified investment portfolios managed by professionals. Understanding the different types of funds, their fees, and strategies for selecting the right funds is crucial for building a well-rounded investment portfolio.",
+          },
+          {
+            type: "list",
+            content: "Mutual fund basics:",
+            items: [
+              "Pools money from many investors",
+              "Invests in a variety of assets (stocks, bonds, etc.)",
+              "Managed by professional fund managers",
+              "Net Asset Value (NAV) calculated daily",
+              "Can be actively or passively managed",
+              "Offer diversification and convenience",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of mutual funds:",
+            items: [
+              "Stock funds: Invest primarily in stocks",
+              "Bond funds: Invest primarily in bonds",
+              "Balanced funds: Invest in a mix of stocks and bonds",
+              "Target-date funds: Automatically adjust asset allocation over time",
+              "Index funds: Track a specific market index (S&P 500)",
+              "Sector funds: Focus on a specific industry or sector",
+            ],
+          },
+          {
+            type: "list",
+            content: "Exchange-Traded Funds (ETFs):",
+            items: [
+              "Similar to mutual funds but trade like stocks",
+              "Lower expense ratios than many mutual funds",
+              "More tax-efficient than mutual funds",
+              "Can be bought and sold throughout the day",
+              "Offer diversification and flexibility",
+              "Can track indexes, sectors, or specific investment strategies",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Expense Ratio Calculation:",
+            formula: "Expense Ratio = (Total Fund Expenses ÷ Average Fund Assets) × 100",
+            variables: {
+              "Total Fund Expenses": "Annual operating expenses of the fund",
+              "Average Fund Assets": "Average value of assets managed by the fund",
+              "Expense Ratio": "Percentage of assets used to cover expenses",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Expense Ratio Example: Fund with $100 million in assets and $500,000 in expenses. Expense Ratio = ($500,000 ÷ $100,000,000) × 100 = 0.5%.",
+          },
+          {
+            type: "list",
+            content: "Factors to consider when choosing funds:",
+            items: [
+              "Expense ratio: Lower is better",
+              "Investment objective: Aligns with your goals",
+              "Past performance: Not a guarantee of future results",
+              "Fund manager experience: Track record and expertise",
+              "Asset allocation: Matches your risk tolerance",
+              "Tax efficiency: Minimizes taxable distributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Strategies for investing in funds:",
+            items: [
+              "Dollar-cost averaging: Invest a fixed amount regularly",
+              "Diversify across different fund types",
+              "Rebalance portfolio periodically",
+              "Consider tax-advantaged accounts",
+              "Monitor fund performance and make adjustments",
+              "Avoid chasing hot funds or market trends",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "High expense ratios can significantly erode your investment returns over time. Choose low-cost index funds or ETFs whenever possible.",
+          },
+          {
+            type: "tip",
+            content:
+              "Use online tools like Morningstar or
