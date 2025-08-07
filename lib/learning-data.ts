@@ -4547,4 +4547,1811 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "list",
-            content
+            content: "Sources of retirement income:",
+            items: [
+              "Social Security benefits",
+              "401(k) and IRA withdrawals",
+              "Pension payments (if available)",
+              "Part-time work or consulting",
+              "Rental property income",
+              "Dividend and interest income",
+              "Annuity payments",
+              "Business income or royalties",
+            ],
+          },
+          {
+            type: "list",
+            content: "The 4% withdrawal rule:",
+            items: [
+              "Withdraw 4% of portfolio value in first year",
+              "Adjust subsequent years for inflation",
+              "Based on historical market performance",
+              "Designed to make money last 30 years",
+              "May need adjustment based on market conditions",
+              "Conservative approach for early retirees",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Janet retires with $1 million in savings. Using the 4% rule, she can withdraw $40,000 in year one, then adjust for inflation annually. This strategy historically preserves capital for 30+ years.",
+          },
+          {
+            type: "list",
+            content: "Tax-efficient withdrawal strategies:",
+            items: [
+              "Withdraw from taxable accounts first",
+              "Use tax-deferred accounts in middle years",
+              "Save Roth accounts for last (tax-free)",
+              "Consider tax bracket management",
+              "Plan for required minimum distributions",
+              "Coordinate with Social Security timing",
+            ],
+          },
+          {
+            type: "list",
+            content: "Income replacement targets:",
+            items: [
+              "Conservative: 70-80% of pre-retirement income",
+              "Moderate: 80-90% of pre-retirement income",
+              "Comfortable: 90-100% of pre-retirement income",
+              "Luxury: 100%+ of pre-retirement income",
+              "Adjust based on expected lifestyle changes",
+              "Consider healthcare cost increases",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement income risks:",
+            items: [
+              "Longevity risk: Outliving your money",
+              "Inflation risk: Purchasing power erosion",
+              "Market risk: Poor investment returns",
+              "Healthcare cost risk: Unexpected medical expenses",
+              "Sequence of returns risk: Poor early retirement returns",
+              "Interest rate risk: Low bond yields",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Consider working with a financial advisor as you approach retirement to create a comprehensive income plan. They can help optimize your withdrawal strategy and manage various risks.",
+          },
+        ],
+        keyTakeaways: [
+          "Multiple income sources provide retirement security",
+          "The 4% rule is a starting point for withdrawal planning",
+          "Tax-efficient withdrawal strategies can extend portfolio life",
+          "Plan for various risks that can affect retirement income",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the 4% withdrawal rule?",
+              options: [
+                "Withdraw 4% of income annually",
+                "Withdraw 4% of portfolio value in the first year of retirement",
+                "Save 4% of income for retirement",
+                "Invest 4% in bonds",
+              ],
+              correctAnswer: "Withdraw 4% of portfolio value in the first year of retirement",
+              explanation: "The 4% rule suggests withdrawing 4% of your portfolio value in the first year of retirement, then adjusting for inflation in subsequent years.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Catch-Up Strategies for Late Starters",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Accelerating Retirement Savings",
+          },
+          {
+            type: "paragraph",
+            content:
+              "If you're starting retirement planning later in life, don't panic. While starting early is ideal, there are strategies to accelerate your savings and still achieve a comfortable retirement, even with a shorter timeline.",
+          },
+          {
+            type: "list",
+            content: "Catch-up contribution opportunities:",
+            items: [
+              "401(k) catch-up: Additional $7,500 annually (age 50+)",
+              "IRA catch-up: Additional $1,000 annually (age 50+)",
+              "Total 401(k) contribution: $30,500 for those 50+",
+              "Total IRA contribution: $8,000 for those 50+",
+              "HSA catch-up: Additional $1,000 annually (age 55+)",
+              "Maximize all available catch-up contributions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Aggressive savings strategies:",
+            items: [
+              "Save 20-30% or more of income",
+              "Downsize housing to reduce expenses",
+              "Eliminate all non-essential spending",
+              "Work additional years beyond planned retirement",
+              "Take on part-time work or consulting",
+              "Delay Social Security for higher benefits",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "At age 50, Mark realizes he has only $100,000 saved. He maximizes his 401(k) with catch-up contributions ($30,500 annually) and saves aggressively. By age 65, he accumulates over $800,000.",
+          },
+          {
+            type: "list",
+            content: "Late-starter investment approach:",
+            items: [
+              "Maintain growth-oriented portfolio longer",
+              "Consider working a few extra years",
+              "Focus on tax-efficient investments",
+              "Minimize investment fees and expenses",
+              "Consider Roth conversions in lower-income years",
+              "Don't panic and make emotional decisions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternative retirement strategies:",
+            items: [
+              "Geographic arbitrage: Move to lower-cost area",
+              "Phased retirement: Gradual reduction in work",
+              "Part-time work in retirement",
+              "Monetize hobbies or skills",
+              "House hacking or rental income",
+              "Consider working until age 70 for maximum Social Security",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Focus on what you can control: your savings rate, expenses, and work timeline. Even starting at 50, consistent saving and smart strategies can lead to a comfortable retirement.",
+          },
+        ],
+        keyTakeaways: [
+          "Catch-up contributions allow higher savings after age 50",
+          "Aggressive saving rates can compensate for late starts",
+          "Consider working longer for better retirement security",
+          "Focus on controllable factors like savings rate and expenses",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the catch-up contribution limit for 401(k)s in 2024?",
+              options: ["$5,000", "$7,500", "$10,000", "$15,000"],
+              correctAnswer: "$7,500",
+              explanation: "Individuals age 50 and older can contribute an additional $7,500 to their 401(k) as a catch-up contribution in 2024.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Estate Planning and Retirement",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Retirement Legacy",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate planning ensures your retirement assets are distributed according to your wishes and helps minimize taxes for your beneficiaries. Proper planning can also protect your assets during your lifetime and provide for long-term care needs.",
+          },
+          {
+            type: "list",
+            content: "Essential estate planning documents:",
+            items: [
+              "Will: Directs distribution of assets",
+              "Durable power of attorney: Financial decisions if incapacitated",
+              "Healthcare power of attorney: Medical decisions",
+              "Living will/advance directive: End-of-life preferences",
+              "HIPAA authorization: Medical information access",
+              "Trust documents (if applicable)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Retirement account beneficiaries:",
+            items: [
+              "Name primary and contingent beneficiaries",
+              "Update beneficiaries after major life events",
+              "Consider per stirpes vs. per capita designations",
+              "Understand spousal vs. non-spousal beneficiary rules",
+              "Review beneficiary forms regularly",
+              "Coordinate with overall estate plan",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tom's 401(k) beneficiary form lists his ex-wife from 10 years ago. When he dies, she receives the entire $500,000 balance despite his will leaving everything to his current wife and children.",
+          },
+          {
+            type: "list",
+            content: "Tax considerations for heirs:",
+            items: [
+              "Traditional retirement accounts: Heirs pay income tax",
+              "Roth accounts: Generally tax-free to heirs",
+              "Required distributions for inherited accounts",
+              "10-year rule for most non-spouse beneficiaries",
+              "Stretch provisions for eligible designated beneficiaries",
+              "Consider Roth conversions to reduce heir tax burden",
+            ],
+          },
+          {
+            type: "list",
+            content: "Long-term care planning:",
+            items: [
+              "Long-term care insurance options",
+              "Self-insurance through savings",
+              "Medicaid planning strategies",
+              "Asset protection trusts",
+              "Family caregiving considerations",
+              "Veterans benefits for care",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Review and update your beneficiary designations every few years and after major life events. Beneficiary forms override your will, so keeping them current is crucial.",
+          },
+        ],
+        keyTakeaways: [
+          "Estate planning protects your retirement assets and legacy",
+          "Keep beneficiary designations current and coordinated",
+          "Consider tax implications for your heirs",
+          "Plan for potential long-term care needs",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens if your retirement account beneficiary designation conflicts with your will?",
+              options: [
+                "The will takes precedence",
+                "The beneficiary designation takes precedence",
+                "The court decides",
+                "The assets go to the state",
+              ],
+              correctAnswer: "The beneficiary designation takes precedence",
+              explanation: "Beneficiary designations on retirement accounts override instructions in your will, making it crucial to keep these forms updated.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Healthcare Costs in Retirement",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Planning for Medical Expenses",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Healthcare costs are often one of the largest expenses in retirement and tend to increase with age. Understanding these costs and planning strategies helps ensure medical expenses don't derail your retirement security.",
+          },
+          {
+            type: "list",
+            content: "Healthcare cost realities:",
+            items: [
+              "Average couple needs $300,000+ for medical costs in retirement",
+              "Medicare doesn't cover all expenses",
+              "Long-term care costs average $50,000+ annually",
+              "Healthcare inflation typically exceeds general inflation",
+              "Prescription drug costs continue rising",
+              "Dental and vision care often not covered",
+            ],
+          },
+          {
+            type: "list",
+            content: "Medicare coverage gaps:",
+            items: [
+              "Deductibles and co-payments",
+              "Services not covered by Medicare",
+              "Long-term care (nursing homes, home care)",
+              "Dental and vision care",
+              "Hearing aids and routine foot care",
+              "Care received outside the United States",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Linda budgets $500/month for healthcare in retirement but faces $1,200/month in actual costs including Medicare premiums, supplements, prescriptions, and out-of-pocket expenses.",
+          },
+          {
+            type: "list",
+            content: "Healthcare planning strategies:",
+            items: [
+              "Health Savings Account (HSA) for triple tax advantage",
+              "Long-term care insurance",
+              "Medicare supplement (Medigap) insurance",
+              "Maintain good health through preventive care",
+              "Research Medicare Advantage vs. traditional Medicare",
+              "Budget 15-20% of retirement income for healthcare",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA advantages for retirement:",
+            items: [
+              "Triple tax advantage: Deductible, growth, and withdrawals",
+              "No required minimum distributions",
+              "Can be used for non-medical expenses after age 65 (taxed as income)",
+              "Funds roll over year to year",
+              "Can reimburse past medical expenses",
+              "Becomes like a traditional IRA after age 65",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If you have access to an HSA, maximize contributions and invest the funds for long-term growth. It's the best retirement account for healthcare expenses and can supplement other retirement savings.",
+          },
+        ],
+        keyTakeaways: [
+          "Healthcare costs are a major retirement expense",
+          "Medicare has significant coverage gaps",
+          "HSAs provide excellent healthcare savings benefits",
+          "Budget 15-20% of retirement income for medical costs",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is a major healthcare expense that Medicare doesn't typically cover?",
+              options: ["Hospital stays", "Doctor visits", "Long-term care", "Emergency room visits"],
+              correctAnswer: "Long-term care",
+              explanation: "Medicare generally doesn't cover long-term care services like nursing homes or extended home care, which can be very expensive in retirement.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Working in Retirement",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Earning Income After Retirement",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Many retirees choose to work part-time or start new careers in retirement, whether for financial necessity, personal fulfillment, or social interaction. Understanding the implications and opportunities can help you plan for a more flexible retirement.",
+          },
+          {
+            type: "list",
+            content: "Reasons people work in retirement:",
+            items: [
+              "Financial necessity or desire for extra income",
+              "Maintaining social connections and purpose",
+              "Staying mentally and physically active",
+              "Pursuing passion projects or new careers",
+              "Maintaining employer health insurance",
+              "Gradual transition from full-time work",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of retirement work:",
+            items: [
+              "Part-time employment in same field",
+              "Consulting or freelancing",
+              "Starting a small business or side hustle",
+              "Seasonal or temporary work",
+              "Teaching or mentoring",
+              "Volunteer work with stipends",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "After retiring from corporate finance, Robert becomes a part-time bookkeeper for small businesses, earning $20,000 annually while maintaining flexibility and using his expertise.",
+          },
+          {
+            type: "list",
+            content: "Social Security earnings limits:",
+            items: [
+              "Before full retirement age: $22,320 limit (2024)",
+              "Excess earnings reduce benefits $1 for every $2 earned",
+              "Year you reach full retirement age: $59,520 limit",
+              "After full retirement age: No earnings limit",
+              "Withheld benefits are added back at full retirement age",
+              "Only earned income counts toward limits",
+            ],
+          },
+          {
+            type: "list",
+            content: "Tax considerations:",
+            items: [
+              "Work income may make Social Security taxable",
+              "May push you into higher tax brackets",
+              "Consider Roth IRA conversions in lower-income years",
+              "Self-employment income subject to self-employment tax",
+              "May affect Medicare premium costs (IRMAA)",
+              "Track business expenses for deductions",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If you plan to work in retirement, consider the timing of Social Security benefits and how earnings might affect your overall tax situation. Sometimes delaying Social Security while working can be beneficial.",
+          },
+        ],
+        keyTakeaways: [
+          "Many retirees work for financial and personal reasons",
+          "Social Security has earnings limits before full retirement age",
+          "Work income can affect taxes and benefit calculations",
+          "Consider timing of benefits if you plan to work",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens if you earn more than the Social Security earnings limit before full retirement age?",
+              options: [
+                "You lose Social Security permanently",
+                "Benefits are reduced temporarily",
+                "You pay higher taxes",
+                "Nothing happens",
+              ],
+              correctAnswer: "Benefits are reduced temporarily",
+              explanation: "Excess earnings reduce Social Security benefits temporarily, but the withheld benefits are added back to your future payments when you reach full retirement age.",
+            },
+          ],
+        },
+      },
+    ],
+    "hsa": [
+      {
+        title: "HSA Basics and Eligibility",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "What is a Health Savings Account?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "A Health Savings Account (HSA) is a tax-advantaged savings account designed to help people save for medical expenses. It offers unique triple tax benefits and can serve as both a healthcare fund and retirement savings vehicle.",
+          },
+          {
+            type: "list",
+            content: "HSA eligibility requirements:",
+            items: [
+              "Must be enrolled in a High Deductible Health Plan (HDHP)",
+              "Cannot be enrolled in Medicare",
+              "Cannot be claimed as a dependent on someone else's tax return",
+              "Cannot have other health coverage (with some exceptions)",
+              "No age restrictions for opening an HSA",
+            ],
+          },
+          {
+            type: "list",
+            content: "2024 HDHP requirements:",
+            items: [
+              "Minimum deductible: $1,600 (individual), $3,200 (family)",
+              "Maximum out-of-pocket: $8,050 (individual), $16,100 (family)",
+              "Can have preventive care coverage before meeting deductible",
+              "May include prescription drug coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "Triple tax advantage:",
+            items: [
+              "Tax-deductible contributions",
+              "Tax-free growth on investments",
+              "Tax-free withdrawals for qualified medical expenses",
+              "No other account offers all three benefits",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah contributes $3,000 to her HSA, saving $720 in taxes (24% bracket). The money grows tax-free, and when she uses it for medical expenses, she pays no taxes on withdrawals.",
+          },
+          {
+            type: "tip",
+            content:
+              "If your employer offers an HDHP with HSA, seriously consider it. The tax benefits and long-term savings potential make HSAs one of the best financial tools available.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs require enrollment in a High Deductible Health Plan",
+          "Triple tax advantage makes HSAs extremely valuable",
+          "No age restrictions for opening an HSA",
+          "Preventive care is typically covered before meeting deductible",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is required to be eligible for an HSA?",
+              options: [
+                "Being over age 65",
+                "Having a High Deductible Health Plan",
+                "Earning less than $50,000",
+                "Being self-employed",
+              ],
+              correctAnswer: "Having a High Deductible Health Plan",
+              explanation: "To be eligible for an HSA, you must be enrolled in a High Deductible Health Plan (HDHP) that meets IRS requirements.",
+            },
+          ],
+        },
+      },
+      {
+        title: "HSA Contribution Limits and Rules",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "How Much Can You Contribute?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "HSA contribution limits are set annually by the IRS and vary based on your coverage type. Understanding these limits and contribution rules helps you maximize your HSA benefits while staying compliant.",
+          },
+          {
+            type: "list",
+            content: "2024 HSA contribution limits:",
+            items: [
+              "Individual coverage: $4,150",
+              "Family coverage: $8,300",
+              "Catch-up contribution (age 55+): Additional $1,000",
+              "Limits include both employee and employer contributions",
+              "Pro-rated for partial year HDHP coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "Contribution timing and rules:",
+            items: [
+              "Can contribute until tax filing deadline (typically April 15)",
+              "Must have HDHP coverage on first day of month to contribute",
+              "Last-month rule allows full-year contribution if covered Dec 1",
+              "Testing period requires HDHP coverage through following December",
+              "Contributions can be made by employee, employer, or both",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike starts his HDHP in July. Normally he could only contribute $2,075 (half of $4,150), but the last-month rule lets him contribute the full $4,150 if he maintains coverage through the next December.",
+          },
+          {
+            type: "list",
+            content: "Employer contributions:",
+            items: [
+              "Count toward annual contribution limit",
+              "May be subject to vesting schedules",
+              "Often provided as lump sum or per-pay-period amounts",
+              "May be conditional on employee contributions",
+              "Immediately owned by employee (no forfeiture)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Excess contribution penalties:",
+            items: [
+              "6% excise tax on excess amounts",
+              "Tax applies each year until excess is removed",
+              "Can withdraw excess plus earnings before tax deadline",
+              "Earnings on excess contributions are taxable",
+              "Keep careful records of all contributions",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Maximize your HSA contributions early in the year if possible. This gives your money more time to grow tax-free and ensures you don't miss the contribution deadline.",
+          },
+        ],
+        keyTakeaways: [
+          "Contribution limits vary by coverage type and age",
+          "Can contribute until tax filing deadline",
+          "Last-month rule allows full-year contributions in some cases",
+          "Excess contributions face 6% annual penalty",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the 2024 HSA contribution limit for individual coverage?",
+              options: ["$3,650", "$4,150", "$4,300", "$8,300"],
+              correctAnswer: "$4,150",
+              explanation: "The 2024 HSA contribution limit for individual coverage is $4,150, with an additional $1,000 catch-up contribution for those age 55 and older.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Qualified Medical Expenses",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "What Can You Use HSA Funds For?",
+          },
+          {
+            type: "paragraph",
+            content:
+              "HSA funds can be used tax-free for a wide range of qualified medical expenses. Understanding what qualifies helps you maximize the tax benefits and avoid penalties for non-qualified withdrawals.",
+          },
+          {
+            type: "list",
+            content: "Common qualified medical expenses:",
+            items: [
+              "Doctor visits and specialist consultations",
+              "Prescription medications",
+              "Dental care and orthodontics",
+              "Vision care and eyeglasses",
+              "Mental health services",
+              "Physical therapy and rehabilitation",
+            ],
+          },
+          {
+            type: "list",
+            content: "Preventive care (often covered before deductible):",
+            items: [
+              "Annual physical exams",
+              "Routine screenings (mammograms, colonoscopies)",
+              "Immunizations and vaccines",
+              "Well-child visits",
+              "Preventive dental cleanings",
+              "Annual eye exams",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa uses her HSA to pay for her $150 eye exam, $300 glasses, $50 prescription, and $200 dental cleaning. All are qualified expenses, so she pays no taxes on the $700 withdrawal.",
+          },
+          {
+            type: "list",
+            content: "Less obvious qualified expenses:",
+            items: [
+              "Over-the-counter medications (with prescription)",
+              "Feminine hygiene products",
+              "Sunscreen (SPF 15+)",
+              "First aid supplies",
+              "Blood pressure monitors",
+              "Pregnancy test kits",
+              "Contact lens solution",
+              "Reading glasses",
+            ],
+          },
+          {
+            type: "list",
+            content: "Non-qualified expenses:",
+            items: [
+              "Cosmetic procedures (unless medically necessary)",
+              "Health club memberships",
+              "Vitamins and supplements (unless prescribed)",
+              "Teeth whitening",
+              "Hair transplants",
+              "Most insurance premiums (exceptions exist)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Record-keeping requirements:",
+            items: [
+              "Keep receipts for all HSA withdrawals",
+              "Maintain records for at least 3 years after filing taxes",
+              "Document medical necessity for borderline expenses",
+              "Use HSA debit card or reimburse yourself",
+              "Some expenses may require prescription documentation",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Keep detailed records of all medical expenses, even if you don't use HSA funds immediately. You can reimburse yourself years later for qualified expenses incurred after your HSA was established.",
+          },
+        ],
+        keyTakeaways: [
+          "Wide range of medical expenses qualify for tax-free withdrawals",
+          "Preventive care is often covered before meeting deductible",
+          "Some over-the-counter items qualify with restrictions",
+          "Detailed record-keeping is essential for compliance",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which of these is typically a qualified HSA expense?",
+              options: ["Gym membership", "Prescription medications", "Cosmetic surgery", "Vitamins"],
+              correctAnswer: "Prescription medications",
+              explanation: "Prescription medications are qualified medical expenses that can be paid for with HSA funds tax-free.",
+            },
+          ],
+        },
+      },
+      {
+        title: "HSA Investment Options",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Growing Your HSA Through Investments",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Many HSA providers offer investment options beyond basic savings accounts. Investing your HSA funds can significantly increase their long-term value, especially if you're using the HSA as a retirement savings vehicle.",
+          },
+          {
+            type: "list",
+            content: "HSA investment basics:",
+            items: [
+              "Not all HSA providers offer investment options",
+              "Usually require minimum cash balance ($1,000-$2,000)",
+              "Investment options vary by provider",
+              "Fees may apply for investment accounts",
+              "Can typically move between cash and investments",
+              "Investment gains grow tax-free",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common HSA investment options:",
+            items: [
+              "Mutual funds (index and actively managed)",
+              "Exchange-traded funds (ETFs)",
+              "Target-date funds",
+              "Bond funds",
+              "Money market funds",
+              "Some providers offer individual stocks",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "David keeps $2,000 in cash for immediate medical expenses and invests the remaining $8,000 HSA balance in low-cost index funds, allowing for long-term growth while maintaining liquidity.",
+          },
+          {
+            type: "list",
+            content: "Investment strategy considerations:",
+            items: [
+              "Time horizon for needing the funds",
+              "Risk tolerance and investment experience",
+              "Current and expected future medical expenses",
+              "Fees and expense ratios of investment options",
+              "Diversification across asset classes",
+              "Rebalancing needs over time",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA investment advantages:",
+            items: [
+              "Tax-free growth on all investment gains",
+              "No required minimum distributions (unlike 401k/IRA)",
+              "Can be used for retirement healthcare costs",
+              "Becomes like traditional IRA after age 65 for non-medical expenses",
+              "Potential for significant long-term growth",
+              "Hedge against healthcare inflation",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If you don't expect to use HSA funds for several years, consider investing them for growth. Keep enough cash for near-term medical expenses, but invest the rest for long-term potential.",
+          },
+        ],
+        keyTakeaways: [
+          "Many HSA providers offer investment options beyond cash",
+          "Investment gains grow completely tax-free",
+          "Consider time horizon and risk tolerance when investing",
+          "Keep some cash for immediate medical expenses",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is an advantage of investing HSA funds?",
+              options: [
+                "Guaranteed returns",
+                "Tax-free growth on investment gains",
+                "No investment fees",
+                "Immediate access to all funds",
+              ],
+              correctAnswer: "Tax-free growth on investment gains",
+              explanation: "Investment gains in an HSA grow completely tax-free, making it an excellent long-term savings and investment vehicle.",
+            },
+          ],
+        },
+      },
+      {
+        title: "HSA as a Retirement Account",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "The Ultimate Retirement Healthcare Account",
+          },
+          {
+            type: "paragraph",
+            content:
+              "HSAs can serve as powerful retirement savings vehicles, especially for healthcare expenses. After age 65, HSAs become even more flexible while maintaining their tax advantages for medical expenses.",
+          },
+          {
+            type: "list",
+            content: "HSA retirement advantages:",
+            items: [
+              "Triple tax advantage continues in retirement",
+              "No required minimum distributions (RMDs)",
+              "Can reimburse past medical expenses",
+              "Becomes like traditional IRA after age 65",
+              "Healthcare costs typically increase with age",
+              "Medicare premiums can be paid with HSA funds",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA rules after age 65:",
+            items: [
+              "No penalty for non-medical withdrawals",
+              "Non-medical withdrawals taxed as ordinary income",
+              "Medical expenses still tax-free",
+              "Can pay Medicare premiums (except Medigap)",
+              "Long-term care insurance premiums qualify",
+              "No more contributions once on Medicare",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "At age 67, Janet has $150,000 in her HSA. She uses $8,000 tax-free for medical expenses and withdraws $5,000 for living expenses (taxed as income), giving her flexibility in retirement.",
+          },
+          {
+            type: "list",
+            content: "Healthcare costs in retirement:",
+            items: [
+              "Average couple needs $300,000+ for medical costs",
+              "Medicare doesn't cover all expenses",
+              "Long-term care costs average $50,000+ annually",
+              "Prescription drug costs continue rising",
+              "Dental and vision care often not covered",
+              "HSA provides tax-free funding for these costs",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA vs. other retirement accounts:",
+            items: [
+              "Better than 401(k): No RMDs, tax-free medical withdrawals",
+              "Better than Roth IRA: Tax deduction on contributions",
+              "Better than traditional IRA: Tax-free medical withdrawals",
+              "Unique triple tax advantage",
+              "Can complement other retirement savings",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Maximize HSA contributions and invest for growth if you can afford to pay medical expenses out-of-pocket. This strategy builds a substantial tax-free healthcare fund for retirement.",
+          },
+        ],
+        keyTakeaways: [
+          "HSAs become more flexible after age 65",
+          "No required minimum distributions unlike other retirement accounts",
+          "Healthcare costs are a major retirement expense",
+          "HSAs offer unique advantages over traditional retirement accounts",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens to HSA withdrawals for non-medical expenses after age 65?",
+              options: [
+                "20% penalty applies",
+                "Taxed as ordinary income with no penalty",
+                "Tax-free like Roth IRA",
+                "Not allowed at any age",
+              ],
+              correctAnswer: "Taxed as ordinary income with no penalty",
+              explanation: "After age 65, HSA withdrawals for non-medical expenses are taxed as ordinary income but have no penalty, making the HSA function like a traditional IRA.",
+            },
+          ],
+        },
+      },
+    ],
+    "insurance": [
+      {
+        title: "Life Insurance Fundamentals",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Life Insurance",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Life insurance provides financial protection for your loved ones in the event of your death. For young adults, understanding life insurance basics helps you make informed decisions about when and how much coverage you need.",
+          },
+          {
+            type: "list",
+            content: "Types of life insurance:",
+            items: [
+              "Term life: Temporary coverage for specific period",
+              "Whole life: Permanent coverage with cash value",
+              "Universal life: Flexible permanent coverage",
+              "Variable life: Investment component with market risk",
+              "Group life: Coverage through employer",
+              "Accidental death: Limited coverage for accidents only",
+            ],
+          },
+          {
+            type: "list",
+            content: "When you need life insurance:",
+            items: [
+              "You have dependents who rely on your income",
+              "You have debts others would inherit",
+              "You want to leave money for final expenses",
+              "You have a mortgage or other major debts",
+              "You want to leave a legacy or inheritance",
+              "You have a business with partners",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah, 28, has a $200,000 mortgage and two young children. She buys a $500,000 20-year term policy for $25/month to ensure her family can pay off the house and maintain their lifestyle if something happens to her.",
+          },
+          {
+            type: "list",
+            content: "How much coverage do you need:",
+            items: [
+              "10-12 times annual income (rule of thumb)",
+              "Debt replacement method: Cover all debts",
+              "Income replacement: 5-10 years of income",
+              "Needs analysis: Calculate specific family needs",
+              "Consider inflation and future expenses",
+              "Account for existing savings and other insurance",
+            ],
+          },
+          {
+            type: "list",
+            content: "Term vs. permanent life insurance:",
+            items: [
+              "Term: Lower cost, temporary coverage, no cash value",
+              "Permanent: Higher cost, lifelong coverage, builds cash value",
+              "Term is usually better for young families",
+              "Permanent may be useful for estate planning",
+              "Most people need term insurance",
+              "Buy term and invest the difference strategy",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "For most young adults, term life insurance provides the most coverage for the lowest cost. Buy coverage when you're young and healthy for the best rates.",
+          },
+        ],
+        keyTakeaways: [
+          "Life insurance protects dependents from financial hardship",
+          "Term insurance is usually the best choice for young adults",
+          "Coverage amount should be 10-12 times annual income",
+          "Buy coverage when you're young and healthy for better rates",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What type of life insurance is typically best for young adults with families?",
+              options: ["Whole life", "Term life", "Universal life", "Variable life"],
+              correctAnswer: "Term life",
+              explanation: "Term life insurance provides the most coverage for the lowest cost, making it ideal for young adults who need maximum protection during their family-raising years.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Health Insurance Basics",
+        duration: "6 min",
+        points: 20,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Health Insurance Coverage",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Health insurance helps protect you from high medical costs and ensures access to healthcare. For young adults, understanding health insurance options and terminology is crucial for making informed coverage decisions.",
+          },
+          {
+            type: "list",
+            content: "Types of health insurance plans:",
+            items: [
+              "HMO (Health Maintenance Organization): Lower cost, network restrictions",
+              "PPO (Preferred Provider Organization): More flexibility, higher cost",
+              "EPO (Exclusive Provider Organization): Network-only, no referrals needed",
+              "POS (Point of Service): Hybrid of HMO and PPO",
+              "HDHP (High Deductible Health Plan): Lower premiums, higher deductibles",
+              "Catastrophic plans: Very high deductibles, young adult option",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key health insurance terms:",
+            items: [
+              "Premium: Monthly cost for coverage",
+              "Deductible: Amount you pay before insurance kicks in",
+              "Copay: Fixed amount for specific services",
+              "Coinsurance: Percentage you pay after deductible",
+              "Out-of-pocket maximum: Most you'll pay in a year",
+              "Network: Doctors and hospitals covered by your plan",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Jake's plan has a $2,000 deductible and 20% coinsurance. For a $10,000 surgery, he pays the first $2,000, then 20% of the remaining $8,000 ($1,600), for a total of $3,600.",
+          },
+          {
+            type: "list",
+            content: "Where to get health insurance:",
+            items: [
+              "Employer-sponsored plans (most common)",
+              "Healthcare.gov marketplace",
+              "State insurance marketplaces",
+              "Direct from insurance companies",
+              "Short-term health plans (limited coverage)",
+              "COBRA continuation coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "Choosing the right plan:",
+            items: [
+              "Consider your health needs and medications",
+              "Check if your doctors are in network",
+              "Compare total costs (premiums + out-of-pocket)",
+              "Look at prescription drug coverage",
+              "Consider HSA eligibility if interested",
+              "Review plan benefits and exclusions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Young adult health insurance options:",
+            items: [
+              "Stay on parent's plan until age 26",
+              "Employer plan if available",
+              "Marketplace plans with potential subsidies",
+              "Catastrophic plans for basic coverage",
+              "Short-term plans for gaps in coverage",
+              "Medicaid if income-eligible",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't go without health insurance. Even young, healthy people can face unexpected medical emergencies that could result in tens of thousands in medical bills.",
+          },
+        ],
+        keyTakeaways: [
+          "Health insurance protects against high medical costs",
+          "Understand key terms like deductible, copay, and coinsurance",
+          "Compare total costs, not just monthly premiums",
+          "Young adults have several coverage options available",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is a deductible in health insurance?",
+              options: [
+                "Monthly payment for coverage",
+                "Amount you pay before insurance starts covering costs",
+                "Fixed fee for doctor visits",
+                "Maximum you'll pay in a year",
+              ],
+              correctAnswer: "Amount you pay before insurance starts covering costs",
+              explanation: "A deductible is the amount you must pay out-of-pocket for covered services before your insurance plan starts paying.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Auto Insurance Essentials",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Yourself on the Road",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Auto insurance is required in most states and protects you financially from accidents, theft, and other vehicle-related incidents. Understanding coverage types and requirements helps you get adequate protection at a reasonable cost.",
+          },
+          {
+            type: "list",
+            content: "Required auto insurance coverage:",
+            items: [
+              "Liability coverage: Pays for damage you cause to others",
+              "Bodily injury liability: Medical costs for injured parties",
+              "Property damage liability: Repairs to other vehicles/property",
+              "Uninsured/underinsured motorist: Protects from uninsured drivers",
+              "Personal injury protection (PIP): Your medical expenses (some states)",
+              "Minimum coverage varies by state",
+            ],
+          },
+          {
+            type: "list",
+            content: "Optional auto insurance coverage:",
+            items: [
+              "Collision: Repairs to your car from accidents",
+              "Comprehensive: Theft, vandalism, weather damage",
+              "Gap insurance: Covers loan balance if car is totaled",
+              "Rental car coverage: Temporary transportation",
+              "Roadside assistance: Towing and emergency services",
+              "New car replacement: Full value for new vehicles",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Emma causes an accident with $50,000 in damages. Her liability coverage pays the other driver's costs, protecting her from having to pay out-of-pocket and potential lawsuits.",
+          },
+          {
+            type: "list",
+            content: "Factors affecting auto insurance rates:",
+            items: [
+              "Age and driving experience",
+              "Driving record and claims history",
+              "Vehicle type, age, and safety features",
+              "Location and where car is parked",
+              "Credit score (in most states)",
+              "Annual mileage and usage",
+            ],
+          },
+          {
+            type: "list",
+            content: "Ways to save on auto insurance:",
+            items: [
+              "Shop around and compare quotes annually",
+              "Bundle with other insurance policies",
+              "Maintain good driving record",
+              "Take defensive driving courses",
+              "Install safety and anti-theft devices",
+              "Consider higher deductibles for lower premiums",
+            ],
+          },
+          {
+            type: "list",
+            content: "Young driver considerations:",
+            items: [
+              "Rates are typically higher for drivers under 25",
+              "Good student discounts available",
+              "Consider staying on parent's policy if cheaper",
+              "Avoid sports cars and high-performance vehicles",
+              "Maintain continuous coverage to avoid penalties",
+              "Build good driving record for future rate reductions",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't just buy minimum coverage to save money. Adequate liability coverage protects your assets from lawsuits. Consider at least $100,000/$300,000/$100,000 coverage limits.",
+          },
+        ],
+        keyTakeaways: [
+          "Auto insurance is required and protects from financial liability",
+          "Liability coverage is most important for asset protection",
+          "Young drivers face higher rates but can earn discounts",
+          "Shop around annually for the best rates",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does liability coverage in auto insurance protect?",
+              options: [
+                "Your car from damage",
+                "You from damage caused to others",
+                "Your medical expenses",
+                "Your car from theft",
+              ],
+              correctAnswer: "You from damage caused to others",
+              explanation: "Liability coverage protects you financially when you cause damage to other people or their property in an accident.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Homeowner's and Renter's Insurance",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Home and Belongings",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Whether you own or rent your home, insurance protects your belongings and provides liability coverage. Understanding the differences between homeowner's and renter's insurance helps you get appropriate coverage for your situation.",
+          },
+          {
+            type: "list",
+            content: "Homeowner's insurance coverage:",
+            items: [
+              "Dwelling: Structure of your home",
+              "Other structures: Garage, shed, fence",
+              "Personal property: Belongings inside the home",
+              "Loss of use: Temporary living expenses",
+              "Personal liability: Legal responsibility for injuries",
+              "Medical payments: Guest injuries regardless of fault",
+            ],
+          },
+          {
+            type: "list",
+            content: "Renter's insurance coverage:",
+            items: [
+              "Personal property: Your belongings",
+              "Personal liability: Legal responsibility",
+              "Additional living expenses: Temporary housing costs",
+              "Medical payments to others: Guest injuries",
+              "Does NOT cover the building structure",
+              "Much less expensive than homeowner's insurance",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "A fire damages Alex's apartment. His renter's insurance pays to replace his $15,000 worth of belongings and covers his hotel costs while the apartment is repaired. Without insurance, he'd pay everything out-of-pocket.",
+          },
+          {
+            type: "list",
+            content: "Common coverage exclusions:",
+            items: [
+              "Floods (requires separate flood insurance)",
+              "Earthquakes (separate coverage needed)",
+              "Normal wear and tear",
+              "Intentional damage",
+              "Business property (needs business insurance)",
+              "High-value items may need additional coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "How much coverage do you need:",
+            items: [
+              "Homeowners: Rebuild cost of home (not market value)",
+              "Renters: Value of personal belongings",
+              "Create home inventory with photos/videos",
+              "Consider replacement cost vs. actual cash value",
+              "Liability coverage: At least $300,000-$500,000",
+              "Update coverage when you acquire expensive items",
+            ],
+          },
+          {
+            type: "list",
+            content: "Ways to save on home insurance:",
+            items: [
+              "Bundle with auto insurance",
+              "Install security and safety systems",
+              "Maintain good credit score",
+              "Choose higher deductibles",
+              "Shop around annually",
+              "Ask about available discounts",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Renter's insurance is very affordable (often $10-20/month) and provides valuable protection. Don't assume your landlord's insurance covers your belongings - it doesn't.",
+          },
+        ],
+        keyTakeaways: [
+          "Homeowner's insurance covers structure and belongings",
+          "Renter's insurance covers belongings but not the building",
+          "Both provide important liability protection",
+          "Create a home inventory to document belongings",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What does renter's insurance typically NOT cover?",
+              options: [
+                "Your personal belongings",
+                "The apartment building structure",
+                "Personal liability",
+                "Temporary living expenses",
+              ],
+              correctAnswer: "The apartment building structure",
+              explanation: "Renter's insurance covers your belongings and liability but not the building structure, which is covered by the landlord's insurance.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Disability Insurance",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Income",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Disability insurance replaces a portion of your income if you become unable to work due to illness or injury. For young adults, protecting your earning ability is often more important than life insurance since you're more likely to become disabled than die young.",
+          },
+          {
+            type: "list",
+            content: "Types of disability insurance:",
+            items: [
+              "Short-term disability: 3-12 months of coverage",
+              "Long-term disability: Coverage until retirement age",
+              "Group coverage: Through employer (often limited)",
+              "Individual coverage: Purchased privately",
+              "Social Security Disability: Government program (strict requirements)",
+              "Workers' compensation: Work-related injuries only",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key disability insurance features:",
+            items: [
+              "Benefit amount: Typically 60-70% of income",
+              "Benefit period: How long benefits are paid",
+              "Elimination period: Waiting period before benefits start",
+              "Own occupation vs. any occupation definitions",
+              "Cost of living adjustments",
+              "Partial/residual benefits for partial disabilities",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mark, a software developer, becomes unable to work due to a back injury. His individual disability policy pays 65% of his $80,000 salary ($52,000 annually) until he can return to work or reaches retirement age.",
+          },
+          {
+            type: "list",
+            content: "Why disability insurance matters:",
+            items: [
+              "1 in 4 workers will become disabled during their career",
+              "Most disabilities are due to illness, not accidents",
+              "Average disability lasts 2.5 years",
+              "Social Security disability is difficult to qualify for",
+              "Employer coverage may be insufficient",
+              "Your earning ability is your most valuable asset",
+            ],
+          },
+          {
+            type: "list",
+            content: "Factors affecting disability insurance cost:",
+            items: [
+              "Age and health at application",
+              "Occupation and income level",
+              "Benefit amount and period",
+              "Elimination period length",
+              "Policy features and riders",
+              "Gender (women typically pay more)",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "If your employer offers group disability insurance, review the coverage carefully. It may only cover 50-60% of income and may not be portable if you change jobs. Consider supplemental individual coverage.",
+          },
+        ],
+        keyTakeaways: [
+          "Disability insurance protects your most valuable asset - your income",
+          "You're more likely to become disabled than die young",
+          "Group coverage through employers may be insufficient",
+          "Individual policies offer better protection and portability",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What percentage of workers will become disabled during their career?",
+              options: ["1 in 10", "1 in 8", "1 in 4", "1 in 2"],
+              correctAnswer: "1 in 4",
+              explanation: "Statistics show that 1 in 4 workers will experience a disability that prevents them from working during their career, making disability insurance very important.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Umbrella Insurance",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Extra Liability Protection",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Umbrella insurance provides additional liability coverage beyond your auto and homeowner's insurance limits. It's relatively inexpensive protection against large lawsuits that could threaten your assets and future earnings.",
+          },
+          {
+            type: "list",
+            content: "What umbrella insurance covers:",
+            items: [
+              "Liability claims exceeding other policy limits",
+              "Personal injury claims (libel, slander, false imprisonment)",
+              "Legal defense costs",
+              "Worldwide coverage",
+              "Coverage for family members in your household",
+              "Some gaps in underlying coverage",
+            ],
+          },
+          {
+            type: "list",
+            content: "When you might need umbrella insurance:",
+            items: [
+              "You have significant assets to protect",
+              "You have high income or earning potential",
+              "You own rental property",
+              "You have teenage drivers",
+              "You engage in activities with liability risk",
+              "You want extra peace of mind",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah causes a serious car accident with $800,000 in damages. Her auto insurance covers $300,000, but her $1 million umbrella policy covers the remaining $500,000, protecting her assets from a lawsuit.",
+          },
+          {
+            type: "list",
+            content: "Umbrella insurance requirements:",
+            items: [
+              "Must have underlying auto and home insurance",
+              "Minimum liability limits required on underlying policies",
+              "Typically $250,000/$500,000 auto liability minimum",
+              "Usually $300,000 homeowner's liability minimum",
+              "Coverage starts where underlying policies end",
+              "Available in $1 million increments",
+            ],
+          },
+          {
+            type: "list",
+            content: "Cost and benefits:",
+            items: [
+              "Relatively inexpensive ($200-400 annually for $1M)",
+              "Covers legal defense costs",
+              "Protects current and future assets",
+              "Provides peace of mind",
+              "May cover claims not covered by other policies",
+              "Worldwide coverage included",
+            ],
+          },
+          {
+            type: "list",
+            content: "What umbrella insurance doesn't cover:",
+            items: [
+              "Intentional criminal acts",
+              "Business or professional liability",
+              "Property damage to your own property",
+              "Workers' compensation claims",
+              "Contractual liability",
+              "War or nuclear hazard",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Consider umbrella insurance if your net worth exceeds your liability coverage limits or if you have high earning potential. It's inexpensive protection against potentially devastating lawsuits.",
+          },
+        ],
+        keyTakeaways: [
+          "Umbrella insurance provides extra liability protection",
+          "Relatively inexpensive for the coverage amount",
+          "Protects assets and future earnings from lawsuits",
+          "Requires underlying auto and home insurance",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "When does umbrella insurance coverage typically begin?",
+              options: [
+                "Immediately when you buy it",
+                "When underlying policy limits are exceeded",
+                "Only for certain types of claims",
+                "After a waiting period",
+              ],
+              correctAnswer: "When underlying policy limits are exceeded",
+              explanation: "Umbrella insurance is excess coverage that begins when the liability limits of your underlying auto or homeowner's insurance are exceeded.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Insurance Shopping and Comparison",
+        duration: "4 min",
+        points: 16,
+        content: [
+          {
+            type: "heading",
+            content: "Finding the Best Insurance Deals",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Shopping for insurance requires comparing coverage, costs, and company reliability. Understanding how to evaluate insurance options helps you get the best protection for your money while avoiding inadequate coverage.",
+          },
+          {
+            type: "list",
+            content: "Steps to shop for insurance:",
+            items: [
+              "Determine your coverage needs",
+              "Get quotes from multiple companies",
+              "Compare coverage details, not just prices",
+              "Check company financial ratings",
+              "Read customer reviews and complaints",
+              "Consider bundling discounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Where to get insurance quotes:",
+            items: [
+              "Direct from insurance companies",
+              "Independent insurance agents",
+              "Online comparison websites",
+              "Captive agents (represent one company)",
+              "Employer group plans",
+              "Professional association group plans",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Lisa gets auto insurance quotes from 5 companies ranging from $800-1,400 annually. She chooses the $1,000 option because it offers better coverage and has excellent customer service ratings, not just the cheapest price.",
+          },
+          {
+            type: "list",
+            content: "Factors to compare beyond price:",
+            items: [
+              "Coverage limits and deductibles",
+              "Policy exclusions and limitations",
+              "Claims handling reputation",
+              "Customer service quality",
+              "Financial strength ratings",
+              "Available discounts and features",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags to avoid:",
+            items: [
+              "Prices significantly below market rates",
+              "High-pressure sales tactics",
+              "Companies with poor financial ratings",
+              "Policies with major coverage gaps",
+              "Agents who won't explain policy details",
+              "Companies with many customer complaints",
+            ],
+          },
+          {
+            type: "list",
+            content: "Money-saving strategies:",
+            items: [
+              "Bundle multiple policies with one company",
+              "Maintain good credit scores",
+              "Take advantage of available discounts",
+              "Consider higher deductibles for lower premiums",
+              "Review coverage annually",
+              "Maintain continuous coverage",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Don't just buy the cheapest insurance. Focus on value - adequate coverage from a financially stable company with good customer service. The cheapest policy won't help if claims aren't paid properly.",
+          },
+        ],
+        keyTakeaways: [
+          "Compare coverage details, not just prices",
+          "Check company financial ratings and customer reviews",
+          "Consider bundling policies for discounts",
+          "Avoid companies with poor claims handling reputations",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's most important when comparing insurance policies?",
+              options: [
+                "Finding the lowest price",
+                "Comparing coverage details and company reliability",
+                "Choosing the most expensive option",
+                "Buying from the biggest company",
+              ],
+              correctAnswer: "Comparing coverage details and company reliability",
+              explanation: "While price matters, comparing coverage details and company reliability ensures you get adequate protection from a company that will pay claims when needed.",
+            },
+          ],
+        },
+      },
+    ],
+    "bill-negotiation": [
+      {
+        title: "Understanding Your Bills",
+        duration: "4 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Know What You're Paying For",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Before you can negotiate your bills, you need to understand what you're paying for and identify opportunities for savings. Many people pay bills without reviewing them, missing errors and unnecessary charges.",
+          },
+          {
+            type: "list",
+            content: "Bills you can typically negotiate:",
+            items: [
+              "Cable and internet services",
+              "Cell phone plans",
+              "Insurance premiums",
+              "Credit card interest rates and fees",
+              "Medical bills and payment plans",
+              "Subscription services",
+            ],
+          },
+          {
+            type: "list",
+            content: "How to analyze your bills:",
+            items: [
+              "Review each line item carefully",
+              "Identify services you don't use or need",
+              "Compare your rates to current market prices",
+              "Look for promotional rates that have expired",
+              "Check for billing errors or duplicate charges",
+              "Calculate your total annual cost for each service",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Mike reviews his cable bill and discovers he's paying $15/month for premium channels he never watches and $10/month for a landline he doesn't use. That's $300 annually in unnecessary charges.",
+          },
+          {
+            type: "list",
+            content: "Common bill padding tactics:",
+            items: [
+              "Automatic upgrades to premium services",
+              "Equipment rental fees for outdated devices",
+              "Service protection plans you don't need",
+              "Convenience fees for online payments",
+              "Paper statement fees",
+              "Early termination fees that may no longer apply",
+            ],
+          },
+          {
+            type: "list",
+            content: "Research before negotiating:",
+            items: [
+              "Current promotional rates from competitors",
+              "Your payment history and customer status",
+              "Market rates for similar services",
+              "Your contract terms and renewal dates",
+              "Available discounts (student, senior, military)",
+              "Bundle options that might save money",
+            ],
+          },
+          {
+            type: "tip",
+            content:
+              "Set aside time monthly to review all your bills. Look for changes, errors, and opportunities to save. Many companies count on customers not paying attention to their bills.",
+          },
+        ],
+        keyTakeaways: [
+          "Review bills carefully for errors and unnecessary charges",
+          "Research current market rates before negotiating",
+          "Identify services you don't use or need",
+          "Understand your contract terms and customer status",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What should you do before negotiating your bills?",
+              options: [
+                "Call immediately to complain",
+                "Research current market rates and analyze your bills",
+                "Threaten to cancel service",
+                "Wait for bills to increase",
+              ],
+              correctAnswer: "Research current market rates and analyze your bills",
+              explanation: "Understanding what you're paying for and knowing current market rates gives you leverage and specific talking points when negotiating.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Negotiation Strategies and Tactics",
+        duration: "5 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "How to Negotiate Effectively",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Successful bill negotiation requires preparation, patience, and the right approach. Understanding negotiation tactics and having a clear strategy increases your chances of getting better rates and terms.",
+          },
+          {
+            type: "list",
+            content: "Preparation for negotiation:",
+            items: [
+              "Gather your account information and payment history",
+              "Research competitor rates and promotions",
+              "Know your contract terms and renewal dates",
+              "Identify your ideal outcome and minimum acceptable result",
+              "Have alternative options ready",
+              "Choose the right time to call (avoid peak hours)",
+            ],
+          },
+          {
+            type: "list",
+            content: "Effective negotiation tactics:",
+            items: [
+              "Be polite but persistent",
+              "Ask to speak with the retention department",
+              "Mention competitor offers specifically",
+              "Emphasize your loyalty and payment history",
+              "Be willing to walk away if necessary",
+              "Ask 'What can you do to help me?'",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Sarah calls her internet provider: 'I've been a customer for 3 years with perfect payment history. I see new customers get internet for $39/month, but I'm paying $79. Can you match that rate to keep me as a customer?'",
+          },
+          {
+            type: "list",
+            content: "What to say during negotiations:",
+            items: [
+              "'I'm reviewing my expenses and considering my options'",
+              "'I've been a loyal customer for X years'",
+              "'I see you're offering new customers...'",
+              "'What promotions do you have available?'",
+              "'I'd prefer to stay, but I need a better rate'",
+              "'Can you do better than that?'",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to escalate:",
+            items: [
+              "First representative can't help",
+              "You're not getting reasonable offers",
+              "You need to speak with someone with more authority",
+              "Ask for supervisor or retention specialist",
+              "Be prepared to explain your situation again",
+              "Stay calm and professional throughout",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common negotiation outcomes:",
+            items: [
+              "Reduced monthly rates for 6-12 months",
+              "Waived fees or equipment charges",
