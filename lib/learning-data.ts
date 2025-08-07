@@ -392,23 +392,23 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         ],
         keyTakeaways: [
           "Secured loans typically offer lower rates but require collateral",
-          "APR includes both interest rate and fees for accurate comparison",
+          "APR includes both interest and fees for accurate comparison",
           "Loan terms significantly impact both monthly payments and total cost",
-          "Understanding loan components helps you make better borrowing decisions",
+          "Understanding loan basics helps you negotiate better terms",
         ],
         quiz: {
           questions: [
             {
-              question: "What does APR stand for and why is it important?",
+              question: "What's the difference between interest rate and APR?",
               options: [
-                "Annual Payment Rate - shows monthly payment amount",
-                "Annual Percentage Rate - includes interest and fees for true cost",
-                "Approved Payment Rate - determines if you qualify",
-                "Average Principal Rate - shows typical loan amounts",
+                "There is no difference, they're the same thing",
+                "Interest rate is monthly, APR is annual",
+                "APR includes fees and other costs, interest rate doesn't",
+                "Interest rate is for secured loans, APR is for unsecured",
               ],
-              correctAnswer: "Annual Percentage Rate - includes interest and fees for true cost",
+              correctAnswer: "APR includes fees and other costs, interest rate doesn't",
               explanation:
-                "APR (Annual Percentage Rate) includes both the interest rate and fees, giving you the true annual cost of borrowing. This makes it the best metric for comparing different loan offers.",
+                "APR (Annual Percentage Rate) includes the interest rate plus fees and other costs, giving you the true annual cost of borrowing. This makes APR the better metric for comparing loan offers.",
             },
           ],
         },
@@ -1024,12 +1024,12 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             type: "list",
             content: "Red flags of predatory lending:",
             items: [
-              "Rates above 36% APR (predatory lending)",
-              "Upfront fees before loan approval",
-              "No credit check required (often scams)",
-              "Pressure to decide immediately",
-              "Unclear terms or hidden fees",
-              "Unsolicited loan offers via phone or email",
+              "Rates above 36% APR for personal loans",
+              "Pressure to sign immediately without review time",
+              "Fees that seem excessive relative to loan amount",
+              "No credit check or income verification required",
+              "Loan terms that seem too good to be true",
+              "Aggressive marketing targeting vulnerable populations",
             ],
           },
           {
@@ -1310,16 +1310,16 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         quiz: {
           questions: [
             {
-              question: "What makes HSAs unique among tax-advantaged accounts?",
+              question: "What makes an HSA unique among tax-advantaged accounts?",
               options: [
                 "Highest contribution limits",
                 "No income restrictions",
                 "Triple tax advantage (deductible, growth, withdrawals)",
-                "Available to everyone",
+                "Can be used for any expense",
               ],
               correctAnswer: "Triple tax advantage (deductible, growth, withdrawals)",
               explanation:
-                "HSAs are unique because they offer a triple tax advantage: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses. No other account offers all three benefits.",
+                "HSAs are unique because they offer a triple tax advantage: contributions are tax-deductible, growth is tax-free, and withdrawals for qualified medical expenses are tax-free. No other account offers all three benefits.",
             },
           ],
         },
@@ -1472,7 +1472,7 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             content: "Types of investment taxation:",
             items: [
               "Ordinary income: Interest, non-qualified dividends, short-term gains",
-              "Qualified dividends: Lower tax rates than ordinary income",
+              "Qualified dividends: Taxed at capital gains rates (0%, 15%, 20%)",
               "Long-term capital gains: Assets held over 1 year (0%, 15%, 20%)",
               "Short-term capital gains: Assets held 1 year or less (ordinary rates)",
               "Tax-exempt interest: Municipal bonds (federal, possibly state)",
@@ -1690,6 +1690,122 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         },
       },
       {
+        title: "Tax Planning for Retirement",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Optimizing Taxes in Retirement",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Retirement tax planning involves managing multiple income sources and tax-advantaged accounts to minimize lifetime tax burden. Understanding required distributions, tax brackets in retirement, and withdrawal strategies is crucial for maximizing retirement income.",
+          },
+          {
+            type: "list",
+            content: "Retirement income sources and taxation:",
+            items: [
+              "Social Security: 0%, 50%, or 85% taxable depending on income",
+              "Traditional 401(k)/IRA: Fully taxable as ordinary income",
+              "Roth 401(k)/IRA: Tax-free if rules are met",
+              "Pension income: Usually fully taxable",
+              "Investment income: Taxed at capital gains or ordinary rates",
+              "Part-time work: Subject to payroll and income taxes",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Social Security taxation thresholds:",
+            formula: "Combined Income = AGI + Nontaxable Interest + 50% of SS Benefits",
+            variables: {
+              "Single Filers": "Under $25,000 = 0% taxable, $25,000-$34,000 = 50% taxable, Over $34,000 = 85% taxable",
+              "Married Filing Jointly": "Under $32,000 = 0% taxable, $32,000-$44,000 = 50% taxable, Over $44,000 = 85% taxable",
+              "Planning Tip": "Manage other income to minimize SS taxation",
+            },
+          },
+          {
+            type: "list",
+            content: "Required Minimum Distribution (RMD) rules:",
+            items: [
+              "Traditional IRAs and 401(k)s: RMDs start at age 73",
+              "Roth IRAs: No RMDs during owner's lifetime",
+              "Roth 401(k)s: RMDs required, but can roll to Roth IRA",
+              "Penalty: 25% of amount not withdrawn (reduced from 50%)",
+              "Calculate using IRS life expectancy tables",
+              "Can withdraw more than minimum without penalty",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Tax-Efficient Withdrawal Strategy: At age 65, Robert has $500,000 in traditional IRA and $300,000 in Roth IRA. He withdraws from traditional accounts first to stay in lower tax brackets, preserving Roth funds for later when RMDs might push him into higher brackets.",
+          },
+          {
+            type: "list",
+            content: "Retirement tax planning strategies:",
+            items: [
+              "Roth conversions: Convert traditional to Roth in low-income years",
+              "Tax bracket management: Control taxable income to stay in lower brackets",
+              "Asset location: Keep tax-inefficient investments in tax-advantaged accounts",
+              "Charitable giving: Qualified charitable distributions from IRA",
+              "Geographic arbitrage: Move to lower-tax states",
+              "Health Savings Account: Triple tax advantage continues in retirement",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Roth Conversion Ladder: The Johnsons retired at 60 with $800,000 in traditional IRAs. They converted $50,000 annually to Roth IRAs for 8 years, paying taxes at 12% rate. This reduced future RMDs and created $400,000 in tax-free Roth assets.",
+          },
+          {
+            type: "list",
+            content: "State tax considerations in retirement:",
+            items: [
+              "No state income tax: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, Wyoming",
+              "Retirement-friendly states: Often don't tax retirement income",
+              "High-tax states: May tax all retirement income",
+              "Consider total tax burden: Income, property, sales taxes",
+              "Residency rules: Establish domicile in chosen state",
+              "Estate tax implications: Some states have lower exemptions",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't assume you'll be in a lower tax bracket in retirement. With RMDs, Social Security, and potential tax rate increases, many retirees face higher effective tax rates than expected.",
+          },
+          {
+            type: "tip",
+            content:
+              "Consider doing Roth conversions during market downturns when account values are lower. You'll pay taxes on the reduced balance and benefit from tax-free recovery.",
+          },
+        ],
+        keyTakeaways: [
+          "Retirement income comes from multiple sources with different tax treatment",
+          "RMDs from traditional accounts start at age 73 and can push you into higher brackets",
+          "Roth conversions can provide tax diversification in retirement",
+          "State taxes can significantly impact retirement income",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "At what age do Required Minimum Distributions (RMDs) begin for traditional IRAs?",
+              options: [
+                "65",
+                "70½",
+                "72",
+                "73",
+              ],
+              correctAnswer: "73",
+              explanation:
+                "RMDs for traditional IRAs and 401(k)s now begin at age 73 (changed from 72 in 2023). Roth IRAs have no RMDs during the owner's lifetime.",
+            },
+          ],
+        },
+      },
+      {
         title: "Estate Tax Planning",
         duration: "6 min",
         points: 18,
@@ -1779,8 +1895,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Even if your estate is below the federal exemption, estate planning is still important for avoiding probate, providing for incapacity, and minimizing state taxes.",
+            content:
+              "Even if your estate is below the federal exemption, estate planning is still important for avoiding probate, providing for incapacity, and minimizing state taxes.",
           },
         ],
         keyTakeaways: [
@@ -1897,8 +2013,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Even if you use software, consider an annual consultation with a tax professional for planning advice. The cost is often offset by tax savings from better planning.",
+            content:
+              "Even if you use software, consider an annual consultation with a tax professional for planning advice. The cost is often offset by tax savings from better planning.",
           },
         ],
         keyTakeaways: [
@@ -2027,8 +2143,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you're audited, consider hiring a tax professional even if you prepared the return yourself. The cost is often worth the expertise and peace of mind.",
+            content:
+              "If you're audited, consider hiring a tax professional even if you prepared the return yourself. The cost is often worth the expertise and peace of mind.",
           },
         ],
         keyTakeaways: [
@@ -2156,8 +2272,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Set up a simple system to track deductible expenses throughout the year. A smartphone app or dedicated credit card can make tax time much easier.",
+            content:
+              "Set up a simple system to track deductible expenses throughout the year. A smartphone app or dedicated credit card can make tax time much easier.",
           },
         ],
         keyTakeaways: [
@@ -2275,8 +2391,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Use higher deductibles to lower premiums for risks you can afford to self-insure, then use the savings to buy more coverage for catastrophic risks you can't afford.",
+            content:
+              "Use higher deductibles to lower premiums for risks you can afford to self-insure, then use the savings to buy more coverage for catastrophic risks you can't afford.",
           },
         ],
         keyTakeaways: [
@@ -2404,8 +2520,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you're healthy and have emergency savings, consider a high-deductible health plan with an HSA. The tax benefits can outweigh the higher deductible over time.",
+            content:
+              "If you're healthy and have emergency savings, consider a high-deductible health plan with an HSA. The tax benefits can outweigh the higher deductible over time.",
           },
         ],
         keyTakeaways: [
@@ -2533,8 +2649,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Buy life insurance when you're young and healthy. Rates increase with age and health issues can make coverage expensive or unavailable later.",
+            content:
+              "Buy life insurance when you're young and healthy. Rates increase with age and health issues can make coverage expensive or unavailable later.",
           },
         ],
         keyTakeaways: [
@@ -2662,8 +2778,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you can only afford one type of disability insurance, choose long-term over short-term. You can likely handle a few months without income, but years of disability could be financially devastating.",
+            content:
+              "If you can only afford one type of disability insurance, choose long-term over short-term. You can likely handle a few months without income, but years of disability could be financially devastating.",
           },
         ],
         keyTakeaways: [
@@ -2791,8 +2907,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Review your auto insurance annually and after major life changes. Marriage, moving, or buying a new car can significantly affect your rates and coverage needs.",
+            content:
+              "Review your auto insurance annually and after major life changes. Marriage, moving, or buying a new car can significantly affect your rates and coverage needs.",
           },
         ],
         keyTakeaways: [
@@ -2932,8 +3048,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Create a home inventory with photos or video of your belongings. Store it off-site or in the cloud. This documentation is invaluable for insurance claims.",
+            content:
+              "Create a home inventory with photos or video of your belongings. Store it off-site or in the cloud. This documentation is invaluable for insurance claims.",
           },
         ],
         keyTakeaways: [
@@ -3061,8 +3177,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Umbrella insurance is one of the best insurance values available. For a few hundred dollars annually, you can get millions in additional liability protection.",
+            content:
+              "Umbrella insurance is one of the best insurance values available. For a few hundred dollars annually, you can get millions in additional liability protection.",
           },
         ],
         keyTakeaways: [
@@ -3191,8 +3307,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Keep a claim diary documenting all conversations, meetings, and correspondence with your insurance company. This record can be valuable if disputes arise.",
+            content:
+              "Keep a claim diary documenting all conversations, meetings, and correspondence with your insurance company. This record can be valuable if disputes arise.",
           },
         ],
         keyTakeaways: [
@@ -3332,8 +3448,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Set a calendar reminder to shop for insurance annually. Even if you don't switch, you'll know you're getting competitive rates and may discover new discounts.",
+            content:
+              "Set a calendar reminder to shop for insurance annually. Even if you don't switch, you'll know you're getting competitive rates and may discover new discounts.",
           },
         ],
         keyTakeaways: [
@@ -3463,8 +3579,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
+            content:
+              "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
           },
         ],
         keyTakeaways: [
@@ -3592,8 +3708,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
+            content:
+              "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
           },
         ],
         keyTakeaways: [
@@ -3733,8 +3849,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
+            content:
+              "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
           },
         ],
         keyTakeaways: [
@@ -3876,8 +3992,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
+            content:
+              "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
           },
         ],
         keyTakeaways: [
@@ -4017,10 +4133,2059 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-              content:
-                "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
+            content:
+              "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
           },
         ],
         keyTakeaways: [
           "HSAs offer superior long-term benefits compared to FSAs",
-          "FSAs provide immediate access but have use
+          "FSAs provide immediate access but have use-it-or-lose-it rules",
+          "Account choice depends on your health plan and financial strategy",
+          "Some accounts can be used together with proper planning",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the main disadvantage of FSAs compared to HSAs?",
+              options: [
+                "Lower contribution limits",
+                "No tax deduction for contributions",
+                "Use-it-or-lose-it rule",
+                "Not available through employers",
+              ],
+              correctAnswer: "Use-it-or-lose-it rule",
+              explanation:
+                "The main disadvantage of FSAs is the use-it-or-lose-it rule, where unused funds are forfeited at year-end (with limited exceptions). HSA funds never expire and roll over indefinitely.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Maximizing HSA Benefits",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Advanced HSA Optimization Strategies",
+          },
+          {
+            type: "paragraph",
+            content:
+              "To truly maximize HSA benefits, you need to go beyond basic contributions and think strategically about timing, investments, and long-term planning. These advanced strategies can significantly multiply your HSA's value over time.",
+          },
+          {
+            type: "list",
+            content: "Advanced HSA maximization strategies:",
+            items: [
+              "Pay medical expenses out-of-pocket when possible",
+              "Keep detailed records of all medical expenses",
+              "Invest HSA funds for long-term growth",
+              "Delay reimbursement to maximize tax-free growth",
+              "Use HSA for retirement healthcare planning",
+              "Coordinate with other tax-advantaged accounts",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Delayed reimbursement strategy value:",
+            formula: "Future Value = Medical Expense × (1 + Return Rate)^Years",
+            variables: {
+              "Example": "$2,000 medical expense, 7% return, 20 years",
+              "If Reimbursed Now": "$2,000 (no growth)",
+              "If Delayed": "$2,000 × (1.07)^20 = $7,739",
+              "Tax-Free Benefit": "All $5,739 growth is tax-free when withdrawn",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Receipt Banking Strategy: Over 10 years, Lisa accumulated $15,000 in medical receipts while letting her HSA grow to $35,000. At retirement, she can withdraw $15,000 tax-free using old receipts, while the remaining $20,000 continues growing for future medical needs.",
+          },
+          {
+            type: "list",
+            content: "HSA record-keeping best practices:",
+            items: [
+              "Digital storage: Scan and store receipts electronically",
+              "Cloud backup: Ensure receipts are safely stored",
+              "Detailed records: Date, provider, amount, type of expense",
+              "Organize by year: Make future retrieval easier",
+              "Keep forever: No time limit on reimbursement",
+              "Track reimbursements: Avoid double-dipping",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Family HSA Strategy: The Martinez family maximizes both spouses' HSAs ($8,300 each), invests 90% in stock funds, and pays all medical expenses out-of-pocket. After 15 years, their combined $249,000 contributions grew to $520,000, all available tax-free for medical expenses.",
+          },
+          {
+            type: "list",
+            content: "HSA investment optimization:",
+            items: [
+              "Low-cost index funds: Minimize fees to maximize growth",
+              "Age-appropriate allocation: More aggressive when young",
+              "Rebalancing: Maintain target allocation over time",
+              "Tax-loss harvesting: Not applicable in tax-free HSA",
+              "Dollar-cost averaging: Regular investment contributions",
+              "Provider comparison: Shop for best investment options and fees",
+            ],
+          },
+          {
+            type: "list",
+            content: "Qualified medical expense optimization:",
+            items: [
+              "Understand eligible expenses: IRS Publication 502",
+              "Over-the-counter medications: Now HSA-eligible",
+              "Menstrual products: Added as eligible expense",
+              "Alternative treatments: Acupuncture, chiropractic care",
+              "Medical equipment: CPAP machines, blood pressure monitors",
+              "Home modifications: Ramps, grab bars for medical needs",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA estate planning strategies:",
+            items: [
+              "Spouse beneficiary: HSA continues as spouse's HSA",
+              "Non-spouse beneficiary: Account becomes taxable to beneficiary",
+              "Charitable beneficiary: Tax-free transfer to charity",
+              "Multiple beneficiaries: Split account among beneficiaries",
+              "Estate planning documents: Include HSA in will/trust",
+              "Beneficiary updates: Review and update regularly",
+            ],
+          },
+          {
+            type: "list",
+            content: "Common HSA optimization mistakes:",
+            items: [
+              "Using HSA like checking account: Missing investment growth",
+              "Not keeping receipts: Losing reimbursement opportunities",
+              "Paying fees unnecessarily: Not shopping for better providers",
+              "Wrong investment allocation: Too conservative or aggressive",
+              "Not maximizing contributions: Missing tax benefits",
+              "Forgetting catch-up contributions: Age 55+ additional $1,000",
+            ],
+          },
+          {
+            type: "list",
+            content: "HSA and retirement account coordination:",
+            items: [
+              "Contribution priority: HSA first due to triple tax advantage",
+              "Asset location: Consider HSA as bond allocation",
+              "Withdrawal sequencing: Use HSA for medical expenses first",
+              "Tax diversification: HSA provides tax-free bucket",
+              "Required distributions: HSA has no RMDs unlike traditional IRAs",
+              "Legacy planning: HSA benefits for spouse, taxes for others",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't use your HSA for non-medical expenses before age 65. The 20% penalty plus income taxes make this very expensive compared to other funding sources.",
+          },
+          {
+            type: "tip",
+            content:
+              "Think of your HSA as a retirement account that happens to have medical benefits. This mindset encourages long-term investing and maximizes the account's incredible tax advantages.",
+          },
+        ],
+        keyTakeaways: [
+          "Pay medical expenses out-of-pocket and let HSA funds grow when possible",
+          "Keep detailed records of medical expenses for future reimbursement",
+          "Invest HSA funds appropriately for long-term growth",
+          "Coordinate HSA strategy with overall retirement and tax planning",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the best strategy for maximizing HSA growth?",
+              options: [
+                "Use HSA funds immediately for all medical expenses",
+                "Keep all HSA funds in cash for safety",
+                "Pay medical expenses out-of-pocket and invest HSA funds",
+                "Only contribute the minimum required amount",
+              ],
+              correctAnswer: "Pay medical expenses out-of-pocket and invest HSA funds",
+              explanation:
+                "The best strategy is to pay medical expenses out-of-pocket when possible, keep receipts for future reimbursement, and invest HSA funds for long-term tax-free growth. This maximizes the time your money grows tax-free.",
+            },
+          ],
+        },
+      },
+    ],
+    "estate-planning": [
+      {
+        title: "Estate Planning Essentials",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Protecting Your Legacy and Loved Ones",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate planning ensures your wishes are carried out and your loved ones are protected when you're no longer able to make decisions. It's not just for the wealthy - everyone needs basic estate planning documents to avoid costly legal complications and family disputes.",
+          },
+          {
+            type: "list",
+            content: "Core estate planning documents:",
+            items: [
+              "Will: Directs distribution of assets and names guardians for minor children",
+              "Durable Power of Attorney: Authorizes someone to handle financial matters",
+              "Healthcare Power of Attorney: Designates medical decision-maker",
+              "Living Will/Advance Directive: Specifies end-of-life care preferences",
+              "HIPAA Authorization: Allows access to medical information",
+              "Beneficiary designations: On retirement accounts, insurance, bank accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "What happens without estate planning:",
+            items: [
+              "State intestacy laws determine asset distribution",
+              "Court appoints guardian for minor children",
+              "Probate process becomes more complex and expensive",
+              "Family disputes over assets and decisions",
+              "No guidance for medical decisions if incapacitated",
+              "Potential tax inefficiencies and higher costs",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Cost of dying without a will:",
+            formula: "Probate Costs = Court Fees + Attorney Fees + Executor Fees + Time",
+            variables: {
+              "Court Fees": "$500-$2,000 depending on state",
+              "Attorney Fees": "3-7% of estate value",
+              "Executor Fees": "2-4% of estate value",
+              "Time Cost": "6 months to 2+ years to settle",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Intestacy Consequences: When Mark died without a will, his $300,000 estate went through probate costing $18,000 in fees. His assets were distributed by state law rather than his wishes, and his children's inheritance was delayed by 18 months.",
+          },
+          {
+            type: "list",
+            content: "Estate planning priorities by life stage:",
+            items: [
+              "Young adults: Basic will, power of attorney, beneficiary designations",
+              "New parents: Guardian designation, life insurance, updated wills",
+              "Mid-career: Trust planning, tax strategies, business succession",
+              "Pre-retirement: Healthcare directives, long-term care planning",
+              "Retirement: Legacy planning, charitable giving, tax optimization",
+              "All stages: Regular review and updates for life changes",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Comprehensive Planning Success: The Johnson family created wills, powers of attorney, and healthcare directives. When John became incapacitated, his wife could immediately access accounts and make medical decisions without court intervention, saving thousands in legal fees and family stress.",
+          },
+          {
+            type: "list",
+            content: "Common estate planning mistakes:",
+            items: [
+              "Procrastination: Waiting until it's too late",
+              "DIY documents: Using inadequate online forms",
+              "Outdated documents: Not updating for life changes",
+              "Forgetting beneficiaries: Not updating account designations",
+              "Inadequate funding: Creating trusts but not funding them",
+              "Poor communication: Not discussing plans with family",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to update your estate plan:",
+            items: [
+              "Marriage or divorce: Changes in spouse and beneficiaries",
+              "Birth or adoption: New children need protection",
+              "Death of beneficiary: Update designations and documents",
+              "Significant wealth change: May need different strategies",
+              "Moving states: Different laws may affect your plan",
+              "Tax law changes: May create new opportunities or requirements",
+            ],
+          },
+          {
+            type: "list",
+            content: "Estate planning team professionals:",
+            items: [
+              "Estate planning attorney: Creates legal documents and strategies",
+              "Financial advisor: Coordinates investments and insurance",
+              "Tax professional: Minimizes estate and income taxes",
+              "Insurance agent: Ensures adequate life and disability coverage",
+              "Trust officer: Manages trusts and estate administration",
+              "Family members: Executors, trustees, and beneficiaries",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't rely on online will templates for complex situations. While basic documents may work for simple estates, most people benefit from professional guidance to avoid costly mistakes.",
+          },
+          {
+            type: "tip",
+            content:
+              "Start with basic documents even if your situation isn't perfect yet. Having a simple will and power of attorney is much better than having nothing at all.",
+          },
+        ],
+        keyTakeaways: [
+          "Everyone needs basic estate planning documents regardless of wealth",
+          "Dying without a will creates unnecessary costs and complications",
+          "Estate plans should be updated regularly for life changes",
+          "Professional guidance helps avoid costly mistakes",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens if you die without a will?",
+              options: [
+                "Your assets go to the government",
+                "Your spouse automatically gets everything",
+                "State intestacy laws determine who gets your assets",
+                "Your assets are donated to charity",
+              ],
+              correctAnswer: "State intestacy laws determine who gets your assets",
+              explanation:
+                "If you die without a will (intestate), state laws determine how your assets are distributed. This may not match your wishes and can create complications for your family.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Wills and Trusts",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Wills and Trust Structures",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Wills and trusts are fundamental estate planning tools that serve different purposes. Understanding when to use each, their benefits and limitations, helps you create an effective estate plan that protects your assets and provides for your beneficiaries.",
+          },
+          {
+            type: "list",
+            content: "Will basics:",
+            items: [
+              "Legal document directing asset distribution after death",
+              "Names executor to manage estate administration",
+              "Designates guardians for minor children",
+              "Must go through probate court process",
+              "Public record once filed with court",
+              "Can be contested by disgruntled heirs",
+            ],
+          },
+          {
+            type: "list",
+            content: "Types of wills:",
+            items: [
+              "Simple will: Basic asset distribution, most common",
+              "Pour-over will: Works with trust, transfers remaining assets",
+              "Joint will: Single document for married couple (not recommended)",
+              "Living will: Healthcare directives (different from regular will)",
+              "Holographic will: Handwritten, valid in some states",
+              "Nuncupative will: Oral will, very limited validity",
+            ],
+          },
+          {
+            type: "list",
+            content: "Trust fundamentals:",
+            items: [
+              "Legal entity that holds assets for beneficiaries",
+              "Grantor: Person who creates and funds the trust",
+              "Trustee: Person or institution managing the trust",
+              "Beneficiaries: People who benefit from the trust",
+              "Trust document: Specifies terms and conditions",
+              "Can operate during lifetime and after death",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Will vs. Trust cost comparison:",
+            formula: "Total Cost = Setup Cost + Administration Cost + Probate Cost",
+            variables: {
+              "Simple Will": "$500 setup + $0 lifetime + $15,000 probate = $15,500",
+              "Revocable Trust": "$2,500 setup + $500 annual + $3,000 probate = $18,500 (20 years)",
+              "Break-even": "Depends on estate size and complexity",
+              "Trust Benefits": "Privacy, probate avoidance, incapacity planning",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Trust vs. Will Decision: Sarah has a $800,000 estate with rental properties. A revocable trust costs $3,000 to set up but avoids $24,000 in probate costs and provides privacy. The trust pays for itself while offering better protection.",
+          },
+          {
+            type: "list",
+            content: "Revocable (Living) Trust benefits:",
+            items: [
+              "Avoids probate: Faster, private asset transfer",
+              "Incapacity planning: Successor trustee takes over seamlessly",
+              "Privacy: Trust terms remain confidential",
+              "Multi-state property: Avoids probate in multiple states",
+              "Professional management: Can name corporate trustee",
+              "Flexibility: Can be changed or revoked during lifetime",
+            ],
+          },
+          {
+            type: "list",
+            content: "Irrevocable trust advantages:",
+            items: [
+              "Asset protection: Removes assets from your estate",
+              "Tax benefits: May reduce estate and income taxes",
+              "Medicaid planning: Can protect assets from long-term care costs",
+              "Generation-skipping: Benefits grandchildren while skipping children's estate taxes",
+              "Charitable benefits: Tax deductions for charitable trusts",
+              "Creditor protection: Assets generally protected from lawsuits",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Multi-Generational Trust: The Williams family created an irrevocable trust with $2 million, removing it from their taxable estate. The trust provides income to their children and preserves principal for grandchildren, saving an estimated $800,000 in estate taxes over two generations.",
+          },
+          {
+            type: "list",
+            content: "Common trust types:",
+            items: [
+              "Revocable living trust: Flexibility and probate avoidance",
+              "Irrevocable life insurance trust: Removes life insurance from estate",
+              "Charitable remainder trust: Income for life, remainder to charity",
+              "Qualified personal residence trust: Transfers home at discount",
+              "Generation-skipping trust: Benefits multiple generations",
+              "Special needs trust: Provides for disabled beneficiaries",
+            ],
+          },
+          {
+            type: "list",
+            content: "Trust funding requirements:",
+            items: [
+              "Real estate: Deed property into trust name",
+              "Bank accounts: Retitle accounts or name trust as beneficiary",
+              "Investment accounts: Transfer ownership to trust",
+              "Business interests: Assign ownership to trust",
+              "Personal property: Bill of sale or assignment",
+              "Life insurance: Name trust as beneficiary",
+            ],
+          },
+          {
+            type: "list",
+            content: "Will vs. Trust decision factors:",
+            items: [
+              "Estate size: Larger estates benefit more from trusts",
+              "Complexity: Multiple properties, businesses favor trusts",
+              "Privacy concerns: Trusts provide confidentiality",
+              "Incapacity planning: Trusts offer seamless management",
+              "Cost considerations: Trusts cost more upfront",
+              "Family dynamics: Trusts can provide more control",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Creating a trust without properly funding it is a common mistake. The trust only controls assets that are formally transferred into it.",
+          },
+          {
+            type: "tip",
+            content:
+              "Even with a trust, you still need a will (called a pour-over will) to handle any assets not in the trust and to name guardians for minor children.",
+          },
+        ],
+        keyTakeaways: [
+          "Wills go through probate, trusts generally avoid probate",
+          "Trusts provide better incapacity planning and privacy",
+          "Trust funding is crucial - unfunded trusts don't work",
+          "The choice depends on estate size, complexity, and goals",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the main advantage of a revocable living trust over a will?",
+              options: [
+                "It's less expensive to create",
+                "It provides better tax benefits",
+                "It avoids probate and provides incapacity planning",
+                "It can't be contested by heirs",
+              ],
+              correctAnswer: "It avoids probate and provides incapacity planning",
+              explanation:
+                "The main advantages of a revocable living trust are avoiding probate (faster, private, less expensive) and providing seamless management if you become incapacitated.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Power of Attorney Documents",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Authorizing Others to Act on Your Behalf",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Power of attorney documents authorize trusted individuals to make decisions and take actions on your behalf when you cannot. These documents are crucial for incapacity planning and can prevent costly court proceedings if you become unable to manage your affairs.",
+          },
+          {
+            type: "list",
+            content: "Types of power of attorney:",
+            items: [
+              "Durable Financial Power of Attorney: Handles financial matters",
+              "Healthcare Power of Attorney: Makes medical decisions",
+              "Limited Power of Attorney: Specific purpose and time frame",
+              "Springing Power of Attorney: Becomes effective upon incapacity",
+              "General Power of Attorney: Broad authority, ends at incapacity",
+              "Special Power of Attorney: Limited to specific transactions",
+            ],
+          },
+          {
+            type: "list",
+            content: "Financial power of attorney powers:",
+            items: [
+              "Banking: Access accounts, make deposits and withdrawals",
+              "Investments: Buy, sell, and manage investment accounts",
+              "Real estate: Buy, sell, mortgage, and manage property",
+              "Insurance: Pay premiums, file claims, change beneficiaries",
+              "Taxes: File returns, pay taxes, represent before IRS",
+              "Business: Operate business, sign contracts, make decisions",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Cost of not having power of attorney:",
+            formula: "Guardianship Cost = Court Fees + Attorney Fees + Ongoing Costs",
+            variables: {
+              "Initial Court Costs": "$2,000-$5,000",
+              "Attorney Fees": "$5,000-$15,000",
+              "Annual Reporting": "$1,000-$3,000 per year",
+              "Total First Year": "$8,000-$23,000",
+              "Power of Attorney Cost": "$200-$500",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Incapacity Without Planning: When Robert had a stroke, his family couldn't access his accounts to pay bills. They spent $12,000 and six months getting court-appointed guardianship. A $300 power of attorney would have avoided this entirely.",
+          },
+          {
+            type: "list",
+            content: "Healthcare power of attorney responsibilities:",
+            items: [
+              "Medical treatment decisions: Consent to or refuse treatment",
+              "Healthcare provider selection: Choose doctors and hospitals",
+              "Medical information access: Obtain medical records and test results",
+              "End-of-life decisions: Implement advance directive wishes",
+              "Mental health treatment: Authorize psychiatric care if needed",
+              "Long-term care: Decide on nursing home or home care",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Healthcare Decision Success: When Lisa was in a coma after an accident, her healthcare power of attorney (her sister) could immediately make treatment decisions and access medical information. This avoided family conflicts and ensured Lisa's wishes were followed.",
+          },
+          {
+            type: "list",
+            content: "Choosing the right agent:",
+            items: [
+              "Trustworthiness: Must act in your best interests",
+              "Competence: Able to handle financial or medical decisions",
+              "Availability: Accessible when decisions need to be made",
+              "Geographic proximity: Close enough to act when needed",
+              "Family dynamics: Consider relationships and potential conflicts",
+              "Backup agents: Name successors in case primary agent can't serve",
+            ],
+          },
+          {
+            type: "list",
+            content: "Power of attorney limitations:",
+            items: [
+              "Cannot make decisions after your death (will/trust takes over)",
+              "Cannot change your will or trust (unless specifically authorized)",
+              "Cannot make gifts to themselves (unless specifically allowed)",
+              "Cannot delegate authority to others (unless document permits)",
+              "May not be accepted by all institutions without proper language",
+              "Ends automatically if you revoke it or become competent again",
+            ],
+          },
+          {
+            type: "list",
+            content: "Making power of attorney effective:",
+            items: [
+              "Proper execution: Sign with witnesses and notarization as required",
+              "State-specific forms: Use forms that comply with state law",
+              "Financial institution acceptance: Ensure banks will honor the document",
+              "Multiple copies: Provide copies to agents and relevant institutions",
+              "Regular updates: Review and update every few years",
+              "Clear instructions: Provide guidance on your wishes and preferences",
+            ],
+          },
+          {
+            type: "list",
+            content: "Safeguards against abuse:",
+            items: [
+              "Limited powers: Grant only necessary authority",
+              "Multiple agents: Require joint action for major decisions",
+              "Reporting requirements: Require regular accounting",
+              "Third-party oversight: Involve trusted family or professionals",
+              "Specific instructions: Provide detailed guidance on your wishes",
+              "Regular review: Monitor agent's actions while you're competent",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "A general power of attorney becomes invalid when you become incapacitated - exactly when you need it most. Always use a 'durable' power of attorney that remains effective during incapacity.",
+          },
+          {
+            type: "tip",
+            content:
+              "Consider naming different people for financial and healthcare decisions based on their strengths. Your financially savvy sibling might handle money matters while your compassionate friend handles healthcare decisions.",
+          },
+        ],
+        keyTakeaways: [
+          "Power of attorney documents prevent costly guardianship proceedings",
+          "Durable powers remain effective during incapacity when you need them most",
+          "Choose agents carefully based on trustworthiness and competence",
+          "Separate financial and healthcare powers of attorney may be appropriate",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the difference between a general and durable power of attorney?",
+              options: [
+                "General covers more powers than durable",
+                "Durable remains effective during incapacity, general does not",
+                "General is for financial matters, durable is for healthcare",
+                "There is no difference between them",
+              ],
+              correctAnswer: "Durable remains effective during incapacity, general does not",
+              explanation:
+                "A durable power of attorney remains effective if you become incapacitated, while a general power of attorney becomes invalid upon incapacity - exactly when you need someone to act for you most.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Beneficiary Designations",
+        duration: "5 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "The Often-Overlooked Estate Planning Tool",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Beneficiary designations on retirement accounts, life insurance, and other financial accounts often transfer more wealth than wills. These designations override wills and trusts, making them critical components of estate planning that require regular review and updates.",
+          },
+          {
+            type: "list",
+            content: "Accounts with beneficiary designations:",
+            items: [
+              "Retirement accounts: 401(k), 403(b), IRAs, pensions",
+              "Life insurance policies: Term and permanent life insurance",
+              "Bank accounts: Payable-on-death (POD) accounts",
+              "Investment accounts: Transfer-on-death (TOD) accounts",
+              "Annuities: Immediate and deferred annuities",
+              "Some employer benefits: Group life insurance, stock options",
+            ],
+          },
+          {
+            type: "list",
+            content: "Why beneficiary designations matter:",
+            items: [
+              "Override wills: Designations trump will instructions",
+              "Avoid probate: Assets transfer directly to beneficiaries",
+              "Speed: Much faster than probate process",
+              "Privacy: Transfers remain confidential",
+              "Cost savings: No probate fees or court costs",
+              "Creditor protection: May protect assets from creditors",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Beneficiary designation asset transfer:",
+            formula: "Probate Avoidance = Retirement Accounts + Life Insurance + POD/TOD Accounts",
+            variables: {
+              "Example Estate": "$200,000 401(k) + $300,000 life insurance + $50,000 POD accounts",
+              "Probate Avoidance": "$550,000 transfers directly to beneficiaries",
+              "Will Controls": "Only remaining $100,000 in other assets",
+              "Time Savings": "Weeks vs. months or years",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Designation Override: Tom's will left everything to his children, but his $400,000 401(k) still listed his ex-wife as beneficiary. Despite the divorce and will, the ex-wife received the entire 401(k) because beneficiary designations override wills.",
+          },
+          {
+            type: "list",
+            content: "Primary vs. contingent beneficiaries:",
+            items: [
+              "Primary beneficiaries: First in line to receive assets",
+              "Contingent beneficiaries: Receive assets if primary beneficiaries predecease you",
+              "Per stirpes: Deceased beneficiary's share goes to their children",
+              "Per capita: Deceased beneficiary's share is split among surviving beneficiaries",
+              "Percentage allocations: Specify exact percentages for each beneficiary",
+              "Multiple layers: Can name multiple levels of contingent beneficiaries",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Proper Beneficiary Planning: Sarah named her three children as primary beneficiaries (33.3% each) and their children as contingent beneficiaries per stirpes. When one child predeceased her, that child's share went to his children, preserving the family wealth distribution she intended.",
+          },
+          {
+            type: "list",
+            content: "Common beneficiary designation mistakes:",
+            items: [
+              "Outdated beneficiaries: Ex-spouses, deceased individuals",
+              "No contingent beneficiaries: Assets may go to estate if primary dies",
+              "Minor children as beneficiaries: May require court-appointed guardian",
+              "Vague descriptions: 'My children' without specific names",
+              "Unequal treatment: Not coordinating with overall estate plan",
+              "Forgetting to update: After marriage, divorce, births, deaths",
+            ],
+          },
+          {
+            type: "list",
+            content: "Special considerations for retirement accounts:",
+            items: [
+              "Spouse beneficiaries: Can roll over to their own IRA",
+              "Non-spouse beneficiaries: Must follow 10-year distribution rule",
+              "Trust beneficiaries: Complex rules, professional guidance needed",
+              "Charitable beneficiaries: Tax-efficient for large IRAs",
+              "Multiple beneficiaries: Can split accounts for different treatment",
+              "Required minimum distributions: Continue for inherited accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Beneficiary designation best practices:",
+            items: [
+              "Review annually: Check all accounts and policies",
+              "Update for life changes: Marriage, divorce, births, deaths",
+              "Use specific names: Full legal names and relationships",
+              "Include Social Security numbers: Helps with identification",
+              "Name contingent beneficiaries: Always have backups",
+              "Coordinate with estate plan: Ensure consistency with will/trust",
+            ],
+          },
+          {
+            type: "list",
+            content: "When to consider trust beneficiaries:",
+            items: [
+              "Minor children: Trust provides management until they're adults",
+              "Spendthrift concerns: Trust protects against poor financial decisions",
+              "Special needs beneficiaries: Preserves government benefit eligibility",
+              "Tax planning: Trust can provide more flexible distribution options",
+              "Asset protection: Trust may protect from beneficiary's creditors",
+              "Multi-generational planning: Trust can benefit multiple generations",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Never name minor children directly as beneficiaries of large accounts. Courts may require expensive guardianship proceedings. Instead, name a trust or adult custodian.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set a calendar reminder to review all beneficiary designations annually, especially after major life events like marriage, divorce, births, or deaths in the family.",
+          },
+        ],
+        keyTakeaways: [
+          "Beneficiary designations override wills and transfer assets directly",
+          "Regular updates are crucial after life changes",
+          "Always name contingent beneficiaries as backups",
+          "Consider trusts for minor children or complex situations",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What happens if your will says one thing but your 401(k) beneficiary designation says another?",
+              options: [
+                "The will takes precedence",
+                "The beneficiary designation takes precedence",
+                "The assets are split between both",
+                "The court decides which document to follow",
+              ],
+              correctAnswer: "The beneficiary designation takes precedence",
+              explanation:
+                "Beneficiary designations on retirement accounts, life insurance, and other financial accounts override instructions in your will. The designated beneficiary receives the assets regardless of what your will says.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Probate Avoidance Strategies",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Keeping Your Estate Out of Court",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Probate is the court process of validating wills and distributing assets after death. While not always bad, probate can be time-consuming, expensive, and public. Understanding probate avoidance strategies helps you transfer assets more efficiently to your beneficiaries.",
+          },
+          {
+            type: "list",
+            content: "What is probate:",
+            items: [
+              "Court process to validate wills and distribute assets",
+              "Supervised administration of deceased person's estate",
+              "Public process - records become public information",
+              "Time-consuming - typically 6 months to 2+ years",
+              "Expensive - court fees, attorney fees, executor fees",
+              "Required for assets titled in deceased person's name only",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Typical probate costs:",
+            formula: "Probate Cost = Court Fees + Attorney Fees + Executor Fees + Other Costs",
+            variables: {
+              "Court Fees": "$500-$2,000 (varies by state)",
+              "Attorney Fees": "3-7% of estate value",
+              "Executor Fees": "2-4% of estate value",
+              "Example": "$500,000 estate = $25,000-$55,000 in probate costs",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Probate vs. Trust Comparison: The Smith estate worth $600,000 went through probate, costing $36,000 and taking 14 months. Their neighbor's similar estate in a trust transferred to beneficiaries in 30 days with $2,000 in administrative costs.",
+          },
+          {
+            type: "list",
+            content: "Assets that avoid probate:",
+            items: [
+              "Joint tenancy property: Automatically transfers to surviving owner",
+              "Beneficiary designations: Retirement accounts, life insurance, POD/TOD accounts",
+              "Trust assets: Property held in revocable or irrevocable trusts",
+              "Community property with right of survivorship: In community property states",
+              "Life estate property: Remainder interest transfers automatically",
+              "Business interests: Some structures avoid probate",
+            ],
+          },
+          {
+            type: "list",
+            content: "Probate avoidance strategies:",
+            items: [
+              "Revocable living trust: Transfer assets to trust during lifetime",
+              "Joint ownership: Add joint owners with survivorship rights",
+              "Beneficiary designations: Use POD/TOD accounts",
+              "Gift assets during lifetime: Reduces probate estate",
+              "Small estate procedures: Some states have simplified processes",
+              "Business entity planning: LLCs and corporations may avoid probate",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Comprehensive Probate Avoidance: The Johnson family used multiple strategies: revocable trust for real estate and investments, joint bank accounts, proper beneficiary designations on retirement accounts, and POD accounts. Only $15,000 of their $800,000 estate required probate.",
+          },
+          {
+            type: "list",
+            content: "Joint ownership considerations:",
+            items: [
+              "Joint tenancy with right of survivorship: Property transfers to survivor",
+              "Tenancy by the entirety: For married couples, creditor protection",
+              "Community property: Automatic survivorship in some states",
+              "Risks: Loss of control, creditor exposure, gift tax issues",
+              "Unintended consequences: May not align with overall estate plan",
+              "Professional guidance: Important for complex situations",
+            ],
+          },
+          {
+            type: "list",
+            content: "When probate might be beneficial:",
+            items: [
+              "Creditor protection: Probate cuts off creditor claims after statutory period",
+              "Will contests: Court supervision can resolve disputes",
+              "Complex estates: Court oversight ensures proper administration",
+              "Unknown heirs: Court process can identify and notify heirs",
+              "Tax issues: Court approval may be needed for tax elections",
+              "Small estates: Simplified probate may be cost-effective",
+            ],
+          },
+          {
+            type: "list",
+            content: "State variations in probate:",
+            items: [
+              "Uniform Probate Code states: Streamlined, less expensive process",
+              "Traditional probate states: More court supervision, higher costs",
+              "Small estate thresholds: Vary from $20,000 to $275,000",
+              "Simplified procedures: Affidavit processes for small estates",
+              "Homestead exemptions: Primary residence may have special treatment",
+              "Community property states: Different rules for married couples",
+            ],
+          },
+          {
+            type: "list",
+            content: "Probate avoidance mistakes to avoid:",
+            items: [
+              "Over-avoiding probate: Some assets may benefit from probate process",
+              "Incomplete planning: Leaving some assets to go through probate",
+              "Joint ownership risks: Unintended consequences of adding joint owners",
+              "Trust funding failures: Creating trust but not transferring assets",
+              "Ignoring state law: Different states have different rules",
+              "DIY mistakes: Complex strategies need professional guidance",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't add joint owners to accounts just to avoid probate without considering the risks. Joint owners have immediate access to funds and may expose assets to their creditors.",
+          },
+          {
+            type: "tip",
+            content:
+              "Focus on avoiding probate for your largest assets first - real estate, investment accounts, and business interests. These provide the biggest cost savings and time benefits.",
+          },
+        ],
+        keyTakeaways: [
+          "Probate can be expensive, time-consuming, and public",
+          "Multiple strategies exist to avoid probate for different asset types",
+          "Trusts are often the most comprehensive probate avoidance tool",
+          "Some situations may actually benefit from probate supervision",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "Which assets typically go through probate?",
+              options: [
+                "Assets with beneficiary designations",
+                "Joint tenancy property",
+                "Assets held in trust",
+                "Assets titled in the deceased person's name only",
+              ],
+              correctAnswer: "Assets titled in the deceased person's name only",
+              explanation:
+                "Assets titled solely in the deceased person's name typically must go through probate. Assets with beneficiary designations, joint ownership, or held in trust generally avoid probate.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Estate Tax Planning Strategies",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Minimizing Taxes on Wealth Transfer",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Estate tax planning involves strategies to minimize taxes on wealth transferred to heirs. While most estates don't owe federal estate tax due to high exemptions, understanding the rules and planning techniques can preserve more wealth for your beneficiaries and may be crucial for larger estates.",
+          },
+          {
+            type: "list",
+            content: "2024 Federal estate and gift tax limits:",
+            items: [
+              "Estate tax exemption: $13.61 million per person",
+              "Annual gift tax exclusion: $18,000 per recipient",
+              "Lifetime gift tax exemption: $13.61 million (unified with estate)",
+              "Generation-skipping tax exemption: $13.61 million",
+              "Estate tax rate: 40% on amounts above exemption",
+              "Portability: Surviving spouse can use deceased spouse's unused exemption",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Estate tax calculation:",
+            formula: "Estate Tax = (Gross Estate - Exemption - Deductions) × 40%",
+            variables: {
+              "Example": "$20 million gross estate",
+              "Less Exemption": "$20M - $13.61M = $6.39M taxable",
+              "Estate Tax": "$6.39M × 40% = $2.56M tax owed",
+              "Net to Heirs": "$20M - $2.56M = $17.44M",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Portability Election: When John died in 2024 with a $5 million estate, his unused $8.61 million exemption was elected for his surviving spouse Mary. Mary now has a combined $22.22 million exemption ($13.61M + $8.61M unused).",
+          },
+          {
+            type: "list",
+            content: "Basic estate tax reduction strategies:",
+            items: [
+              "Annual gifting: Use $18,000 annual exclusion per recipient",
+              "Lifetime gifting: Remove future appreciation from estate",
+              "Charitable giving: Reduce estate while supporting causes",
+              "Marital deduction: Unlimited transfers to U.S. citizen spouse",
+              "Generation-skipping: Direct transfers to grandchildren",
+              "Valuation discounts: Reduce gift/estate values through entity structures",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Annual Gifting Strategy: The Williams family (2 parents, 3 children, 6 grandchildren) can gift $324,000 annually ($18,000 × 18 recipients) without using lifetime exemption. Over 10 years, they transfer $3.24 million plus future appreciation out of their estate.",
+          },
+          {
+            type: "list",
+            content: "Advanced estate planning techniques:",
+            items: [
+              "Grantor Retained Annuity Trusts (GRATs): Transfer growth to heirs",
+              "Qualified Personal Residence Trusts (QPRTs): Transfer home at discount",
+              "Charitable Remainder Trusts: Income for life, remainder to charity",
+              "Intentionally Defective Grantor Trusts: Grantor pays income taxes",
+              "Family Limited Partnerships: Valuation discounts for gifts",
+              "Dynasty trusts: Multi-generational wealth transfer",
+            ],
+          },
+          {
+            type: "list",
+            content: "State estate tax considerations:",
+            items: [
+              "12 states plus DC have state estate taxes",
+              "State exemptions often much lower than federal",
+              "Connecticut: $12.92 million exemption",
+              "Massachusetts: $2 million exemption",
+              "Some states have inheritance taxes on beneficiaries",
+              "Residency planning can avoid state estate taxes",
+            ],
+          },
+          {
+            type: "list",
+            content: "Generation-skipping transfer tax:",
+            items: [
+              "Applies to transfers to grandchildren or later generations",
+              "Same exemption as estate tax: $13.61 million (2024)",
+              "40% tax rate on transfers above exemption",
+              "Direct skips: Gifts directly to grandchildren",
+              "Taxable distributions: From generation-skipping trusts",
+              "Taxable terminations: When trust benefits skip generations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Charitable estate planning strategies:",
+            items: [
+              "Charitable deduction: Unlimited deduction for qualified charities",
+              "Charitable remainder trusts: Income stream plus tax deduction",
+              "Charitable lead trusts: Reduce gift/estate taxes on family transfers",
+              "Private foundations: Control charitable giving across generations",
+              "Donor advised funds: Flexible charitable giving vehicle",
+              "Charitable gift annuities: Fixed income plus tax benefits",
+            ],
+          },
+          {
+            type: "list",
+            content: "Estate tax planning timing:",
+            items: [
+              "Current high exemptions: Scheduled to sunset in 2026",
+              "Potential reduction: May drop to ~$7 million in 2026",
+              "Use-it-or-lose-it: Consider accelerating gifts before sunset",
+              "Legislative risk: Congress could change rules anytime",
+              "State law changes: Monitor state estate tax developments",
+              "Regular review: Update strategies as laws change",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "The current high federal estate tax exemption is scheduled to sunset in 2026, potentially dropping to around $7 million. Consider accelerating gifting strategies before then if you have a large estate.",
+          },
+          {
+            type: "tip",
+            content:
+              "Even if your estate is below the federal exemption, consider state estate taxes and the benefits of lifetime gifting for removing future appreciation from your taxable estate.",
+          },
+        ],
+        keyTakeaways: [
+          "Most estates don't owe federal estate tax due to high exemptions",
+          "Annual gifting can remove significant wealth from estates over time",
+          "State estate taxes may apply even when federal taxes don't",
+          "Advanced strategies can multiply the effectiveness of exemptions",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What is the 2024 annual gift tax exclusion amount?",
+              options: [
+                "$15,000",
+                "$16,000",
+                "$17,000",
+                "$18,000",
+              ],
+              correctAnswer: "$18,000",
+              explanation:
+                "The 2024 annual gift tax exclusion is $18,000 per recipient. You can give this amount to unlimited recipients each year without using your lifetime exemption or owing gift tax.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Charitable Giving in Estate Plans",
+        duration: "6 min",
+        points: 18,
+        content: [
+          {
+            type: "heading",
+            content: "Combining Philanthropy with Tax Benefits",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Charitable giving can be a powerful component of estate planning, providing tax benefits while supporting causes you care about. Understanding different charitable giving strategies helps you maximize both your philanthropic impact and tax savings.",
+          },
+          {
+            type: "list",
+            content: "Benefits of charitable estate planning:",
+            items: [
+              "Estate tax deduction: Unlimited deduction for qualified charities",
+              "Income tax benefits: Deductions for lifetime charitable gifts",
+              "Gift tax savings: Charitable gifts don't count against annual exclusions",
+              "Legacy creation: Support causes important to you and your family",
+              "Family involvement: Engage children and grandchildren in philanthropy",
+              "Tax-free growth: Some charitable vehicles provide tax-free investment growth",
+            ],
+          },
+          {
+            type: "list",
+            content: "Simple charitable giving strategies:",
+            items: [
+              "Outright bequests: Leave specific amounts or percentages to charity",
+              "Residuary bequests: Leave remainder of estate after other distributions",
+              "Contingent bequests: Charity receives assets if primary beneficiaries predecease",
+              "Retirement account gifts: Name charity as IRA/401(k) beneficiary",
+              "Life insurance gifts: Name charity as beneficiary of life insurance",
+              "Appreciated securities: Give appreciated stocks instead of cash",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Charitable deduction impact:",
+            formula: "Estate Tax Savings = Charitable Gift × Estate Tax Rate",
+            variables: {
+              "Example": "$1 million charitable bequest",
+              "Estate Tax Rate": "40% (for taxable estates)",
+              "Tax Savings": "$1M × 40% = $400,000",
+              "Net Cost": "$1M gift costs estate only $600,000",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Retirement Account Charity Gift: Instead of leaving his $500,000 IRA to his children (who would pay income tax), David left it to charity (tax-free) and left other assets to his children. This saved his family $150,000 in income taxes.",
+          },
+          {
+            type: "list",
+            content: "Charitable Remainder Trust (CRT) benefits:",
+            items: [
+              "Income stream: Provides income for life or term of years",
+              "Tax deduction: Immediate income tax deduction for remainder value",
+              "Tax-free growth: Trust investments grow without current taxation",
+              "Capital gains deferral: Can sell appreciated assets without immediate tax",
+              "Estate tax reduction: Removes assets from taxable estate",
+              "Flexibility: Various payout options available",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "CRT Strategy Success: Susan contributed $1 million of appreciated stock to a CRT, receiving a $400,000 tax deduction and $60,000 annual income for life. The trust sold the stock tax-free and reinvested for growth. At her death, $800,000 went to charity.",
+          },
+          {
+            type: "list",
+            content: "Charitable Lead Trust (CLT) benefits:",
+            items: [
+              "Gift/estate tax reduction: Reduces transfer taxes on family gifts",
+              "Income tax benefits: May provide income tax deductions",
+              "Wealth transfer: Passes appreciation to family at reduced tax cost",
+              "Charitable support: Provides income stream to charity",
+              "Generation-skipping: Can benefit grandchildren efficiently",
+              "Flexibility: Various structures and terms available",
+            ],
+          },
+          {
+            type: "list",
+            content: "Private Foundation considerations:",
+            items: [
+              "Perpetual existence: Can operate indefinitely",
+              "Family control: Board can include family members",
+              "Tax deduction: Up to 30% of AGI for contributions",
+              "Investment growth: Assets can grow tax-free",
+              "Administrative burden: Requires ongoing management and compliance",
+              "Minimum distributions: Must distribute 5% annually",
+            ],
+          },
+          {
+            type: "list",
+            content: "Donor Advised Fund advantages:",
+            items: [
+              "Immediate tax deduction: When you contribute to the fund",
+              "Investment growth: Funds can be invested and grow tax-free",
+              "Flexible timing: Recommend grants to charities over time",
+              "Lower minimums: Often $5,000-$25,000 to establish",
+              "Professional management: Investment and administrative services",
+              "Family involvement: Can involve children in grant recommendations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Charitable giving timing strategies:",
+            items: [
+              "Bunch charitable deductions: Concentrate gifts in high-income years",
+              "Appreciated securities: Give appreciated assets instead of cash",
+              "Year-end planning: Maximize current year deductions",
+              "Retirement account distributions: Use QCDs to satisfy RMDs",
+              "Estate planning integration: Coordinate with overall estate plan",
+              "Tax law changes: Monitor for opportunities and limitations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Qualified Charitable Distribution (QCD) benefits:",
+            items: [
+              "Age 70½ and older: Can make direct IRA to charity transfers",
+              "Tax-free transfer: Counts toward RMD but not taxable income",
+              "Annual limit: $105,000 per person (2024)",
+              "Any qualified charity: Wide range of eligible organizations",
+              "Estate planning tool: Reduces IRA balance subject to estate tax",
+              "Simple process: Direct transfer from IRA custodian to charity",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Charitable remainder trusts are irrevocable - once you contribute assets, you cannot get them back. Make sure you can afford to give up control of the assets permanently.",
+          },
+          {
+            type: "tip",
+            content:
+              "Consider naming charity as beneficiary of retirement accounts and leaving other assets to family. Charities don't pay income tax on retirement account distributions, while your heirs would.",
+          },
+        ],
+        keyTakeaways: [
+          "Charitable giving provides both tax benefits and philanthropic impact",
+          "Retirement accounts are often the most tax-efficient assets to leave to charity",
+          "Charitable trusts can provide income while supporting charitable causes",
+          "Timing and structure of charitable gifts can maximize tax benefits",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the main benefit of leaving retirement accounts to charity instead of heirs?",
+              options: [
+                "Charities can invest the money better",
+                "It's easier to administer",
+                "Charities don't pay income tax on retirement account distributions",
+                "The charity gets more money",
+              ],
+              correctAnswer: "Charities don't pay income tax on retirement account distributions",
+              explanation:
+                "Charities are tax-exempt and don't pay income tax on retirement account distributions, while individual heirs would pay income tax on inherited retirement accounts. This makes retirement accounts very tax-efficient charitable gifts.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Estate Plan Maintenance and Updates",
+        duration: "5 min",
+        points: 15,
+        content: [
+          {
+            type: "heading",
+            content: "Keeping Your Estate Plan Current and Effective",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Creating an estate plan is just the beginning - maintaining and updating it is equally important. Life changes, law changes, and changing circumstances require regular review and updates to ensure your estate plan continues to meet your goals and protect your family.",
+          },
+          {
+            type: "list",
+            content: "When to update your estate plan:",
+            items: [
+              "Major life events: Marriage, divorce, births, deaths",
+              "Significant wealth changes: Inheritance, business sale, major losses",
+              "Geographic moves: Different state laws may affect your plan",
+              "Health changes: Serious illness or disability",
+              "Relationship changes: Falling out with named agents or beneficiaries",
+              "Law changes: New tax laws or estate planning regulations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Regular review schedule:",
+            items: [
+              "Annual review: Check beneficiary designations and basic documents",
+              "Major life events: Update immediately when circumstances change",
+              "Every 3-5 years: Comprehensive review with attorney",
+              "Tax law changes: Review when significant changes occur",
+              "Age milestones: Review at ages 50, 65, and 70",
+              "Family changes: When children reach adulthood or have children",
+            ],
+          },
+          {
+            type: "example",
+            content:
+              "Update Necessity: After their divorce, Mike forgot to update his life insurance beneficiary. When he died, his $300,000 policy went to his ex-wife instead of his children, despite his will stating otherwise. Beneficiary designations override wills.",
+          },
+          {
+            type: "list",
+            content: "Estate plan review checklist:",
+            items: [
+              "Will: Ensure it reflects current wishes and circumstances",
+              "Trust documents: Review terms, trustees, and beneficiaries",
+              "Power of attorney: Confirm agents are still appropriate",
+              "Healthcare directives: Update for current medical preferences",
+              "Beneficiary designations: Review all accounts and policies",
+              "Guardian nominations: Ensure guardians are still suitable",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Comprehensive Update Success: When the Johnson's daughter was diagnosed with special needs, they updated their estate plan to include a special needs trust, changed guardianship provisions, and restructured their life insurance to provide for her lifetime care needs.",
+          },
+          {
+            type: "list",
+            content: "Document storage and organization:",
+            items: [
+              "Original documents: Store in fireproof safe or bank safe deposit box",
+              "Copies: Provide to agents, trustees, and family members",
+              "Digital copies: Scan and store securely in cloud storage",
+              "Document location list: Tell family where to find documents",
+              "Professional copies: Ensure attorneys have current versions",
+              "Emergency access: Ensure documents are accessible when needed",
+            ],
+          },
+          {
+            type: "list",
+            content: "Communication with family:",
+            items: [
+              "Discuss your wishes: Don't keep plans secret from family",
+              "Explain roles: Help agents and trustees understand their responsibilities",
+              "Share values: Communicate why you made certain decisions",
+              "Address concerns: Listen to family feedback and concerns",
+              "Regular updates: Keep family informed of plan changes",
+              "Professional meetings: Include family in meetings with advisors",
+            ],
+          },
+          {
+            type: "list",
+            content: "Working with professionals:",
+            items: [
+              "Estate planning attorney: Primary relationship for legal documents",
+              "Financial advisor: Coordinate investments and insurance",
+              "Tax professional: Ensure tax efficiency and compliance",
+              "Insurance agent: Review coverage needs and beneficiaries",
+              "Trust officer: If using corporate trustees",
+              "Regular meetings: Schedule periodic reviews with your team",
+            ],
+          },
+          {
+            type: "list",
+            content: "Technology and estate planning:",
+            items: [
+              "Digital assets: Include online accounts, cryptocurrencies, digital files",
+              "Password management: Provide access to digital accounts",
+              "Social media: Specify what happens to online profiles",
+              "Cloud storage: Ensure access to important digital documents",
+              "Electronic signatures: Understand validity in your state",
+              "Digital estate planning tools: Use technology to organize information",
+            ],
+          },
+          {
+            type: "list",
+            content: "Cost of not maintaining estate plans:",
+            items: [
+              "Outdated documents: May not reflect current wishes",
+              "Legal challenges: Increased risk of will contests",
+              "Tax inefficiencies: Missing opportunities for tax savings",
+              "Family conflicts: Confusion about intentions",
+              "Administrative delays: Outdated information slows process",
+              "Unintended consequences: Plans that no longer make sense",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't assume your estate plan is 'set it and forget it.' Regular maintenance is essential to ensure it continues to work effectively as your life and the law change.",
+          },
+          {
+            type: "tip",
+            content:
+              "Set an annual reminder to review your estate plan, even if it's just checking beneficiary designations. This simple habit can prevent major problems and ensure your plan stays current.",
+          },
+        ],
+        keyTakeaways: [
+          "Estate plans need regular review and updates to remain effective",
+          "Major life events should trigger immediate plan reviews",
+          "Proper document storage and family communication are essential",
+          "Professional relationships help maintain plan effectiveness over time",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "How often should you review your estate plan?",
+              options: [
+                "Only when someone dies",
+                "Every 10 years",
+                "Annually, with comprehensive review every 3-5 years",
+                "Once it's created, it never needs updating",
+              ],
+              correctAnswer: "Annually, with comprehensive review every 3-5 years",
+              explanation:
+                "Estate plans should be reviewed annually for basic updates (like beneficiary designations) and comprehensively every 3-5 years or after major life events to ensure they remain current and effective.",
+            },
+          ],
+        },
+      },
+    ],
+    "financial-advisors": [
+      {
+        title: "When to Hire a Financial Advisor",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Determining If You Need Professional Financial Help",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Deciding whether to hire a financial advisor is a significant decision that depends on your financial complexity, knowledge, time availability, and personal preferences. Understanding when professional help adds value can help you make the right choice for your situation.",
+          },
+          {
+            type: "list",
+            content: "Signs you might benefit from a financial advisor:",
+            items: [
+              "Complex financial situation: Multiple income sources, business ownership, significant assets",
+              "Major life transitions: Marriage, divorce, inheritance, job change, retirement",
+              "Lack of time: Too busy to manage investments and financial planning",
+              "Emotional decision-making: Tendency to make impulsive financial choices",
+              "Knowledge gaps: Don't understand investments, taxes, or estate planning",
+              "Specific expertise needed: Tax planning, estate planning, insurance analysis",
+            ],
+          },
+          {
+            type: "list",
+            content: "Life situations that often warrant professional help:",
+            items: [
+              "Approaching retirement: Need comprehensive retirement planning",
+              "Sudden wealth: Inheritance, business sale, stock options, lottery winnings",
+              "Divorce: Asset division, alimony, child support planning",
+              "Starting a business: Business structure, retirement plans, insurance needs",
+              "Special needs planning: Disabled family member requiring long-term care",
+              "Multi-generational wealth: Estate planning and wealth transfer strategies",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Cost-benefit analysis of hiring an advisor:",
+            formula: "Value Added = Investment Returns + Tax Savings + Behavioral Benefits - Advisor Fees",
+            variables: {
+              "Example": "$500,000 portfolio, 1% advisor fee = $5,000 annually",
+              "Potential Benefits": "Better returns, tax efficiency, avoiding mistakes",
+              "Break-even": "Advisor must add >1% value annually",
+              "Studies Show": "Good advisors often add 1.5-3% annual value",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Advisor Value Example: Sarah was panic-selling during market volatility. Her advisor helped her stay invested, rebalance strategically, and implement tax-loss harvesting. These actions added an estimated 2.5% annually to her returns, far exceeding the 1% advisory fee.",
+          },
+          {
+            type: "list",
+            content: "When you might not need a financial advisor:",
+            items: [
+              "Simple financial situation: W-2 income, basic investments, standard deductions",
+              "Strong financial knowledge: Comfortable with investing and financial planning",
+              "Disciplined investor: Can stick to long-term plans without emotional interference",
+              "Limited assets: May not justify advisory fees",
+              "DIY preference: Enjoy managing your own finances",
+              "Cost sensitivity: Advisory fees would significantly impact returns",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "DIY Success Story: Mark, a software engineer, spent time learning about index fund investing and tax-advantaged accounts. With a simple buy-and-hold strategy and disciplined saving, he built substantial wealth without advisory fees, keeping costs under 0.1% annually.",
+          },
+          {
+            type: "list",
+            content: "Hybrid approaches to consider:",
+            items: [
+              "Hourly consultation: Pay for specific advice without ongoing management",
+              "Project-based planning: Hire for specific needs like retirement or estate planning",
+              "Robo-advisors: Low-cost automated investment management",
+              "Fee-only planning: Comprehensive plan without ongoing investment management",
+              "Educational approach: Learn from advisor then manage yourself",
+              "Periodic check-ins: Annual or bi-annual reviews with professional",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags that suggest you need help:",
+            items: [
+              "Frequent trading: Buying and selling investments based on emotions",
+              "No emergency fund: Living paycheck to paycheck despite good income",
+              "Inadequate insurance: Major gaps in life, disability, or liability coverage",
+              "No retirement savings: Not contributing to 401(k) or IRA",
+              "High-interest debt: Carrying credit card balances while investing",
+              "No estate plan: No will, power of attorney, or beneficiary designations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Questions to ask yourself:",
+            items: [
+              "Do I have the time to properly manage my finances?",
+              "Am I knowledgeable enough to make good financial decisions?",
+              "Do I stick to my financial plans or make emotional decisions?",
+              "Is my financial situation complex enough to warrant professional help?",
+              "Would the peace of mind be worth the cost?",
+              "Can I afford the fees without significantly impacting my goals?",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternatives to full-service advisors:",
+            items: [
+              "Robo-advisors: Automated portfolio management at low cost",
+              "Target-date funds: Simple, diversified investment option",
+              "Fee-only planners: Comprehensive planning without investment management",
+              "Online resources: Educational websites, calculators, and tools",
+              "Investment platforms: Self-directed investing with research tools",
+              "Financial education: Books, courses, and seminars",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't hire a financial advisor just because you think you should. Make sure there's a clear value proposition and that the benefits justify the costs for your specific situation.",
+          },
+          {
+            type: "tip",
+            content:
+              "Consider starting with a fee-only financial planner for a comprehensive financial plan, then decide if you want ongoing investment management or prefer to implement the plan yourself.",
+          },
+        ],
+        keyTakeaways: [
+          "The need for a financial advisor depends on complexity, knowledge, and time",
+          "Major life transitions often warrant professional financial guidance",
+          "Consider the cost-benefit ratio of advisory fees versus value added",
+          "Hybrid approaches can provide professional guidance at lower costs",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's typically the most important factor in deciding whether to hire a financial advisor?",
+              options: [
+                "The size of your investment portfolio",
+                "Your age",
+                "The complexity of your financial situation",
+                "Your income level",
+              ],
+              correctAnswer: "The complexity of your financial situation",
+              explanation:
+                "While portfolio size matters for fee justification, the complexity of your financial situation is typically the most important factor. Complex situations involving business ownership, estate planning, or multiple income sources often benefit most from professional guidance.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Types of Advisors and Credentials",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding Different Types of Financial Professionals",
+          },
+          {
+            type: "paragraph",
+            content:
+              "The financial services industry includes many different types of professionals with varying credentials, expertise, and compensation structures. Understanding these differences helps you choose the right type of advisor for your needs and avoid potential conflicts of interest.",
+          },
+          {
+            type: "list",
+            content: "Types of financial advisors:",
+            items: [
+              "Registered Investment Advisors (RIAs): Fee-only fiduciaries managing investments",
+              "Broker-dealers: Commission-based salespeople selling financial products",
+              "Dual-registered advisors: Can act as both RIA and broker-dealer",
+              "Robo-advisors: Automated investment management platforms",
+              "Bank advisors: Employees of banks offering financial services",
+              "Insurance agents: Specialists in insurance products and planning",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key professional credentials:",
+            items: [
+              "CFP (Certified Financial Planner): Comprehensive financial planning certification",
+              "CFA (Chartered Financial Analyst): Investment analysis and portfolio management",
+              "ChFC (Chartered Financial Consultant): Financial planning with insurance focus",
+              "PFS (Personal Financial Specialist): CPA with financial planning specialization",
+              "CIMA (Certified Investment Management Analyst): Investment management expertise",
+              "FRM (Financial Risk Manager): Risk management specialization",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Credential requirements comparison:",
+            formula: "Credential Value = Education + Experience + Ethics + Continuing Education",
+            variables: {
+              "CFP": "Bachelor's degree + 6,000 hours experience + comprehensive exam + 30 CE hours/2 years",
+              "CFA": "Bachelor's degree + 4 years experience + 3 rigorous exams + 20 CE hours/year",
+              "ChFC": "3 years experience + 8 courses + continuing education",
+              "Quality Indicator": "More rigorous requirements generally indicate higher competency",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Credential Importance: Two advisors offer similar services. Advisor A has a CFP and 15 years experience. Advisor B has no credentials and 2 years experience. The CFP designation indicates Advisor A has met rigorous education, experience, and ethical standards.",
+          },
+          {
+            type: "list",
+            content: "Fiduciary vs. suitability standards:",
+            items: [
+              "Fiduciary standard: Must act in client's best interest at all times",
+              "Suitability standard: Recommendations must be suitable but not necessarily best",
+              "RIAs: Always held to fiduciary standard",
+              "Broker-dealers: Generally suitability standard, some fiduciary situations",
+              "Dual-registered: Standard depends on capacity they're acting in",
+              "Always ask: 'Are you acting as a fiduciary for all services?'",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Fiduciary vs. Suitability Impact: Client needs bond investments. Under suitability standard, advisor can recommend higher-commission bond with 2% annual fee. Under fiduciary standard, advisor must recommend lower-cost bond with 0.5% fee that better serves client's interests.",
+          },
+          {
+            type: "list",
+            content: "Specialized advisor types:",
+            items: [
+              "Fee-only planners: Comprehensive planning, no product sales",
+              "Wealth managers: High-net-worth focus, comprehensive services",
+              "Investment managers: Portfolio management specialists",
+              "Retirement planners: Specializing in retirement income strategies",
+              "Estate planning attorneys: Legal expertise in estate planning",
+              "Tax professionals: CPAs and enrolled agents with tax expertise",
+            ],
+          },
+          {
+            type: "list",
+            content: "Questions to ask about credentials:",
+            items: [
+              "What professional designations do you hold?",
+              "How long have you been practicing financial planning?",
+              "What is your educational background?",
+              "Do you participate in continuing education?",
+              "Are you registered with FINRA, SEC, or state regulators?",
+              "Have you ever been disciplined by regulators?",
+            ],
+          },
+          {
+            type: "list",
+            content: "Red flags to avoid:",
+            items: [
+              "No credentials: Lack of professional designations or licenses",
+              "Regulatory issues: History of complaints or disciplinary actions",
+              "Pressure tactics: Pushing you to make immediate decisions",
+              "Guaranteed returns: Promising specific investment returns",
+              "Lack of transparency: Won't clearly explain fees or conflicts",
+              "One-size-fits-all: Same recommendations for all clients",
+            ],
+          },
+          {
+            type: "list",
+            content: "Verifying advisor credentials:",
+            items: [
+              "FINRA BrokerCheck: Verify broker-dealer registrations and history",
+              "SEC Investment Adviser Search: Check RIA registrations",
+              "CFP Board: Verify CFP certification and any disciplinary history",
+              "CFA Institute: Confirm CFA charter holder status",
+              "State regulators: Check state-registered investment advisors",
+              "Professional associations: Verify membership and standing",
+            ],
+          },
+          {
+            type: "list",
+            content: "Team-based vs. individual advisors:",
+            items: [
+              "Individual advisor: Personal relationship, may lack specialized expertise",
+              "Team approach: Multiple specialists, more comprehensive service",
+              "Succession planning: Teams provide continuity if advisor leaves",
+              "Communication: Ensure clear primary contact and communication protocols",
+              "Costs: Team approach may be more expensive",
+              "Fit: Choose based on your preference for personal vs. institutional service",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be wary of advisors who claim to be 'fee-only' but receive commissions from insurance or investment products. True fee-only advisors receive compensation only from client fees.",
+          },
+          {
+            type: "tip",
+            content:
+              "Look for advisors with credentials relevant to your needs. If you need comprehensive planning, prioritize CFP certification. For investment management, consider CFA or CIMA credentials.",
+          },
+        ],
+        keyTakeaways: [
+          "Different types of advisors serve different needs and have different standards",
+          "Professional credentials indicate education, experience, and ethical standards",
+          "Fiduciary standard provides better client protection than suitability standard",
+          "Always verify credentials and check regulatory history before hiring",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's the difference between fiduciary and suitability standards?",
+              options: [
+                "There's no difference, they're the same thing",
+                "Fiduciary requires acting in client's best interest, suitability just requires suitable recommendations",
+                "Suitability is a higher standard than fiduciary",
+                "Only insurance agents follow suitability standards",
+              ],
+              correctAnswer: "Fiduciary requires acting in client's best interest, suitability just requires suitable recommendations",
+              explanation:
+                "Fiduciary standard requires advisors to act in the client's best interest at all times, while suitability standard only requires that recommendations be suitable for the client, even if better options exist.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Fee Structures and Costs",
+        duration: "7 min",
+        points: 21,
+        content: [
+          {
+            type: "heading",
+            content: "Understanding How Financial Advisors Are Compensated",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Financial advisor compensation varies significantly and can impact the advice you receive. Understanding different fee structures, typical costs, and potential conflicts of interest helps you make informed decisions and ensure you're getting good value for advisory services.",
+          },
+          {
+            type: "list",
+            content: "Common fee structures:",
+            items: [
+              "Assets Under Management (AUM): Percentage of invested assets annually",
+              "Hourly fees: Pay for time spent on your financial matters",
+              "Project fees: Fixed fee for specific planning projects",
+              "Retainer fees: Annual fee for ongoing planning relationship",
+              "Commission-based: Advisor paid by product sales",
+              "Hybrid fees: Combination of fees and commissions",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "AUM fee cost comparison:",
+            formula: "Annual Fee = Portfolio Value × Fee Percentage",
+            variables: {
+              "$500,000 Portfolio": "1% AUM fee = $5,000 annually",
+              "$1,000,000 Portfolio": "1% AUM fee = $10,000 annually",
+              "Fee Scaling": "Many advisors offer lower rates for larger portfolios",
+              "Breakpoints": "0.75% over $1M, 0.5% over $2M (typical)",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Fee Structure Comparison: Client with $800,000 portfolio. Advisor A charges 1.25% AUM ($10,000/year). Advisor B charges $5,000 annual retainer plus 0.5% AUM ($4,000), totaling $9,000. Advisor B costs $1,000 less annually for similar services.",
+          },
+          {
+            type: "list",
+            content: "Typical AUM fee ranges:",
+            items: [
+              "Under $250,000: 1.25% - 2.0% annually",
+              "$250,000 - $1,000,000: 1.0% - 1.5% annually",
+              "$1,000,000 - $5,000,000: 0.75% - 1.25% annually",
+              "Over $5,000,000: 0.5% - 1.0% annually",
+              "Robo-advisors: 0.25% - 0.5% annually",
+              "Institutional rates: 0.25% - 0.75% for very large accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Alternative fee structures:",
+            items: [
+              "Hourly planning: $150 - $500 per hour",
+              "Comprehensive plan: $2,000 - $10,000 one-time fee",
+              "Annual retainer: $2,000 - $15,000 per year",
+              "Monthly subscription: $100 - $500 per month",
+              "Performance fees: Percentage of investment gains (rare)",
+              "Flat fees: Fixed amount regardless of portfolio size",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Fee Structure Selection: Young professional with $100,000 portfolio chooses hourly advisor at $300/hour for 10 hours annually ($3,000) instead of 1.5% AUM fee ($1,500). As assets grow to $500,000, AUM becomes more cost-effective at $7,500 vs. $3,000 hourly.",
+          },
+          {
+            type: "list",
+            content: "Commission-based compensation:",
+            items: [
+              "Product sales: Commissions from mutual funds, insurance, annuities",
+              "Front-end loads: Upfront sales charges on investments",
+              "Back-end loads: Surrender charges for early withdrawal",
+              "Ongoing trails: Annual payments from product companies",
+              "Potential conflicts: Incentive to recommend higher-commission products",
+              "Disclosure: Must be disclosed but may not be transparent",
+            ],
+          },
+          {
+            type: "list",
+            content: "Hidden costs to watch for:",
+            items: [
+              "Underlying investment fees: Expense ratios in recommended funds",
+              "Transaction costs: Trading fees and bid-ask spreads",
+              "Platform fees: Custodial and administrative charges",
+              "Insurance costs: Built-in fees in insurance products",
+              "Tax inefficiency: Costs from poor tax management",
+              "Opportunity costs: Suboptimal investment recommendations",
+            ],
+          },
+          {
+            type: "list",
+            content: "Questions to ask about fees:",
+            items: [
+              "What is your total fee structure?",
+              "Do you receive any commissions or third-party payments?",
+              "What are the underlying costs of recommended investments?",
+              "Are there any additional fees I should know about?",
+              "How do your fees compare to industry averages?",
+              "Can you provide a written fee disclosure?",
+            ],
+          },
+          {
+            type: "list",
+            content: "Fee negotiation strategies:",
+            items: [
+              "Portfolio size: Larger accounts often qualify for lower rates",
+              "Service level: Reduce fees by accepting fewer services",
+              "Fee structure: Consider alternative structures that may cost less",
+              "Competitive quotes: Use other advisor quotes for negotiation",
+              "Relationship length: Long-term clients may get discounts",
+              "Family accounts: Household discounts for multiple accounts",
+            ],
+          },
+          {
+            type: "list",
+            content: "Value assessment considerations:",
+            items: [
+              "Services provided: Comprehensive planning vs. investment management only",
+              "Advisor expertise: Credentials, experience, and specializations",
+              "Performance: Investment returns after fees",
+              "Time savings: Value of your time freed up",
+              "Peace of mind: Emotional and behavioral benefits",
+              "Tax efficiency: Tax savings from professional management",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Be wary of advisors who won't clearly explain their fee structure or claim their services are 'free.' There's always a cost - make sure you understand how they're compensated.",
+          },
+          {
+            type: "tip",
+            content:
+              "Calculate the total cost of working with an advisor, including their fees plus the costs of recommended investments. This 'all-in' cost is what really matters for your returns.",
+          },
+        ],
+        keyTakeaways: [
+          "Fee structures vary widely and can significantly impact your returns",
+          "AUM fees are most common but may not be best for all situations",
+          "Always understand total costs including underlying investment expenses",
+          "Fee-only advisors generally have fewer conflicts of interest",
+        ],
+        quiz: {
+          questions: [
+            {
+              question: "What's typically the most common fee structure for financial advisors?",
+              options: [
+                "Hourly fees",
+                "Commission-based",
+                "Assets Under Management (AUM) percentage",
+                "Fixed project fees",
+              ],
+              correctAnswer: "Assets Under Management (AUM) percentage",
+              explanation:
+                "AUM fees (typically 0.5% - 1.5% of assets annually) are the most common fee structure for financial advisors, especially for ongoing investment management and financial planning services.",
+            },
+          ],
+        },
+      },
+      {
+        title: "Advisor Selection Process",
+        duration: "8 min",
+        points: 24,
+        content: [
+          {
+            type: "heading",
+            content: "Finding and Choosing the Right Financial Advisor",
+          },
+          {
+            type: "paragraph",
+            content:
+              "Selecting a financial advisor is a crucial decision that can significantly impact your financial future. A systematic approach to finding, evaluating, and choosing an advisor helps ensure you find someone who meets your needs, shares your values, and provides good value for their services.",
+          },
+          {
+            type: "list",
+            content: "Steps in the advisor selection process:",
+            items: [
+              "Define your needs: Determine what services you require",
+              "Research candidates: Find potential advisors through various sources",
+              "Check credentials: Verify qualifications and regulatory history",
+              "Interview multiple advisors: Meet with at least 3-5 candidates",
+              "Compare proposals: Evaluate services, fees, and approaches",
+              "Make your decision: Choose based on fit, value, and trust",
+            ],
+          },
+          {
+            type: "list",
+            content: "Sources for finding advisors:",
+            items: [
+              "Professional referrals: CPAs, attorneys, other trusted professionals",
+              "Personal referrals: Friends, family, colleagues with similar situations",
+              "Professional associations: CFP Board, NAPFA, FPA directories",
+              "Online platforms: Advisor matching services and databases",
+              "Local networking: Community organizations and business groups",
+              "Financial institutions: Banks, credit unions, investment firms",
+            ],
+          },
+          {
+            type: "list",
+            content: "Key questions to ask potential advisors:",
+            items: [
+              "What services do you provide?",
+              "What is your investment philosophy?",
+              "How are you compensated?",
+              "What are your credentials and experience?",
+              "Can you provide references from current clients?",
+              "How often will we meet and communicate?",
+            ],
+          },
+          {
+            type: "calculation",
+            content: "Advisor evaluation scoring system:",
+            formula: "Total Score = Credentials (25%) + Experience (25%) + Fees (20%) + Fit (30%)",
+            variables: {
+              "Credentials": "Professional designations, education, continuing education",
+              "Experience": "Years in practice, similar client situations",
+              "Fees": "Competitiveness, transparency, value for services",
+              "Fit": "Communication style, philosophy alignment, trust level",
+            },
+          },
+          {
+            type: "example",
+            content:
+              "Advisor Comparison: Advisor A has CFP, 15 years experience, 1% AUM fee, great communication. Advisor B has no credentials, 5 years experience, 0.75% fee, poor communication. Despite lower fees, Advisor A likely provides better long-term value.",
+          },
+          {
+            type: "list",
+            content: "Red flags during the selection process:",
+            items: [
+              "Pressure to sign immediately: Good advisors give you time to decide",
+              "Guaranteed returns: No one can guarantee investment performance",
+              "Reluctance to provide references: Established advisors have satisfied clients",
+              "Vague fee disclosure: Should clearly explain all costs",
+              "One-size-fits-all approach: Should customize recommendations",
+              "Regulatory issues: Check FINRA BrokerCheck and SEC records",
+            ],
+          },
+          {
+            type: "case-study",
+            content:
+              "Selection Success Story: The Martinez family interviewed 5 advisors, checked credentials, spoke with references, and compared fee structures. They chose a CFP with 12 years experience who specialized in their situation (small business owners) despite slightly higher fees.",
+          },
+          {
+            type: "list",
+            content: "Important documents to request:",
+            items: [
+              "Form ADV Part 2: Detailed disclosure document for RIAs",
+              "Form CRS: Client relationship summary explaining services and fees",
+              "Sample financial plan: Example of their planning work",
+              "Investment policy statement: Their investment approach and philosophy",
+              "Fee schedule: Clear breakdown of all costs",
+              "Client agreement: Terms of the advisory relationship",
+            ],
+          },
+          {
+            type: "list",
+            content: "Evaluating advisor communication:",
+            items: [
+              "Responsiveness: How quickly do they return calls and emails?",
+              "Clarity: Can they explain complex concepts in understandable terms?",
+              "Listening skills: Do they understand your concerns and goals?",
+              "Proactive communication: Do they reach out with updates and ideas?",
+              "Meeting frequency: How often will you meet and in what format?",
+              "Reporting: What reports will you receive and how often?",
+            ],
+          },
+          {
+            type: "list",
+            content: "Questions to ask references:",
+            items: [
+              "How long have you worked with this advisor?",
+              "What services do they provide for you?",
+              "How is their communication and responsiveness?",
+              "Have they helped you through difficult market periods?",
+              "Would you recommend them to family or friends?",
+              "What could they do better?",
+            ],
+          },
+          {
+            type: "list",
+            content: "Trial period considerations:",
+            items: [
+              "Start with limited engagement: Project-based work before full relationship",
+              "Quarterly reviews: Assess progress and satisfaction regularly",
+              "Clear expectations: Define what success looks like",
+              "Exit strategy: Understand how to end the relationship if needed",
+              "Performance benchmarks: Agree on how to measure success",
+              "Communication protocols: Establish meeting schedules and reporting",
+            ],
+          },
+          {
+            type: "list",
+            content: "Making the final decision:",
+            items: [
+              "Trust your instincts: Choose someone you're comfortable with",
+              "Value over cost: Don't choose based solely on lowest fees",
+              "Specialization match: Ensure their expertise fits your needs",
+              "Long-term relationship: Consider if this could be a 10+ year partnership",
+              "Team stability: Understand who you'll work with day-to-day",
+              "Growth capacity: Can they handle your evolving needs?",
+            ],
+          },
+          {
+            type: "warning",
+            content:
+              "Don't rush the advisor selection process. Take time to thoroughly evaluate multiple candidates - this decision will impact your financial future for years to come.",
+          },
+          {
+            type: "tip",
+            content:
