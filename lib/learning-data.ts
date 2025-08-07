@@ -392,23 +392,23 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         ],
         keyTakeaways: [
           "Secured loans typically offer lower rates but require collateral",
-          "APR includes both interest and fees for accurate comparison",
+          "APR includes both interest rate and fees for accurate comparison",
           "Loan terms significantly impact both monthly payments and total cost",
-          "Understanding loan basics helps you negotiate better terms",
+          "Understanding loan components helps you make better borrowing decisions",
         ],
         quiz: {
           questions: [
             {
-              question: "What's the difference between interest rate and APR?",
+              question: "What does APR stand for and why is it important?",
               options: [
-                "There is no difference, they're the same thing",
-                "Interest rate is monthly, APR is annual",
-                "APR includes fees and other costs, interest rate doesn't",
-                "Interest rate is for secured loans, APR is for unsecured",
+                "Annual Payment Rate - shows monthly payment amount",
+                "Annual Percentage Rate - includes interest and fees for true cost",
+                "Approved Payment Rate - determines if you qualify",
+                "Average Principal Rate - shows typical loan amounts",
               ],
-              correctAnswer: "APR includes fees and other costs, interest rate doesn't",
+              correctAnswer: "Annual Percentage Rate - includes interest and fees for true cost",
               explanation:
-                "APR (Annual Percentage Rate) includes the interest rate plus fees and other costs, giving you the true annual cost of borrowing. This makes APR the better metric for comparing loan offers.",
+                "APR (Annual Percentage Rate) includes both the interest rate and fees, giving you the true annual cost of borrowing. This makes it the best metric for comparing different loan offers.",
             },
           ],
         },
@@ -1024,12 +1024,12 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             type: "list",
             content: "Red flags of predatory lending:",
             items: [
-              "Rates above 36% APR for personal loans",
-              "Pressure to sign immediately without review time",
-              "Fees that seem excessive relative to loan amount",
-              "No credit check or income verification required",
-              "Loan terms that seem too good to be true",
-              "Aggressive marketing targeting vulnerable populations",
+              "Rates above 36% APR (predatory lending)",
+              "Upfront fees before loan approval",
+              "No credit check required (often scams)",
+              "Pressure to decide immediately",
+              "Unclear terms or hidden fees",
+              "Unsolicited loan offers via phone or email",
             ],
           },
           {
@@ -1310,16 +1310,16 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         quiz: {
           questions: [
             {
-              question: "What makes an HSA unique among tax-advantaged accounts?",
+              question: "What makes HSAs unique among tax-advantaged accounts?",
               options: [
                 "Highest contribution limits",
                 "No income restrictions",
                 "Triple tax advantage (deductible, growth, withdrawals)",
-                "Can be used for any expense",
+                "Available to everyone",
               ],
               correctAnswer: "Triple tax advantage (deductible, growth, withdrawals)",
               explanation:
-                "HSAs are unique because they offer a triple tax advantage: contributions are tax-deductible, growth is tax-free, and withdrawals for qualified medical expenses are tax-free. No other account offers all three benefits.",
+                "HSAs are unique because they offer a triple tax advantage: tax-deductible contributions, tax-free growth, and tax-free withdrawals for qualified medical expenses. No other account offers all three benefits.",
             },
           ],
         },
@@ -1472,7 +1472,7 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
             content: "Types of investment taxation:",
             items: [
               "Ordinary income: Interest, non-qualified dividends, short-term gains",
-              "Qualified dividends: Taxed at capital gains rates (0%, 15%, 20%)",
+              "Qualified dividends: Lower tax rates than ordinary income",
               "Long-term capital gains: Assets held over 1 year (0%, 15%, 20%)",
               "Short-term capital gains: Assets held 1 year or less (ordinary rates)",
               "Tax-exempt interest: Municipal bonds (federal, possibly state)",
@@ -1690,122 +1690,6 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
         },
       },
       {
-        title: "Tax Planning for Retirement",
-        duration: "7 min",
-        points: 21,
-        content: [
-          {
-            type: "heading",
-            content: "Optimizing Taxes in Retirement",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Retirement tax planning involves managing multiple income sources and tax-advantaged accounts to minimize lifetime tax burden. Understanding required distributions, tax brackets in retirement, and withdrawal strategies is crucial for maximizing retirement income.",
-          },
-          {
-            type: "list",
-            content: "Retirement income sources and taxation:",
-            items: [
-              "Social Security: 0%, 50%, or 85% taxable depending on income",
-              "Traditional 401(k)/IRA: Fully taxable as ordinary income",
-              "Roth 401(k)/IRA: Tax-free if rules are met",
-              "Pension income: Usually fully taxable",
-              "Investment income: Taxed at capital gains or ordinary rates",
-              "Part-time work: Subject to payroll and income taxes",
-            ],
-          },
-          {
-            type: "calculation",
-            content: "Social Security taxation thresholds:",
-            formula: "Combined Income = AGI + Nontaxable Interest + 50% of SS Benefits",
-            variables: {
-              "Single Filers": "Under $25,000 = 0% taxable, $25,000-$34,000 = 50% taxable, Over $34,000 = 85% taxable",
-              "Married Filing Jointly": "Under $32,000 = 0% taxable, $32,000-$44,000 = 50% taxable, Over $44,000 = 85% taxable",
-              "Planning Tip": "Manage other income to minimize SS taxation",
-            },
-          },
-          {
-            type: "list",
-            content: "Required Minimum Distribution (RMD) rules:",
-            items: [
-              "Traditional IRAs and 401(k)s: RMDs start at age 73",
-              "Roth IRAs: No RMDs during owner's lifetime",
-              "Roth 401(k)s: RMDs required, but can roll to Roth IRA",
-              "Penalty: 25% of amount not withdrawn (reduced from 50%)",
-              "Calculate using IRS life expectancy tables",
-              "Can withdraw more than minimum without penalty",
-            ],
-          },
-          {
-            type: "example",
-            content:
-              "Tax-Efficient Withdrawal Strategy: At age 65, Robert has $500,000 in traditional IRA and $300,000 in Roth IRA. He withdraws from traditional accounts first to stay in lower tax brackets, preserving Roth funds for later when RMDs might push him into higher brackets.",
-          },
-          {
-            type: "list",
-            content: "Retirement tax planning strategies:",
-            items: [
-              "Roth conversions: Convert traditional to Roth in low-income years",
-              "Tax bracket management: Control taxable income to stay in lower brackets",
-              "Asset location: Keep tax-inefficient investments in tax-advantaged accounts",
-              "Charitable giving: Qualified charitable distributions from IRA",
-              "Geographic arbitrage: Move to lower-tax states",
-              "Health Savings Account: Triple tax advantage continues in retirement",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Roth Conversion Ladder: The Johnsons retired at 60 with $800,000 in traditional IRAs. They converted $50,000 annually to Roth IRAs for 8 years, paying taxes at 12% rate. This reduced future RMDs and created $400,000 in tax-free Roth assets.",
-          },
-          {
-            type: "list",
-            content: "State tax considerations in retirement:",
-            items: [
-              "No state income tax: Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, Wyoming",
-              "Retirement-friendly states: Often don't tax retirement income",
-              "High-tax states: May tax all retirement income",
-              "Consider total tax burden: Income, property, sales taxes",
-              "Residency rules: Establish domicile in chosen state",
-              "Estate tax implications: Some states have lower exemptions",
-            ],
-          },
-          {
-            type: "warning",
-            content:
-              "Don't assume you'll be in a lower tax bracket in retirement. With RMDs, Social Security, and potential tax rate increases, many retirees face higher effective tax rates than expected.",
-          },
-          {
-            type: "tip",
-            content:
-              "Consider doing Roth conversions during market downturns when account values are lower. You'll pay taxes on the reduced balance and benefit from tax-free recovery.",
-          },
-        ],
-        keyTakeaways: [
-          "Retirement income comes from multiple sources with different tax treatment",
-          "RMDs from traditional accounts start at age 73 and can push you into higher brackets",
-          "Roth conversions can provide tax diversification in retirement",
-          "State taxes can significantly impact retirement income",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "At what age do Required Minimum Distributions (RMDs) begin for traditional IRAs?",
-              options: [
-                "65",
-                "70½",
-                "72",
-                "73",
-              ],
-              correctAnswer: "73",
-              explanation:
-                "RMDs for traditional IRAs and 401(k)s now begin at age 73 (changed from 72 in 2023). Roth IRAs have no RMDs during the owner's lifetime.",
-            },
-          ],
-        },
-      },
-      {
         title: "Estate Tax Planning",
         duration: "6 min",
         points: 18,
@@ -1895,8 +1779,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Even if your estate is below the federal exemption, estate planning is still important for avoiding probate, providing for incapacity, and minimizing state taxes.",
+              content:
+                "Even if your estate is below the federal exemption, estate planning is still important for avoiding probate, providing for incapacity, and minimizing state taxes.",
           },
         ],
         keyTakeaways: [
@@ -2013,8 +1897,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Even if you use software, consider an annual consultation with a tax professional for planning advice. The cost is often offset by tax savings from better planning.",
+              content:
+                "Even if you use software, consider an annual consultation with a tax professional for planning advice. The cost is often offset by tax savings from better planning.",
           },
         ],
         keyTakeaways: [
@@ -2143,8 +2027,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "If you're audited, consider hiring a tax professional even if you prepared the return yourself. The cost is often worth the expertise and peace of mind.",
+              content:
+                "If you're audited, consider hiring a tax professional even if you prepared the return yourself. The cost is often worth the expertise and peace of mind.",
           },
         ],
         keyTakeaways: [
@@ -2272,8 +2156,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Set up a simple system to track deductible expenses throughout the year. A smartphone app or dedicated credit card can make tax time much easier.",
+              content:
+                "Set up a simple system to track deductible expenses throughout the year. A smartphone app or dedicated credit card can make tax time much easier.",
           },
         ],
         keyTakeaways: [
@@ -2391,8 +2275,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Use higher deductibles to lower premiums for risks you can afford to self-insure, then use the savings to buy more coverage for catastrophic risks you can't afford.",
+              content:
+                "Use higher deductibles to lower premiums for risks you can afford to self-insure, then use the savings to buy more coverage for catastrophic risks you can't afford.",
           },
         ],
         keyTakeaways: [
@@ -2520,8 +2404,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "If you're healthy and have emergency savings, consider a high-deductible health plan with an HSA. The tax benefits can outweigh the higher deductible over time.",
+              content:
+                "If you're healthy and have emergency savings, consider a high-deductible health plan with an HSA. The tax benefits can outweigh the higher deductible over time.",
           },
         ],
         keyTakeaways: [
@@ -2649,8 +2533,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Buy life insurance when you're young and healthy. Rates increase with age and health issues can make coverage expensive or unavailable later.",
+              content:
+                "Buy life insurance when you're young and healthy. Rates increase with age and health issues can make coverage expensive or unavailable later.",
           },
         ],
         keyTakeaways: [
@@ -2778,8 +2662,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "If you can only afford one type of disability insurance, choose long-term over short-term. You can likely handle a few months without income, but years of disability could be financially devastating.",
+              content:
+                "If you can only afford one type of disability insurance, choose long-term over short-term. You can likely handle a few months without income, but years of disability could be financially devastating.",
           },
         ],
         keyTakeaways: [
@@ -2907,8 +2791,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Review your auto insurance annually and after major life changes. Marriage, moving, or buying a new car can significantly affect your rates and coverage needs.",
+              content:
+                "Review your auto insurance annually and after major life changes. Marriage, moving, or buying a new car can significantly affect your rates and coverage needs.",
           },
         ],
         keyTakeaways: [
@@ -3048,8 +2932,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Create a home inventory with photos or video of your belongings. Store it off-site or in the cloud. This documentation is invaluable for insurance claims.",
+              content:
+                "Create a home inventory with photos or video of your belongings. Store it off-site or in the cloud. This documentation is invaluable for insurance claims.",
           },
         ],
         keyTakeaways: [
@@ -3177,8 +3061,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Umbrella insurance is one of the best insurance values available. For a few hundred dollars annually, you can get millions in additional liability protection.",
+              content:
+                "Umbrella insurance is one of the best insurance values available. For a few hundred dollars annually, you can get millions in additional liability protection.",
           },
         ],
         keyTakeaways: [
@@ -3307,8 +3191,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Keep a claim diary documenting all conversations, meetings, and correspondence with your insurance company. This record can be valuable if disputes arise.",
+              content:
+                "Keep a claim diary documenting all conversations, meetings, and correspondence with your insurance company. This record can be valuable if disputes arise.",
           },
         ],
         keyTakeaways: [
@@ -3448,8 +3332,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Set a calendar reminder to shop for insurance annually. Even if you don't switch, you'll know you're getting competitive rates and may discover new discounts.",
+              content:
+                "Set a calendar reminder to shop for insurance annually. Even if you don't switch, you'll know you're getting competitive rates and may discover new discounts.",
           },
         ],
         keyTakeaways: [
@@ -3579,8 +3463,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
+              content:
+                "If possible, pay medical expenses out-of-pocket and let your HSA grow tax-free. You can reimburse yourself years later using saved receipts, maximizing the tax-free growth period.",
           },
         ],
         keyTakeaways: [
@@ -3708,8 +3592,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
+              content:
+                "If you become ineligible for HSA contributions mid-year, you can still use existing HSA funds for qualified medical expenses. The account doesn't disappear, you just can't add new money.",
           },
         ],
         keyTakeaways: [
@@ -3849,8 +3733,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
+              content:
+                "Consider your HSA as a retirement account that happens to have tax-free medical benefits. This perspective encourages long-term investing and maximizes the account's potential.",
           },
         ],
         keyTakeaways: [
@@ -3992,8 +3876,8 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
+              content:
+                "Start maximizing HSA contributions as early as possible. The combination of tax benefits and compound growth makes HSAs incredibly powerful for retirement healthcare funding.",
           },
         ],
         keyTakeaways: [
@@ -4133,549 +4017,10 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           },
           {
             type: "tip",
-            content:
-              "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
+              content:
+                "If you have both HSA and FSA options, generally choose the HSA for its superior long-term benefits, unless you have high predictable medical expenses that would benefit from FSA's immediate access.",
           },
         ],
         keyTakeaways: [
           "HSAs offer superior long-term benefits compared to FSAs",
-          "FSAs provide immediate access but have use-it-or-lose-it rules",
-          "Account choice depends on your health plan and financial strategy",
-          "Some accounts can be used together with proper planning",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the main disadvantage of FSAs compared to HSAs?",
-              options: [
-                "Lower contribution limits",
-                "No tax deduction for contributions",
-                "Use-it-or-lose-it rule",
-                "Not available through employers",
-              ],
-              correctAnswer: "Use-it-or-lose-it rule",
-              explanation:
-                "The main disadvantage of FSAs is the use-it-or-lose-it rule, where unused funds are forfeited at year-end (with limited exceptions). HSA funds never expire and roll over indefinitely.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Maximizing HSA Benefits",
-        duration: "7 min",
-        points: 21,
-        content: [
-          {
-            type: "heading",
-            content: "Advanced HSA Optimization Strategies",
-          },
-          {
-            type: "paragraph",
-            content:
-              "To truly maximize HSA benefits, you need to go beyond basic contributions and think strategically about timing, investments, and long-term planning. These advanced strategies can significantly multiply your HSA's value over time.",
-          },
-          {
-            type: "list",
-            content: "Advanced HSA maximization strategies:",
-            items: [
-              "Pay medical expenses out-of-pocket when possible",
-              "Keep detailed records of all medical expenses",
-              "Invest HSA funds for long-term growth",
-              "Delay reimbursement to maximize tax-free growth",
-              "Use HSA for retirement healthcare planning",
-              "Coordinate with other tax-advantaged accounts",
-            ],
-          },
-          {
-            type: "calculation",
-            content: "Delayed reimbursement strategy value:",
-            formula: "Future Value = Medical Expense × (1 + Return Rate)^Years",
-            variables: {
-              "Example": "$2,000 medical expense, 7% return, 20 years",
-              "If Reimbursed Now": "$2,000 (no growth)",
-              "If Delayed": "$2,000 × (1.07)^20 = $7,739",
-              "Tax-Free Benefit": "All $5,739 growth is tax-free when withdrawn",
-            },
-          },
-          {
-            type: "example",
-            content:
-              "Receipt Banking Strategy: Over 10 years, Lisa accumulated $15,000 in medical receipts while letting her HSA grow to $35,000. At retirement, she can withdraw $15,000 tax-free using old receipts, while the remaining $20,000 continues growing for future medical needs.",
-          },
-          {
-            type: "list",
-            content: "HSA record-keeping best practices:",
-            items: [
-              "Digital storage: Scan and store receipts electronically",
-              "Cloud backup: Ensure receipts are safely stored",
-              "Detailed records: Date, provider, amount, type of expense",
-              "Organize by year: Make future retrieval easier",
-              "Keep forever: No time limit on reimbursement",
-              "Track reimbursements: Avoid double-dipping",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Family HSA Strategy: The Martinez family maximizes both spouses' HSAs ($8,300 each), invests 90% in stock funds, and pays all medical expenses out-of-pocket. After 15 years, their combined $249,000 contributions grew to $520,000, all available tax-free for medical expenses.",
-          },
-          {
-            type: "list",
-            content: "HSA investment optimization:",
-            items: [
-              "Low-cost index funds: Minimize fees to maximize growth",
-              "Age-appropriate allocation: More aggressive when young",
-              "Rebalancing: Maintain target allocation over time",
-              "Tax-loss harvesting: Not applicable in tax-free HSA",
-              "Dollar-cost averaging: Regular investment contributions",
-              "Provider comparison: Shop for best investment options and fees",
-            ],
-          },
-          {
-            type: "list",
-            content: "Qualified medical expense optimization:",
-            items: [
-              "Understand eligible expenses: IRS Publication 502",
-              "Over-the-counter medications: Now HSA-eligible",
-              "Menstrual products: Added as eligible expense",
-              "Alternative treatments: Acupuncture, chiropractic care",
-              "Medical equipment: CPAP machines, blood pressure monitors",
-              "Home modifications: Ramps, grab bars for medical needs",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA estate planning strategies:",
-            items: [
-              "Spouse beneficiary: HSA continues as spouse's HSA",
-              "Non-spouse beneficiary: Account becomes taxable to beneficiary",
-              "Charitable beneficiary: Tax-free transfer to charity",
-              "Multiple beneficiaries: Split account among beneficiaries",
-              "Estate planning documents: Include HSA in will/trust",
-              "Beneficiary updates: Review and update regularly",
-            ],
-          },
-          {
-            type: "list",
-            content: "Common HSA optimization mistakes:",
-            items: [
-              "Using HSA like checking account: Missing investment growth",
-              "Not keeping receipts: Losing reimbursement opportunities",
-              "Paying fees unnecessarily: Not shopping for better providers",
-              "Wrong investment allocation: Too conservative or aggressive",
-              "Not maximizing contributions: Missing tax benefits",
-              "Forgetting catch-up contributions: Age 55+ additional $1,000",
-            ],
-          },
-          {
-            type: "list",
-            content: "HSA and retirement account coordination:",
-            items: [
-              "Contribution priority: HSA first due to triple tax advantage",
-              "Asset location: Consider HSA as bond allocation",
-              "Withdrawal sequencing: Use HSA for medical expenses first",
-              "Tax diversification: HSA provides tax-free bucket",
-              "Required distributions: HSA has no RMDs unlike traditional IRAs",
-              "Legacy planning: HSA benefits for spouse, taxes for others",
-            ],
-          },
-          {
-            type: "warning",
-            content:
-              "Don't use your HSA for non-medical expenses before age 65. The 20% penalty plus income taxes make this very expensive compared to other funding sources.",
-          },
-          {
-            type: "tip",
-            content:
-              "Think of your HSA as a retirement account that happens to have medical benefits. This mindset encourages long-term investing and maximizes the account's incredible tax advantages.",
-          },
-        ],
-        keyTakeaways: [
-          "Pay medical expenses out-of-pocket and let HSA funds grow when possible",
-          "Keep detailed records of medical expenses for future reimbursement",
-          "Invest HSA funds appropriately for long-term growth",
-          "Coordinate HSA strategy with overall retirement and tax planning",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the best strategy for maximizing HSA growth?",
-              options: [
-                "Use HSA funds immediately for all medical expenses",
-                "Keep all HSA funds in cash for safety",
-                "Pay medical expenses out-of-pocket and invest HSA funds",
-                "Only contribute the minimum required amount",
-              ],
-              correctAnswer: "Pay medical expenses out-of-pocket and invest HSA funds",
-              explanation:
-                "The best strategy is to pay medical expenses out-of-pocket when possible, keep receipts for future reimbursement, and invest HSA funds for long-term tax-free growth. This maximizes the time your money grows tax-free.",
-            },
-          ],
-        },
-      },
-    ],
-    "estate-planning": [
-      {
-        title: "Estate Planning Essentials",
-        duration: "7 min",
-        points: 21,
-        content: [
-          {
-            type: "heading",
-            content: "Protecting Your Legacy and Loved Ones",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Estate planning ensures your wishes are carried out and your loved ones are protected when you're no longer able to make decisions. It's not just for the wealthy - everyone needs basic estate planning documents to avoid costly legal complications and family disputes.",
-          },
-          {
-            type: "list",
-            content: "Core estate planning documents:",
-            items: [
-              "Will: Directs distribution of assets and names guardians for minor children",
-              "Durable Power of Attorney: Authorizes someone to handle financial matters",
-              "Healthcare Power of Attorney: Designates medical decision-maker",
-              "Living Will/Advance Directive: Specifies end-of-life care preferences",
-              "HIPAA Authorization: Allows access to medical information",
-              "Beneficiary designations: On retirement accounts, insurance, bank accounts",
-            ],
-          },
-          {
-            type: "list",
-            content: "What happens without estate planning:",
-            items: [
-              "State intestacy laws determine asset distribution",
-              "Court appoints guardian for minor children",
-              "Probate process becomes more complex and expensive",
-              "Family disputes over assets and decisions",
-              "No guidance for medical decisions if incapacitated",
-              "Potential tax inefficiencies and higher costs",
-            ],
-          },
-          {
-            type: "calculation",
-            content: "Cost of dying without a will:",
-            formula: "Probate Costs = Court Fees + Attorney Fees + Executor Fees + Time",
-            variables: {
-              "Court Fees": "$500-$2,000 depending on state",
-              "Attorney Fees": "3-7% of estate value",
-              "Executor Fees": "2-4% of estate value",
-              "Time Cost": "6 months to 2+ years to settle",
-            },
-          },
-          {
-            type: "example",
-            content:
-              "Intestacy Consequences: When Mark died without a will, his $300,000 estate went through probate costing $18,000 in fees. His assets were distributed by state law rather than his wishes, and his children's inheritance was delayed by 18 months.",
-          },
-          {
-            type: "list",
-            content: "Estate planning priorities by life stage:",
-            items: [
-              "Young adults: Basic will, power of attorney, beneficiary designations",
-              "New parents: Guardian designation, life insurance, updated wills",
-              "Mid-career: Trust planning, tax strategies, business succession",
-              "Pre-retirement: Healthcare directives, long-term care planning",
-              "Retirement: Legacy planning, charitable giving, tax optimization",
-              "All stages: Regular review and updates for life changes",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Comprehensive Planning Success: The Johnson family created wills, powers of attorney, and healthcare directives. When John became incapacitated, his wife could immediately access accounts and make medical decisions without court intervention, saving thousands in legal fees and family stress.",
-          },
-          {
-            type: "list",
-            content: "Common estate planning mistakes:",
-            items: [
-              "Procrastination: Waiting until it's too late",
-              "DIY documents: Using inadequate online forms",
-              "Outdated documents: Not updating for life changes",
-              "Forgetting beneficiaries: Not updating account designations",
-              "Inadequate funding: Creating trusts but not funding them",
-              "Poor communication: Not discussing plans with family",
-            ],
-          },
-          {
-            type: "list",
-            content: "When to update your estate plan:",
-            items: [
-              "Marriage or divorce: Changes in spouse and beneficiaries",
-              "Birth or adoption: New children need protection",
-              "Death of beneficiary: Update designations and documents",
-              "Significant wealth change: May need different strategies",
-              "Moving states: Different laws may affect your plan",
-              "Tax law changes: May create new opportunities or requirements",
-            ],
-          },
-          {
-            type: "list",
-            content: "Estate planning team professionals:",
-            items: [
-              "Estate planning attorney: Creates legal documents and strategies",
-              "Financial advisor: Coordinates investments and insurance",
-              "Tax professional: Minimizes estate and income taxes",
-              "Insurance agent: Ensures adequate life and disability coverage",
-              "Trust officer: Manages trusts and estate administration",
-              "Family members: Executors, trustees, and beneficiaries",
-            ],
-          },
-          {
-            type: "warning",
-            content:
-              "Don't rely on online will templates for complex situations. While basic documents may work for simple estates, most people benefit from professional guidance to avoid costly mistakes.",
-          },
-          {
-            type: "tip",
-            content:
-              "Start with basic documents even if your situation isn't perfect yet. Having a simple will and power of attorney is much better than having nothing at all.",
-          },
-        ],
-        keyTakeaways: [
-          "Everyone needs basic estate planning documents regardless of wealth",
-          "Dying without a will creates unnecessary costs and complications",
-          "Estate plans should be updated regularly for life changes",
-          "Professional guidance helps avoid costly mistakes",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What happens if you die without a will?",
-              options: [
-                "Your assets go to the government",
-                "Your spouse automatically gets everything",
-                "State intestacy laws determine who gets your assets",
-                "Your assets are donated to charity",
-              ],
-              correctAnswer: "State intestacy laws determine who gets your assets",
-              explanation:
-                "If you die without a will (intestate), state laws determine how your assets are distributed. This may not match your wishes and can create complications for your family.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Wills and Trusts",
-        duration: "8 min",
-        points: 24,
-        content: [
-          {
-            type: "heading",
-            content: "Understanding Wills and Trust Structures",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Wills and trusts are fundamental estate planning tools that serve different purposes. Understanding when to use each, their benefits and limitations, helps you create an effective estate plan that protects your assets and provides for your beneficiaries.",
-          },
-          {
-            type: "list",
-            content: "Will basics:",
-            items: [
-              "Legal document directing asset distribution after death",
-              "Names executor to manage estate administration",
-              "Designates guardians for minor children",
-              "Must go through probate court process",
-              "Public record once filed with court",
-              "Can be contested by disgruntled heirs",
-            ],
-          },
-          {
-            type: "list",
-            content: "Types of wills:",
-            items: [
-              "Simple will: Basic asset distribution, most common",
-              "Pour-over will: Works with trust, transfers remaining assets",
-              "Joint will: Single document for married couple (not recommended)",
-              "Living will: Healthcare directives (different from regular will)",
-              "Holographic will: Handwritten, valid in some states",
-              "Nuncupative will: Oral will, very limited validity",
-            ],
-          },
-          {
-            type: "list",
-            content: "Trust fundamentals:",
-            items: [
-              "Legal entity that holds assets for beneficiaries",
-              "Grantor: Person who creates and funds the trust",
-              "Trustee: Person or institution managing the trust",
-              "Beneficiaries: People who benefit from the trust",
-              "Trust document: Specifies terms and conditions",
-              "Can operate during lifetime and after death",
-            ],
-          },
-          {
-            type: "calculation",
-            content: "Will vs. Trust cost comparison:",
-            formula: "Total Cost = Setup Cost + Administration Cost + Probate Cost",
-            variables: {
-              "Simple Will": "$500 setup + $0 lifetime + $15,000 probate = $15,500",
-              "Revocable Trust": "$2,500 setup + $500 annual + $3,000 probate = $18,500 (20 years)",
-              "Break-even": "Depends on estate size and complexity",
-              "Trust Benefits": "Privacy, probate avoidance, incapacity planning",
-            },
-          },
-          {
-            type: "example",
-            content:
-              "Trust vs. Will Decision: Sarah has a $800,000 estate with rental properties. A revocable trust costs $3,000 to set up but avoids $24,000 in probate costs and provides privacy. The trust pays for itself while offering better protection.",
-          },
-          {
-            type: "list",
-            content: "Revocable (Living) Trust benefits:",
-            items: [
-              "Avoids probate: Faster, private asset transfer",
-              "Incapacity planning: Successor trustee takes over seamlessly",
-              "Privacy: Trust terms remain confidential",
-              "Multi-state property: Avoids probate in multiple states",
-              "Professional management: Can name corporate trustee",
-              "Flexibility: Can be changed or revoked during lifetime",
-            ],
-          },
-          {
-            type: "list",
-            content: "Irrevocable trust advantages:",
-            items: [
-              "Asset protection: Removes assets from your estate",
-              "Tax benefits: May reduce estate and income taxes",
-              "Medicaid planning: Can protect assets from long-term care costs",
-              "Generation-skipping: Benefits grandchildren while skipping children's estate taxes",
-              "Charitable benefits: Tax deductions for charitable trusts",
-              "Creditor protection: Assets generally protected from lawsuits",
-            ],
-          },
-          {
-            type: "case-study",
-            content:
-              "Multi-Generational Trust: The Williams family created an irrevocable trust with $2 million, removing it from their taxable estate. The trust provides income to their children and preserves principal for grandchildren, saving an estimated $800,000 in estate taxes over two generations.",
-          },
-          {
-            type: "list",
-            content: "Common trust types:",
-            items: [
-              "Revocable living trust: Flexibility and probate avoidance",
-              "Irrevocable life insurance trust: Removes life insurance from estate",
-              "Charitable remainder trust: Income for life, remainder to charity",
-              "Qualified personal residence trust: Transfers home at discount",
-              "Generation-skipping trust: Benefits multiple generations",
-              "Special needs trust: Provides for disabled beneficiaries",
-            ],
-          },
-          {
-            type: "list",
-            content: "Trust funding requirements:",
-            items: [
-              "Real estate: Deed property into trust name",
-              "Bank accounts: Retitle accounts or name trust as beneficiary",
-              "Investment accounts: Transfer ownership to trust",
-              "Business interests: Assign ownership to trust",
-              "Personal property: Bill of sale or assignment",
-              "Life insurance: Name trust as beneficiary",
-            ],
-          },
-          {
-            type: "list",
-            content: "Will vs. Trust decision factors:",
-            items: [
-              "Estate size: Larger estates benefit more from trusts",
-              "Complexity: Multiple properties, businesses favor trusts",
-              "Privacy concerns: Trusts provide confidentiality",
-              "Incapacity planning: Trusts offer seamless management",
-              "Cost considerations: Trusts cost more upfront",
-              "Family dynamics: Trusts can provide more control",
-            ],
-          },
-          {
-            type: "warning",
-            content:
-              "Creating a trust without properly funding it is a common mistake. The trust only controls assets that are formally transferred into it.",
-          },
-          {
-            type: "tip",
-            content:
-              "Even with a trust, you still need a will (called a pour-over will) to handle any assets not in the trust and to name guardians for minor children.",
-          },
-        ],
-        keyTakeaways: [
-          "Wills go through probate, trusts generally avoid probate",
-          "Trusts provide better incapacity planning and privacy",
-          "Trust funding is crucial - unfunded trusts don't work",
-          "The choice depends on estate size, complexity, and goals",
-        ],
-        quiz: {
-          questions: [
-            {
-              question: "What's the main advantage of a revocable living trust over a will?",
-              options: [
-                "It's less expensive to create",
-                "It provides better tax benefits",
-                "It avoids probate and provides incapacity planning",
-                "It can't be contested by heirs",
-              ],
-              correctAnswer: "It avoids probate and provides incapacity planning",
-              explanation:
-                "The main advantages of a revocable living trust are avoiding probate (faster, private, less expensive) and providing seamless management if you become incapacitated.",
-            },
-          ],
-        },
-      },
-      {
-        title: "Power of Attorney Documents",
-        duration: "6 min",
-        points: 18,
-        content: [
-          {
-            type: "heading",
-            content: "Authorizing Others to Act on Your Behalf",
-          },
-          {
-            type: "paragraph",
-            content:
-              "Power of attorney documents authorize trusted individuals to make decisions and take actions on your behalf when you cannot. These documents are crucial for incapacity planning and can prevent costly court proceedings if you become unable to manage your affairs.",
-          },
-          {
-            type: "list",
-            content: "Types of power of attorney:",
-            items: [
-              "Durable Financial Power of Attorney: Handles financial matters",
-              "Healthcare Power of Attorney: Makes medical decisions",
-              "Limited Power of Attorney: Specific purpose and time frame",
-              "Springing Power of Attorney: Becomes effective upon incapacity",
-              "General Power of Attorney: Broad authority, ends at incapacity",
-              "Special Power of Attorney: Limited to specific transactions",
-            ],
-          },
-          {
-            type: "list",
-            content: "Financial power of attorney powers:",
-            items: [
-              "Banking: Access accounts, make deposits and withdrawals",
-              "Investments: Buy, sell, and manage investment accounts",
-              "Real estate: Buy, sell, mortgage, and manage property",
-              "Insurance: Pay premiums, file claims, change beneficiaries",
-              "Taxes: File returns, pay taxes, represent before IRS",
-              "Business: Operate business, sign contracts, make decisions",
-            ],
-          },
-          {
-            type: "calculation",
-            content: "Cost of not having power of attorney:",
-            formula: "Guardianship Cost = Court Fees + Attorney Fees + Ongoing Costs",
-            variables: {
-              "Initial Court Costs": "$2,000-$5,000",
-              "Attorney Fees": "$5,000-$15,000",
-              "Annual Reporting": "$1,000-$3,000 per year",
-              "Total First Year": "$8,000-$23,000",
-              "Power of Attorney Cost": "$200-$500",
-            },
-          },
-          {
-            type: "example",
-            content:
-              "Incapacity Without Planning: When Robert had a stroke, his family couldn't access his accounts to pay bills. They spent $12,000 and six months getting court-appointed guardianship. A $300 power of attorney would have avoided this entirely.",
-          },
-          {
-            type: "list",
-            content:
+          "FSAs provide immediate access but have use
