@@ -913,7 +913,7 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           { type: "tip", content: "Use loan calculators to compare the total cost of different loan offers. A slightly higher rate with a shorter term might cost less overall than a lower rate with a longer term." },
         ],
         keyTakeaways: ["Compare APR, not just interest rates", "Shop with multiple lenders within a short timeframe", "Consider total cost over the life of the loan", "Avoid lenders with red flag practices"],
-        quiz: { questions: [{ question: "What's the most important factor to compare when shopping for loans?", options: ["Interest rate", "Monthly payment", "Annual Percentage Rate (APR)", "Loan term"], correctAnswer: "Annual Percentage Rate (APR)", explanation: "APR includes both the interest rate and fees, giving you the true cost of the loan for accurate comparison shopping." }] },
+        quiz: { questions: [{ question: "What's the most important factor to compare when shopping for loans?", options: ["Interest rate", "Monthly payment", "Annual Percentage Rate (APR)", "Loan term"], correctAnswer: "Annual Percentage Rate (APR)", explanation: "APR includes both the interest rate and fees, giving you the true annual cost of the loan for accurate comparison shopping." }] },
       },
       {
         title: "Loan Terms and Conditions",
@@ -1212,4 +1212,6 @@ export function getLessonContent(moduleId: string, lessonIndex: number): LessonC
           { type: "example", content: "Maria has $1 million saved for retirement. Using the 4% rule, she can withdraw $40,000 in the first year, then adjust for inflation in subsequent years, with a high probability the money will last 30 years." },
           { type: "list", content: "Tax-efficient withdrawal strategies:", items: ["Asset location: Withdraw from taxable accounts first", "Tax diversification: Mix of pre-tax and after-tax accounts", "Roth conversions: Convert in low-income years", "Tax-loss harvesting: Offset gains with losses", "Municipal bonds: Tax-free income for high earners", "Charitable giving: Tax-advantaged philanthropy"] },
           { type: "list", content: "Required minimum distributions (RMDs):", items: ["Start at age 73 for Traditional IRAs and 401(k)s", "Based on life expectancy tables", "Failure to take RMDs results in 50% penalty", "Roth IRAs have no RMDs during owner's lifetime", "Can be satisfied by in-kind distributions", "Planning needed to manage tax impact"] },
-          { type: "list", content: "Retirement income
+          { type: "list", content: "Retirement income strategies:", items: ["Bucket strategy: Divide assets by time horizon", "Bond ladder: Staggered bond maturities", "Dividend growth investing: Focus on dividend-paying stocks", "Annuities: Guaranteed income products", "Real estate: Rental income and REITs", "Part-time work: Gradual transition to full retirement"] },
+          { type: "tip", content: "Consider working with a financial advisor to create a comprehensive retirement income plan that accounts for your specific situation, risk tolerance, and goals." },
+        ],
