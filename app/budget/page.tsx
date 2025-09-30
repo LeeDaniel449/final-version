@@ -2158,7 +2158,7 @@ function BudgetDashboardContent() {
                           <div>
                             <h4 className="font-medium text-gray-900">{transaction.description}</h4>
                             <p className="text-sm text-gray-600">
-                              {transaction.category} • {new Date(transaction.date).toLocaleDateString()}
+                              {transaction.category} {" • "} {new Date(transaction.date).toLocaleDateString()}
                             </p>
                           </div>
                         </div>
