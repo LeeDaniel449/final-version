@@ -2158,7 +2158,7 @@ function BudgetDashboardContent() {
                           <div>
                             <h4 className="font-medium text-gray-900">{transaction.description}</h4>
                             <p className="text-sm text-gray-600">
-                              {transaction.category} {" • "} {new Date(transaction.date).toLocaleDateString()}
+                              {`${transaction.category} | ${new Date(transaction.date).toLocaleDateString()}`}
                             </p>
                           </div>
                         </div>
@@ -2261,51 +2261,51 @@ function BudgetDashboardContent() {
                     {whatIfScenario.category.includes("dining") || whatIfScenario.category.includes("food") ? (
                       <div className="p-3 bg-green-50 rounded-lg border border-green-200">
                         <p className="text-sm text-green-800 font-medium">🍳 Food & Dining Tips:</p>
-                        <ul className="text-sm text-green-700 mt-1 space-y-1">
-                          <li>• Meal plan for the week and create a shopping list</li>
-                          <li>• Cook at home 2-3 more times per week</li>
-                          <li>• Try batch cooking on weekends</li>
-                          <li>• Use grocery store apps for coupons and deals</li>
+                        <ul className="text-sm text-green-700 mt-1 space-y-1 list-disc list-inside">
+                          <li>Meal plan for the week and create a shopping list</li>
+                          <li>Cook at home 2-3 more times per week</li>
+                          <li>Try batch cooking on weekends</li>
+                          <li>Use grocery store apps for coupons and deals</li>
                         </ul>
                       </div>
                     ) : whatIfScenario.category.includes("transportation") ? (
                       <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                         <p className="text-sm text-blue-800 font-medium">🚗 Transportation Tips:</p>
-                        <ul className="text-sm text-blue-700 mt-1 space-y-1">
-                          <li>• Combine errands into fewer trips</li>
-                          <li>• Consider carpooling or public transit</li>
-                          <li>• Work from home when possible</li>
-                          <li>• Keep up with vehicle maintenance for better fuel efficiency</li>
+                        <ul className="text-sm text-blue-700 mt-1 space-y-1 list-disc list-inside">
+                          <li>Combine errands into fewer trips</li>
+                          <li>Consider carpooling or public transit</li>
+                          <li>Work from home when possible</li>
+                          <li>Keep up with vehicle maintenance for better fuel efficiency</li>
                         </ul>
                       </div>
                     ) : whatIfScenario.category.includes("entertainment") ? (
                       <div className="p-3 bg-purple-50 rounded-lg border border-purple-200">
                         <p className="text-sm text-purple-800 font-medium">🎬 Entertainment Tips:</p>
-                        <ul className="text-sm text-purple-700 mt-1 space-y-1">
-                          <li>• Look for free community events and activities</li>
-                          <li>• Use streaming services instead of going to movies</li>
-                          <li>• Take advantage of happy hour specials</li>
-                          <li>• Host game nights instead of going out</li>
+                        <ul className="text-sm text-purple-700 mt-1 space-y-1 list-disc list-inside">
+                          <li>Look for free community events and activities</li>
+                          <li>Use streaming services instead of going to movies</li>
+                          <li>Take advantage of happy hour specials</li>
+                          <li>Host game nights instead of going out</li>
                         </ul>
                       </div>
                     ) : whatIfScenario.category.includes("shopping") ? (
                       <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                         <p className="text-sm text-orange-800 font-medium">🛍️ Shopping Tips:</p>
-                        <ul className="text-sm text-orange-700 mt-1 space-y-1">
-                          <li>• Wait 24 hours before making non-essential purchases</li>
-                          <li>• Use price comparison apps and browser extensions</li>
-                          <li>• Shop with a list and stick to it</li>
-                          <li>• Consider buying generic or store brands</li>
+                        <ul className="text-sm text-orange-700 mt-1 space-y-1 list-disc list-inside">
+                          <li>Wait 24 hours before making non-essential purchases</li>
+                          <li>Use price comparison apps and browser extensions</li>
+                          <li>Shop with a list and stick to it</li>
+                          <li>Consider buying generic or store brands</li>
                         </ul>
                       </div>
                     ) : (
                       <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
                         <p className="text-sm text-gray-800 font-medium">💡 General Tips:</p>
-                        <ul className="text-sm text-gray-700 mt-1 space-y-1">
-                          <li>• Track your spending for this category daily</li>
-                          <li>• Set up alerts when you're close to your limit</li>
-                          <li>• Review and cancel unused subscriptions</li>
-                          <li>• Look for ways to reduce or eliminate recurring expenses</li>
+                        <ul className="text-sm text-gray-700 mt-1 space-y-1 list-disc list-inside">
+                          <li>Track your spending for this category daily</li>
+                          <li>Set up alerts when you're close to your limit</li>
+                          <li>Review and cancel unused subscriptions</li>
+                          <li>Look for ways to reduce or eliminate recurring expenses</li>
                         </ul>
                       </div>
                     )}
