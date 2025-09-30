@@ -553,7 +553,7 @@ const PortfolioImplementationPage = () => {
                           <h5 className="font-medium text-sm mb-2">Quick Access Links:</h5>
                           <div className="flex flex-wrap gap-2">
                             {step.platform.map((platform) => (
-                              <Button key={platform} size="sm" variant="outline" className="text-xs">
+                              <Button key={platform} size="sm" variant="outline" className="text-xs bg-transparent">
                                 <ExternalLink className="w-3 h-3 mr-1" />
                                 {platform}
                               </Button>
@@ -722,7 +722,12 @@ const PortfolioImplementationPage = () => {
                                   {/* Platform Links */}
                                   <div className="mt-3 flex flex-wrap gap-2">
                                     {step.platform.slice(0, 3).map((platform) => (
-                                      <Button key={platform} size="sm" variant="outline" className="text-xs">
+                                      <Button
+                                        key={platform}
+                                        size="sm"
+                                        variant="outline"
+                                        className="text-xs bg-transparent"
+                                      >
                                         <ExternalLink className="w-3 h-3 mr-1" />
                                         {platform}
                                       </Button>
