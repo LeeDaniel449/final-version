@@ -714,7 +714,7 @@ const BudgetDashboardContent = () => {
       .map(([categoryName, amount]) => {
         const percentage = Math.round((amount / totalUserSpending) * 100)
         const normalizedCategoryName = categoryName.toLowerCase()
-        const color = categoryColors[normalizedCategoryName] || "hsl(221, 83%, 53%)" // default to brand blue
+        const color = categoryColors[normalizedCategoryName] || "hsl(217, 91%, 60%)" // default to brand blue
 
         return {
           name: categoryName,
@@ -868,7 +868,7 @@ const BudgetDashboardContent = () => {
     if (amount > 0) {
       console.log("[v0] Amount is valid, proceeding with budget update")
       // Only check against income if income has been added.
-      if (availableIncome < amount) {
+      if (totalIncome > 0 && availableIncome < amount) {
         addNotification(
           "Insufficient Income! ⚠️",
           `You only have $${(availableIncome || 0).toLocaleString()} available income. Add more income or reduce the budget amount.`,
