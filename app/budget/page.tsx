@@ -1226,12 +1226,6 @@ const BudgetDashboardContent = () => {
                 Create your free account to unlock personalized budget tracking, AI insights, and spending analysis.
               </p>
               <div className="flex gap-4 justify-center">
-                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Link href="/signup">
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Sign Up Free
-                  </Link>
-                </Button>
                 <Button
                   asChild
                   variant="outline"
@@ -1915,33 +1909,19 @@ const BudgetDashboardContent = () => {
             </CardContent>
           </Card>
 
-          {shouldShowProgress ? (
-            <Card
-              className={`bg-gradient-to-br ${overallHealth.status === "Good" ? "from-green-500 to-green-600" : overallHealth.status === "Warning" ? "from-yellow-500 to-yellow-600" : "from-red-500 to-red-600"} text-white`}
-            >
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Budget Health</CardTitle>
-                <BarChart3 className="h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{overallHealth.percentage.toFixed(1)}%</div>
-                <Progress value={overallHealth.percentage} className="mt-2 bg-white/20 [&>div]:bg-white" />
-                <p className="text-xs mt-1 opacity-90">{overallHealth.status}</p>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card className="bg-gradient-to-br from-gray-300 to-gray-400 text-white">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Budget Health</CardTitle>
-                <BarChart3 className="h-4 w-4" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">Not Set</div>
-                <Progress value={0} className="mt-2 bg-gray-400" />
-                <p className="text-xs mt-1 opacity-90">Add expenses to track progress</p>
-              </CardContent>
-            </Card>
-          )}
+          <Card
+            className={`bg-gradient-to-br ${overallHealth.status === "Good" ? "from-green-500 to-green-600" : overallHealth.status === "Warning" ? "from-yellow-500 to-yellow-600" : "from-red-500 to-red-600"} text-white`}
+          >
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Budget Health</CardTitle>
+              <BarChart3 className="h-4 w-4" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{overallHealth.percentage.toFixed(1)}%</div>
+              <Progress value={overallHealth.percentage} className="mt-2 bg-white/20 [&>div]:bg-white" />
+              <p className="text-xs mt-1 opacity-90">{overallHealth.status}</p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Interactive Charts */}
