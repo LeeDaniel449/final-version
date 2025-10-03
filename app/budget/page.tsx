@@ -108,7 +108,10 @@ interface UserBudgetCategory {
   id: string
   name: string
   budgetAmount: number
+  spentAmount?: number // Added for clarity, though not strictly used in some calculations
   spendingLimit: number
+  color?: string // Added for potential future use
+  type: "expense" // Explicitly marking as expense, income is handled separately
 }
 
 interface WhatIfScenario {
@@ -601,8 +604,10 @@ const BudgetDashboardContent = () => {
     const categorySpending: { [key: string]: number } = {}
 
     userBudgetEntries.forEach((entry) => {
-      const key = entry.category.toLowerCase()
-      categorySpending[key] = (categorySpending[key] || 0) + entry.amount
+      if (entry.type === "expense") {
+        const key = entry.category.toLowerCase()
+        categorySpending[key] = (categorySpending[key] || 0) + entry.amount
+      }
     })
 
     const defaultCategories = [
@@ -641,6 +646,7 @@ const BudgetDashboardContent = () => {
           spent: spent,
           color: category.color,
           icon: getCategoryIcon(category.name),
+          spendingLimit: userCategory?.spendingLimit || 0, // Include spending limit
         }
       })
       .filter((cat) => cat.budgeted > 0 || cat.spent > 0)
@@ -844,6 +850,7 @@ const BudgetDashboardContent = () => {
 
   const shouldShowProgress = hasAnySpendingData
 
+  // CHANGE: Updated handleAddBudget to create category if it doesn't exist
   const handleAddBudget = () => {
     console.log("[v0] Set Budget button clicked")
     console.log("[v0] isUserSignedUp:", isUserSignedUp)
@@ -870,16 +877,50 @@ const BudgetDashboardContent = () => {
         return
       }
 
-      // Find the category by matching the lowercase name
-      const categoryName =
-        userBudgetCategories.find((cat) => cat.name.toLowerCase() === selectedCategory)?.name || selectedCategory
+      const categoryColors = {
+        housing: "hsl(217, 91%, 60%)",
+        transportation: "hsl(200, 85%, 55%)",
+        "food & dining": "hsl(195, 80%, 50%)",
+        healthcare: "hsl(210, 88%, 65%)",
+        shopping: "hsl(225, 75%, 58%)",
+        entertainment: "hsl(185, 82%, 52%)",
+        utilities: "hsl(205, 78%, 60%)",
+        travel: "hsl(190, 85%, 48%)",
+      }
 
-      console.log("[v0] Category name found:", categoryName)
+      // Get current categories
+      const currentCategories = userDataManager.getBudgetCategories()
 
-      // Update the budget category
-      userDataManager.updateBudgetCategory(categoryName, {
-        budgetAmount: amount,
-      })
+      // Find or create the category
+      let existingCategory = currentCategories.find((cat) => cat.name.toLowerCase() === selectedCategory.toLowerCase())
+
+      if (!existingCategory) {
+        // Category doesn't exist, create it
+        // Ensure we use a consistent naming for categories if they are from DEFAULT_CATEGORIES
+        const categoryName =
+          DEFAULT_CATEGORIES.find((cat) => cat.toLowerCase() === selectedCategory.toLowerCase()) || selectedCategory
+
+        const newCategory: UserBudgetCategory = {
+          id: Date.now().toString(),
+          name: categoryName,
+          budgetAmount: amount,
+          spentAmount: 0, // Initialize spentAmount
+          spendingLimit: 0, // Initialize spendingLimit
+          color: categoryColors[selectedCategory.toLowerCase()] || "hsl(217, 91%, 60%)", // Assign a default color
+          type: "expense",
+        }
+
+        // Add new category to the list and save
+        userDataManager.saveBudgetCategories([...currentCategories, newCategory])
+        console.log("[v0] Created new category:", categoryName)
+        existingCategory = newCategory // Set existingCategory to the newly created one for notification logic
+      } else {
+        // Category exists, update it
+        userDataManager.updateBudgetCategory(existingCategory.name, {
+          budgetAmount: amount,
+        })
+        console.log("[v0] Updated existing category:", existingCategory.name)
+      }
 
       // Refresh the data
       loadUserData()
@@ -887,10 +928,12 @@ const BudgetDashboardContent = () => {
       setNewBudgetAmount("")
 
       // Modify notification based on whether income is set
+      const categoryNameForNotification = existingCategory?.name || selectedCategory // Use the confirmed name
+
       const notificationMessage =
         totalIncome > 0
-          ? `You've set a budget of $${amount} for ${categoryName}. Available income: $${((availableIncome || 0) - amount).toLocaleString()}`
-          : `Budget set for ${categoryName}: $${amount}. Available income: $${((availableIncome || 0) - amount).toLocaleString()}`
+          ? `You've set a budget of $${amount} for ${categoryNameForNotification}. Available income: $${((availableIncome || 0) - amount).toLocaleString()}`
+          : `Budget set for ${categoryNameForNotification}: $${amount}. Available income: $${((availableIncome || 0) - amount).toLocaleString()}`
 
       console.log("[v0] Budget update completed successfully")
       addNotification("Budget Added Successfully! 🎉", notificationMessage, "success")
@@ -1891,7 +1934,7 @@ const BudgetDashboardContent = () => {
                 <BarChart3 className="h-4 w-4" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">Not Started</div>
+                <div className="text-2xl font-bold">Not Set</div>
                 <Progress value={0} className="mt-2 bg-gray-400" />
                 <p className="text-xs mt-1 opacity-90">Add expenses to track progress</p>
               </CardContent>
