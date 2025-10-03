@@ -13,7 +13,7 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY = "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
+const CLERK_PUBLISHABLE_KEY = "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXY"
 
 export default function RootLayout({
   children,
