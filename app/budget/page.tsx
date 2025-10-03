@@ -503,37 +503,35 @@ const BudgetDashboardContent = () => {
       { name: "Travel", key: "travel", color: "#00FFFF" }, // bright cyan
     ]
 
-    return defaultCategories
-      .map((category) => {
-        const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
+    return defaultCategories.map((category) => {
+      const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
 
-        let spent = categorySpending[category.key] || 0
+      let spent = categorySpending[category.key] || 0
 
-        // Try alternative matching strategies if no direct match
+      // Try alternative matching strategies if no direct match
+      if (spent === 0) {
+        // Try exact name match
+        spent = categorySpending[category.name.toLowerCase()] || 0
+
+        // Try partial matching for common variations
         if (spent === 0) {
-          // Try exact name match
-          spent = categorySpending[category.name.toLowerCase()] || 0
-
-          // Try partial matching for common variations
-          if (spent === 0) {
-            Object.keys(categorySpending).forEach((key) => {
-              if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
-                spent += categorySpending[key]
-              }
-            })
-          }
+          Object.keys(categorySpending).forEach((key) => {
+            if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
+              spent += categorySpending[key]
+            }
+          })
         }
+      }
 
-        return {
-          name: category.name,
-          key: category.key,
-          budgeted: userCategory?.budgetAmount || 0,
-          spent: spent,
-          color: category.color,
-          icon: getCategoryIcon(category.name),
-        }
-      })
-      .filter((cat) => cat.budgeted > 0 || cat.spent > 0)
+      return {
+        name: category.name,
+        key: category.key,
+        budgeted: userCategory?.budgetAmount || 0,
+        spent: spent,
+        color: category.color,
+        icon: getCategoryIcon(category.name),
+      }
+    })
   }
 
   const calculateBudgetProgress = (categories: BudgetCategory[]) => {
@@ -621,35 +619,33 @@ const BudgetDashboardContent = () => {
       { name: "Travel", key: "travel", color: "#00FFFF" },
     ]
 
-    return defaultCategories
-      .map((category) => {
-        const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
+    return defaultCategories.map((category) => {
+      const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
 
-        let spent = categorySpending[category.key] || 0
+      let spent = categorySpending[category.key] || 0
+
+      if (spent === 0) {
+        spent = categorySpending[category.name.toLowerCase()] || 0
 
         if (spent === 0) {
-          spent = categorySpending[category.name.toLowerCase()] || 0
-
-          if (spent === 0) {
-            Object.keys(categorySpending).forEach((key) => {
-              if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
-                spent += categorySpending[key]
-              }
-            })
-          }
+          Object.keys(categorySpending).forEach((key) => {
+            if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
+              spent += categorySpending[key]
+            }
+          })
         }
+      }
 
-        return {
-          name: category.name,
-          key: category.key,
-          budgeted: userCategory?.budgetAmount || 0,
-          spent: spent,
-          color: category.color,
-          icon: getCategoryIcon(category.name),
-          spendingLimit: userCategory?.spendingLimit || 0, // Include spending limit
-        }
-      })
-      .filter((cat) => cat.budgeted > 0 || cat.spent > 0)
+      return {
+        name: category.name,
+        key: category.key,
+        budgeted: userCategory?.budgetAmount || 0,
+        spent: spent,
+        color: category.color,
+        icon: getCategoryIcon(category.name),
+        spendingLimit: userCategory?.spendingLimit || 0, // Include spending limit
+      }
+    })
   }, [userBudgetCategories, userBudgetEntries])
 
   const handleAddExpense = (category: string, amount?: number, description?: string, budgetAmount?: number) => {
