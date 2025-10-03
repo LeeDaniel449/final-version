@@ -20,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
+      publishableKey={
+        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
+      }
       appearance={{
         elements: {
           rootBox: "mx-auto",
