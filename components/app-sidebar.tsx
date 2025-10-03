@@ -128,7 +128,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               <a href={`/?cache-bust=${cacheBust}`}>
                 <div className="flex size-16 items-center justify-center rounded-lg overflow-hidden">
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/design-mode-images/image%281%29-DGnNWNv6K41h7qZwrQ4algMMwnir6G.png"
+                    src="/images/design-mode/image%281%29(1).png"
                     alt="WealthLink Logo"
                     className="size-16 object-contain"
                   />
