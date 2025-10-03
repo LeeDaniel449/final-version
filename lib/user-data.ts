@@ -749,8 +749,39 @@ class UserDataManager {
   updateBudgetCategory(name: string, updates: Partial<BudgetCategory>): void {
     const cats = this.getBudgetCategories()
     const idx = cats.findIndex((c) => c.name.toLowerCase() === name.toLowerCase())
-    if (idx === -1) return
-    cats[idx] = { ...cats[idx], ...updates }
+
+    if (idx === -1) {
+      // Category doesn't exist, create a new one
+      const defaultColors = [
+        "hsl(217, 91%, 60%)", // blue
+        "hsl(142, 71%, 45%)", // green
+        "hsl(24, 95%, 53%)", // orange
+        "hsl(262, 83%, 58%)", // purple
+        "hsl(339, 82%, 52%)", // pink
+        "hsl(48, 96%, 53%)", // yellow
+        "hsl(199, 89%, 48%)", // cyan
+        "hsl(14, 90%, 53%)", // red-orange
+      ]
+
+      const newCategory: BudgetCategory = {
+        id: Date.now().toString(),
+        name: name,
+        budgetAmount: 0,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: defaultColors[cats.length % defaultColors.length],
+        type: "expense",
+        ...updates, // Apply the updates on top of defaults
+      }
+
+      cats.push(newCategory)
+      console.log("[v0] Created new budget category:", name, "with budget:", newCategory.budgetAmount)
+    } else {
+      // Category exists, update it
+      cats[idx] = { ...cats[idx], ...updates }
+      console.log("[v0] Updated existing budget category:", name)
+    }
+
     this.saveBudgetCategories(cats)
   }
 
