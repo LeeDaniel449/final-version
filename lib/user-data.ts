@@ -704,31 +704,20 @@ class UserDataManager {
 
   /* ---------- CATEGORY CRUD ---------- */
   getBudgetCategories(): BudgetCategory[] {
-    if (typeof window === "undefined") return this.getDefaultBudgetCategories()
+    if (typeof window === "undefined") return []
 
     try {
       const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
       if (stored) {
         const parsed: BudgetCategory[] = JSON.parse(stored)
-        if (parsed.length > 0) {
-          // Validate that each category has the required properties
-          const validCategories = parsed.every(
-            (cat) =>
-              cat.hasOwnProperty("budgetAmount") &&
-              cat.hasOwnProperty("spentAmount") &&
-              typeof cat.budgetAmount === "number" &&
-              typeof cat.spentAmount === "number",
-          )
-          if (validCategories) {
-            return parsed
-          }
-        }
+        const categoriesWithData = parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
+        return categoriesWithData
       }
     } catch (err) {
       console.error("Error loading budget categories:", err)
     }
 
-    return this.getDefaultBudgetCategories()
+    return []
   }
 
   saveBudgetCategories(categories: BudgetCategory[]): void {
@@ -818,6 +807,12 @@ class UserDataManager {
   }
 
   hasStartedBudgeting(): boolean {
+    const categories = this.getBudgetCategories()
+    const entries = this.getBudgetEntries()
+
+    // User has started budgeting if they have any categories with data or any entries
+    if (categories.length > 0 || entries.length > 0) return true
+
     const budget = this.getBudgetData()
 
     // Income or savings entered.
