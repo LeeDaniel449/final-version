@@ -152,7 +152,10 @@ function GoalsPage() {
 
     // Listen for authentication events
     const handleAuthChange = () => {
-      checkAuth()
+      // Defer state updates to avoid updating during render
+      setTimeout(() => {
+        checkAuth()
+      }, 0)
     }
 
     window.addEventListener("userSignedIn", handleAuthChange)
