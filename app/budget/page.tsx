@@ -1393,7 +1393,15 @@ const BudgetDashboardContent = () => {
                         <div className="flex gap-2">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="outline" className="flex-1 justify-between bg-transparent">
+                              <Button
+                                variant="outline"
+                                className="flex-1 justify-between bg-transparent"
+                                onClick={() => {
+                                  console.log("[v0] DEFAULT_BUDGET_CATEGORIES:", DEFAULT_BUDGET_CATEGORIES)
+                                  console.log("[v0] userBudgetCategories:", userBudgetCategories)
+                                  console.log("[v0] selectedCategory:", selectedCategory)
+                                }}
+                              >
                                 {DEFAULT_BUDGET_CATEGORIES.find((cat) => cat.key === selectedCategory)?.name ||
                                   userBudgetCategories.find((cat) => cat.name.toLowerCase() === selectedCategory)
                                     ?.name ||
@@ -1402,11 +1410,14 @@ const BudgetDashboardContent = () => {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width]">
-                              {DEFAULT_BUDGET_CATEGORIES.map((cat) => (
-                                <DropdownMenuItem key={cat.key} onClick={() => setSelectedCategory(cat.key)}>
-                                  {cat.name}
-                                </DropdownMenuItem>
-                              ))}
+                              {DEFAULT_BUDGET_CATEGORIES.map((cat) => {
+                                console.log("[v0] Rendering category:", cat.name, cat.key)
+                                return (
+                                  <DropdownMenuItem key={cat.key} onClick={() => setSelectedCategory(cat.key)}>
+                                    {cat.name}
+                                  </DropdownMenuItem>
+                                )
+                              })}
                               {userBudgetCategories
                                 .filter(
                                   (cat) =>
