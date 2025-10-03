@@ -27,17 +27,21 @@ export default function LearningDashboard() {
 
     if (signedIn) {
       // Only load progress data if user is signed in
+      console.log("[v0] Loading learning progress data...")
       const completedModules = userDataManager.getCompletedModulesCount()
       const totalProgress = userDataManager.calculateOverallLearningProgress()
       const progress = userDataManager.getUserProgress()
 
-      setUserProgress({
+      const progressData = {
         completedModules,
         totalProgress,
         completedLessons: progress.completedLessons || 0,
         currentStreak: progress.currentStreak || 0,
         daysActive: progress.daysActive || 0,
-      })
+      }
+
+      console.log("[v0] Setting userProgress state to:", progressData)
+      setUserProgress(progressData)
     } else {
       // Reset progress data when not signed in
       setUserProgress({

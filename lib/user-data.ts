@@ -927,6 +927,14 @@ class UserDataManager {
         progress.modules = {}
       }
 
+      console.log("[v0] getUserProgress loaded:", {
+        completedModules: progress.completedModules?.length || 0,
+        completedLessons: progress.completedLessons || 0,
+        totalProgress: progress.totalProgress || 0,
+        currentStreak: progress.currentStreak || 0,
+        daysActive: progress.daysActive || 0,
+      })
+
       return progress
     } catch (error) {
       console.error("Error loading user progress:", error)
@@ -1075,14 +1083,22 @@ class UserDataManager {
 
   getCompletedModulesCount(): number {
     const userProgress = this.getUserProgress()
-    return userProgress.completedModules?.length || 0
+    const count = userProgress.completedModules?.length || 0
+    console.log("[v0] getCompletedModulesCount:", count, "modules:", userProgress.completedModules)
+    return count
   }
 
   calculateOverallLearningProgress(): number {
     const userProgress = this.getUserProgress()
-    // Calculate progress based on completed modules
-    // Assuming there are learning modules to track against
-    return Math.round(userProgress.totalProgress || 0)
+    const progress = Math.round(userProgress.totalProgress || 0)
+    console.log(
+      "[v0] calculateOverallLearningProgress:",
+      progress,
+      "% (totalProgress:",
+      userProgress.totalProgress,
+      ")",
+    )
+    return progress
   }
 
   getModuleLessonProgress(moduleId: string): ModuleProgress {
