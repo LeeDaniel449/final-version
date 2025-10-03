@@ -100,6 +100,28 @@ export default function ModulePage() {
 
   const handleLessonComplete = () => {
     console.log(`✅ Completing lesson ${currentLesson}`)
+
+    // If there's a quiz and it hasn't been completed, show it first
+    if (lessonContent?.quiz && !quizCompleted) {
+      setShowQuiz(true)
+      return
+    }
+
+    // Mark lesson as completed
+    let updatedCompletedLessons = [...completedLessons]
+    if (!completedLessons.includes(currentLesson)) {
+      updatedCompletedLessons = [...completedLessons, currentLesson].sort((a, b) => a - b)
+      setCompletedLessons(updatedCompletedLessons)
+    }
+
+    persistProgress(currentLesson, updatedCompletedLessons)
+    handleNextLesson()
+  }
+
+  const handleQuizComplete = () => {
+    setQuizCompleted(true)
+
+    // Mark lesson as completed after quiz
     let updatedCompletedLessons = [...completedLessons]
     if (!completedLessons.includes(currentLesson)) {
       updatedCompletedLessons = [...completedLessons, currentLesson].sort((a, b) => a - b)
@@ -108,17 +130,11 @@ export default function ModulePage() {
 
     persistProgress(currentLesson, updatedCompletedLessons)
 
-    if (lessonContent?.quiz && !quizCompleted) {
-      setShowQuiz(true)
-    } else {
-      handleNextLesson()
-    }
-  }
-
-  const handleQuizComplete = () => {
-    setQuizCompleted(true)
+    // Reset quiz state
     setShowExplanation(false)
     setSelectedAnswer("")
+    setShowQuiz(false)
+
     handleNextLesson()
   }
 
@@ -273,53 +289,88 @@ export default function ModulePage() {
                   </TabsContent>
                 </Tabs>
 
-                {/* Quiz Section */}
                 {showQuiz && lessonContent.quiz && (
-                  <div className="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
-                    <h3 className="text-lg font-semibold text-blue-900 mb-4">Quick Knowledge Check</h3>
-                    <div className="space-y-4">
-                      <p className="text-blue-800 font-medium">{lessonContent.quiz.questions[0].question}</p>
-                      <div className="space-y-2">
+                  <div className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-300 shadow-lg">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Award className="h-6 w-6 text-blue-600" />
+                      <h3 className="text-xl font-bold text-blue-900">Knowledge Check Required</h3>
+                    </div>
+                    <p className="text-blue-700 mb-6 text-sm">
+                      Complete this quiz to proceed to the next lesson and earn your points!
+                    </p>
+                    <div className="space-y-4 bg-white p-6 rounded-lg">
+                      <p className="text-gray-900 font-semibold text-lg">{lessonContent.quiz.questions[0].question}</p>
+                      <div className="space-y-3">
                         {lessonContent.quiz.questions[0].options.map((option, index) => (
-                          <label key={index} className="flex items-center space-x-2 cursor-pointer">
+                          <label
+                            key={index}
+                            className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                              selectedAnswer === option
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
+                            }`}
+                          >
                             <input
                               type="radio"
                               name="quiz-answer"
                               value={option}
                               checked={selectedAnswer === option}
                               onChange={(e) => setSelectedAnswer(e.target.value)}
-                              className="text-blue-600"
+                              className="w-4 h-4 text-blue-600"
+                              disabled={showExplanation}
                             />
-                            <span className="text-blue-800">{option}</span>
+                            <span className="text-gray-800 font-medium">{option}</span>
                           </label>
                         ))}
                       </div>
 
                       {!showExplanation && (
-                        <Button onClick={() => setShowExplanation(true)} disabled={!selectedAnswer} className="mt-4">
+                        <Button
+                          onClick={() => setShowExplanation(true)}
+                          disabled={!selectedAnswer}
+                          className="w-full mt-4 bg-blue-600 hover:bg-blue-700"
+                          size="lg"
+                        >
                           Submit Answer
                         </Button>
                       )}
 
                       {showExplanation && (
-                        <div className="mt-4 p-4 bg-white rounded border">
-                          <div className="flex items-center gap-2 mb-2">
+                        <div
+                          className={`mt-4 p-6 rounded-lg border-2 ${
+                            selectedAnswer === lessonContent.quiz.questions[0].correctAnswer
+                              ? "bg-green-50 border-green-300"
+                              : "bg-amber-50 border-amber-300"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 mb-3">
                             {selectedAnswer === lessonContent.quiz.questions[0].correctAnswer ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />
+                              <>
+                                <CheckCircle className="h-6 w-6 text-green-600" />
+                                <span className="font-bold text-green-900 text-lg">Correct! Well done! 🎉</span>
+                              </>
                             ) : (
-                              <div className="h-5 w-5 rounded-full bg-red-500 flex items-center justify-center">
-                                <span className="text-white text-xs">✗</span>
-                              </div>
+                              <>
+                                <div className="h-6 w-6 rounded-full bg-amber-500 flex items-center justify-center">
+                                  <span className="text-white text-sm font-bold">✗</span>
+                                </div>
+                                <span className="font-bold text-amber-900 text-lg">Not quite right</span>
+                              </>
                             )}
-                            <span className="font-medium">
-                              {selectedAnswer === lessonContent.quiz.questions[0].correctAnswer
-                                ? "Correct!"
-                                : "Not quite right"}
-                            </span>
                           </div>
-                          <p className="text-gray-700 text-sm">{lessonContent.quiz.questions[0].explanation}</p>
-                          <Button onClick={handleQuizComplete} className="mt-4">
-                            Continue
+                          <p className="text-gray-800 mb-4">{lessonContent.quiz.questions[0].explanation}</p>
+                          {selectedAnswer !== lessonContent.quiz.questions[0].correctAnswer && (
+                            <p className="text-sm text-gray-700 mb-4">
+                              <strong>Correct answer:</strong> {lessonContent.quiz.questions[0].correctAnswer}
+                            </p>
+                          )}
+                          <Button
+                            onClick={handleQuizComplete}
+                            className="w-full bg-green-600 hover:bg-green-700"
+                            size="lg"
+                          >
+                            Continue to Next Lesson
+                            <ChevronRight className="h-4 w-4 ml-2" />
                           </Button>
                         </div>
                       )}
@@ -327,19 +378,18 @@ export default function ModulePage() {
                   </div>
                 )}
 
-                {/* Navigation */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
-                  <Button
-                    variant="outline"
-                    onClick={handlePreviousLesson}
-                    disabled={currentLesson === 0}
-                    className="flex items-center gap-2 bg-transparent"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    Previous
-                  </Button>
+                {!showQuiz && (
+                  <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
+                    <Button
+                      variant="outline"
+                      onClick={handlePreviousLesson}
+                      disabled={currentLesson === 0}
+                      className="flex items-center gap-2 bg-transparent"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                      Previous
+                    </Button>
 
-                  {!showQuiz && (
                     <Button
                       onClick={handleLessonComplete}
                       className={`flex items-center gap-2 transition-all duration-300 ${
@@ -347,11 +397,17 @@ export default function ModulePage() {
                           ? "bg-green-600 hover:bg-green-700"
                           : "bg-blue-600 hover:bg-blue-700"
                       }`}
+                      size="lg"
                     >
                       {completedLessons.includes(currentLesson) ? (
                         <>
                           <CheckCircle className="h-4 w-4" />
-                          Lesson Completed ✓
+                          Completed ✓
+                        </>
+                      ) : lessonContent?.quiz ? (
+                        <>
+                          Take Quiz
+                          <Award className="h-4 w-4" />
                         </>
                       ) : (
                         <>
@@ -360,8 +416,8 @@ export default function ModulePage() {
                         </>
                       )}
                     </Button>
-                  )}
-                </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
