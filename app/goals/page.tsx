@@ -36,6 +36,7 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { userDataManager } from "@/lib/user-data"
 import Link from "next/link"
+import { useUser } from "@clerk/nextjs"
 
 interface Goal {
   id: string
@@ -103,6 +104,7 @@ const quickStartGoals = [
 ]
 
 function GoalsPage() {
+  const { user, isLoaded: isClerkLoaded } = useUser()
   const [goals, setGoals] = useState<Goal[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
@@ -119,8 +121,19 @@ function GoalsPage() {
   const { toast } = useToast()
 
   useEffect(() => {
+    if (!isClerkLoaded) return
+
+    // Set Clerk user ID
+    if (user) {
+      userDataManager.setClerkUserId(user.id)
+      console.log("[v0] Clerk user loaded for goals page:", user.id)
+    } else {
+      userDataManager.setClerkUserId(null)
+      console.log("[v0] No Clerk user for goals page")
+    }
+
     const checkAuth = () => {
-      const userSignedUp = userDataManager.isUserSignedUp()
+      const userSignedUp = !!user
       setIsOnboardingComplete(userSignedUp)
 
       if (userSignedUp) {
@@ -143,6 +156,7 @@ function GoalsPage() {
         setGoals(formattedGoals)
       } else {
         // Show empty states for non-signed up users
+        console.log("[v0] User not signed in - showing zero goals")
         setGoals([])
       }
     }
@@ -167,7 +181,7 @@ function GoalsPage() {
       window.removeEventListener("userDataUpdated", handleAuthChange)
       window.removeEventListener("storage", handleAuthChange)
     }
-  }, [])
+  }, [user, isClerkLoaded])
 
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
@@ -201,10 +215,10 @@ function GoalsPage() {
   }
 
   const addQuickGoal = (quickGoal: (typeof quickStartGoals)[0]) => {
-    if (!isOnboardingComplete) {
+    if (!isOnboardingComplete || !user) {
       toast({
-        title: "Sign Up Required",
-        description: "Please sign up to start setting goals and track your money.",
+        title: "Sign In Required",
+        description: "Please sign in to start setting goals and track your money.",
         variant: "destructive",
       })
       return
@@ -256,10 +270,10 @@ function GoalsPage() {
   }
 
   const addCustomGoal = () => {
-    if (!isOnboardingComplete) {
+    if (!isOnboardingComplete || !user) {
       toast({
-        title: "Sign Up Required",
-        description: "Please sign up to start setting goals and track your money.",
+        title: "Sign In Required",
+        description: "Please sign in to start setting goals and track your money.",
         variant: "destructive",
       })
       return
@@ -328,6 +342,15 @@ function GoalsPage() {
   }
 
   const addMoneyToGoal = () => {
+    if (!user) {
+      toast({
+        title: "Sign In Required",
+        description: "Please sign in to add money to goals.",
+        variant: "destructive",
+      })
+      return
+    }
+
     const amount = Number.parseFloat(moneyAmount)
     if (isNaN(amount) || amount <= 0) {
       toast({
@@ -454,9 +477,9 @@ function GoalsPage() {
             <div className="flex items-center justify-center mb-4">
               <UserPlus className="h-12 w-12 text-green-600" />
             </div>
-            <h3 className="text-2xl font-bold text-green-900 mb-2">Sign Up to Start Setting Goals</h3>
+            <h3 className="text-2xl font-bold text-green-900 mb-2">Sign In to Start Setting Goals</h3>
             <p className="text-green-800 mb-6 max-w-md mx-auto">
-              Create your free account to unlock goal tracking, savings recommendations, and progress monitoring.
+              Sign in to unlock goal tracking, savings recommendations, and progress monitoring.
             </p>
             <div className="flex gap-4 justify-center">
               <Button
@@ -464,7 +487,7 @@ function GoalsPage() {
                 variant="outline"
                 className="border-green-300 text-green-700 hover:bg-green-50 bg-transparent"
               >
-                <Link href="/signin">
+                <Link href="/sign-in">
                   <LogIn className="h-4 w-4 mr-2" />
                   Sign In
                 </Link>
@@ -477,7 +500,7 @@ function GoalsPage() {
         <Card className="bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200 opacity-50">
           <CardHeader>
             <CardTitle className="text-gray-500">🚀 Quick Start Goals (Preview)</CardTitle>
-            <CardDescription className="text-gray-400">These goals will be available after you sign up</CardDescription>
+            <CardDescription className="text-gray-400">These goals will be available after you sign in</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

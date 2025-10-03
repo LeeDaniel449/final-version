@@ -52,6 +52,18 @@ export default function HomePage() {
   useEffect(() => {
     if (!isLoaded) return
 
+    if (!isSignedIn || !user) {
+      console.log("[v0] User not signed in - showing zero data")
+      setUserProfile(null)
+      setUserProgress(null)
+      setGoals([])
+      setRealOverallProgress(0)
+      setRealCompletedModules([])
+      setCompletedLessonsDetails([])
+      setTotalCompletedLessonsCount(0)
+      return
+    }
+
     const profile = userDataManager.getUserProfile()
     const progress = userDataManager.getUserProgress()
     const userGoals = userDataManager.getGoals()
@@ -61,7 +73,7 @@ export default function HomePage() {
     setGoals(userGoals)
 
     calculateRealLearningProgress(progress)
-  }, [isLoaded, user])
+  }, [isLoaded, user, isSignedIn])
 
   const calculateRealLearningProgress = (progress: UserProgress) => {
     console.log("[v0] Calculating learning progress from module data (matching learning hub)...")
@@ -133,17 +145,17 @@ export default function HomePage() {
 
   const hasStartedBudgeting = userDataManager.hasStartedBudgeting()
 
-  const completedModulesCount = realCompletedModules.length
-  const completedLessons = totalCompletedLessonsCount
-  const totalXP = userProgress?.totalPoints ?? 0
-  const currentStreak = userProgress?.currentStreak ?? 0
-  const achievementsCount = userProgress?.achievements?.length ?? 0
+  const completedModulesCount = isSignedIn ? realCompletedModules.length : 0
+  const completedLessons = isSignedIn ? totalCompletedLessonsCount : 0
+  const totalXP = isSignedIn ? (userProgress?.totalPoints ?? 0) : 0
+  const currentStreak = isSignedIn ? (userProgress?.currentStreak ?? 0) : 0
+  const achievementsCount = isSignedIn ? (userProgress?.achievements?.length ?? 0) : 0
   const totalModules = learningModules.length
 
-  const activeGoals = goals.filter((g) => g.currentAmount < g.targetAmount)
-  const completedGoals = goals.filter((g) => g.currentAmount >= g.targetAmount)
-  const totalSaved = goals.reduce((sum, g) => sum + g.currentAmount, 0)
-  const learningProgress = realOverallProgress
+  const activeGoals = isSignedIn ? goals.filter((g) => g.currentAmount < g.targetAmount) : []
+  const completedGoals = isSignedIn ? goals.filter((g) => g.currentAmount >= g.targetAmount) : []
+  const totalSaved = isSignedIn ? goals.reduce((sum, g) => sum + g.currentAmount, 0) : 0
+  const learningProgress = isSignedIn ? realOverallProgress : 0
 
   if (!isLoaded) {
     return (

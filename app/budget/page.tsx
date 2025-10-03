@@ -35,7 +35,6 @@ import {
   Home,
   Car,
   Coffee,
-  ShoppingCart,
   Gamepad2,
   Heart,
   Phone,
@@ -46,6 +45,7 @@ import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-pr
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
 import React from "react" // Added import for React.useMemo
+import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 
 interface BudgetCategory {
   name: string
@@ -329,6 +329,27 @@ const BudgetDashboardContent = () => {
   const isInitialized = useRef(false)
   const [isLoadingData, setIsLoadingData] = useState(false)
 
+  // Added state for new entry dialog and its fields
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const [newEntry, setNewEntry] = useState<{
+    description: string
+    amount: string
+    category: string
+    date: string
+    type: "income" | "expense"
+  }>({
+    description: "",
+    amount: "",
+    category: "",
+    date: new Date().toISOString().split("T")[0],
+    type: "expense",
+  })
+
+  // Added state for editing category dialog and its fields
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [editingCategory, setEditingCategory] = useState<string | null>(null)
+  const [editAmount, setEditAmount] = useState("")
+
   // CHANGE: Removed unused userData variable that was calling non-existent getUserData() method
 
   const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
@@ -405,7 +426,7 @@ const BudgetDashboardContent = () => {
       setUserBudgetEntries(entries)
       setIsDataLoaded(true)
     } else {
-      console.log("[v0] User not signed in via Clerk")
+      console.log("[v0] User not signed in via Clerk - showing zero data")
       setHasStartedBudgeting(false)
       setUserBudgetCategories([])
       setUserBudgetEntries([])
@@ -690,18 +711,57 @@ const BudgetDashboardContent = () => {
     loadUserData()
   }
 
+  const handleAddEntry = () => {
+    if (!user) {
+      alert("Please sign in to add budget entries")
+      return
+    }
+
+    if (newEntry.description && newEntry.amount && newEntry.category && newEntry.date) {
+      userDataManager.addBudgetEntry({
+        description: newEntry.description,
+        amount: Number.parseFloat(newEntry.amount),
+        category: newEntry.category,
+        date: newEntry.date,
+        type: newEntry.type as "income" | "expense",
+      })
+
+      setNewEntry({
+        description: "",
+        amount: "",
+        category: "",
+        date: new Date().toISOString().split("T")[0],
+        type: "expense",
+      })
+
+      setIsAddDialogOpen(false)
+      loadUserData()
+    }
+  }
+
+  const handleUpdateCategory = () => {
+    if (!user) {
+      alert("Please sign in to update budget categories")
+      return
+    }
+
+    if (editingCategory && editAmount) {
+      userDataManager.updateBudgetCategory(editingCategory, {
+        budgetAmount: Number.parseFloat(editAmount),
+      })
+      setEditingCategory(null)
+      setEditAmount("")
+      setIsEditDialogOpen(false)
+      loadUserData()
+    }
+  }
+
   const pieChartData = useMemo(() => {
-    const categorySpending = calculateCategorySpending()
-
-    // console.log("[v0] Calculating pie chart data:", {
-    //   userBudgetEntriesLength: userBudgetEntries.length,
-    //   categorySpending,
-    // })
-
-    if (!isUserSignedUp || !userBudgetEntries || userBudgetEntries.length === 0) {
+    if (!user || !userBudgetEntries || userBudgetEntries.length === 0) {
       return []
     }
 
+    const categorySpending = calculateCategorySpending()
     const totalUserSpending = Object.values(categorySpending).reduce((sum, amount) => sum + amount, 0)
 
     if (totalUserSpending === 0) {
@@ -713,7 +773,7 @@ const BudgetDashboardContent = () => {
       .map(([categoryName, amount]) => {
         const percentage = Math.round((amount / totalUserSpending) * 100)
         const normalizedCategoryName = categoryName.toLowerCase()
-        const color = categoryColors[normalizedCategoryName] || "hsl(217, 91%, 60%)" // default to brand blue
+        const color = categoryColors[normalizedCategoryName] || "hsl(217, 91%, 60%)"
 
         return {
           name: categoryName,
@@ -724,24 +784,18 @@ const BudgetDashboardContent = () => {
       })
 
     return result
-  }, [isUserSignedUp, userBudgetEntries, calculateCategorySpending]) // Added calculateCategorySpending to dependencies for proper memoization
+  }, [user, userBudgetEntries, calculateCategorySpending])
 
   const budgetVsActualData = useMemo(() => {
-    if (userBudgetEntries.length === 0) return []
+    if (!user || userBudgetEntries.length === 0) return []
 
     const categorySpending = calculateCategorySpending()
-
-    // console.log("[v0] Bar chart - calculating budgetVsActualData")
 
     return Object.entries(categorySpending)
       .filter(([_, amount]) => amount > 0)
       .map(([categoryName, spent]) => {
         const normalizedCategoryName = categoryName.toLowerCase()
         const color = categoryColors[normalizedCategoryName] || "hsl(220, 14%, 96%)"
-
-        // console.log(`[v0] Bar chart - ${categoryName}: ${color}`)
-
-        // Find corresponding budget category for budgeted amount
         const budgetCategory = displayBudgetData.find((cat) => cat.name.toLowerCase() === normalizedCategoryName)
 
         return {
@@ -751,10 +805,13 @@ const BudgetDashboardContent = () => {
           color: color,
         }
       })
-  }, [userBudgetEntries, displayBudgetData, calculateCategorySpending]) // Added calculateCategorySpending to dependencies for proper memoization
+  }, [user, userBudgetEntries, displayBudgetData, calculateCategorySpending])
 
-  // CHANGE: Replace hardcoded sample data with real user data calculation
   const displayMonthlyData: MonthlyData[] = React.useMemo(() => {
+    if (!user) {
+      return []
+    }
+
     const entries = userDataManager.getBudgetEntries()
 
     // Get last 6 months including current month
@@ -790,20 +847,20 @@ const BudgetDashboardContent = () => {
         income,
         expenses,
         savings: income - expenses,
-        housing: getCategoryTotal("Housing"),
-        transportation: getCategoryTotal("Transportation"),
-        food: getCategoryTotal("Food & Dining") + getCategoryTotal("Food"),
-        shopping: getCategoryTotal("Shopping"),
-        entertainment: getCategoryTotal("Entertainment"),
-        healthcare: getCategoryTotal("Healthcare"),
-        utilities: getCategoryTotal("Utilities"),
-        travel: getCategoryTotal("Travel"),
+        housing: getCategoryTotal("housing"),
+        transportation: getCategoryTotal("transportation"),
+        food: getCategoryTotal("food & dining"),
+        shopping: getCategoryTotal("shopping"),
+        entertainment: getCategoryTotal("entertainment"),
+        healthcare: getCategoryTotal("healthcare"),
+        utilities: getCategoryTotal("utilities"),
+        travel: getCategoryTotal("travel"),
       })
     }
 
     console.log("[v0] Calculated monthly data from user entries:", months)
     return months
-  }, [userBudgetEntries]) // Dependency on userBudgetEntries to re-calculate when entries change
+  }, [user]) // Dependency on user to re-calculate when user status changes
 
   const savingsRateData = displayMonthlyData.map((month) => ({
     month: month.month,
@@ -945,7 +1002,8 @@ const BudgetDashboardContent = () => {
   }
 
   const getAIInsights = () => {
-    if (!isUserSignedUp || userBudgetEntries.length === 0) return []
+    // Return empty insights for non-authenticated users
+    if (!user || userBudgetEntries.length === 0) return []
 
     const insights = []
 
