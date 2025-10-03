@@ -34,6 +34,10 @@ export default function HomePage() {
   const [budgetAmount, setBudgetAmount] = useState("")
   const [realOverallProgress, setRealOverallProgress] = useState(0)
   const [realCompletedModules, setRealCompletedModules] = useState<string[]>([])
+  const [completedLessonsDetails, setCompletedLessonsDetails] = useState<
+    Array<{ moduleId: string; moduleTitle: string; completedLessons: number[]; totalLessons: number }>
+  >([])
+  const [totalCompletedLessonsCount, setTotalCompletedLessonsCount] = useState(0)
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -60,21 +64,59 @@ export default function HomePage() {
   }, [isLoaded, user])
 
   const calculateRealLearningProgress = (progress: UserProgress) => {
-    const totalLessons = learningModules.reduce((sum, module) => sum + module.lessons, 0)
-    const completedLessonsCount = progress?.completedLessons || 0
-    const overallProgress = totalLessons > 0 ? Math.round((completedLessonsCount / totalLessons) * 100) : 0
-    const completedModulesList = progress?.completedModules || []
+    console.log("[v0] Calculating learning progress from module data (matching learning hub)...")
 
-    console.log("[v0] Dashboard progress calculation:", {
+    let totalCompletedLessons = 0
+    let totalLessons = 0
+    let completedModulesCount = 0
+    const completedModulesList: string[] = []
+    const lessonsDetails: Array<{
+      moduleId: string
+      moduleTitle: string
+      completedLessons: number[]
+      totalLessons: number
+    }> = []
+
+    learningModules.forEach((module) => {
+      const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
+      const completedLessons = moduleProgress.completedLessons.length
+
+      totalCompletedLessons += completedLessons
+      totalLessons += module.lessons
+
+      // Track modules with any completed lessons
+      if (completedLessons > 0) {
+        lessonsDetails.push({
+          moduleId: module.id,
+          moduleTitle: module.title,
+          completedLessons: moduleProgress.completedLessons,
+          totalLessons: module.lessons,
+        })
+      }
+
+      // A module is completed if all its lessons are completed
+      if (completedLessons >= module.lessons) {
+        completedModulesCount++
+        completedModulesList.push(module.id)
+      }
+    })
+
+    // Calculate overall progress percentage
+    const overallProgress = totalLessons > 0 ? Math.round((totalCompletedLessons / totalLessons) * 100) : 0
+
+    console.log("[v0] Dashboard progress calculation (matching learning hub):", {
       totalLessons,
-      completedLessonsCount,
+      totalCompletedLessons,
       overallProgress,
-      completedModulesCount: completedModulesList.length,
+      completedModulesCount,
       completedModules: completedModulesList,
+      lessonsDetails,
     })
 
     setRealOverallProgress(overallProgress)
     setRealCompletedModules(completedModulesList)
+    setCompletedLessonsDetails(lessonsDetails)
+    setTotalCompletedLessonsCount(totalCompletedLessons)
   }
 
   const handleAddBudget = () => {
@@ -92,7 +134,7 @@ export default function HomePage() {
   const hasStartedBudgeting = userDataManager.hasStartedBudgeting()
 
   const completedModulesCount = realCompletedModules.length
-  const completedLessons = userProgress?.completedLessons ?? 0
+  const completedLessons = totalCompletedLessonsCount
   const totalXP = userProgress?.totalPoints ?? 0
   const currentStreak = userProgress?.currentStreak ?? 0
   const achievementsCount = userProgress?.achievements?.length ?? 0
@@ -410,9 +452,40 @@ export default function HomePage() {
                 <p className="text-xs text-gray-500 mt-1">{learningProgress}% complete</p>
               </div>
 
-              {completedModulesCount > 0 ? (
+              {completedLessonsDetails.length > 0 ? (
                 <div>
-                  <h4 className="font-medium mb-3 text-blue-800">Completed Modules</h4>
+                  <h4 className="font-medium mb-3 text-blue-800">Completed Lessons ({totalCompletedLessonsCount})</h4>
+                  <div className="space-y-3 max-h-64 overflow-y-auto">
+                    {completedLessonsDetails.map((detail) => (
+                      <div key={detail.moduleId} className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium text-sm text-blue-900">{detail.moduleTitle}</span>
+                          <Badge variant="secondary" className="text-xs">
+                            {detail.completedLessons.length}/{detail.totalLessons}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {detail.completedLessons.map((lessonIndex) => (
+                            <Badge key={lessonIndex} variant="outline" className="text-xs bg-white">
+                              Lesson {lessonIndex + 1}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <BookOpen className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-sm text-gray-600">No lessons completed yet</p>
+                  <p className="text-xs text-gray-500 mt-1">Start learning to track your progress!</p>
+                </div>
+              )}
+
+              {completedModulesCount > 0 && (
+                <div>
+                  <h4 className="font-medium mb-3 text-green-800">Completed Modules</h4>
                   <div className="space-y-2">
                     {learningModules
                       .filter((module) => realCompletedModules.includes(module.id))
@@ -427,12 +500,6 @@ export default function HomePage() {
                       <p className="text-sm text-gray-600">+{completedModulesCount - 3} more modules</p>
                     )}
                   </div>
-                </div>
-              ) : (
-                <div className="text-center py-4">
-                  <BookOpen className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-600">No modules completed yet</p>
-                  <p className="text-xs text-gray-500 mt-1">Start learning to track your progress!</p>
                 </div>
               )}
 
