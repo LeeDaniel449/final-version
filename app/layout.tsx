@@ -13,14 +13,7 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-
-// Log which key is being used (only first 20 chars for security)
-if (typeof window !== "undefined") {
-  console.log("[v0] Clerk key being used:", CLERK_PUBLISHABLE_KEY?.substring(0, 20) + "...")
-  console.log("[v0] Is production key:", CLERK_PUBLISHABLE_KEY?.startsWith("pk_live_"))
-}
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
 export default function RootLayout({
   children,
