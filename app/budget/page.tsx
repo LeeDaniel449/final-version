@@ -877,7 +877,7 @@ const BudgetDashboardContent = () => {
         return
       }
 
-      const categoryColors = {
+      const categoryColors: { [key: string]: string } = {
         housing: "hsl(217, 91%, 60%)",
         transportation: "hsl(200, 85%, 55%)",
         "food & dining": "hsl(195, 80%, 50%)",
@@ -890,36 +890,38 @@ const BudgetDashboardContent = () => {
 
       // Get current categories
       const currentCategories = userDataManager.getBudgetCategories()
+      console.log("[v0] Current categories count:", currentCategories.length)
 
       // Find or create the category
       let existingCategory = currentCategories.find((cat) => cat.name.toLowerCase() === selectedCategory.toLowerCase())
 
       if (!existingCategory) {
         // Category doesn't exist, create it
-        // Ensure we use a consistent naming for categories if they are from DEFAULT_CATEGORIES
         const categoryName =
           DEFAULT_CATEGORIES.find((cat) => cat.toLowerCase() === selectedCategory.toLowerCase()) || selectedCategory
 
-        const newCategory: UserBudgetCategory = {
+        const newCategory: BudgetCategory = {
           id: Date.now().toString(),
           name: categoryName,
           budgetAmount: amount,
-          spentAmount: 0, // Initialize spentAmount
-          spendingLimit: 0, // Initialize spendingLimit
-          color: categoryColors[selectedCategory.toLowerCase()] || "hsl(217, 91%, 60%)", // Assign a default color
+          spentAmount: 0,
+          spendingLimit: 0,
+          color: categoryColors[selectedCategory.toLowerCase()] || "hsl(217, 91%, 60%)",
           type: "expense",
         }
 
+        console.log("[v0] Creating new category:", newCategory)
         // Add new category to the list and save
-        userDataManager.saveBudgetCategories([...currentCategories, newCategory])
-        console.log("[v0] Created new category:", categoryName)
-        existingCategory = newCategory // Set existingCategory to the newly created one for notification logic
+        const updatedCategories = [...currentCategories, newCategory]
+        userDataManager.saveBudgetCategories(updatedCategories)
+        console.log("[v0] Saved categories, new count:", updatedCategories.length)
+        existingCategory = newCategory
       } else {
         // Category exists, update it
+        console.log("[v0] Updating existing category:", existingCategory.name)
         userDataManager.updateBudgetCategory(existingCategory.name, {
           budgetAmount: amount,
         })
-        console.log("[v0] Updated existing category:", existingCategory.name)
       }
 
       // Refresh the data
@@ -927,8 +929,7 @@ const BudgetDashboardContent = () => {
       setShowAddBudgetDialog(false)
       setNewBudgetAmount("")
 
-      // Modify notification based on whether income is set
-      const categoryNameForNotification = existingCategory?.name || selectedCategory // Use the confirmed name
+      const categoryNameForNotification = existingCategory?.name || selectedCategory
 
       const notificationMessage =
         totalIncome > 0
@@ -1792,7 +1793,7 @@ const BudgetDashboardContent = () => {
                   })
                 }
 
-                // 50/30/20 rule analysis
+                // Housing optimization (50/30/20 rule)
                 const housingCost = displayBudgetData.find((cat) => cat.name === "Housing")?.spent || 0
                 const housingPercentage = totalIncome > 0 ? (housingCost / totalIncome) * 100 : 0
 
