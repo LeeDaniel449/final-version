@@ -1226,19 +1226,13 @@ const BudgetDashboardContent = () => {
                 Create your free account to unlock personalized budget tracking, AI insights, and spending analysis.
               </p>
               <div className="flex gap-4 justify-center">
-                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
-                  <Link href="/signup">
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Sign Up Free
-                  </Link>
-                </Button>
                 <Button
                   asChild
                   variant="outline"
                   className="border-blue-300 text-blue-700 hover:bg-blue-50 bg-transparent"
                 >
                   <Link href="/signin">
-                    <LogIn className="h-4 w-4 mr-2" />
+                    <LogIn className="h-4 w-4 mr-1" />
                     Sign In
                   </Link>
                 </Button>
