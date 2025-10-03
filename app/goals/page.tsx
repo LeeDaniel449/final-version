@@ -459,12 +459,6 @@ function GoalsPage() {
               Create your free account to unlock goal tracking, savings recommendations, and progress monitoring.
             </p>
             <div className="flex gap-4 justify-center">
-              <Button asChild className="bg-green-600 hover:bg-green-700 text-white">
-                <Link href="/signup">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Sign Up Free
-                </Link>
-              </Button>
               <Button
                 asChild
                 variant="outline"

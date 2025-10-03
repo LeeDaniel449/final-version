@@ -79,20 +79,7 @@ export function AuthButtons({ variant = "header", size = "md" }: AuthButtonsProp
   if (variant === "card") {
     return (
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white px-12 py-4 text-xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
-            >
-              Sign Up Free - No Credit Card Required
-              <ArrowRight className="w-6 h-6 ml-3" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <AuthModal onSignIn={handleSignIn} onSignUp={handleSignUp} isLoading={isLoading} />
-          </DialogContent>
-        </Dialog>
+        {/* Sign Up Free button removed */}
       </div>
     )
   }
