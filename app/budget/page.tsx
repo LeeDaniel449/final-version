@@ -12,6 +12,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import {
@@ -39,6 +41,7 @@ import {
   Heart,
   Phone,
   Plane,
+  ChevronDown,
 } from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
@@ -1377,18 +1380,25 @@ const BudgetDashboardContent = () => {
                       <div className="space-y-2">
                         <Label htmlFor="budget-category">Category</Label>
                         <div className="flex gap-2">
-                          <select
-                            id="budget-category"
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                            className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                          >
-                            {userBudgetCategories.map((cat) => (
-                              <option key={cat.id} value={cat.name.toLowerCase()}>
-                                {cat.name}
-                              </option>
-                            ))}
-                          </select>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" className="flex-1 justify-between bg-transparent">
+                                {userBudgetCategories.find((cat) => cat.name.toLowerCase() === selectedCategory)
+                                  ?.name || "Select a category"}
+                                <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width]">
+                              {userBudgetCategories.map((cat) => (
+                                <DropdownMenuItem
+                                  key={cat.id}
+                                  onClick={() => setSelectedCategory(cat.name.toLowerCase())}
+                                >
+                                  {cat.name}
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                           <Button
                             type="button"
                             variant="outline"
