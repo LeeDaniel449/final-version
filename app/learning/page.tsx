@@ -9,8 +9,11 @@ import { BookOpen, Clock, Trophy, Target, Star, Lock, User, LogIn } from "lucide
 import Link from "next/link"
 import { learningModules } from "@/lib/learning-data"
 import { userDataManager } from "@/lib/user-data"
+import { useUser } from "@clerk/nextjs"
 
 export default function LearningDashboard() {
+  const { user, isLoaded: isClerkLoaded } = useUser()
+
   const [userProgress, setUserProgress] = useState({
     completedModules: 0,
     totalProgress: 0,
@@ -21,12 +24,27 @@ export default function LearningDashboard() {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    if (isClerkLoaded && user) {
+      userDataManager.setClerkUserId(user.id)
+      console.log("[v0] Clerk user loaded for learning page:", user.id)
+    } else if (isClerkLoaded && !user) {
+      userDataManager.setClerkUserId(null)
+      console.log("[v0] No Clerk user for learning page")
+    }
+  }, [user, isClerkLoaded])
+
   const refreshData = () => {
+    if (!isClerkLoaded) {
+      console.log("[v0] Waiting for Clerk to load...")
+      return
+    }
+
     const signedIn = userDataManager.isUserSignedIn()
     setIsSignedIn(signedIn)
 
-    if (signedIn) {
-      // Only load progress data if user is signed in
+    if (signedIn && user) {
+      // Only load progress data if user is signed in and Clerk user is available
       console.log("[v0] Loading learning progress data...")
       const completedModules = userDataManager.getCompletedModulesCount()
       const totalProgress = userDataManager.calculateOverallLearningProgress()
