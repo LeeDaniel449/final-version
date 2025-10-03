@@ -51,6 +51,17 @@ import { AreaChart, Area } from "recharts"
 // Import ShoppingCart icon
 import { ShoppingCart } from "lucide-react"
 
+const DEFAULT_BUDGET_CATEGORIES = [
+  { name: "Housing", key: "housing", color: "#FF0000" },
+  { name: "Transportation", key: "transportation", color: "#00FF00" },
+  { name: "Food & Dining", key: "food & dining", color: "#0000FF" },
+  { name: "Shopping", key: "shopping", color: "#FFFF00" },
+  { name: "Entertainment", key: "entertainment", color: "#FF00FF" },
+  { name: "Healthcare", key: "healthcare", color: "#FF8000" },
+  { name: "Utilities", key: "utilities", color: "#8000FF" },
+  { name: "Travel", key: "travel", color: "#00FFFF" },
+]
+
 interface BudgetCategory {
   name: string
   key: string
@@ -1383,20 +1394,34 @@ const BudgetDashboardContent = () => {
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="outline" className="flex-1 justify-between bg-transparent">
-                                {userBudgetCategories.find((cat) => cat.name.toLowerCase() === selectedCategory)
-                                  ?.name || "Select a category"}
+                                {DEFAULT_BUDGET_CATEGORIES.find((cat) => cat.key === selectedCategory)?.name ||
+                                  userBudgetCategories.find((cat) => cat.name.toLowerCase() === selectedCategory)
+                                    ?.name ||
+                                  "Select a category"}
                                 <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width]">
-                              {userBudgetCategories.map((cat) => (
-                                <DropdownMenuItem
-                                  key={cat.id}
-                                  onClick={() => setSelectedCategory(cat.name.toLowerCase())}
-                                >
+                              {DEFAULT_BUDGET_CATEGORIES.map((cat) => (
+                                <DropdownMenuItem key={cat.key} onClick={() => setSelectedCategory(cat.key)}>
                                   {cat.name}
                                 </DropdownMenuItem>
                               ))}
+                              {userBudgetCategories
+                                .filter(
+                                  (cat) =>
+                                    !DEFAULT_BUDGET_CATEGORIES.some(
+                                      (dc) => dc.name.toLowerCase() === cat.name.toLowerCase(),
+                                    ),
+                                )
+                                .map((cat) => (
+                                  <DropdownMenuItem
+                                    key={cat.id}
+                                    onClick={() => setSelectedCategory(cat.name.toLowerCase())}
+                                  >
+                                    {cat.name}
+                                  </DropdownMenuItem>
+                                ))}
                             </DropdownMenuContent>
                           </DropdownMenu>
                           <Button
