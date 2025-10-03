@@ -13,24 +13,13 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY}
-      appearance={{
-        elements: {
-          rootBox: "mx-auto",
-          card: "shadow-none",
-        },
-      }}
-    >
+    <ClerkProvider>
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
           <SidebarProvider>

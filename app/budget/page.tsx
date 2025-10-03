@@ -12,8 +12,6 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import {
@@ -37,30 +35,16 @@ import {
   Home,
   Car,
   Coffee,
+  ShoppingCart,
   Gamepad2,
   Heart,
   Phone,
   Plane,
-  ChevronDown,
 } from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
-
-// Import ShoppingCart icon
-import { ShoppingCart } from "lucide-react"
-
-const DEFAULT_BUDGET_CATEGORIES = [
-  { name: "Housing", key: "housing", color: "#FF0000" },
-  { name: "Transportation", key: "transportation", color: "#00FF00" },
-  { name: "Food & Dining", key: "food & dining", color: "#0000FF" },
-  { name: "Shopping", key: "shopping", color: "#FFFF00" },
-  { name: "Entertainment", key: "entertainment", color: "#FF00FF" },
-  { name: "Healthcare", key: "healthcare", color: "#FF8000" },
-  { name: "Utilities", key: "utilities", color: "#8000FF" },
-  { name: "Travel", key: "travel", color: "#00FFFF" },
-]
 
 interface BudgetCategory {
   name: string
@@ -133,6 +117,17 @@ interface WhatIfScenario {
 }
 
 const defaultBudgetCategories: UserBudgetCategory[] = []
+
+const DEFAULT_CATEGORIES = [
+  "Housing",
+  "Transportation",
+  "Food & Dining",
+  "Shopping",
+  "Entertainment",
+  "Healthcare",
+  "Utilities",
+  "Travel",
+]
 
 const CustomPieChart = ({ data }: { data: any[] }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null as number | null)
@@ -290,8 +285,6 @@ const BudgetDashboardContent = () => {
   const [getDialog, setGetDialog] = useState(false)
   const [newBudgetAmount, setNewBudgetAmount] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("housing")
-  const [showNewCategoryDialog, setShowNewCategoryDialog] = useState(false)
-  const [newCategoryName, setNewCategoryName] = useState("")
   const [userBudgetCategories, setUserBudgetCategories] = useState([] as UserBudgetCategory[])
   const [userBudgetEntries, setUserBudgetEntries] = useState([] as BudgetEntry[])
   const { startTutorial } = useTutorial()
@@ -1091,37 +1084,6 @@ const BudgetDashboardContent = () => {
     }
   }
 
-  const handleAddNewCategory = () => {
-    if (!isUserSignedUp) {
-      return
-    }
-
-    const categoryName = newCategoryName.trim()
-    if (!categoryName) {
-      addNotification("Invalid Category Name", "Please enter a valid category name.", "error")
-      return
-    }
-
-    // Check if category already exists
-    const exists = userBudgetCategories.some((cat) => cat.name.toLowerCase() === categoryName.toLowerCase())
-    if (exists) {
-      addNotification("Category Exists", "A category with this name already exists.", "error")
-      return
-    }
-
-    // Add the new category
-    userDataManager.addBudgetCategory(categoryName, 0)
-
-    // Refresh the data
-    loadUserData()
-    setShowNewCategoryDialog(false)
-    setNewCategoryName("")
-    setSelectedCategory(categoryName.toLowerCase())
-
-    // Add notification
-    addNotification("Category Added! 🎉", `New category "${categoryName}" has been created.`, "success")
-  }
-
   const insights = getAIInsights()
   const debtPayoffPlan = calculateDebtPayoff()
 
@@ -1390,62 +1352,18 @@ const BudgetDashboardContent = () => {
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="budget-category">Category</Label>
-                        <div className="flex gap-2">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className="flex-1 justify-between bg-transparent"
-                                onClick={() => {
-                                  console.log("[v0] DEFAULT_BUDGET_CATEGORIES:", DEFAULT_BUDGET_CATEGORIES)
-                                  console.log("[v0] userBudgetCategories:", userBudgetCategories)
-                                  console.log("[v0] selectedCategory:", selectedCategory)
-                                }}
-                              >
-                                {DEFAULT_BUDGET_CATEGORIES.find((cat) => cat.key === selectedCategory)?.name ||
-                                  userBudgetCategories.find((cat) => cat.name.toLowerCase() === selectedCategory)
-                                    ?.name ||
-                                  "Select a category"}
-                                <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width]">
-                              {DEFAULT_BUDGET_CATEGORIES.map((cat) => {
-                                console.log("[v0] Rendering category:", cat.name, cat.key)
-                                return (
-                                  <DropdownMenuItem key={cat.key} onClick={() => setSelectedCategory(cat.key)}>
-                                    {cat.name}
-                                  </DropdownMenuItem>
-                                )
-                              })}
-                              {userBudgetCategories
-                                .filter(
-                                  (cat) =>
-                                    !DEFAULT_BUDGET_CATEGORIES.some(
-                                      (dc) => dc.name.toLowerCase() === cat.name.toLowerCase(),
-                                    ),
-                                )
-                                .map((cat) => (
-                                  <DropdownMenuItem
-                                    key={cat.id}
-                                    onClick={() => setSelectedCategory(cat.name.toLowerCase())}
-                                  >
-                                    {cat.name}
-                                  </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon"
-                            onClick={() => setShowNewCategoryDialog(true)}
-                            className="shrink-0"
-                            title="Add new category"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <select
+                          id="budget-category"
+                          value={selectedCategory}
+                          onChange={(e) => setSelectedCategory(e.target.value)}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        >
+                          {DEFAULT_CATEGORIES.map((category) => (
+                            <option key={category} value={category.toLowerCase()}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="budget-amount">Monthly Budget Amount ($)</Label>
@@ -1973,7 +1891,7 @@ const BudgetDashboardContent = () => {
                 <BarChart3 className="h-4 w-4" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">Not Set</div>
+                <div className="text-2xl font-bold">Not Started</div>
                 <Progress value={0} className="mt-2 bg-gray-400" />
                 <p className="text-xs mt-1 opacity-90">Add expenses to track progress</p>
               </CardContent>
@@ -2884,17 +2802,6 @@ const BudgetDashboardContent = () => {
 }
 
 export default function BudgetPage() {
-  const defaultCategories = [
-    { name: "Housing", key: "housing", color: "#FF0000" },
-    { name: "Transportation", key: "transportation", color: "#00FF00" },
-    { name: "Food & Dining", key: "food & dining", color: "#0000FF" },
-    { name: "Shopping", key: "shopping", color: "#FFFF00" },
-    { name: "Entertainment", key: "entertainment", color: "#FF00FF" },
-    { name: "Healthcare", key: "healthcare", color: "#FF8000" },
-    { name: "Utilities", key: "utilities", color: "#8000FF" },
-    { name: "Travel", key: "travel", color: "#00FFFF" },
-  ]
-
   return (
     <TutorialProvider>
       <BudgetDashboardContent />
