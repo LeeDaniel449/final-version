@@ -44,21 +44,42 @@ export default function LearningDashboard() {
     setIsSignedIn(signedIn)
 
     if (signedIn && user) {
-      // Only load progress data if user is signed in and Clerk user is available
-      console.log("[v0] Loading learning progress data...")
-      const completedModules = userDataManager.getCompletedModulesCount()
-      const totalProgress = userDataManager.calculateOverallLearningProgress()
+      console.log("[v0] Calculating learning progress from module data...")
+
+      // Calculate progress by checking each module
+      let totalCompletedLessons = 0
+      let totalLessons = 0
+      let completedModulesCount = 0
+
+      learningModules.forEach((module) => {
+        const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
+        const completedLessons = moduleProgress.completedLessons.length
+
+        totalCompletedLessons += completedLessons
+        totalLessons += module.lessons
+
+        // A module is completed if all its lessons are completed
+        if (completedLessons >= module.lessons) {
+          completedModulesCount++
+        }
+      })
+
+      // Calculate overall progress percentage
+      const overallProgress = totalLessons > 0 ? Math.round((totalCompletedLessons / totalLessons) * 100) : 0
+
+      // Get streak data from user progress
       const progress = userDataManager.getUserProgress()
 
       const progressData = {
-        completedModules,
-        totalProgress,
-        completedLessons: progress.completedLessons || 0,
+        completedModules: completedModulesCount,
+        totalProgress: overallProgress,
+        completedLessons: totalCompletedLessons,
         currentStreak: progress.currentStreak || 0,
         daysActive: progress.daysActive || 0,
       }
 
-      console.log("[v0] Setting userProgress state to:", progressData)
+      console.log("[v0] Calculated progress:", progressData)
+      console.log("[v0] Total lessons across all modules:", totalLessons)
       setUserProgress(progressData)
     } else {
       // Reset progress data when not signed in
@@ -87,7 +108,7 @@ export default function LearningDashboard() {
       window.removeEventListener("progressUpdated", handleProgressUpdate)
       window.removeEventListener("userSignedIn", handleSignIn)
     }
-  }, [])
+  }, [isClerkLoaded, user])
 
   if (loading) {
     return (
