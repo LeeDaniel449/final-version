@@ -1071,6 +1071,48 @@ class UserDataManager {
     }
   }
 
+  updateLessonProgress(moduleId: string, lessonIndex: number, completed: boolean): void {
+    if (typeof window === "undefined") return
+
+    try {
+      const userProgress = this.getUserProgress()
+
+      // Ensure modules object exists
+      if (!userProgress.modules) {
+        userProgress.modules = {}
+      }
+
+      // Get or create module progress
+      if (!userProgress.modules[moduleId]) {
+        userProgress.modules[moduleId] = {
+          completedLessons: [],
+          currentLesson: 0,
+          completed: false,
+          lastAccessed: new Date().toISOString(),
+        }
+      }
+
+      const moduleProgress = userProgress.modules[moduleId]
+
+      // Update current lesson
+      moduleProgress.currentLesson = lessonIndex
+      moduleProgress.lastAccessed = new Date().toISOString()
+
+      // Update completed lessons
+      if (completed && !moduleProgress.completedLessons.includes(lessonIndex)) {
+        moduleProgress.completedLessons.push(lessonIndex)
+        moduleProgress.completedLessons.sort((a, b) => a - b)
+      }
+
+      // Save updated progress
+      this.saveUserProgress(userProgress)
+
+      console.log(`📚 Lesson progress updated: Module ${moduleId}, Lesson ${lessonIndex}, Completed: ${completed}`)
+    } catch (error) {
+      console.error("Error updating lesson progress:", error)
+    }
+  }
+
   clearLegacyBudgetData(): void {
     if (typeof window === "undefined") return
 
