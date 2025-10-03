@@ -13,9 +13,13 @@ const inter = Inter({
   display: "swap",
 })
 
-const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+const clerkPublishableKey =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
+
 console.log("[v0] Clerk publishableKey available:", !!clerkPublishableKey)
 console.log("[v0] Clerk publishableKey length:", clerkPublishableKey?.length || 0)
+console.log("[v0] Using standard key:", !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
+console.log("[v0] Using Wealthlink key:", !!process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY)
 
 export default function RootLayout({
   children,
