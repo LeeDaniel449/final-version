@@ -45,6 +45,7 @@ import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
+import React from "react" // Added import for React.useMemo
 
 interface BudgetCategory {
   name: string
@@ -327,6 +328,8 @@ const BudgetDashboardContent = () => {
   const [isDataLoaded, setIsDataLoaded] = useState(false)
   const isInitialized = useRef(false)
   const [isLoadingData, setIsLoadingData] = useState(false)
+
+  const userData = userDataManager.getUserData() // Assuming userDataManager has a method to get user data for dependency tracking
 
   const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
     const newNotification = {
@@ -750,55 +753,57 @@ const BudgetDashboardContent = () => {
       })
   }, [userBudgetEntries, displayBudgetData, calculateCategorySpending]) // Added calculateCategorySpending to dependencies for proper memoization
 
-  // --- START: FIX for undeclared variable displayMonthlyData ---
-  // Placeholder for displayMonthlyData, as it's used but not defined in the current scope.
-  // In a real application, this would be fetched or calculated from user data.
-  const displayMonthlyData: MonthlyData[] = [
-    // Example data, replace with actual data fetching/calculation
-    {
-      month: "Jan",
-      income: 4000,
-      expenses: 3500,
-      savings: 500,
-      housing: 1200,
-      transportation: 300,
-      food: 600,
-      shopping: 200,
-      entertainment: 150,
-      healthcare: 100,
-      utilities: 250,
-      travel: 0,
-    },
-    {
-      month: "Feb",
-      income: 4200,
-      expenses: 3800,
-      savings: 400,
-      housing: 1250,
-      transportation: 320,
-      food: 650,
-      shopping: 250,
-      entertainment: 200,
-      healthcare: 120,
-      utilities: 260,
-      travel: 0,
-    },
-    {
-      month: "Mar",
-      income: 4100,
-      expenses: 3700,
-      savings: 400,
-      housing: 1220,
-      transportation: 310,
-      food: 620,
-      shopping: 220,
-      entertainment: 180,
-      healthcare: 110,
-      utilities: 255,
-      travel: 0,
-    },
-  ]
-  // --- END: FIX for undeclared variable displayMonthlyData ---
+  // CHANGE: Replace hardcoded sample data with real user data calculation
+  const displayMonthlyData: MonthlyData[] = React.useMemo(() => {
+    const entries = userDataManager.getBudgetEntries()
+
+    // Get last 6 months including current month
+    const months: MonthlyData[] = []
+    const now = new Date()
+
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
+      const monthName = date.toLocaleDateString("en-US", { month: "short" })
+      const year = date.getFullYear()
+      const month = date.getMonth()
+
+      // Filter entries for this month
+      const monthEntries = entries.filter((entry) => {
+        const entryDate = new Date(entry.date)
+        return entryDate.getFullYear() === year && entryDate.getMonth() === month
+      })
+
+      // Calculate totals
+      const income = monthEntries.filter((e) => e.type === "income").reduce((sum, e) => sum + e.amount, 0)
+
+      const expenses = monthEntries.filter((e) => e.type === "expense").reduce((sum, e) => sum + e.amount, 0)
+
+      // Calculate category breakdowns
+      const getCategoryTotal = (categoryName: string) => {
+        return monthEntries
+          .filter((e) => e.type === "expense" && e.category.toLowerCase() === categoryName.toLowerCase())
+          .reduce((sum, e) => sum + e.amount, 0)
+      }
+
+      months.push({
+        month: monthName,
+        income,
+        expenses,
+        savings: income - expenses,
+        housing: getCategoryTotal("Housing"),
+        transportation: getCategoryTotal("Transportation"),
+        food: getCategoryTotal("Food & Dining") + getCategoryTotal("Food"),
+        shopping: getCategoryTotal("Shopping"),
+        entertainment: getCategoryTotal("Entertainment"),
+        healthcare: getCategoryTotal("Healthcare"),
+        utilities: getCategoryTotal("Utilities"),
+        travel: getCategoryTotal("Travel"),
+      })
+    }
+
+    console.log("[v0] Calculated monthly data from user entries:", months)
+    return months
+  }, [userBudgetEntries]) // Dependency on userBudgetEntries to re-calculate when entries change
 
   const savingsRateData = displayMonthlyData.map((month) => ({
     month: month.month,
