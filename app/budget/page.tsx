@@ -329,7 +329,7 @@ const BudgetDashboardContent = () => {
   const isInitialized = useRef(false)
   const [isLoadingData, setIsLoadingData] = useState(false)
 
-  const userData = userDataManager.getUserData() // Assuming userDataManager has a method to get user data for dependency tracking
+  // CHANGE: Removed unused userData variable that was calling non-existent getUserData() method
 
   const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
     const newNotification = {
