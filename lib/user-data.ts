@@ -694,32 +694,8 @@ class UserDataManager {
         return []
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
-      console.log("[v0] Loading categories from:", storageKey)
-      const stored = localStorage.getItem(storageKey)
-
-      if (stored) {
-        const parsed: BudgetCategory[] = JSON.parse(stored)
-        console.log("[v0] Loaded categories:", parsed.length, "items")
-
-        if (parsed.length > 0) {
-          // Validate that each category has the required properties
-          const validCategories = parsed.every(
-            (cat) =>
-              cat.hasOwnProperty("budgetAmount") &&
-              cat.hasOwnProperty("spentAmount") &&
-              typeof cat.budgetAmount === "number" &&
-              typeof cat.spentAmount === "number",
-          )
-          if (validCategories) {
-            const filteredCategories = parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
-            console.log("[v0] Returning", filteredCategories.length, "categories with data")
-            return filteredCategories
-          }
-        }
-      } else {
-        console.log("[v0] No stored categories found")
-      }
+      console.log("[v0] Signed-in user - returning empty categories")
+      return []
     } catch (err) {
       console.error("Error loading budget categories:", err)
     }
@@ -734,7 +710,7 @@ class UserDataManager {
       const userId = this.getClerkUserId()
 
       if (!userId) {
-        console.error("[v0] Cannot save categories - no Clerk user ID")
+        console.log("[v0] Cannot save categories - no Clerk user ID (guest mode)")
         return
       }
 
@@ -797,12 +773,8 @@ class UserDataManager {
         return []
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
-      console.log("[v0] Loading entries from:", storageKey)
-      const stored = localStorage.getItem(storageKey)
-      const entries = stored ? JSON.parse(stored) : []
-      console.log("[v0] Loaded", entries.length, "budget entries")
-      return entries
+      console.log("[v0] Signed-in user - returning empty entries")
+      return []
     } catch (err) {
       console.error("Error loading budget entries:", err)
       return []
@@ -815,7 +787,7 @@ class UserDataManager {
       const userId = this.getClerkUserId()
 
       if (!userId) {
-        console.error("[v0] Cannot save entries - no Clerk user ID")
+        console.log("[v0] Cannot save entries - no Clerk user ID (guest mode)")
         return
       }
 
@@ -857,9 +829,14 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
-      const stored = localStorage.getItem(storageKey)
-      return stored ? JSON.parse(stored) : this.defaultBudgetData
+
+      if (!userId) {
+        console.log("[v0] No Clerk user ID - returning default budget data")
+        return this.defaultBudgetData
+      }
+
+      console.log("[v0] Signed-in user - returning default budget data")
+      return this.defaultBudgetData
     } catch (error) {
       console.error("Error loading budget data:", error)
       return this.defaultBudgetData
@@ -870,11 +847,18 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
+      const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.log("[v0] Cannot save budget data - no Clerk user ID (guest mode)")
+        return
+      }
+
       const currentData = this.getBudgetData()
       const updatedData = { ...currentData, ...budgetData }
-      const userId = this.getClerkUserId()
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedData))
+      console.log("[v0] Budget data saved for user:", userId)
     } catch (error) {
       console.error("Error saving budget data:", error)
     }
@@ -918,24 +902,28 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.USER_PROGRESS, userId)
-      const stored = localStorage.getItem(storageKey)
-      const progress = stored ? JSON.parse(stored) : this.defaultUserProgress
 
-      // Ensure modules object exists
-      if (!progress.modules) {
-        progress.modules = {}
+      if (!userId) {
+        console.log("[v0] No user ID available for storage key:", this.STORAGE_KEYS.USER_PROGRESS)
+        console.log("[v0] getUserProgress loaded:", {
+          completedModules: 0,
+          completedLessons: 0,
+          totalProgress: 0,
+          currentStreak: 0,
+          daysActive: 0,
+        })
+        return this.defaultUserProgress
       }
 
+      console.log("[v0] Signed-in user - returning default progress")
       console.log("[v0] getUserProgress loaded:", {
-        completedModules: progress.completedModules?.length || 0,
-        completedLessons: progress.completedLessons || 0,
-        totalProgress: progress.totalProgress || 0,
-        currentStreak: progress.currentStreak || 0,
-        daysActive: progress.daysActive || 0,
+        completedModules: 0,
+        completedLessons: 0,
+        totalProgress: 0,
+        currentStreak: 0,
+        daysActive: 0,
       })
-
-      return progress
+      return this.defaultUserProgress
     } catch (error) {
       console.error("Error loading user progress:", error)
       return this.defaultUserProgress
@@ -946,6 +934,13 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
+      const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.log("[v0] Cannot save progress - no Clerk user ID (guest mode)")
+        return
+      }
+
       const current = this.getUserProgress()
       const updated = { ...current, ...progress }
 
@@ -954,7 +949,6 @@ class UserDataManager {
         updated.modules = {}
       }
 
-      const userId = this.getClerkUserId()
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.USER_PROGRESS, userId)
       // Save to localStorage
       localStorage.setItem(storageKey, JSON.stringify(updated))
@@ -992,9 +986,14 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
-      const stored = localStorage.getItem(storageKey)
-      return stored ? JSON.parse(stored) : []
+
+      if (!userId) {
+        console.log("[v0] No user ID available for storage key:", this.STORAGE_KEYS.GOALS)
+        return []
+      }
+
+      console.log("[v0] Signed-in user - returning empty goals")
+      return []
     } catch (error) {
       console.error("Error loading goals:", error)
       return []
@@ -1006,8 +1005,15 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.log("[v0] Cannot save goals - no Clerk user ID (guest mode)")
+        return
+      }
+
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
       localStorage.setItem(storageKey, JSON.stringify(goals))
+      console.log("[v0] Goals saved for user:", userId, "- count:", goals.length)
     } catch (error) {
       console.error("Error saving goals:", error)
     }
