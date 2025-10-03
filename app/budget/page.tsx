@@ -1148,7 +1148,7 @@ const BudgetDashboardContent = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button asChild variant="outline" size="sm">
-                <Link href="/signin">
+                <Link href="/sign-in">
                   <LogIn className="w-4 h-4 mr-1" />
                   Sign In
                 </Link>
@@ -1231,7 +1231,7 @@ const BudgetDashboardContent = () => {
                   variant="outline"
                   className="border-blue-300 text-blue-700 hover:bg-blue-50 bg-transparent"
                 >
-                  <Link href="/signin">
+                  <Link href="/sign-in">
                     <LogIn className="h-4 w-4 mr-1" />
                     Sign In
                   </Link>
