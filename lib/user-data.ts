@@ -650,7 +650,14 @@ class UserDataManager {
       }
     }
 
-    return userId ? `${baseKey}_${userId}` : baseKey
+    if (!userId) {
+      console.log("[v0] No user ID available for storage key:", baseKey)
+      return `${baseKey}_NO_USER` // Use a special key that will never match real data
+    }
+
+    const storageKey = `${baseKey}_${userId}`
+    console.log("[v0] Using storage key:", storageKey)
+    return storageKey
   }
 
   setClerkUserId(userId: string | null): void {
@@ -681,11 +688,20 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.log("[v0] No Clerk user ID - returning empty categories")
+        return []
+      }
+
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+      console.log("[v0] Loading categories from:", storageKey)
       const stored = localStorage.getItem(storageKey)
 
       if (stored) {
         const parsed: BudgetCategory[] = JSON.parse(stored)
+        console.log("[v0] Loaded categories:", parsed.length, "items")
+
         if (parsed.length > 0) {
           // Validate that each category has the required properties
           const validCategories = parsed.every(
@@ -696,14 +712,19 @@ class UserDataManager {
               typeof cat.spentAmount === "number",
           )
           if (validCategories) {
-            return parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
+            const filteredCategories = parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
+            console.log("[v0] Returning", filteredCategories.length, "categories with data")
+            return filteredCategories
           }
         }
+      } else {
+        console.log("[v0] No stored categories found")
       }
     } catch (err) {
       console.error("Error loading budget categories:", err)
     }
 
+    console.log("[v0] Returning empty categories array")
     return []
   }
 
@@ -711,9 +732,15 @@ class UserDataManager {
     if (typeof window === "undefined") return
     try {
       const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.error("[v0] Cannot save categories - no Clerk user ID")
+        return
+      }
+
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
       localStorage.setItem(storageKey, JSON.stringify(categories))
-      console.log("[v0] Budget categories saved for user:", userId)
+      console.log("[v0] Budget categories saved for user:", userId, "- count:", categories.length)
     } catch (err) {
       console.error("Error saving budget categories:", err)
     }
@@ -733,9 +760,18 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.log("[v0] No Clerk user ID - returning empty entries")
+        return []
+      }
+
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      console.log("[v0] Loading entries from:", storageKey)
       const stored = localStorage.getItem(storageKey)
-      return stored ? JSON.parse(stored) : []
+      const entries = stored ? JSON.parse(stored) : []
+      console.log("[v0] Loaded", entries.length, "budget entries")
+      return entries
     } catch (err) {
       console.error("Error loading budget entries:", err)
       return []
@@ -746,9 +782,15 @@ class UserDataManager {
     if (typeof window === "undefined") return
     try {
       const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.error("[v0] Cannot save entries - no Clerk user ID")
+        return
+      }
+
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
       localStorage.setItem(storageKey, JSON.stringify(entries))
-      console.log("[v0] Budget entries saved for user:", userId)
+      console.log("[v0] Budget entries saved for user:", userId, "- count:", entries.length)
     } catch (err) {
       console.error("Error saving budget entries:", err)
     }
@@ -1026,6 +1068,30 @@ class UserDataManager {
       currentLesson: 0,
       completed: false,
       lastAccessed: new Date().toISOString(),
+    }
+  }
+
+  clearLegacyBudgetData(): void {
+    if (typeof window === "undefined") return
+
+    try {
+      // Clear old data that doesn't have user ID suffix
+      const legacyKeys = [
+        this.STORAGE_KEYS.BUDGET_DATA + ":categories",
+        this.STORAGE_KEYS.BUDGET_DATA + ":entries",
+        this.STORAGE_KEYS.BUDGET_DATA,
+      ]
+
+      legacyKeys.forEach((key) => {
+        if (localStorage.getItem(key)) {
+          console.log("[v0] Clearing legacy data from:", key)
+          localStorage.removeItem(key)
+        }
+      })
+
+      console.log("[v0] Legacy budget data cleared")
+    } catch (error) {
+      console.error("Error clearing legacy budget data:", error)
     }
   }
 }

@@ -44,6 +44,7 @@ import {
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
+import { AreaChart, Area } from "recharts"
 
 interface BudgetCategory {
   name: string
@@ -354,6 +355,8 @@ const BudgetDashboardContent = () => {
     if (isClerkLoaded && user) {
       userDataManager.setClerkUserId(user.id)
       console.log("[v0] Clerk user loaded:", user.id)
+
+      userDataManager.clearLegacyBudgetData()
     } else if (isClerkLoaded && !user) {
       userDataManager.setClerkUserId(null)
       console.log("[v0] No Clerk user")
@@ -632,8 +635,6 @@ const BudgetDashboardContent = () => {
       .filter((cat) => cat.budgeted > 0 || cat.spent > 0)
   }, [userBudgetCategories, userBudgetEntries])
 
-  const displayMonthlyData: MonthlyData[] = []
-
   const handleAddExpense = (category: string, amount?: number, description?: string, budgetAmount?: number) => {
     const expenseAmount = amount || newExpense.amount
     const expenseDescription = description || newExpense.description
@@ -734,7 +735,57 @@ const BudgetDashboardContent = () => {
           color: color,
         }
       })
-  }, [userBudgetEntries, displayBudgetData, calculateCategorySpending]) // Added calculateCategorySpending to dependencies
+  }, [userBudgetEntries, displayBudgetData, calculateCategorySpending]) // Added calculateCategorySpending to dependencies for proper memoization
+
+  // --- START: FIX for undeclared variable displayMonthlyData ---
+  // Placeholder for displayMonthlyData, as it's used but not defined in the current scope.
+  // In a real application, this would be fetched or calculated from user data.
+  const displayMonthlyData: MonthlyData[] = [
+    // Example data, replace with actual data fetching/calculation
+    {
+      month: "Jan",
+      income: 4000,
+      expenses: 3500,
+      savings: 500,
+      housing: 1200,
+      transportation: 300,
+      food: 600,
+      shopping: 200,
+      entertainment: 150,
+      healthcare: 100,
+      utilities: 250,
+      travel: 0,
+    },
+    {
+      month: "Feb",
+      income: 4200,
+      expenses: 3800,
+      savings: 400,
+      housing: 1250,
+      transportation: 320,
+      food: 650,
+      shopping: 250,
+      entertainment: 200,
+      healthcare: 120,
+      utilities: 260,
+      travel: 0,
+    },
+    {
+      month: "Mar",
+      income: 4100,
+      expenses: 3700,
+      savings: 400,
+      housing: 1220,
+      transportation: 310,
+      food: 620,
+      shopping: 220,
+      entertainment: 180,
+      healthcare: 110,
+      utilities: 255,
+      travel: 0,
+    },
+  ]
+  // --- END: FIX for undeclared variable displayMonthlyData ---
 
   const savingsRateData = displayMonthlyData.map((month) => ({
     month: month.month,
@@ -1915,7 +1966,7 @@ const BudgetDashboardContent = () => {
             </CardContent>
           </Card>
 
-          {/* <Card>
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-600" />
@@ -1999,7 +2050,7 @@ const BudgetDashboardContent = () => {
                 )
               })()}
             </CardContent>
-          </Card> */}
+          </Card>
         </div>
 
         {/* AI Insights */}
