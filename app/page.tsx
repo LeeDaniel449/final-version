@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { NotificationBell } from "@/components/notification-bell"
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
+import { learningModules } from "@/lib/learning-data"
 import { BookOpen, Target, DollarSign, CheckCircle, TrendingUp, Calendar, Award, Zap, Plus, LogIn } from "lucide-react"
 import Link from "next/link"
 
@@ -31,6 +32,8 @@ export default function HomePage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState("")
   const [budgetAmount, setBudgetAmount] = useState("")
+  const [realOverallProgress, setRealOverallProgress] = useState(0)
+  const [realCompletedModules, setRealCompletedModules] = useState(0)
 
   useEffect(() => {
     const profile = userDataManager.getUserProfile()
@@ -40,7 +43,30 @@ export default function HomePage() {
     setUserProfile(profile)
     setUserProgress(progress)
     setGoals(userGoals)
+
+    calculateRealLearningProgress()
   }, [])
+
+  const calculateRealLearningProgress = () => {
+    let totalLessons = 0
+    let completedLessons = 0
+    let completedModulesCount = 0
+
+    learningModules.forEach((module) => {
+      totalLessons += module.lessons
+      const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
+      completedLessons += moduleProgress.completed
+
+      // A module is considered completed if all its lessons are done
+      if (moduleProgress.completed === module.lessons) {
+        completedModulesCount++
+      }
+    })
+
+    const overallProgress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
+    setRealOverallProgress(overallProgress)
+    setRealCompletedModules(completedModulesCount)
+  }
 
   const handleAddBudget = () => {
     if (selectedCategory && budgetAmount) {
@@ -57,17 +83,17 @@ export default function HomePage() {
   const hasStartedBudgeting = userDataManager.hasStartedBudgeting()
 
   /* ---------- derived values ---------- */
-  const completedModulesCount = userProgress?.completedModules?.length ?? 0
+  const completedModulesCount = realCompletedModules
   const completedLessons = userProgress?.completedLessons ?? 0
   const totalXP = userProgress?.totalXP ?? 0
   const currentStreak = userProgress?.currentStreak ?? 0
   const achievementsCount = userProgress?.achievements?.length ?? 0
-  const totalModules = 12
+  const totalModules = learningModules.length
 
   const activeGoals = goals.filter((g) => g.currentAmount < g.targetAmount)
   const completedGoals = goals.filter((g) => g.currentAmount >= g.targetAmount)
   const totalSaved = goals.reduce((sum, g) => sum + g.currentAmount, 0)
-  const learningProgress = (completedModulesCount / totalModules) * 100
+  const learningProgress = realOverallProgress
 
   const displayName = user?.firstName
     ? `${user.firstName} ${user.lastName || ""}`.trim()
@@ -374,21 +400,30 @@ export default function HomePage() {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-medium">Overall Progress</span>
-                  <span className="text-sm text-gray-600">{completedModulesCount} modules completed</span>
+                  <span className="text-sm text-gray-600">
+                    {completedModulesCount} of {totalModules} modules
+                  </span>
                 </div>
                 <Progress value={learningProgress} className="h-3" />
+                <p className="text-xs text-gray-500 mt-1">{learningProgress}% complete</p>
               </div>
 
-              {userProgress?.completedModules && userProgress.completedModules.length > 0 ? (
+              {completedModulesCount > 0 ? (
                 <div>
                   <h4 className="font-medium mb-3 text-blue-800">Completed Modules</h4>
                   <div className="space-y-2">
-                    {userProgress?.completedModules?.slice(0, 3).map((moduleId) => (
-                      <div key={moduleId} className="flex items-center gap-2 text-sm">
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                        <span className="capitalize">{moduleId.replace(/-/g, " ")}</span>
-                      </div>
-                    ))}
+                    {learningModules
+                      .filter((module) => {
+                        const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
+                        return moduleProgress.completed === module.lessons
+                      })
+                      .slice(0, 3)
+                      .map((module) => (
+                        <div key={module.id} className="flex items-center gap-2 text-sm">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span>{module.title}</span>
+                        </div>
+                      ))}
                     {completedModulesCount > 3 && (
                       <p className="text-sm text-gray-600">+{completedModulesCount - 3} more modules</p>
                     )}
@@ -398,6 +433,7 @@ export default function HomePage() {
                 <div className="text-center py-4">
                   <BookOpen className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">No modules completed yet</p>
+                  <p className="text-xs text-gray-500 mt-1">Start learning to track your progress!</p>
                 </div>
               )}
 
