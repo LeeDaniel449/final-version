@@ -114,16 +114,7 @@ interface WhatIfScenario {
   reduction: number
 }
 
-const defaultBudgetCategories = [
-  { id: 1, name: "Housing", budgetAmount: 0 },
-  { id: 2, name: "Transportation", budgetAmount: 0 },
-  { id: 3, name: "Food", budgetAmount: 0 },
-  { id: 4, name: "Utilities", budgetAmount: 0 },
-  { id: 5, name: "Entertainment", budgetAmount: 0 },
-  { id: 6, name: "Healthcare", budgetAmount: 0 },
-  { id: 7, name: "Savings", budgetAmount: 0 },
-  { id: 8, name: "Other", budgetAmount: 0 },
-]
+const defaultBudgetCategories: UserBudgetCategory[] = []
 
 const CustomPieChart = ({ data }: { data: any[] }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null as number | null)
@@ -504,35 +495,37 @@ const BudgetDashboardContent = () => {
       { name: "Travel", key: "travel", color: "#00FFFF" }, // bright cyan
     ]
 
-    return defaultCategories.map((category) => {
-      const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
+    return defaultCategories
+      .map((category) => {
+        const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
 
-      let spent = categorySpending[category.key] || 0
+        let spent = categorySpending[category.key] || 0
 
-      // Try alternative matching strategies if no direct match
-      if (spent === 0) {
-        // Try exact name match
-        spent = categorySpending[category.name.toLowerCase()] || 0
-
-        // Try partial matching for common variations
+        // Try alternative matching strategies if no direct match
         if (spent === 0) {
-          Object.keys(categorySpending).forEach((key) => {
-            if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
-              spent += categorySpending[key]
-            }
-          })
-        }
-      }
+          // Try exact name match
+          spent = categorySpending[category.name.toLowerCase()] || 0
 
-      return {
-        name: category.name,
-        key: category.key,
-        budgeted: userCategory?.budgetAmount || 0,
-        spent: spent,
-        color: category.color,
-        icon: getCategoryIcon(category.name),
-      }
-    })
+          // Try partial matching for common variations
+          if (spent === 0) {
+            Object.keys(categorySpending).forEach((key) => {
+              if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
+                spent += categorySpending[key]
+              }
+            })
+          }
+        }
+
+        return {
+          name: category.name,
+          key: category.key,
+          budgeted: userCategory?.budgetAmount || 0,
+          spent: spent,
+          color: category.color,
+          icon: getCategoryIcon(category.name),
+        }
+      })
+      .filter((cat) => cat.budgeted > 0 || cat.spent > 0)
   }
 
   const calculateBudgetProgress = (categories: BudgetCategory[]) => {
@@ -600,8 +593,7 @@ const BudgetDashboardContent = () => {
   }
 
   const displayBudgetData = convertToDisplayData()
-  // const displayMonthlyData = generateMonthlyData()
-  const displayMonthlyData: MonthlyData[] = [] // Placeholder for now, as the original function was removed.
+  const displayMonthlyData: MonthlyData[] = []
 
   const handleAddExpense = (category: string, amount?: number, description?: string, budgetAmount?: number) => {
     const expenseAmount = amount || newExpense.amount
