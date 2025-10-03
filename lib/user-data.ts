@@ -1108,6 +1108,18 @@ class UserDataManager {
   }
 
   getModuleLessonProgress(moduleId: string): ModuleProgress {
+    const userId = this.getClerkUserId()
+
+    if (!userId) {
+      console.log("[v0] No Clerk user ID - returning empty module progress for:", moduleId)
+      return {
+        completedLessons: [],
+        currentLesson: 0,
+        completed: false,
+        lastAccessed: new Date().toISOString(),
+      }
+    }
+
     const userProgress = this.getUserProgress()
 
     // Return existing module progress or default
