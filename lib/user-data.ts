@@ -754,6 +754,52 @@ class UserDataManager {
     this.saveBudgetCategories(cats)
   }
 
+  addBudgetCategory(name: string, budgetAmount = 0): void {
+    if (typeof window === "undefined") return
+
+    try {
+      const cats = this.getBudgetCategories()
+
+      // Check if category already exists
+      const exists = cats.some((c) => c.name.toLowerCase() === name.toLowerCase())
+      if (exists) {
+        console.log("[v0] Category already exists:", name)
+        return
+      }
+
+      // Create new category
+      const newCategory: BudgetCategory = {
+        id: Date.now().toString(),
+        name: name,
+        budgetAmount: budgetAmount,
+        spentAmount: 0,
+        spendingLimit: 0,
+        color: this.getRandomCategoryColor(),
+        type: "expense",
+      }
+
+      cats.push(newCategory)
+      this.saveBudgetCategories(cats)
+      console.log("[v0] New category added:", name)
+    } catch (error) {
+      console.error("Error adding budget category:", error)
+    }
+  }
+
+  private getRandomCategoryColor(): string {
+    const colors = [
+      "#3B82F6", // blue
+      "#10B981", // green
+      "#F59E0B", // amber
+      "#EF4444", // red
+      "#8B5CF6", // purple
+      "#EC4899", // pink
+      "#14B8A6", // teal
+      "#F97316", // orange
+    ]
+    return colors[Math.floor(Math.random() * colors.length)]
+  }
+
   /* ---------- BUDGET ENTRIES ---------- */
   getBudgetEntries(): BudgetEntry[] {
     if (typeof window === "undefined") return []

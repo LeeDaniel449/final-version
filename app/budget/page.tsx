@@ -35,7 +35,6 @@ import {
   Home,
   Car,
   Coffee,
-  ShoppingCart,
   Gamepad2,
   Heart,
   Phone,
@@ -45,6 +44,9 @@ import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
+
+// Import ShoppingCart icon
+import { ShoppingCart } from "lucide-react"
 
 interface BudgetCategory {
   name: string
@@ -141,9 +143,9 @@ const CustomPieChart = ({ data }: { data: any[] }) => {
       const x2 = centerX - currentRadius
       const y2 = centerY
 
-      return `M ${centerX} ${centerY} 
-              L ${x1} ${y1} 
-              A ${currentRadius} ${currentRadius} 0 0 1 ${x2} ${y2} 
+      return `M ${centerX} ${centerY}
+              L ${x1} ${y1}
+              A ${currentRadius} ${currentRadius} 0 0 1 ${x2} ${y2}
               A ${currentRadius} ${currentRadius} 0 0 1 ${x1} ${y1} Z`
     }
 
@@ -274,6 +276,8 @@ const BudgetDashboardContent = () => {
   const [getDialog, setGetDialog] = useState(false)
   const [newBudgetAmount, setNewBudgetAmount] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("housing")
+  const [showNewCategoryDialog, setShowNewCategoryDialog] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState("")
   const [userBudgetCategories, setUserBudgetCategories] = useState([] as UserBudgetCategory[])
   const [userBudgetEntries, setUserBudgetEntries] = useState([] as BudgetEntry[])
   const { startTutorial } = useTutorial()
@@ -1073,6 +1077,37 @@ const BudgetDashboardContent = () => {
     }
   }
 
+  const handleAddNewCategory = () => {
+    if (!isUserSignedUp) {
+      return
+    }
+
+    const categoryName = newCategoryName.trim()
+    if (!categoryName) {
+      addNotification("Invalid Category Name", "Please enter a valid category name.", "error")
+      return
+    }
+
+    // Check if category already exists
+    const exists = userBudgetCategories.some((cat) => cat.name.toLowerCase() === categoryName.toLowerCase())
+    if (exists) {
+      addNotification("Category Exists", "A category with this name already exists.", "error")
+      return
+    }
+
+    // Add the new category
+    userDataManager.addBudgetCategory(categoryName, 0)
+
+    // Refresh the data
+    loadUserData()
+    setShowNewCategoryDialog(false)
+    setNewCategoryName("")
+    setSelectedCategory(categoryName.toLowerCase())
+
+    // Add notification
+    addNotification("Category Added! 🎉", `New category "${categoryName}" has been created.`, "success")
+  }
+
   const insights = getAIInsights()
   const debtPayoffPlan = calculateDebtPayoff()
 
@@ -1341,18 +1376,30 @@ const BudgetDashboardContent = () => {
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="budget-category">Category</Label>
-                        <select
-                          id="budget-category"
-                          value={selectedCategory}
-                          onChange={(e) => setSelectedCategory(e.target.value)}
-                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                        >
-                          {userBudgetCategories.map((cat) => (
-                            <option key={cat.id} value={cat.name.toLowerCase()}>
-                              {cat.name}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="flex gap-2">
+                          <select
+                            id="budget-category"
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            className="flex-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                          >
+                            {userBudgetCategories.map((cat) => (
+                              <option key={cat.id} value={cat.name.toLowerCase()}>
+                                {cat.name}
+                              </option>
+                            ))}
+                          </select>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => setShowNewCategoryDialog(true)}
+                            className="shrink-0"
+                            title="Add new category"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="budget-amount">Monthly Budget Amount ($)</Label>
@@ -1880,7 +1927,7 @@ const BudgetDashboardContent = () => {
                 <BarChart3 className="h-4 w-4" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">Not Started</div>
+                <div className="text-2xl font-bold">Not Set</div>
                 <Progress value={0} className="mt-2 bg-gray-400" />
                 <p className="text-xs mt-1 opacity-90">Add expenses to track progress</p>
               </CardContent>
