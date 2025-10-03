@@ -33,9 +33,21 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [budgetAmount, setBudgetAmount] = useState("")
   const [realOverallProgress, setRealOverallProgress] = useState(0)
-  const [realCompletedModules, setRealCompletedModules] = useState(0)
+  const [realCompletedModules, setRealCompletedModules] = useState<string[]>([])
 
   useEffect(() => {
+    if (isLoaded && user) {
+      userDataManager.setClerkUserId(user.id)
+      console.log("[v0] Clerk user loaded on dashboard:", user.id)
+    } else if (isLoaded && !user) {
+      userDataManager.setClerkUserId(null)
+      console.log("[v0] No Clerk user on dashboard")
+    }
+  }, [user, isLoaded])
+
+  useEffect(() => {
+    if (!isLoaded) return
+
     const profile = userDataManager.getUserProfile()
     const progress = userDataManager.getUserProgress()
     const userGoals = userDataManager.getGoals()
@@ -44,28 +56,25 @@ export default function HomePage() {
     setUserProgress(progress)
     setGoals(userGoals)
 
-    calculateRealLearningProgress()
-  }, [])
+    calculateRealLearningProgress(progress)
+  }, [isLoaded, user])
 
-  const calculateRealLearningProgress = () => {
-    let totalLessons = 0
-    let completedLessons = 0
-    let completedModulesCount = 0
+  const calculateRealLearningProgress = (progress: UserProgress) => {
+    const totalLessons = learningModules.reduce((sum, module) => sum + module.lessons, 0)
+    const completedLessonsCount = progress?.completedLessons || 0
+    const overallProgress = totalLessons > 0 ? Math.round((completedLessonsCount / totalLessons) * 100) : 0
+    const completedModulesList = progress?.completedModules || []
 
-    learningModules.forEach((module) => {
-      totalLessons += module.lessons
-      const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
-      completedLessons += moduleProgress.completed
-
-      // A module is considered completed if all its lessons are done
-      if (moduleProgress.completed === module.lessons) {
-        completedModulesCount++
-      }
+    console.log("[v0] Dashboard progress calculation:", {
+      totalLessons,
+      completedLessonsCount,
+      overallProgress,
+      completedModulesCount: completedModulesList.length,
+      completedModules: completedModulesList,
     })
 
-    const overallProgress = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0
     setRealOverallProgress(overallProgress)
-    setRealCompletedModules(completedModulesCount)
+    setRealCompletedModules(completedModulesList)
   }
 
   const handleAddBudget = () => {
@@ -82,10 +91,9 @@ export default function HomePage() {
 
   const hasStartedBudgeting = userDataManager.hasStartedBudgeting()
 
-  /* ---------- derived values ---------- */
-  const completedModulesCount = realCompletedModules
+  const completedModulesCount = realCompletedModules.length
   const completedLessons = userProgress?.completedLessons ?? 0
-  const totalXP = userProgress?.totalXP ?? 0
+  const totalXP = userProgress?.totalPoints ?? 0
   const currentStreak = userProgress?.currentStreak ?? 0
   const achievementsCount = userProgress?.achievements?.length ?? 0
   const totalModules = learningModules.length
@@ -94,12 +102,6 @@ export default function HomePage() {
   const completedGoals = goals.filter((g) => g.currentAmount >= g.targetAmount)
   const totalSaved = goals.reduce((sum, g) => sum + g.currentAmount, 0)
   const learningProgress = realOverallProgress
-
-  const displayName = user?.firstName
-    ? `${user.firstName} ${user.lastName || ""}`.trim()
-    : userProfile?.firstName
-      ? `${userProfile.firstName} ${userProfile.lastName || ""}`.trim()
-      : user?.emailAddresses[0]?.emailAddress || "User"
 
   if (!isLoaded) {
     return (
@@ -413,10 +415,7 @@ export default function HomePage() {
                   <h4 className="font-medium mb-3 text-blue-800">Completed Modules</h4>
                   <div className="space-y-2">
                     {learningModules
-                      .filter((module) => {
-                        const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
-                        return moduleProgress.completed === module.lessons
-                      })
+                      .filter((module) => realCompletedModules.includes(module.id))
                       .slice(0, 3)
                       .map((module) => (
                         <div key={module.id} className="flex items-center gap-2 text-sm">
