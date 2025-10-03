@@ -13,7 +13,7 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+const CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsud2VhbHRobGlua2FwcC5jb20k"
 
 export default function RootLayout({
   children,
