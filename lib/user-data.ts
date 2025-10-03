@@ -1133,15 +1133,79 @@ class UserDataManager {
       if (completed && !moduleProgress.completedLessons.includes(lessonIndex)) {
         moduleProgress.completedLessons.push(lessonIndex)
         moduleProgress.completedLessons.sort((a, b) => a - b)
+
+        userProgress.completedLessons = (userProgress.completedLessons || 0) + 1
+      }
+
+      // Import learningModules to check total lessons per module
+      const learningModules = this.getLearningModules()
+      const currentModule = learningModules.find((m) => m.id === moduleId)
+
+      if (currentModule) {
+        const totalLessons = currentModule.lessons
+        const completedLessonsCount = moduleProgress.completedLessons.length
+
+        // Check if module is now completed
+        if (completedLessonsCount >= totalLessons && !moduleProgress.completed) {
+          moduleProgress.completed = true
+
+          // Add to completedModules if not already there
+          if (!userProgress.completedModules.includes(moduleId)) {
+            userProgress.completedModules.push(moduleId)
+          }
+        }
+      }
+
+      const totalModules = learningModules.length
+      const completedModulesCount = userProgress.completedModules.length
+      userProgress.totalProgress = totalModules > 0 ? Math.round((completedModulesCount / totalModules) * 100) : 0
+
+      const today = new Date().toISOString().split("T")[0]
+      const lastActive = userProgress.lastActiveDate?.split("T")[0]
+
+      if (lastActive !== today) {
+        // User is active today
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0]
+
+        if (lastActive === yesterday) {
+          // Consecutive day - increment streak
+          userProgress.currentStreak = (userProgress.currentStreak || 0) + 1
+        } else if (!lastActive || lastActive < yesterday) {
+          // Streak broken - reset to 1
+          userProgress.currentStreak = 1
+        }
+
+        // Update days active
+        userProgress.daysActive = (userProgress.daysActive || 0) + 1
+        userProgress.lastActiveDate = new Date().toISOString()
       }
 
       // Save updated progress
       this.saveUserProgress(userProgress)
 
       console.log(`📚 Lesson progress updated: Module ${moduleId}, Lesson ${lessonIndex}, Completed: ${completed}`)
+      console.log(
+        `📊 Overall progress: ${userProgress.totalProgress}%, Completed modules: ${userProgress.completedModules.length}, Streak: ${userProgress.currentStreak} days`,
+      )
     } catch (error) {
       console.error("Error updating lesson progress:", error)
     }
+  }
+
+  // Helper method to get learning modules data
+  private getLearningModules() {
+    // Return the learning modules structure
+    // This should match the structure in lib/learning-data.ts
+    return [
+      { id: "budgeting-basics", lessons: 5 },
+      { id: "saving-strategies", lessons: 4 },
+      { id: "debt-management", lessons: 4 },
+      { id: "investing-101", lessons: 5 },
+      { id: "credit-scores", lessons: 4 },
+      { id: "retirement-planning", lessons: 5 },
+      { id: "tax-basics", lessons: 4 },
+      { id: "insurance-guide", lessons: 4 },
+    ]
   }
 
   clearLegacyBudgetData(): void {
