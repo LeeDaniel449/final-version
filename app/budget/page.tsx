@@ -2848,6 +2848,17 @@ const BudgetDashboardContent = () => {
 }
 
 export default function BudgetPage() {
+  const defaultCategories = [
+    { name: "Housing", key: "housing", color: "#FF0000" },
+    { name: "Transportation", key: "transportation", color: "#00FF00" },
+    { name: "Food & Dining", key: "food & dining", color: "#0000FF" },
+    { name: "Shopping", key: "shopping", color: "#FFFF00" },
+    { name: "Entertainment", key: "entertainment", color: "#FF00FF" },
+    { name: "Healthcare", key: "healthcare", color: "#FF8000" },
+    { name: "Utilities", key: "utilities", color: "#8000FF" },
+    { name: "Travel", key: "travel", color: "#00FFFF" },
+  ]
+
   return (
     <TutorialProvider>
       <BudgetDashboardContent />
