@@ -641,65 +641,38 @@ class UserDataManager {
     localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
   }
 
+  private getUserStorageKey(baseKey: string, userId?: string): string {
+    if (!userId && typeof window !== "undefined") {
+      // Try to get userId from Clerk if available
+      const clerkUserId = (window as any).__clerk_user_id
+      if (clerkUserId) {
+        userId = clerkUserId
+      }
+    }
+
+    return userId ? `${baseKey}_${userId}` : baseKey
+  }
+
+  setClerkUserId(userId: string | null): void {
+    if (typeof window === "undefined") return
+
+    if (userId) {
+      ;(window as any).__clerk_user_id = userId
+      console.log("[v0] Clerk user ID set:", userId)
+    } else {
+      delete (window as any).__clerk_user_id
+      console.log("[v0] Clerk user ID cleared")
+    }
+  }
+
+  private getClerkUserId(): string | null {
+    if (typeof window === "undefined") return null
+    return (window as any).__clerk_user_id || null
+  }
+
   /* ---------- CATEGORY HELPERS ---------- */
   private getDefaultBudgetCategories(): BudgetCategory[] {
-    return [
-      {
-        id: "1",
-        name: "Housing",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#0F52B9",
-        type: "expense",
-      },
-      {
-        id: "2",
-        name: "Food & Dining",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#10B981",
-        type: "expense",
-      },
-      {
-        id: "3",
-        name: "Transportation",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#8953A9",
-        type: "expense",
-      },
-      {
-        id: "4",
-        name: "Entertainment",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#EF4444",
-        type: "expense",
-      },
-      {
-        id: "5",
-        name: "Utilities",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#06B6D4",
-        type: "expense",
-      },
-      {
-        id: "6",
-        name: "Healthcare",
-        budgetAmount: 0,
-        spentAmount: 0,
-        spendingLimit: 0,
-        color: "#8B5CF6",
-        type: "expense",
-      },
-      { id: "7", name: "Travel", budgetAmount: 0, spentAmount: 0, spendingLimit: 0, color: "#84CC16", type: "expense" },
-    ]
+    return []
   }
 
   /* ---------- CATEGORY CRUD ---------- */
@@ -707,11 +680,25 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+      const stored = localStorage.getItem(storageKey)
+
       if (stored) {
         const parsed: BudgetCategory[] = JSON.parse(stored)
-        const categoriesWithData = parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
-        return categoriesWithData
+        if (parsed.length > 0) {
+          // Validate that each category has the required properties
+          const validCategories = parsed.every(
+            (cat) =>
+              cat.hasOwnProperty("budgetAmount") &&
+              cat.hasOwnProperty("spentAmount") &&
+              typeof cat.budgetAmount === "number" &&
+              typeof cat.spentAmount === "number",
+          )
+          if (validCategories) {
+            return parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
+          }
+        }
       }
     } catch (err) {
       console.error("Error loading budget categories:", err)
@@ -723,7 +710,10 @@ class UserDataManager {
   saveBudgetCategories(categories: BudgetCategory[]): void {
     if (typeof window === "undefined") return
     try {
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories", JSON.stringify(categories))
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+      localStorage.setItem(storageKey, JSON.stringify(categories))
+      console.log("[v0] Budget categories saved for user:", userId)
     } catch (err) {
       console.error("Error saving budget categories:", err)
     }
@@ -742,7 +732,9 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      const stored = localStorage.getItem(storageKey)
       return stored ? JSON.parse(stored) : []
     } catch (err) {
       console.error("Error loading budget entries:", err)
@@ -753,7 +745,10 @@ class UserDataManager {
   saveBudgetEntries(entries: BudgetEntry[]): void {
     if (typeof window === "undefined") return
     try {
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries", JSON.stringify(entries))
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      localStorage.setItem(storageKey, JSON.stringify(entries))
+      console.log("[v0] Budget entries saved for user:", userId)
     } catch (err) {
       console.error("Error saving budget entries:", err)
     }
@@ -774,7 +769,9 @@ class UserDataManager {
   clearAllBudgetEntries(): void {
     if (typeof window === "undefined") return
     try {
-      localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      localStorage.removeItem(storageKey)
       console.log("[v0] All budget entries cleared")
     } catch (err) {
       console.error("Error clearing budget entries:", err)
@@ -786,7 +783,9 @@ class UserDataManager {
     if (typeof window === "undefined") return this.defaultBudgetData
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.BUDGET_DATA)
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
+      const stored = localStorage.getItem(storageKey)
       return stored ? JSON.parse(stored) : this.defaultBudgetData
     } catch (error) {
       console.error("Error loading budget data:", error)
@@ -800,7 +799,9 @@ class UserDataManager {
     try {
       const currentData = this.getBudgetData()
       const updatedData = { ...currentData, ...budgetData }
-      localStorage.setItem(this.STORAGE_KEYS.BUDGET_DATA, JSON.stringify(updatedData))
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
+      localStorage.setItem(storageKey, JSON.stringify(updatedData))
     } catch (error) {
       console.error("Error saving budget data:", error)
     }
@@ -810,31 +811,22 @@ class UserDataManager {
     const categories = this.getBudgetCategories()
     const entries = this.getBudgetEntries()
 
-    // User has started budgeting if they have any categories with data or any entries
-    if (categories.length > 0 || entries.length > 0) return true
-
-    const budget = this.getBudgetData()
-
-    // Income or savings entered.
-    if (budget.income > 0 || budget.savings > 0) return true
-
-    // Any expense amount entered.
-    if (Object.values(budget.expenses).some((value) => value > 0)) return true
-
-    // Any goal with a non-zero target/current amount.
-    if (budget.goals.some((g) => g.target > 0 || g.current > 0)) return true
-
-    return false
+    return categories.length > 0 || entries.length > 0
   }
 
   resetUserBudgetData(): void {
     if (typeof window === "undefined") return
 
     try {
+      const userId = this.getClerkUserId()
+      const storageKeyCategories = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+      const storageKeyEntries = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      const storageKeyBudgetData = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
+
       // Clear stored budget categories and entries
-      localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
-      localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
-      localStorage.removeItem(this.STORAGE_KEYS.BUDGET_DATA)
+      localStorage.removeItem(storageKeyCategories)
+      localStorage.removeItem(storageKeyEntries)
+      localStorage.removeItem(storageKeyBudgetData)
 
       console.log("[v0] User budget data reset to clean state")
 
@@ -852,7 +844,9 @@ class UserDataManager {
     if (typeof window === "undefined") return this.defaultUserProgress
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.USER_PROGRESS)
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.USER_PROGRESS, userId)
+      const stored = localStorage.getItem(storageKey)
       const progress = stored ? JSON.parse(stored) : this.defaultUserProgress
 
       // Ensure modules object exists
@@ -879,8 +873,10 @@ class UserDataManager {
         updated.modules = {}
       }
 
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.USER_PROGRESS, userId)
       // Save to localStorage
-      localStorage.setItem(this.STORAGE_KEYS.USER_PROGRESS, JSON.stringify(updated))
+      localStorage.setItem(storageKey, JSON.stringify(updated))
       console.log("✅ User progress saved to localStorage")
 
       // Also save to registered users if signed in
@@ -914,7 +910,9 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.GOALS)
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
+      const stored = localStorage.getItem(storageKey)
       return stored ? JSON.parse(stored) : []
     } catch (error) {
       console.error("Error loading goals:", error)
@@ -926,7 +924,9 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      localStorage.setItem(this.STORAGE_KEYS.GOALS, JSON.stringify(goals))
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
+      localStorage.setItem(storageKey, JSON.stringify(goals))
     } catch (error) {
       console.error("Error saving goals:", error)
     }
@@ -967,7 +967,9 @@ class UserDataManager {
     if (typeof window === "undefined") return this.defaultLearningProgress
 
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEYS.LEARNING_PROGRESS)
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.LEARNING_PROGRESS, userId)
+      const stored = localStorage.getItem(storageKey)
       return stored ? JSON.parse(stored) : this.defaultLearningProgress
     } catch (error) {
       console.error("Error loading learning progress:", error)
@@ -981,7 +983,9 @@ class UserDataManager {
     try {
       const currentProgress = this.getLearningProgress()
       const updatedProgress = { ...currentProgress, ...progress }
-      localStorage.setItem(this.STORAGE_KEYS.LEARNING_PROGRESS, JSON.stringify(updatedProgress))
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.LEARNING_PROGRESS, userId)
+      localStorage.setItem(storageKey, JSON.stringify(updatedProgress))
     } catch (error) {
       console.error("Error saving learning progress:", error)
     }
