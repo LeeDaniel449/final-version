@@ -1,7 +1,9 @@
 "use client"
 
 import React from "react"
-import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, User2 } from "lucide-react"
+import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send } from "lucide-react"
+import { useUser } from "@clerk/nextjs"
+import { UserButton } from "@/components/user-button"
 
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
@@ -39,8 +41,8 @@ function getDisplayEmail(profile: any, isSignedIn: boolean) {
   Component ──────────────────────────────────────────────────────────────────
 */
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  const { isSignedIn, user, isLoaded } = useUser()
   const [userProfile, setUserProfile] = React.useState(userDataManager.getUserProfile())
-  const [isSignedIn, setIsSignedIn] = React.useState(userDataManager.isUserSignedIn())
 
   /* ----------------------------------------------------------------------- */
   /*  Sync with auth-state changes                                           */
@@ -48,59 +50,42 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   React.useEffect(() => {
     function refreshProfile() {
       const profile = userDataManager.getUserProfile()
-      const signedIn = userDataManager.isUserSignedIn()
-
       setUserProfile((prev) => (JSON.stringify(prev) !== JSON.stringify(profile) ? profile : prev))
-      setIsSignedIn((prev) => (prev !== signedIn ? signedIn : prev))
     }
 
-    const handleUserSignedIn = () => {
-      console.log("[v0] Sidebar: User signed in event")
-      refreshProfile()
-    }
     const handleUserDataUpdated = () => {
       console.log("[v0] Sidebar: User data updated event")
       refreshProfile()
     }
-    const handleUserSignedUp = () => {
-      console.log("[v0] Sidebar: User signed up event")
-      refreshProfile()
-    }
-    const handleUserSignedOut = () => {
-      console.log("[v0] Sidebar: User signed out event")
-      refreshProfile()
-    }
 
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "wealthwise_authenticated") {
-        console.log("[v0] Sidebar: Authentication state changed")
-        refreshProfile()
-      }
-    }
-
-    window.addEventListener("userSignedIn", handleUserSignedIn)
     window.addEventListener("userDataUpdated", handleUserDataUpdated)
-    window.addEventListener("userSignedUp", handleUserSignedUp)
-    window.addEventListener("userSignedOut", handleUserSignedOut)
-    window.addEventListener("storage", handleStorage)
 
     // Initial load
     refreshProfile()
 
     return () => {
-      window.removeEventListener("userSignedIn", handleUserSignedIn)
       window.removeEventListener("userDataUpdated", handleUserDataUpdated)
-      window.removeEventListener("userSignedUp", handleUserSignedUp)
-      window.removeEventListener("userSignedOut", handleUserSignedOut)
-      window.removeEventListener("storage", handleStorage)
     }
   }, [])
 
   /* ----------------------------------------------------------------------- */
   /*  Derived display values                                                 */
   /* ----------------------------------------------------------------------- */
-  const displayName = React.useMemo(() => getDisplayName(userProfile, isSignedIn), [userProfile, isSignedIn])
-  const displayEmail = React.useMemo(() => getDisplayEmail(userProfile, isSignedIn), [userProfile, isSignedIn])
+  const displayName = React.useMemo(() => {
+    if (!isLoaded) return "Loading..."
+    if (!isSignedIn) return "Guest"
+    if (user?.firstName && user?.lastName) return `${user.firstName} ${user.lastName}`
+    if (user?.firstName) return user.firstName
+    if (user?.username) return user.username
+    if (userProfile?.firstName) return userProfile.firstName
+    return user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "Guest"
+  }, [isSignedIn, user, userProfile, isLoaded])
+
+  const displayEmail = React.useMemo(() => {
+    if (!isLoaded) return "..."
+    if (!isSignedIn) return "Not signed in"
+    return user?.emailAddresses[0]?.emailAddress || userProfile?.email || "No email"
+  }, [isSignedIn, user, userProfile, isLoaded])
 
   /* ----------------------------------------------------------------------- */
   /*  Sidebar navigation data                                                */
@@ -168,15 +153,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <a href={`/settings?cache-bust=${cacheBust}`}>
-                <User2 className="size-4" />
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{displayName}</span>
-                  <span className="truncate text-xs">{displayEmail}</span>
-                </div>
-              </a>
-            </SidebarMenuButton>
+            <div className="flex items-center gap-3 px-2 py-2">
+              <UserButton />
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{displayName}</span>
+                <span className="truncate text-xs">{displayEmail}</span>
+              </div>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

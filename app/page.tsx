@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -22,13 +23,14 @@ import { BookOpen, Target, DollarSign, CheckCircle, TrendingUp, Calendar, Award,
 import Link from "next/link"
 
 export default function HomePage() {
+  const { isSignedIn, user, isLoaded } = useUser()
+
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [userProgress, setUserProgress] = useState<UserProgress | null>(null)
   const [goals, setGoals] = useState<Goal[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState("")
   const [budgetAmount, setBudgetAmount] = useState("")
-  const [isSignedIn, setIsSignedIn] = useState(false)
 
   useEffect(() => {
     const profile = userDataManager.getUserProfile()
@@ -38,10 +40,6 @@ export default function HomePage() {
     setUserProfile(profile)
     setUserProgress(progress)
     setGoals(userGoals)
-
-    // Check if user is signed in (has a valid profile with email)
-    const isUserSignedIn = profile?.email && profile.email.length > 0
-    setIsSignedIn(isUserSignedIn)
   }, [])
 
   const handleAddBudget = () => {
@@ -52,7 +50,6 @@ export default function HomePage() {
       setIsDialogOpen(false)
       setSelectedCategory("")
       setBudgetAmount("")
-      // Refresh the page to show updated budget status
       window.location.reload()
     }
   }
@@ -72,9 +69,22 @@ export default function HomePage() {
   const totalSaved = goals.reduce((sum, g) => sum + g.currentAmount, 0)
   const learningProgress = (completedModulesCount / totalModules) * 100
 
-  const displayName = userProfile?.firstName
-    ? `${userProfile.firstName} ${userProfile.lastName || ""}`.trim()
-    : userProfile?.email || "User"
+  const displayName = user?.firstName
+    ? `${user.firstName} ${user.lastName || ""}`.trim()
+    : userProfile?.firstName
+      ? `${userProfile.firstName} ${userProfile.lastName || ""}`.trim()
+      : user?.emailAddresses[0]?.emailAddress || "User"
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
@@ -82,12 +92,14 @@ export default function HomePage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-brand-blue">Welcome back!</h1>
+            <h1 className="text-4xl font-bold text-brand-blue">
+              Welcome back{user?.firstName ? `, ${user.firstName}` : ""}!
+            </h1>
             <p className="text-gray-600 mt-2">Here's your financial overview</p>
           </div>
           <div className="flex items-center gap-4">
             <NotificationBell />
-            <Link href={isSignedIn ? "/settings" : "/signin"}>
+            <Link href={isSignedIn ? "/settings" : "/sign-in"}>
               <Button
                 className={`${
                   isSignedIn
