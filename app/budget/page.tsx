@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import {
@@ -3015,6 +3015,25 @@ const BudgetDashboardContent = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* CHANGE: Added reset confirmation dialog */}
+        <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Reset Current Month?</DialogTitle>
+              <DialogDescription>
+                This will move all of this month's expenses to the previous month, resetting your current month's
+                spending to $0. Your transaction history and monthly trends data will be preserved.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowResetDialog(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleResetCurrentMonth}>Confirm Reset</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
