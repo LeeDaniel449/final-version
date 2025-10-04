@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import {
@@ -39,6 +39,7 @@ import {
   Heart,
   Phone,
   Plane,
+  RotateCcw,
 } from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
@@ -2525,6 +2526,74 @@ const BudgetDashboardContent = () => {
                       </div>
                     )
                   })}
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 bg-transparent"
+                      >
+                        <RotateCcw className="w-4 h-4 mr-2" />
+                        Reset Current Month's Spending
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Reset Current Month's Spending?</DialogTitle>
+                        <DialogDescription>
+                          This will delete all expense entries from the current month, resetting your spent amounts to
+                          $0. Your budget limits will remain unchanged. This action cannot be undone.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex gap-3 mt-4">
+                        <DialogClose asChild>
+                          <Button variant="outline" className="flex-1 bg-transparent">
+                            Cancel
+                          </Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                          <Button
+                            variant="destructive"
+                            className="flex-1"
+                            onClick={() => {
+                              const now = new Date()
+                              const currentMonth = now.getMonth()
+                              const currentYear = now.getFullYear()
+
+                              // Get all entries
+                              const allEntries = userDataManager.getBudgetEntries()
+
+                              // Filter out entries from current month
+                              const filteredEntries = allEntries.filter((entry) => {
+                                const entryDate = new Date(entry.date)
+                                const entryMonth = entryDate.getMonth()
+                                const entryYear = entryDate.getFullYear()
+
+                                // Keep entries that are NOT from current month
+                                return !(
+                                  entryMonth === currentMonth &&
+                                  entryYear === currentYear &&
+                                  entry.type === "expense"
+                                )
+                              })
+
+                              // Save the filtered entries
+                              userDataManager.saveBudgetEntries(filteredEntries)
+
+                              // Reload data to update UI
+                              loadUserData()
+
+                              console.log("[v0] Reset current month's spending - deleted entries from current month")
+                            }}
+                          >
+                            Reset Spending
+                          </Button>
+                        </DialogClose>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>
