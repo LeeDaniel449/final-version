@@ -808,8 +808,32 @@ const BudgetDashboardContent = () => {
   }, [user, userBudgetEntries, displayBudgetData, calculateCategorySpending])
 
   const displayMonthlyData: MonthlyData[] = React.useMemo(() => {
-    if (!user) {
-      return []
+    // Instead, check if we have entries to process
+    if (userBudgetEntries.length === 0) {
+      // Return empty months structure instead of empty array so chart still renders
+      const months: MonthlyData[] = []
+      const now = new Date()
+
+      for (let i = 5; i >= 0; i--) {
+        const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
+        const monthName = date.toLocaleDateString("en-US", { month: "short" })
+
+        months.push({
+          month: monthName,
+          income: 0,
+          expenses: 0,
+          savings: 0,
+          housing: 0,
+          transportation: 0,
+          food: 0,
+          shopping: 0,
+          entertainment: 0,
+          healthcare: 0,
+          utilities: 0,
+          travel: 0,
+        })
+      }
+      return months
     }
 
     const entries = userBudgetEntries
@@ -860,7 +884,7 @@ const BudgetDashboardContent = () => {
 
     console.log("[v0] Calculated monthly data from user entries:", months)
     return months
-  }, [user, userBudgetEntries]) // Added userBudgetEntries to dependency array so chart updates when entries change
+  }, [userBudgetEntries]) // Removed 'user' dependency to prevent chart from disappearing during Clerk re-renders
 
   const savingsRateData = displayMonthlyData.map((month) => ({
     month: month.month,
