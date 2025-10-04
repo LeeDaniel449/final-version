@@ -189,6 +189,23 @@ export default function HomePage() {
   const totalSaved = isSignedIn ? goals.reduce((sum, g) => sum + g.currentAmount, 0) : 0
   const learningProgress = isSignedIn ? realOverallProgress : 0
 
+  useEffect(() => {
+    if (isSignedIn && goals.length > 0) {
+      console.log("[v0] Total goals loaded:", goals.length)
+      console.log(
+        "[v0] All goals:",
+        goals.map((g) => ({
+          title: g.title,
+          currentAmount: g.currentAmount,
+          targetAmount: g.targetAmount,
+          isActive: g.currentAmount < g.targetAmount,
+        })),
+      )
+      console.log("[v0] Active goals count:", activeGoals.length)
+      console.log("[v0] Completed goals count:", completedGoals.length)
+    }
+  }, [goals, isSignedIn, activeGoals.length, completedGoals.length])
+
   if (!isLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
