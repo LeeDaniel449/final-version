@@ -1009,8 +1009,28 @@ class UserDataManager {
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
+      console.log("[v0] getGoals - Loading from storage key:", storageKey)
       const stored = localStorage.getItem(storageKey)
-      return stored ? JSON.parse(stored) : []
+      console.log("[v0] getGoals - Raw stored data:", stored)
+
+      const goals = stored ? JSON.parse(stored) : []
+      console.log("[v0] getGoals - Parsed goals count:", goals.length)
+
+      if (goals.length > 0) {
+        console.log("[v0] getGoals - All goals details:")
+        goals.forEach((goal: GoalData, index: number) => {
+          console.log(`  Goal ${index + 1}:`, {
+            id: goal.id,
+            title: goal.title,
+            current: goal.current,
+            target: goal.target,
+            status: goal.status,
+            isActive: goal.current < goal.target,
+          })
+        })
+      }
+
+      return goals
     } catch (error) {
       console.error("Error loading goals:", error)
       return []
