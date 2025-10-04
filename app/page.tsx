@@ -64,47 +64,15 @@ export default function HomePage() {
       return
     }
 
-    const refreshData = () => {
-      const profile = userDataManager.getUserProfile()
-      const progress = userDataManager.getUserProgress()
-      const userGoals = userDataManager.getGoals()
+    const profile = userDataManager.getUserProfile()
+    const progress = userDataManager.getUserProgress()
+    const userGoals = userDataManager.getGoals()
 
-      setUserProfile(profile)
-      setUserProgress(progress)
-      setGoals(userGoals)
+    setUserProfile(profile)
+    setUserProgress(progress)
+    setGoals(userGoals)
 
-      calculateRealLearningProgress(progress)
-    }
-
-    // Initial load
-    refreshData()
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key?.includes("wealthwise_goals")) {
-        console.log("[v0] Goals updated in storage, refreshing dashboard...")
-        refreshData()
-      }
-    }
-
-    const handleFocus = () => {
-      console.log("[v0] Dashboard focused, refreshing data...")
-      refreshData()
-    }
-
-    const handleDataUpdate = () => {
-      console.log("[v0] User data updated event received, refreshing...")
-      refreshData()
-    }
-
-    window.addEventListener("storage", handleStorageChange)
-    window.addEventListener("focus", handleFocus)
-    window.addEventListener("userDataUpdated", handleDataUpdate)
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange)
-      window.removeEventListener("focus", handleFocus)
-      window.removeEventListener("userDataUpdated", handleDataUpdate)
-    }
+    calculateRealLearningProgress(progress)
   }, [isLoaded, user, isSignedIn])
 
   const calculateRealLearningProgress = (progress: UserProgress) => {
@@ -188,23 +156,6 @@ export default function HomePage() {
   const completedGoals = isSignedIn ? goals.filter((g) => g.currentAmount >= g.targetAmount) : []
   const totalSaved = isSignedIn ? goals.reduce((sum, g) => sum + g.currentAmount, 0) : 0
   const learningProgress = isSignedIn ? realOverallProgress : 0
-
-  useEffect(() => {
-    if (isSignedIn && goals.length > 0) {
-      console.log("[v0] Total goals loaded:", goals.length)
-      console.log(
-        "[v0] All goals:",
-        goals.map((g) => ({
-          title: g.title,
-          currentAmount: g.currentAmount,
-          targetAmount: g.targetAmount,
-          isActive: g.currentAmount < g.targetAmount,
-        })),
-      )
-      console.log("[v0] Active goals count:", activeGoals.length)
-      console.log("[v0] Completed goals count:", completedGoals.length)
-    }
-  }, [goals, isSignedIn, activeGoals.length, completedGoals.length])
 
   if (!isLoaded) {
     return (

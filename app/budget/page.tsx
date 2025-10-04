@@ -407,6 +407,8 @@ const BudgetDashboardContent = () => {
       return
     }
 
+    if (isLoadingData) return
+
     setIsLoadingData(true)
 
     const signedUp = !!user
@@ -431,7 +433,7 @@ const BudgetDashboardContent = () => {
       setIsDataLoaded(true)
     }
     setIsLoadingData(false)
-  }, [isClerkLoaded, user]) // Removed isLoadingData from dependencies
+  }, [isClerkLoaded, user, isLoadingData])
 
   useEffect(() => {
     if (isInitialized.current || isDataLoaded || isLoadingData || !isClerkLoaded) return
@@ -683,16 +685,14 @@ const BudgetDashboardContent = () => {
       budgetAmount: newBudgetAmount,
     })
 
-    const newEntry = userDataManager.addBudgetEntry({
+    // Add the expense entry
+    userDataManager.addBudgetEntry({
       category: expenseCategory,
       amount: expenseAmount,
       description: expenseDescription,
       date: new Date().toISOString(),
       type: "expense",
     })
-
-    const updatedEntries = userDataManager.getBudgetEntries()
-    setUserBudgetEntries(updatedEntries)
 
     if (newBudgetAmount > 0) {
       const categoryName =
@@ -701,14 +701,14 @@ const BudgetDashboardContent = () => {
       userDataManager.updateBudgetCategory(categoryName, {
         budgetAmount: newBudgetAmount,
       })
-
-      const updatedCategories = userDataManager.getBudgetCategories()
-      setUserBudgetCategories(updatedCategories)
     }
 
-    console.log("[v0] User budget entries after adding expense:", updatedEntries)
+    console.log("[v0] User budget entries after adding expense:", userBudgetEntries)
 
     addNotification("Expense Added", `Added $${expenseAmount} for ${expenseCategory}: ${expenseDescription}`, "info")
+
+    // Refresh data
+    loadUserData()
   }
 
   const handleAddEntry = () => {
@@ -726,9 +726,6 @@ const BudgetDashboardContent = () => {
         type: newEntry.type as "income" | "expense",
       })
 
-      const updatedEntries = userDataManager.getBudgetEntries()
-      setUserBudgetEntries(updatedEntries)
-
       setNewEntry({
         description: "",
         amount: "",
@@ -738,6 +735,7 @@ const BudgetDashboardContent = () => {
       })
 
       setIsAddDialogOpen(false)
+      loadUserData()
     }
   }
 
@@ -814,7 +812,7 @@ const BudgetDashboardContent = () => {
       return []
     }
 
-    const entries = userDataManager.getBudgetEntries()
+    const entries = userBudgetEntries
 
     // Get last 6 months including current month
     const months: MonthlyData[] = []
@@ -862,7 +860,7 @@ const BudgetDashboardContent = () => {
 
     console.log("[v0] Calculated monthly data from user entries:", months)
     return months
-  }, [user]) // Dependency on user to re-calculate when user status changes
+  }, [user, userBudgetEntries]) // Added userBudgetEntries to dependency array so chart updates when entries change
 
   const savingsRateData = displayMonthlyData.map((month) => ({
     month: month.month,
@@ -888,7 +886,7 @@ const BudgetDashboardContent = () => {
     isUserSignedUp && userBudgetEntries.length > 0
       ? userBudgetEntries
           .filter((entry) => entry.type === "expense")
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Sort by date, newest first
+          .slice(-5)
           .map((entry) => ({
             id: entry.id,
             description: entry.description,
