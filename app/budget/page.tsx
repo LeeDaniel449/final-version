@@ -39,6 +39,7 @@ import {
   Heart,
   Phone,
   Plane,
+  RotateCcw,
 } from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
@@ -46,6 +47,7 @@ import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
 import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
+import { toast } from "@/components/ui/use-toast"
 
 interface BudgetCategory {
   name: string
@@ -292,6 +294,8 @@ const BudgetDashboardContent = () => {
   const [userBudgetCategories, setUserBudgetCategories] = useState([] as UserBudgetCategory[])
   const [userBudgetEntries, setUserBudgetEntries] = useState([] as BudgetEntry[])
   const { startTutorial } = useTutorial()
+  // Added state variable for reset confirmation dialog
+  const [showResetDialog, setShowResetDialog] = useState(false)
   // Added missing state variable for spending limit dialog
   const [showSpendingLimitDialog, setShowSpendingLimitDialog] = useState(false)
   const [newSpendingLimit, setNewSpendingLimit] = useState("")
@@ -1035,6 +1039,49 @@ const BudgetDashboardContent = () => {
     }
   }
 
+  // CHANGE: Added handleResetCurrentMonth function to move current month expenses to previous month
+  const handleResetCurrentMonth = () => {
+    if (!isUserSignedUp) return
+
+    const now = new Date()
+    const currentMonth = now.getMonth()
+    const currentYear = now.getFullYear()
+
+    // Get last day of previous month
+    const lastDayPrevMonth = new Date(currentYear, currentMonth, 0)
+
+    // Get all entries
+    const allEntries = userDataManager.getBudgetEntries()
+
+    // Update current month's expense entries to previous month
+    const updatedEntries = allEntries.map((entry) => {
+      const entryDate = new Date(entry.date)
+      const entryMonth = entryDate.getMonth()
+      const entryYear = entryDate.getFullYear()
+
+      // If it's an expense from current month, move it to last day of previous month
+      if (entry.type === "expense" && entryMonth === currentMonth && entryYear === currentYear) {
+        return {
+          ...entry,
+          date: lastDayPrevMonth.toISOString(),
+        }
+      }
+
+      return entry
+    })
+
+    // Save updated entries
+    userDataManager.saveBudgetEntries(updatedEntries)
+
+    // Reload data
+    loadUserData()
+
+    toast({
+      title: "Budget Reset",
+      description: "Current month's spending has been reset. Transaction history preserved.",
+    })
+  }
+
   const getAIInsights = () => {
     // Return empty insights for non-authenticated users
     if (!user || userBudgetEntries.length === 0) return []
@@ -1675,9 +1722,10 @@ const BudgetDashboardContent = () => {
                         return (
                           <div
                             key={notification.id}
-                            className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors border-l-4 ${getPriorityBorder(notification.type, notification.title)} ${
-                              !notification.read ? "bg-blue-50" : ""
-                            }`}
+                            className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors border-l-4 ${getPriorityBorder(
+                              notification.type,
+                              notification.title,
+                            )} ${!notification.read ? "bg-blue-50" : ""}`}
                             onClick={() => {
                               markAsRead(notification.id)
                               // Navigate to relevant page based on notification type
@@ -1951,7 +1999,9 @@ const BudgetDashboardContent = () => {
                 <div className="text-xs text-gray-600">Budgeted</div>
               </div>
               <div
-                className={`text-center p-3 rounded-lg border ${availableIncome >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
+                className={`text-center p-3 rounded-lg border ${
+                  availableIncome >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
+                }`}
               >
                 {/* Added null check for availableIncome */}
                 <div className={`text-2xl font-bold ${availableIncome >= 0 ? "text-green-900" : "text-red-900"}`}>
@@ -2003,7 +2053,13 @@ const BudgetDashboardContent = () => {
 
           {shouldShowProgress ? (
             <Card
-              className={`bg-gradient-to-br ${overallHealth.status === "Good" ? "from-green-500 to-green-600" : overallHealth.status === "Warning" ? "from-yellow-500 to-yellow-600" : "from-red-500 to-red-600"} text-white`}
+              className={`bg-gradient-to-br ${
+                overallHealth.status === "Good"
+                  ? "from-green-500 to-green-600"
+                  : overallHealth.status === "Warning"
+                    ? "from-yellow-500 to-yellow-600"
+                    : "from-red-500 to-red-600"
+              } text-white`}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Budget Health</CardTitle>
@@ -2328,7 +2384,9 @@ const BudgetDashboardContent = () => {
                       <div className="text-sm text-blue-700">Budgeted</div>
                     </div>
                     <div
-                      className={`p-4 rounded-lg border ${availableIncome >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}
+                      className={`p-4 rounded-lg border ${
+                        availableIncome >= 0 ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
+                      }`}
                     >
                       <div className={`text-2xl font-bold ${availableIncome >= 0 ? "text-green-900" : "text-red-900"}`}>
                         ${availableIncome.toLocaleString()}
@@ -2502,7 +2560,9 @@ const BudgetDashboardContent = () => {
                           </div>
                           <Progress
                             value={percentage}
-                            className={`h-4 ${isOverBudget ? "bg-blue-100 [&>div]:bg-blue-500" : "bg-blue-200 [&>div]:bg-blue-500"}`}
+                            className={`h-4 ${
+                              isOverBudget ? "bg-blue-100 [&>div]:bg-blue-500" : "bg-blue-200 [&>div]:bg-blue-500"
+                            }`}
                           />
                           <div className="flex justify-between text-sm text-gray-600 mt-4">
                             <span
@@ -2525,6 +2585,18 @@ const BudgetDashboardContent = () => {
                       </div>
                     )
                   })}
+
+                  <div className="pt-4 border-t">
+                    <Button
+                      variant="outline"
+                      className="w-full bg-transparent"
+                      onClick={() => setShowResetDialog(true)}
+                      disabled={!isUserSignedUp}
+                    >
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                      Reset Current Month
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
