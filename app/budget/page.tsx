@@ -407,8 +407,6 @@ const BudgetDashboardContent = () => {
       return
     }
 
-    if (isLoadingData) return
-
     setIsLoadingData(true)
 
     const signedUp = !!user
@@ -433,7 +431,7 @@ const BudgetDashboardContent = () => {
       setIsDataLoaded(true)
     }
     setIsLoadingData(false)
-  }, [isClerkLoaded, user, isLoadingData])
+  }, [isClerkLoaded, user]) // Removed isLoadingData from dependencies
 
   useEffect(() => {
     if (isInitialized.current || isDataLoaded || isLoadingData || !isClerkLoaded) return
@@ -685,14 +683,16 @@ const BudgetDashboardContent = () => {
       budgetAmount: newBudgetAmount,
     })
 
-    // Add the expense entry
-    userDataManager.addBudgetEntry({
+    const newEntry = userDataManager.addBudgetEntry({
       category: expenseCategory,
       amount: expenseAmount,
       description: expenseDescription,
       date: new Date().toISOString(),
       type: "expense",
     })
+
+    const updatedEntries = userDataManager.getBudgetEntries()
+    setUserBudgetEntries(updatedEntries)
 
     if (newBudgetAmount > 0) {
       const categoryName =
@@ -701,14 +701,14 @@ const BudgetDashboardContent = () => {
       userDataManager.updateBudgetCategory(categoryName, {
         budgetAmount: newBudgetAmount,
       })
+
+      const updatedCategories = userDataManager.getBudgetCategories()
+      setUserBudgetCategories(updatedCategories)
     }
 
-    console.log("[v0] User budget entries after adding expense:", userBudgetEntries)
+    console.log("[v0] User budget entries after adding expense:", updatedEntries)
 
     addNotification("Expense Added", `Added $${expenseAmount} for ${expenseCategory}: ${expenseDescription}`, "info")
-
-    // Refresh data
-    loadUserData()
   }
 
   const handleAddEntry = () => {
@@ -726,6 +726,9 @@ const BudgetDashboardContent = () => {
         type: newEntry.type as "income" | "expense",
       })
 
+      const updatedEntries = userDataManager.getBudgetEntries()
+      setUserBudgetEntries(updatedEntries)
+
       setNewEntry({
         description: "",
         amount: "",
@@ -735,7 +738,6 @@ const BudgetDashboardContent = () => {
       })
 
       setIsAddDialogOpen(false)
-      loadUserData()
     }
   }
 
@@ -886,7 +888,7 @@ const BudgetDashboardContent = () => {
     isUserSignedUp && userBudgetEntries.length > 0
       ? userBudgetEntries
           .filter((entry) => entry.type === "expense")
-          .slice(-5)
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // Sort by date, newest first
           .map((entry) => ({
             id: entry.id,
             description: entry.description,
