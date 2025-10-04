@@ -255,6 +255,8 @@ function GoalsPage() {
         targetDate: goal.deadline,
       })
 
+      window.dispatchEvent(new Event("userDataUpdated"))
+
       toast({
         title: "Goal added!",
         description: `Added ${quickGoal.title} to your goals. Click "Add Money" to start tracking progress. Money added will be deducted from your available budget.`,
@@ -325,6 +327,8 @@ function GoalsPage() {
         targetDate: goal.deadline,
       })
 
+      window.dispatchEvent(new Event("userDataUpdated"))
+
       setNewGoal({ title: "", description: "", targetAmount: "", category: "", deadline: "" })
       setIsDialogOpen(false)
       toast({
@@ -393,6 +397,8 @@ function GoalsPage() {
         date: new Date().toISOString(),
         type: "expense",
       })
+
+      window.dispatchEvent(new Event("userDataUpdated"))
 
       setAddMoneyDialog({ open: false, goalId: "" })
       setMoneyAmount("")

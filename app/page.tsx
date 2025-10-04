@@ -64,15 +64,47 @@ export default function HomePage() {
       return
     }
 
-    const profile = userDataManager.getUserProfile()
-    const progress = userDataManager.getUserProgress()
-    const userGoals = userDataManager.getGoals()
+    const refreshData = () => {
+      const profile = userDataManager.getUserProfile()
+      const progress = userDataManager.getUserProgress()
+      const userGoals = userDataManager.getGoals()
 
-    setUserProfile(profile)
-    setUserProgress(progress)
-    setGoals(userGoals)
+      setUserProfile(profile)
+      setUserProgress(progress)
+      setGoals(userGoals)
 
-    calculateRealLearningProgress(progress)
+      calculateRealLearningProgress(progress)
+    }
+
+    // Initial load
+    refreshData()
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key?.includes("wealthwise_goals")) {
+        console.log("[v0] Goals updated in storage, refreshing dashboard...")
+        refreshData()
+      }
+    }
+
+    const handleFocus = () => {
+      console.log("[v0] Dashboard focused, refreshing data...")
+      refreshData()
+    }
+
+    const handleDataUpdate = () => {
+      console.log("[v0] User data updated event received, refreshing...")
+      refreshData()
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+    window.addEventListener("focus", handleFocus)
+    window.addEventListener("userDataUpdated", handleDataUpdate)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("focus", handleFocus)
+      window.removeEventListener("userDataUpdated", handleDataUpdate)
+    }
   }, [isLoaded, user, isSignedIn])
 
   const calculateRealLearningProgress = (progress: UserProgress) => {
