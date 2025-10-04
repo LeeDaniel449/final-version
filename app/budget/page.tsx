@@ -1041,17 +1041,26 @@ const BudgetDashboardContent = () => {
 
   // CHANGE: Added handleResetCurrentMonth function to move current month expenses to previous month
   const handleResetCurrentMonth = () => {
-    if (!isUserSignedUp) return
+    console.log("[v0] Reset button clicked - starting reset process")
+
+    if (!isUserSignedUp) {
+      console.log("[v0] User not signed in - aborting reset")
+      return
+    }
 
     const now = new Date()
     const currentMonth = now.getMonth()
     const currentYear = now.getFullYear()
 
+    console.log("[v0] Current month:", currentMonth, "Current year:", currentYear)
+
     // Get last day of previous month
     const lastDayPrevMonth = new Date(currentYear, currentMonth, 0)
+    console.log("[v0] Moving entries to:", lastDayPrevMonth.toISOString())
 
     // Get all entries
     const allEntries = userDataManager.getBudgetEntries()
+    console.log("[v0] Total entries before reset:", allEntries.length)
 
     // Update current month's expense entries to previous month
     const updatedEntries = allEntries.map((entry) => {
@@ -1061,6 +1070,7 @@ const BudgetDashboardContent = () => {
 
       // If it's an expense from current month, move it to last day of previous month
       if (entry.type === "expense" && entryMonth === currentMonth && entryYear === currentYear) {
+        console.log("[v0] Moving expense entry:", entry.description, entry.amount)
         return {
           ...entry,
           date: lastDayPrevMonth.toISOString(),
@@ -1070,12 +1080,18 @@ const BudgetDashboardContent = () => {
       return entry
     })
 
+    console.log("[v0] Saving updated entries...")
     // Save updated entries
     userDataManager.saveBudgetEntries(updatedEntries)
 
+    console.log("[v0] Reloading user data...")
     // Reload data
     loadUserData()
 
+    // Close dialog
+    setShowResetDialog(false)
+
+    console.log("[v0] Reset complete - showing toast")
     toast({
       title: "Budget Reset",
       description: "Current month's spending has been reset. Transaction history preserved.",
@@ -3000,34 +3016,7 @@ const BudgetDashboardContent = () => {
           </TabsContent>
         </Tabs>
       </div>
-
-      {/* Reset Current Month Confirmation Dialog */}
-      <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Reset Current Month?</DialogTitle>
-            <DialogDescription>
-              This will move all current month's expenses to the previous month, resetting your current spending to $0
-              while preserving all transaction history and monthly trends data.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end gap-2 mt-4">
-            <Button variant="outline" onClick={() => setShowResetDialog(false)}>
-              Cancel
-            </Button>
-            <Button
-              onClick={() => {
-                console.log("[v0] Reset button clicked - calling handleResetCurrentMonth")
-                handleResetCurrentMonth()
-                setShowResetDialog(false)
-              }}
-            >
-              Reset Month
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+    </div>
   )
 }
 
