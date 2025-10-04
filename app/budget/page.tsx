@@ -623,9 +623,18 @@ const BudgetDashboardContent = () => {
   }
 
   const displayBudgetData = useMemo(() => {
+    const now = new Date()
+    const currentMonth = now.getMonth()
+    const currentYear = now.getFullYear()
+
+    const currentMonthEntries = userBudgetEntries.filter((entry) => {
+      const entryDate = new Date(entry.date)
+      return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear
+    })
+
     const categorySpending: { [key: string]: number } = {}
 
-    userBudgetEntries.forEach((entry) => {
+    currentMonthEntries.forEach((entry) => {
       if (entry.type === "expense") {
         const key = entry.category.toLowerCase()
         categorySpending[key] = (categorySpending[key] || 0) + entry.amount
@@ -667,7 +676,7 @@ const BudgetDashboardContent = () => {
         spent: spent,
         color: category.color,
         icon: getCategoryIcon(category.name),
-        spendingLimit: userCategory?.spendingLimit || 0, // Include spending limit
+        spendingLimit: userCategory?.spendingLimit || 0,
       }
     })
   }, [userBudgetCategories, userBudgetEntries])
