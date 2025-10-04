@@ -906,11 +906,12 @@ const BudgetDashboardContent = () => {
     Travel: month.travel,
   }))
 
+  // CHANGE: Show all transactions instead of just the last 5, sorted by date (newest first)
   const recentTransactions: Transaction[] =
     isUserSignedUp && userBudgetEntries.length > 0
       ? userBudgetEntries
           .filter((entry) => entry.type === "expense")
-          .slice(-5)
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .map((entry) => ({
             id: entry.id,
             description: entry.description,
