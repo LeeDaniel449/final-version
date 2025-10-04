@@ -3000,7 +3000,34 @@ const BudgetDashboardContent = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+
+      {/* Reset Current Month Confirmation Dialog */}
+      <Dialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reset Current Month?</DialogTitle>
+            <DialogDescription>
+              This will move all current month's expenses to the previous month, resetting your current spending to $0
+              while preserving all transaction history and monthly trends data.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setShowResetDialog(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                console.log("[v0] Reset button clicked - calling handleResetCurrentMonth")
+                handleResetCurrentMonth()
+                setShowResetDialog(false)
+              }}
+            >
+              Reset Month
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
