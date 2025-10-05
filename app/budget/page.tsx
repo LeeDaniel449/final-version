@@ -505,7 +505,18 @@ const BudgetDashboardContent = () => {
   const calculateCategorySpending = useCallback(() => {
     const categorySpending: Record<string, number> = {}
 
-    userBudgetEntries.forEach((entry) => {
+    // Get current month and year
+    const now = new Date()
+    const currentMonth = now.getMonth()
+    const currentYear = now.getFullYear()
+
+    // Filter entries to only include current month
+    const currentMonthEntries = userBudgetEntries.filter((entry) => {
+      const entryDate = new Date(entry.date)
+      return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear
+    })
+
+    currentMonthEntries.forEach((entry) => {
       if (entry.type === "expense") {
         // Normalize category names for better matching
         const categoryKey = entry.category.toLowerCase().trim()
