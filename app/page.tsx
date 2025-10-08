@@ -68,6 +68,17 @@ export default function HomePage() {
     const progress = userDataManager.getUserProgress()
     const userGoals = userDataManager.getGoals()
 
+    console.log("[v0] Dashboard loaded goals:", {
+      totalGoals: userGoals.length,
+      goals: userGoals.map((g) => ({
+        id: g.id,
+        title: g.title,
+        currentAmount: g.currentAmount,
+        targetAmount: g.targetAmount,
+        isActive: g.currentAmount < g.targetAmount,
+      })),
+    })
+
     setUserProfile(profile)
     setUserProgress(progress)
     setGoals(userGoals)
@@ -154,6 +165,15 @@ export default function HomePage() {
 
   const activeGoals = isSignedIn ? goals.filter((g) => g.currentAmount < g.targetAmount) : []
   const completedGoals = isSignedIn ? goals.filter((g) => g.currentAmount >= g.targetAmount) : []
+
+  console.log("[v0] Active goals calculation:", {
+    totalGoals: goals.length,
+    activeGoalsCount: activeGoals.length,
+    completedGoalsCount: completedGoals.length,
+    activeGoals: activeGoals.map((g) => ({ title: g.title, current: g.currentAmount, target: g.targetAmount })),
+    completedGoals: completedGoals.map((g) => ({ title: g.title, current: g.currentAmount, target: g.targetAmount })),
+  })
+
   const totalSaved = isSignedIn ? goals.reduce((sum, g) => sum + g.currentAmount, 0) : 0
   const learningProgress = isSignedIn ? realOverallProgress : 0
 
