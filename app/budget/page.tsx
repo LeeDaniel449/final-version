@@ -1860,6 +1860,11 @@ const BudgetDashboardContent = () => {
             <Button
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
               onClick={() => {
+                console.log("[v0] AI Analysis button clicked")
+                console.log("[v0] displayBudgetData:", displayBudgetData)
+                console.log("[v0] totalIncome:", totalIncome)
+                console.log("[v0] debts:", debts)
+
                 // AI-driven suggestions: Use machine learning to analyze the user's spending habits and suggest budgets per category
                 const aiSuggestions = displayBudgetData.map((category) => {
                   const avgSpending = category.spent
@@ -1881,12 +1886,16 @@ const BudgetDashboardContent = () => {
                   }
                 })
 
+                console.log("[v0] AI Suggestions calculated:", aiSuggestions.length)
+
                 // Tells the user how to use their money the best way
                 const moneyOptimizationTips = []
 
                 // Analyze spending efficiency
                 const totalExpenses = displayBudgetData.reduce((sum, cat) => sum + cat.spent, 0)
                 const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome) * 100 : 0
+
+                console.log("[v0] Total expenses:", totalExpenses, "Savings rate:", savingsRate)
 
                 // Emergency fund recommendation
                 const monthlyExpenses = totalExpenses
@@ -1957,7 +1966,10 @@ const BudgetDashboardContent = () => {
                   })
                 }
 
+                console.log("[v0] Money optimization tips:", moneyOptimizationTips.length)
+
                 // Send AI notifications
+                console.log("[v0] Sending notifications...")
                 addNotification(
                   "AI Budget Analysis Complete",
                   `Your financial health score is ${savingsRate > 20 ? "Excellent" : savingsRate > 10 ? "Good" : "Needs Improvement"} with a ${savingsRate.toFixed(1)}% savings rate.`,
@@ -1976,8 +1988,9 @@ const BudgetDashboardContent = () => {
                   )
                 }
 
-                console.log("AI Budget Analysis:", aiSuggestions)
-                console.log("Money Optimization Tips:", moneyOptimizationTips)
+                console.log("[v0] AI Budget Analysis:", aiSuggestions)
+                console.log("[v0] Money Optimization Tips:", moneyOptimizationTips)
+                console.log("[v0] AI Analysis complete!")
               }}
             >
               <Brain className="w-4 h-4 mr-1" />
