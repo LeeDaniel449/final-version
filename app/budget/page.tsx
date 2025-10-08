@@ -1988,6 +1988,8 @@ const BudgetDashboardContent = () => {
                   )
                 }
 
+                setShowNotifications(true)
+
                 console.log("[v0] AI Budget Analysis:", aiSuggestions)
                 console.log("[v0] Money Optimization Tips:", moneyOptimizationTips)
                 console.log("[v0] AI Analysis complete!")
