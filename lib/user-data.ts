@@ -1245,25 +1245,7 @@ class UserDataManager {
       const completedModulesCount = userProgress.completedModules.length
       userProgress.totalProgress = totalModules > 0 ? Math.round((completedModulesCount / totalModules) * 100) : 0
 
-      const today = new Date().toISOString().split("T")[0]
-      const lastActive = userProgress.lastActiveDate?.split("T")[0]
-
-      if (lastActive !== today) {
-        // User is active today
-        const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0]
-
-        if (lastActive === yesterday) {
-          // Consecutive day - increment streak
-          userProgress.currentStreak = (userProgress.currentStreak || 0) + 1
-        } else if (!lastActive || lastActive < yesterday) {
-          // Streak broken - reset to 1
-          userProgress.currentStreak = 1
-        }
-
-        // Update days active
-        userProgress.daysActive = (userProgress.daysActive || 0) + 1
-        userProgress.lastActiveDate = new Date().toISOString()
-      }
+      this.updateStreak(userProgress)
 
       // Save updated progress
       this.saveUserProgress(userProgress)
@@ -1274,6 +1256,58 @@ class UserDataManager {
       )
     } catch (error) {
       console.error("Error updating lesson progress:", error)
+    }
+  }
+
+  updateStreak(userProgress: UserProgress): void {
+    const today = new Date().toISOString().split("T")[0]
+    const lastActive = userProgress.lastActiveDate?.split("T")[0]
+
+    if (lastActive !== today) {
+      // User is active today (different from last active date)
+      const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0]
+
+      if (lastActive === yesterday) {
+        // Consecutive day - increment streak
+        userProgress.currentStreak = (userProgress.currentStreak || 0) + 1
+        console.log(`🔥 Streak incremented to ${userProgress.currentStreak} days`)
+      } else if (!lastActive || lastActive < yesterday) {
+        // Streak broken - reset to 0
+        userProgress.currentStreak = 0
+        console.log(`❌ Streak broken - reset to 0`)
+      }
+
+      // Update days active
+      userProgress.daysActive = (userProgress.daysActive || 0) + 1
+      userProgress.lastActiveDate = new Date().toISOString()
+    }
+  }
+
+  checkAndUpdateDailyStreak(): void {
+    if (typeof window === "undefined") return
+
+    try {
+      const userId = this.getClerkUserId()
+
+      if (!userId) {
+        console.log("[v0] Cannot check streak - no Clerk user ID")
+        return
+      }
+
+      const userProgress = this.getUserProgress()
+      const today = new Date().toISOString().split("T")[0]
+      const lastActive = userProgress.lastActiveDate?.split("T")[0]
+
+      // Only update if this is a new day
+      if (lastActive !== today) {
+        this.updateStreak(userProgress)
+        this.saveUserProgress(userProgress)
+        console.log(`✅ Daily streak checked and updated: ${userProgress.currentStreak} days`)
+      } else {
+        console.log(`ℹ️ Already active today - streak: ${userProgress.currentStreak} days`)
+      }
+    } catch (error) {
+      console.error("Error checking daily streak:", error)
     }
   }
 

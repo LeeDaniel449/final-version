@@ -44,6 +44,8 @@ export default function LearningDashboard() {
     setIsSignedIn(signedIn)
 
     if (signedIn && user) {
+      userDataManager.checkAndUpdateDailyStreak()
+
       console.log("[v0] Calculating learning progress from module data...")
 
       // Calculate progress by checking each module
