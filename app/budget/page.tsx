@@ -602,23 +602,27 @@ const BudgetDashboardContent = () => {
     const totalSpent = displayBudgetData.reduce((sum, cat) => sum + (cat.spent || 0), 0)
 
     // Show zero progress if no spending or no budget set
-    if (totalSpent === 0 || totalBudgeted === 0) {
+    if (totalBudgeted === 0) {
       return {
         percentage: 0,
         status: "Not Started",
-        remaining: totalBudgeted,
+        remaining: 0,
       }
     }
 
-    const percentage = (totalSpent / totalBudgeted) * 100
+    // Calculate how much budget is remaining (unspent)
     const remaining = totalBudgeted - totalSpent
+    // Health score is percentage of budget NOT spent (inverse of spending)
+    const healthScore = Math.max(0, (remaining / totalBudgeted) * 100)
 
+    // Status based on health score (higher is better)
     let status = "Excellent"
-    if (percentage > 100) status = "Over Budget"
-    else if (percentage > 80) status = "Good"
+    if (healthScore < 20) status = "Poor"
+    else if (healthScore < 50) status = "Needs Improvement"
+    else if (healthScore < 80) status = "Good"
 
     return {
-      percentage: Math.min(percentage, 100),
+      percentage: Math.min(healthScore, 100),
       status,
       remaining,
     }
@@ -2087,9 +2091,11 @@ const BudgetDashboardContent = () => {
               className={`bg-gradient-to-br ${
                 overallHealth.status === "Good"
                   ? "from-green-500 to-green-600"
-                  : overallHealth.status === "Warning"
+                  : overallHealth.status === "Needs Improvement"
                     ? "from-yellow-500 to-yellow-600"
-                    : "from-red-500 to-red-600"
+                    : overallHealth.status === "Poor"
+                      ? "from-red-500 to-red-600"
+                      : "from-green-500 to-green-600" // Default to green for "Excellent"
               } text-white`}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
