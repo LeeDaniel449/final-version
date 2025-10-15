@@ -20,11 +20,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { NotificationBell } from "@/components/notification-bell"
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
 import { learningModules } from "@/lib/learning-data"
-import { BookOpen, Target, DollarSign, CheckCircle, TrendingUp, Calendar, Award, Zap, Plus, LogIn } from "lucide-react"
+import {
+  BookOpen,
+  Target,
+  DollarSign,
+  CheckCircle,
+  TrendingUp,
+  Calendar,
+  Award,
+  Zap,
+  Plus,
+  LogIn,
+  HelpCircle,
+  X,
+  ArrowRight,
+} from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function HomePage() {
   const { isSignedIn, user, isLoaded } = useUser()
+  const router = useRouter()
 
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [userProgress, setUserProgress] = useState<UserProgress | null>(null)
@@ -38,6 +54,102 @@ export default function HomePage() {
     Array<{ moduleId: string; moduleTitle: string; completedLessons: number[]; totalLessons: number }>
   >([])
   const [totalCompletedLessonsCount, setTotalCompletedLessonsCount] = useState(0)
+
+  const [showTutorial, setShowTutorial] = useState(false)
+  const [tutorialStep, setTutorialStep] = useState(0)
+
+  const tutorialSteps = [
+    {
+      title: "Welcome to WealthWise! 👋",
+      description:
+        "Let's take a quick tour of your financial dashboard. This tutorial will show you all the key features to help you manage your money effectively.",
+      highlight: null,
+      action: null,
+    },
+    {
+      title: "Your Stats Overview 📊",
+      description:
+        "These cards show your key metrics: lessons completed, active goals, total saved, and goals completed. Track your progress at a glance!",
+      highlight: "stats-overview",
+      action: null,
+    },
+    {
+      title: "Personalized Notifications 🔔",
+      description:
+        "Get personalized updates based on your activity. We'll remind you about streaks, goal deadlines, and celebrate your achievements!",
+      highlight: "notifications",
+      action: null,
+    },
+    {
+      title: "Your Financial Goals 🎯",
+      description:
+        "Set and track your savings goals here. Monitor your progress, see deadlines, and celebrate when you reach your targets!",
+      highlight: "goals-section",
+      action: null,
+    },
+    {
+      title: "Learning Progress 📚",
+      description:
+        "Track your financial education journey. Complete lessons, earn XP, build streaks, and unlock achievements as you learn!",
+      highlight: "learning-section",
+      action: null,
+    },
+    {
+      title: "Budget Tracker 💰",
+      description:
+        "Ready to manage your expenses? Click here to visit the Budget Tracker where you can create categories, track spending, and get AI-powered insights!",
+      highlight: null,
+      action: () => router.push("/budget"),
+    },
+    {
+      title: "Goals & Planning 🎯",
+      description:
+        "Set financial goals and create action plans. Track your progress and stay motivated to achieve your dreams!",
+      highlight: null,
+      action: () => router.push("/goals"),
+    },
+    {
+      title: "Learning Hub 🎓",
+      description:
+        "Explore our comprehensive financial literacy courses. Learn about budgeting, investing, saving, and more!",
+      highlight: null,
+      action: () => router.push("/learning"),
+    },
+    {
+      title: "You're All Set! 🎉",
+      description:
+        "You now know your way around WealthWise! Start by completing a lesson, setting a goal, or tracking your first expense. Your financial journey begins now!",
+      highlight: null,
+      action: null,
+    },
+  ]
+
+  const startTutorial = () => {
+    setShowTutorial(true)
+    setTutorialStep(0)
+    localStorage.setItem("wealthwise_tutorial_completed", "false")
+  }
+
+  const nextTutorialStep = () => {
+    if (tutorialStep < tutorialSteps.length - 1) {
+      const currentStep = tutorialSteps[tutorialStep]
+      if (currentStep.action) {
+        currentStep.action()
+        setShowTutorial(false)
+        localStorage.setItem("wealthwise_tutorial_completed", "true")
+      } else {
+        setTutorialStep(tutorialStep + 1)
+      }
+    } else {
+      setShowTutorial(false)
+      localStorage.setItem("wealthwise_tutorial_completed", "true")
+    }
+  }
+
+  const skipTutorial = () => {
+    setShowTutorial(false)
+    localStorage.setItem("wealthwise_tutorial_completed", "true")
+  }
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -398,6 +510,14 @@ export default function HomePage() {
             <p className="text-gray-600 mt-2">Here's your financial overview</p>
           </div>
           <div className="flex items-center gap-4">
+            <Button
+              onClick={startTutorial}
+              variant="outline"
+              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white bg-transparent"
+            >
+              <HelpCircle className="w-4 h-4 mr-2" />
+              Start Tutorial
+            </Button>
             <NotificationBell />
             <Link href={isSignedIn ? "/settings" : "/sign-in"}>
               <Button
@@ -425,7 +545,7 @@ export default function HomePage() {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div id="stats-overview" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card className="border-brand-blue/20 shadow-lg hover:shadow-xl transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -484,7 +604,7 @@ export default function HomePage() {
         </div>
 
         {/* Personalized Notifications */}
-        <Card className="border-brand-blue/20 shadow-lg">
+        <Card id="notifications" className="border-brand-blue/20 shadow-lg">
           <CardHeader>
             <CardTitle className="text-brand-blue">{isSignedIn ? "Personalized for You" : "Get Started"}</CardTitle>
             <CardDescription>
@@ -517,7 +637,7 @@ export default function HomePage() {
         </Card>
 
         {/* Your Goals */}
-        <Card className="border-brand-purple/20 shadow-lg">
+        <Card id="goals-section" className="border-brand-purple/20 shadow-lg">
           <CardHeader>
             <CardTitle className="text-brand-purple">Your Goals</CardTitle>
             <CardDescription>Track your financial objectives</CardDescription>
@@ -646,7 +766,7 @@ export default function HomePage() {
         </Card>
 
         {/* Learning Progress Summary */}
-        <Card className="border-brand-blue/20 shadow-lg">
+        <Card id="learning-section" className="border-brand-blue/20 shadow-lg">
           <CardHeader>
             <CardTitle className="text-brand-blue">Learning Progress Summary</CardTitle>
             <CardDescription>Your financial education journey</CardDescription>
@@ -747,6 +867,84 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </div>
+
+      {showTutorial && (
+        <>
+          {/* Overlay with highlight */}
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={skipTutorial} />
+
+          {/* Tutorial Dialog */}
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md">
+            <Card className="shadow-2xl border-2 border-brand-blue">
+              <CardHeader className="bg-gradient-to-r from-brand-blue to-brand-purple text-white">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl">
+                    Step {tutorialStep + 1} of {tutorialSteps.length}
+                  </CardTitle>
+                  <Button variant="ghost" size="sm" onClick={skipTutorial} className="text-white hover:bg-white/20">
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6 space-y-4">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">{tutorialSteps[tutorialStep].title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{tutorialSteps[tutorialStep].description}</p>
+                </div>
+
+                <div className="flex items-center justify-between pt-4">
+                  <div className="flex gap-1">
+                    {tutorialSteps.map((_, index) => (
+                      <div
+                        key={index}
+                        className={`h-2 w-2 rounded-full ${index === tutorialStep ? "bg-brand-blue" : "bg-gray-300"}`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex gap-2">
+                    {tutorialStep > 0 && (
+                      <Button variant="outline" onClick={() => setTutorialStep(tutorialStep - 1)}>
+                        Back
+                      </Button>
+                    )}
+                    <Button
+                      onClick={nextTutorialStep}
+                      className="bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white"
+                    >
+                      {tutorialStep === tutorialSteps.length - 1 ? (
+                        "Finish"
+                      ) : tutorialSteps[tutorialStep].action ? (
+                        <>
+                          Visit Page
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </>
+                      ) : (
+                        <>
+                          Next
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Highlight specific sections */}
+          {tutorialSteps[tutorialStep].highlight && (
+            <style jsx global>{`
+              #${tutorialSteps[tutorialStep].highlight} {
+                position: relative;
+                z-index: 45;
+                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.5);
+                border-radius: 0.5rem;
+              }
+            `}</style>
+          )}
+        </>
+      )}
     </div>
   )
 }
