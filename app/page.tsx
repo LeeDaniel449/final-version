@@ -25,10 +25,7 @@ import {
   Target,
   DollarSign,
   CheckCircle,
-  TrendingUp,
   Calendar,
-  Award,
-  Zap,
   Plus,
   LogIn,
   HelpCircle,
@@ -834,31 +831,7 @@ export default function HomePage() {
               </div>
             )}
 
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t">
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 mb-1">
-                  <Zap className="w-4 h-4 text-yellow-500" />
-                  <span className="text-lg font-bold text-yellow-600">{totalXP}</span>
-                </div>
-                <p className="text-xs text-gray-600">XP Earned</p>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 mb-1">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span className="text-lg font-bold text-green-600">{currentStreak}</span>
-                </div>
-                <p className="text-xs text-gray-600">Day Streak</p>
-              </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 mb-1">
-                  <Award className="w-4 h-4 text-purple-500" />
-                  <span className="text-lg font-bold text-purple-600">{achievementsCount}</span>
-                </div>
-                <p className="text-xs text-gray-600">Achievements</p>
-              </div>
-            </div>
-
-            <Link href="/learning?cache-bust=123">
+            <Link href="/learning">
               <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Continue Learning

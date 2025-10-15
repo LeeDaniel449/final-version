@@ -30,7 +30,7 @@ export default function OnboardingPage() {
   const handleComplete = () => {
     // Save onboarding data and redirect to main app
     localStorage.setItem("onboardingData", JSON.stringify(formData))
-    window.location.href = "/?cache-bust=123"
+    window.location.href = "/"
   }
 
   const progress = ((currentStep + 1) / STEPS.length) * 100

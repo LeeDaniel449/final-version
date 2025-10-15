@@ -21,8 +21,6 @@ import { userDataManager } from "@/lib/user-data"
 /*
   Helpers ────────────────────────────────────────────────────────────────────
 */
-const cacheBust = "123"
-
 function getDisplayName(profile: any, isSignedIn: boolean) {
   if (!isSignedIn) return "Guest"
   if (profile.username) return profile.username
@@ -91,23 +89,23 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   /*  Sidebar navigation data                                                */
   /* ----------------------------------------------------------------------- */
   const navMain = [
-    { title: "Home", url: `/?cache-bust=${cacheBust}`, icon: Home },
+    { title: "Home", url: "/", icon: Home },
     {
       title: "Learning Hub",
-      url: `/learning?cache-bust=${cacheBust}`,
+      url: "/learning",
       icon: BookOpen,
     },
     {
       title: "Budget Tracker",
-      url: `/budget?cache-bust=${cacheBust}`,
+      url: "/budget",
       icon: Calculator,
     },
     {
       title: "Goals & Planning",
-      url: `/goals?cache-bust=${cacheBust}`,
+      url: "/goals",
       icon: Target,
     },
-    { title: "AI Advisor", url: `/ai-advisor?cache-bust=${cacheBust}`, icon: Bot },
+    { title: "AI Advisor", url: "/ai-advisor", icon: Bot },
   ]
 
   const navSecondary = [
@@ -125,7 +123,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href={`/?cache-bust=${cacheBust}`}>
+              <a href="/">
                 <div className="flex size-16 items-center justify-center rounded-lg overflow-hidden">
                   <img
                     src="/images/design-mode/image%281%29(1).png"
