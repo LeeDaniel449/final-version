@@ -133,7 +133,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-none -space-y-1 -ml-2">
                   <span className="truncate font-semibold leading-6 text-blue-800 text-lg">WealthLink</span>
-                  <span className="truncate text-sm text-blue-800">Financial Literacy</span>
+                  <span className="text-xs text-blue-800 whitespace-nowrap">Spend Smart, Save Fast</span>
                 </div>
               </a>
             </SidebarMenuButton>
