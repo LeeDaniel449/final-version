@@ -1215,17 +1215,46 @@ const BudgetDashboardContent = () => {
     return { savings: reduction, newSpent, annualImpact: reduction * 12 }
   }, [displayBudgetData, whatIfScenario])
 
+  // CHANGE: Improved debt payoff calculation with accurate interest calculations
   const calculateDebtPayoff = () => {
     const sortedDebts =
       debtPayoffStrategy === "snowball"
         ? [...debts].sort((a, b) => a.balance - b.balance)
         : [...debts].sort((a, b) => b.interestRate - a.interestRate)
 
-    return sortedDebts.map((debt, index) => ({
-      ...debt,
-      payoffOrder: index + 1,
-      estimatedPayoff: Math.ceil(debt.balance / (debt.minPayment * 1.5)), // Simplified calculation
-    }))
+    return sortedDebts.map((debt, index) => {
+      // Calculate accurate payoff time considering interest
+      let remainingBalance = debt.balance
+      let monthsToPayoff = 0
+      let totalInterestPaid = 0
+      const monthlyRate = debt.interestRate / 100 / 12
+      const payment = debt.minPayment * 1.5 // Assuming 1.5x minimum payment
+
+      // Simulate monthly payments until debt is paid off
+      while (remainingBalance > 0 && monthsToPayoff < 600) {
+        // Cap at 50 years to prevent infinite loops
+        const interestCharge = remainingBalance * monthlyRate
+        totalInterestPaid += interestCharge
+        const principalPayment = Math.min(payment - interestCharge, remainingBalance)
+
+        if (principalPayment <= 0) {
+          // Payment doesn't cover interest - debt will never be paid off
+          monthsToPayoff = 999
+          break
+        }
+
+        remainingBalance -= principalPayment
+        monthsToPayoff++
+      }
+
+      return {
+        ...debt,
+        payoffOrder: index + 1,
+        estimatedPayoff: monthsToPayoff,
+        totalInterest: Math.round(totalInterestPaid),
+        monthlyPayment: Math.round(payment),
+      }
+    })
   }
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -2971,13 +3000,13 @@ const BudgetDashboardContent = () => {
                               scope="col"
                               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                              Min. Payment
+                              Interest Rate
                             </th>
                             <th
                               scope="col"
                               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                             >
-                              Interest Rate
+                              Monthly Payment
                             </th>
                             <th
                               scope="col"
@@ -2991,6 +3020,12 @@ const BudgetDashboardContent = () => {
                             >
                               Est. Payoff (Months)
                             </th>
+                            <th
+                              scope="col"
+                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              Total Interest
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
@@ -3000,24 +3035,36 @@ const BudgetDashboardContent = () => {
                                 {debt.name}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {/* Added null checks for debt balance and minPayment */}$
-                                {(debt.balance || 0).toLocaleString()}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                ${(debt.minPayment || 0).toLocaleString()}
+                                ${(debt.balance || 0).toLocaleString()}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {debt.interestRate.toFixed(2)}%
                               </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${(debt.monthlyPayment || 0).toLocaleString()}
+                              </td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{debt.payoffOrder}</td>
                               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {debt.estimatedPayoff}
+                                {debt.estimatedPayoff === 999
+                                  ? "Never*"
+                                  : debt.estimatedPayoff === 600
+                                    ? "> 50 Years"
+                                    : debt.estimatedPayoff}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                ${(debt.totalInterest || 0).toLocaleString()}
                               </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
+
+                    {debtPayoffPlan.some((debt) => debt.estimatedPayoff === 999) && (
+                      <p className="text-xs text-gray-500 italic">
+                        * Payment doesn't cover monthly interest. Increase payment amount to pay off this debt.
+                      </p>
+                    )}
 
                     <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
                       <h4 className="font-medium text-blue-900 mb-3 flex items-center gap-2">
@@ -3028,6 +3075,9 @@ const BudgetDashboardContent = () => {
                         <li>• Focus on the debt with the highest interest rate to save money.</li>
                         <li>• Consider increasing your minimum payments to accelerate payoff.</li>
                         <li>• Explore balance transfer options to lower interest rates.</li>
+                        <li>
+                          • The estimated payoff time assumes consistent payments and no additional charges or payments.
+                        </li>
                       </ul>
                     </div>
                   </div>
