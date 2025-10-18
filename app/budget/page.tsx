@@ -40,6 +40,9 @@ import {
   Phone,
   Plane,
   RotateCcw,
+  Snowflake,
+  TrendingDown,
+  Trash2,
 } from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
@@ -48,6 +51,7 @@ import { AreaChart, Area } from "recharts"
 import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 interface BudgetCategory {
   name: string
@@ -283,7 +287,6 @@ const BudgetDashboardContent = () => {
 
   const [isUserSignedUp, setIsUserSignedUp] = useState(false)
   const [hasStartedBudgeting, setHasStartedBudgeting] = useState(false)
-  const [selectedChart, setSelectedChart] = useState("pie")
   const [debtPayoffStrategy, setDebtPayoffStrategy] = useState("snowball")
   const [whatIfScenario, setWhatIfScenario] = useState<WhatIfScenario>({ category: "food & dining", reduction: 10 })
   const [showAddBudgetDialog, setShowAddBudgetDialog] = useState(false)
@@ -354,7 +357,40 @@ const BudgetDashboardContent = () => {
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [editAmount, setEditAmount] = useState("")
 
-  // CHANGE: Removed unused userData variable that was calling non-existent getUserData() method
+  // CHANGE: Add debt persistence to localStorage
+  useEffect(() => {
+    if (isClerkLoaded && user) {
+      // Use isClerkLoaded to ensure user object is stable
+      const storageKey = `wealthwise_debts_${user.id}`
+      const savedDebts = localStorage.getItem(storageKey)
+      if (savedDebts) {
+        try {
+          const parsedDebts = JSON.parse(savedDebts)
+          console.log("[v0] Loaded debts from localStorage:", parsedDebts)
+          setDebts(parsedDebts)
+        } catch (error) {
+          console.error("[v0] Error loading debts:", error)
+        }
+      }
+    }
+  }, [isClerkLoaded, user]) // Depend on isClerkLoaded and user
+
+  // CHANGE: Save debts to localStorage whenever they change
+  useEffect(() => {
+    if (isClerkLoaded && user) {
+      // Use isClerkLoaded to ensure user object is stable
+      const storageKey = `wealthwise_debts_${user.id}`
+      if (debts.length > 0) {
+        // Only save if there are debts to save
+        localStorage.setItem(storageKey, JSON.stringify(debts))
+        console.log("[v0] Saved debts to localStorage:", debts)
+      } else {
+        // If debts become empty, remove the item from localStorage
+        localStorage.removeItem(storageKey)
+        console.log("[v0] Cleared debts from localStorage as the list is empty")
+      }
+    }
+  }, [debts, isClerkLoaded, user]) // Depend on isClerkLoaded and user
 
   const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
     const newNotification = {
@@ -1215,84 +1251,120 @@ const BudgetDashboardContent = () => {
     return { savings: reduction, newSpent, annualImpact: reduction * 12 }
   }, [displayBudgetData, whatIfScenario])
 
-  // CHANGE: Improved debt payoff calculation with accurate interest calculations
-  const calculateDebtPayoff = (debts: DebtItem[], strategy: "snowball" | "avalanche") => {
-    console.log("[v0] calculateDebtPayoff called with strategy:", strategy)
-    console.log("[v0] Number of debts:", debts.length)
-    console.log("[v0] Debts data:", debts)
+  // CHANGE: Enhanced debt payoff calculation with more details
+  const calculateDebtPayoff = useCallback(
+    (debts: DebtItem[], strategy: "snowball" | "avalanche") => {
+      console.log("[v0] Calculating debt payoff with strategy:", strategy)
+      console.log("[v0] Input debts:", debts)
 
-    if (debts.length === 0) {
-      console.log("[v0] No debts to calculate")
-      return []
-    }
-
-    // Sort debts based on strategy
-    const sortedDebts = [...debts].sort((a, b) => {
-      if (strategy === "snowball") {
-        // Snowball: Pay off smallest balance first
-        console.log("[v0] Sorting by balance (snowball)")
-        return a.balance - b.balance
-      } else {
-        // Avalanche: Pay off highest interest rate first
-        console.log("[v0] Sorting by interest rate (avalanche)")
-        return b.interestRate - a.interestRate
+      if (debts.length === 0) {
+        console.log("[v0] No debts to calculate")
+        return { debts: [], totalInterest: 0, totalMonths: 0, debtFreeDate: null }
       }
-    })
 
-    console.log("[v0] Sorted debts:", sortedDebts)
+      const maxMonths = 600 // 50 years max to prevent infinite loops
 
-    // Calculate payoff details for each debt
-    const payoffPlan = sortedDebts.map((debt, index) => {
-      const monthlyInterestRate = debt.interestRate / 100 / 12
-      console.log("[v0] Calculating payoff for:", debt.name)
-      console.log("[v0] Monthly interest rate:", monthlyInterestRate)
+      // Sort debts based on strategy
+      const sortedDebts = [...debts].sort((a, b) => {
+        if (strategy === "snowball") {
+          return a.balance - b.balance // Smallest balance first
+        } else {
+          return b.interestRate - a.interestRate // Highest interest rate first
+        }
+      })
 
-      // Calculate months to payoff with compound interest
-      let balance = debt.balance
-      let months = 0
-      let totalInterest = 0
-      const maxMonths = 600 // Cap at 50 years
+      console.log("[v0] Sorted debts:", sortedDebts)
 
-      // Check if minimum payment covers interest
-      const monthlyInterest = balance * monthlyInterestRate
-      console.log("[v0] Initial monthly interest:", monthlyInterest)
-      console.log("[v0] Minimum payment:", debt.minPayment)
+      let totalInterestPaid = 0 // Declare totalInterestPaid here
 
-      if (debt.minPayment <= monthlyInterest) {
-        console.log("[v0] WARNING: Payment doesn't cover interest!")
+      // Calculate payoff details for each debt
+      const debtPayoffDetails = sortedDebts.map((debt, index) => {
+        const monthlyInterestRate = debt.interestRate / 100 / 12
+        let remainingBalance = debt.balance
+        let monthsToPayoff = 0
+
+        // Check if minimum payment covers interest
+        const monthlyInterest = remainingBalance * monthlyInterestRate
+        if (debt.minPayment <= monthlyInterest) {
+          console.warn("[v0] Debt cannot be paid off - payment doesn't cover interest:", debt.name)
+          return {
+            ...debt,
+            payoffOrder: index + 1,
+            estimatedPayoff: "Cannot pay off",
+            totalInterest: 0,
+            monthlyPayment: debt.minPayment,
+            canPayoff: false,
+            monthsToPayoff: maxMonths, // Indicate it won't be paid off
+          }
+        }
+
+        // Calculate actual payoff time with interest
+        while (remainingBalance > 0 && monthsToPayoff < maxMonths) {
+          const interestCharge = remainingBalance * monthlyInterestRate
+          const principalPayment = debt.minPayment - interestCharge
+
+          totalInterestPaid += interestCharge // Use the declared variable
+          remainingBalance -= principalPayment
+          monthsToPayoff++
+
+          if (remainingBalance < 0) remainingBalance = 0
+        }
+
+        const years = Math.floor(monthsToPayoff / 12)
+        const months = monthsToPayoff % 12
+        const payoffText =
+          years > 0
+            ? `${years} year${years > 1 ? "s" : ""} ${months} month${months !== 1 ? "s" : ""}`
+            : `${months} month${months !== 1 ? "s" : ""}`
+
         return {
           ...debt,
           payoffOrder: index + 1,
-          estimatedPayoff: 999, // Indicates never pays off
-          totalInterest: 0,
+          estimatedPayoff: payoffText,
+          totalInterest: Math.round(totalInterestPaid),
           monthlyPayment: debt.minPayment,
+          monthsToPayoff: monthsToPayoff,
+          canPayoff: true,
         }
+      })
+
+      // Calculate totals
+      const totalInterest = debtPayoffDetails.reduce((sum, debt) => sum + (debt.totalInterest || 0), 0)
+      const totalMonths = Math.max(0, ...debtPayoffDetails.map((d) => d.monthsToPayoff || 0)) // Ensure totalMonths is at least 0
+
+      // Calculate debt-free date
+      const debtFreeDate = new Date()
+      if (totalMonths > 0 && totalMonths < maxMonths) {
+        // Only set if payoff is possible and calculated
+        debtFreeDate.setMonth(debtFreeDate.getMonth() + totalMonths)
+      } else if (totalMonths >= maxMonths) {
+        // If maxMonths is reached, indicate no concrete date
+        debtFreeDate.setFullYear(debtFreeDate.getFullYear() + 50) // Set far in the future
+      } else {
+        // If totalMonths is 0 (no debts), set to current date
+        debtFreeDate.setMonth(debtFreeDate.getMonth())
       }
 
-      // Simulate monthly payments with interest
-      while (balance > 0 && months < maxMonths) {
-        const interest = balance * monthlyInterestRate
-        totalInterest += interest
-        balance = balance + interest - debt.minPayment
-
-        if (balance < 0) balance = 0
-        months++
-      }
-
-      console.log("[v0] Payoff calculated - Months:", months, "Total interest:", totalInterest)
+      console.log("[v0] Debt payoff calculation complete:", {
+        totalInterest,
+        totalMonths,
+        debtFreeDate: debtFreeDate.toLocaleDateString(),
+      })
 
       return {
-        ...debt,
-        payoffOrder: index + 1,
-        estimatedPayoff: months >= maxMonths ? 600 : months,
-        totalInterest: totalInterest,
-        monthlyPayment: debt.minPayment,
+        debts: debtPayoffDetails,
+        totalInterest,
+        totalMonths,
+        debtFreeDate,
       }
-    })
+    },
+    [], // No dependencies as debts are passed as an argument
+  )
 
-    console.log("[v0] Final payoff plan:", payoffPlan)
-    return payoffPlan
-  }
+  // CHANGE: Calculate both strategies for comparison
+  const snowballPlan = useMemo(() => calculateDebtPayoff(debts, "snowball"), [debts, calculateDebtPayoff])
+  const avalanchePlan = useMemo(() => calculateDebtPayoff(debts, "avalanche"), [debts, calculateDebtPayoff])
+  const debtPayoffPlan = debtPayoffStrategy === "snowball" ? snowballPlan : avalanchePlan
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -1355,7 +1427,8 @@ const BudgetDashboardContent = () => {
   }
 
   const insights = getAIInsights()
-  const debtPayoffPlan = calculateDebtPayoff(debts, debtPayoffStrategy)
+  // CHANGE: Removed direct call to calculateDebtPayoff, it's now handled by useMemo hooks
+  // const debtPayoffPlan = calculateDebtPayoff(debts, debtPayoffStrategy)
 
   // NEW FUNCTION DEFINITION for handleStrategyChange
   const handleStrategyChange = (strategy: "snowball" | "avalanche") => {
@@ -2167,7 +2240,9 @@ const BudgetDashboardContent = () => {
                     ? "from-yellow-500 to-yellow-600"
                     : overallHealth.status === "Poor"
                       ? "from-red-500 to-red-600"
-                      : "from-green-500 to-green-600" // Default to green for "Excellent"
+                      : overallHealth.status === "Excellent"
+                        ? "from-green-500 to-green-600" // Default to green for "Excellent"
+                        : "from-gray-500 to-gray-600" // Fallback for unexpected status
               } text-white`}
             >
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -2579,7 +2654,7 @@ const BudgetDashboardContent = () => {
                               <h3 className="font-semibold text-gray-900 text-lg">{category.name}</h3>
                               <p className="text-sm text-gray-600 truncate">
                                 {/* Added null checks for category spent and budgeted amounts */}$
-                                {(category.spent || 0).toLocaleString()} of ${(category.budgeted || 0).toLocaleString()}{" "}
+                                {(category.spent || 0).toLocaleString()} of ${(category.budgeted || 0).toLocaleString()}
                                 budget
                               </p>
                             </div>
@@ -2896,234 +2971,411 @@ const BudgetDashboardContent = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="debt" className="space-y-4">
+          {/* CHANGE: Enhanced debt payoff section with interactive features */}
+          <TabsContent value="debt" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Debt Payoff Strategy</CardTitle>
-                <CardDescription>Optimize your debt payments with AI-powered strategies</CardDescription>
+                <CardDescription>Choose a strategy to pay off your debts faster and save on interest.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex gap-4">
-                  <Button
-                    variant={debtPayoffStrategy === "snowball" ? "default" : "outline"}
-                    onClick={() => handleStrategyChange("snowball")}
-                  >
-                    Debt Snowball
-                  </Button>
-                  <Button
-                    variant={debtPayoffStrategy === "avalanche" ? "default" : "outline"}
-                    onClick={() => handleStrategyChange("avalanche")}
-                  >
-                    Debt Avalanche
-                  </Button>
+                {/* Strategy Selection */}
+                <div className="space-y-4">
+                  <Label>Select Your Strategy</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Card
+                      className={`cursor-pointer transition-all ${
+                        debtPayoffStrategy === "snowball"
+                          ? "border-blue-500 border-2 bg-blue-50"
+                          : "hover:border-gray-400"
+                      }`}
+                      onClick={() => {
+                        console.log("[v0] Strategy changed to: snowball")
+                        setDebtPayoffStrategy("snowball")
+                      }}
+                    >
+                      <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <Snowflake className="h-5 w-5" />
+                          Debt Snowball
+                        </CardTitle>
+                        <CardDescription>Pay smallest balance first</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          Build momentum by paying off your smallest debts first. Great for motivation and quick wins!
+                        </p>
+                        {debts.length > 0 && (
+                          <div className="mt-4 p-3 bg-white rounded-lg border">
+                            <p className="text-sm font-medium">With this strategy:</p>
+                            <p className="text-2xl font-bold text-blue-600">
+                              ${snowballPlan.totalInterest.toLocaleString()}
+                            </p>
+                            <p className="text-xs text-muted-foreground">Total interest paid</p>
+                            <p className="text-sm mt-2">
+                              Debt-free in{" "}
+                              <span className="font-semibold">
+                                {Math.floor(snowballPlan.totalMonths / 12)} years {snowballPlan.totalMonths % 12} months
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    <Card
+                      className={`cursor-pointer transition-all ${
+                        debtPayoffStrategy === "avalanche"
+                          ? "border-blue-500 border-2 bg-blue-50"
+                          : "hover:border-gray-400"
+                      }`}
+                      onClick={() => {
+                        console.log("[v0] Strategy changed to: avalanche")
+                        setDebtPayoffStrategy("avalanche")
+                      }}
+                    >
+                      <CardHeader>
+                        <CardTitle className="text-lg flex items-center gap-2">
+                          <TrendingDown className="h-5 w-5" />
+                          Debt Avalanche
+                        </CardTitle>
+                        <CardDescription>Pay highest interest first</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          Save the most money by tackling high-interest debts first. Mathematically optimal!
+                        </p>
+                        {debts.length > 0 && (
+                          <div className="mt-4 p-3 bg-white rounded-lg border">
+                            <p className="text-sm font-medium">With this strategy:</p>
+                            <p className="text-2xl font-bold text-green-600">
+                              ${avalanchePlan.totalInterest.toLocaleString()}
+                            </p>
+                            <p className="text-xs text-muted-foreground">Total interest paid</p>
+                            <p className="text-sm mt-2">
+                              Debt-free in{" "}
+                              <span className="font-semibold">
+                                {Math.floor(avalanchePlan.totalMonths / 12)} years {avalanchePlan.totalMonths % 12}{" "}
+                                months
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Strategy Comparison */}
+                  {debts.length > 0 && (
+                    <Card className="bg-gradient-to-r from-blue-50 to-green-50">
+                      <CardContent className="pt-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">Potential Savings</p>
+                            <p className="text-3xl font-bold text-green-600">
+                              ${Math.abs(snowballPlan.totalInterest - avalanchePlan.totalInterest).toLocaleString()}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {snowballPlan.totalInterest > avalanchePlan.totalInterest
+                                ? "Save by choosing Avalanche"
+                                : "Save by choosing Snowball"}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium text-muted-foreground">Time Difference</p>
+                            <p className="text-2xl font-bold">
+                              {Math.abs(snowballPlan.totalMonths - avalanchePlan.totalMonths)} months
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {snowballPlan.totalMonths > avalanchePlan.totalMonths
+                                ? "Faster with Avalanche"
+                                : "Faster with Snowball"}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
 
-                {debts.length === 0 ? (
-                  <div className="text-center py-8">
-                    <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Debt Tracked</h3>
-                    <p className="text-gray-600 mb-4">Add your debts to get a personalized payoff strategy.</p>
-                    <Dialog open={showAddDebtDialog} onOpenChange={setShowAddDebtDialog}>
-                      <DialogTrigger asChild>
-                        <Button>Add Debt</Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Add Debt</DialogTitle>
-                          <DialogDescription>Enter the details of your debt.</DialogDescription>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="debt-name">Debt Name</Label>
-                            <Input
-                              id="debt-name"
-                              type="text"
-                              placeholder="e.g., Credit Card, Student Loan"
-                              value={newDebt.name}
-                              onChange={(e) => setNewDebt({ ...newDebt, name: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="debt-balance">Balance ($)</Label>
-                            <Input
-                              id="debt-balance"
-                              type="number"
-                              placeholder="e.g., 5000"
-                              value={newDebt.balance}
-                              onChange={(e) => setNewDebt({ ...newDebt, balance: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="debt-min-payment">Minimum Payment ($)</Label>
-                            <Input
-                              id="debt-min-payment"
-                              type="number"
-                              placeholder="e.g., 150"
-                              value={newDebt.minPayment}
-                              onChange={(e) => setNewDebt({ ...newDebt, minPayment: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="debt-interest-rate">Interest Rate (%)</Label>
-                            <Input
-                              id="debt-interest-rate"
-                              type="number"
-                              placeholder="e.g., 18.99"
-                              value={newDebt.interestRate}
-                              onChange={(e) => setNewDebt({ ...newDebt, interestRate: e.target.value })}
-                            />
-                          </div>
-                          <Button
-                            onClick={() => {
-                              // Validate input
-                              if (
-                                !newDebt.name.trim() ||
-                                !newDebt.balance.trim() ||
-                                !newDebt.minPayment.trim() ||
-                                !newDebt.interestRate.trim()
-                              ) {
-                                alert("Please fill in all fields.")
-                                return
-                              }
+                {/* Add Debt Button */}
+                <Dialog open={showAddDebtDialog} onOpenChange={setShowAddDebtDialog}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full" size="lg">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Debt
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add Debt</DialogTitle>
+                      <DialogDescription>
+                        Enter the details of your debt to include it in your payoff plan.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="debt-name">Debt Name</Label>
+                        <Input
+                          id="debt-name"
+                          type="text"
+                          placeholder="e.g., Credit Card, Student Loan"
+                          value={newDebt.name}
+                          onChange={(e) => setNewDebt({ ...newDebt, name: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="debt-balance">Current Balance ($)</Label>
+                        <Input
+                          id="debt-balance"
+                          type="number"
+                          placeholder="e.g., 5000"
+                          value={newDebt.balance}
+                          onChange={(e) => setNewDebt({ ...newDebt, balance: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="debt-min-payment">Minimum Monthly Payment ($)</Label>
+                        <Input
+                          id="debt-min-payment"
+                          type="number"
+                          placeholder="e.g., 150"
+                          value={newDebt.minPayment}
+                          onChange={(e) => setNewDebt({ ...newDebt, minPayment: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="debt-interest-rate">Annual Interest Rate (%)</Label>
+                        <Input
+                          id="debt-interest-rate"
+                          type="number"
+                          step="0.01"
+                          placeholder="e.g., 18.99"
+                          value={newDebt.interestRate}
+                          onChange={(e) => setNewDebt({ ...newDebt, interestRate: e.target.value })}
+                        />
+                      </div>
+                      <Button
+                        onClick={() => {
+                          console.log("[v0] Add Debt button clicked")
+                          console.log("[v0] New debt data:", newDebt)
 
-                              const balance = Number.parseFloat(newDebt.balance)
-                              const minPayment = Number.parseFloat(newDebt.minPayment)
-                              const interestRate = Number.parseFloat(newDebt.interestRate)
+                          // Validate input
+                          if (
+                            !newDebt.name.trim() ||
+                            !newDebt.balance.trim() ||
+                            !newDebt.minPayment.trim() ||
+                            !newDebt.interestRate.trim()
+                          ) {
+                            console.log("[v0] Validation failed: missing fields")
+                            alert("Please fill in all fields.")
+                            return
+                          }
 
-                              if (isNaN(balance) || isNaN(minPayment) || isNaN(interestRate)) {
-                                alert("Please enter valid numbers for balance, minimum payment, and interest rate.")
-                                return
-                              }
+                          const balance = Number.parseFloat(newDebt.balance)
+                          const minPayment = Number.parseFloat(newDebt.minPayment)
+                          const interestRate = Number.parseFloat(newDebt.interestRate)
 
-                              // Create new debt item
-                              const newDebtItem: DebtItem = {
-                                name: newDebt.name,
-                                balance: balance,
-                                minPayment: minPayment,
-                                interestRate: interestRate,
-                                priority: debts.length + 1, // Assign default priority
-                              }
+                          if (isNaN(balance) || isNaN(minPayment) || isNaN(interestRate)) {
+                            console.log("[v0] Validation failed: invalid numbers")
+                            alert("Please enter valid numbers for balance, minimum payment, and interest rate.")
+                            return
+                          }
 
-                              // Update debts state
-                              setDebts([...debts, newDebtItem])
+                          if (balance <= 0 || minPayment <= 0 || interestRate < 0) {
+                            console.log("[v0] Validation failed: invalid values")
+                            alert("Please enter positive values for balance and minimum payment.")
+                            return
+                          }
 
-                              // Close the dialog
-                              setShowAddDebtDialog(false)
+                          // Create new debt item
+                          const newDebtItem: DebtItem = {
+                            name: newDebt.name,
+                            balance: balance,
+                            minPayment: minPayment,
+                            interestRate: interestRate,
+                            priority: debts.length + 1, // Assign default priority
+                          }
 
-                              // Reset newDebt state
-                              setNewDebt({ name: "", balance: "", minPayment: "", interestRate: "" })
-                            }}
-                            className="w-full"
-                          >
-                            Add Debt
-                          </Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                ) : (
+                          console.log("[v0] Adding new debt:", newDebtItem)
+
+                          // Update debts state
+                          setDebts([...debts, newDebtItem])
+
+                          // Close the dialog
+                          setShowAddDebtDialog(false)
+
+                          // Reset newDebt state
+                          setNewDebt({ name: "", balance: "", minPayment: "", interestRate: "" })
+
+                          console.log("[v0] Debt added successfully. Total debts:", debts.length + 1)
+                        }}
+                        className="w-full"
+                      >
+                        Add Debt
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+
+                {/* Debt Payoff Plan Table */}
+                {debtPayoffPlan.debts.length > 0 && (
                   <div className="space-y-4">
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Name
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Balance
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Interest Rate
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Monthly Payment
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Payoff Order
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Est. Payoff (Months)
-                            </th>
-                            <th
-                              scope="col"
-                              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              Total Interest
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {debtPayoffPlan.map((debt) => (
-                            <tr key={debt.name}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {debt.name}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                ${(debt.balance || 0).toLocaleString()}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {debt.interestRate.toFixed(2)}%
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                ${(debt.monthlyPayment || 0).toLocaleString()}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{debt.payoffOrder}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {debt.estimatedPayoff === 999
-                                  ? "Never*"
-                                  : debt.estimatedPayoff === 600
-                                    ? "> 50 Years"
-                                    : debt.estimatedPayoff}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                ${(debt.totalInterest || 0).toLocaleString()}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold">Your Payoff Plan</h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          console.log("[v0] Clearing all debts")
+                          setDebts([])
+                          if (isClerkLoaded && user) {
+                            // Use isClerkLoaded
+                            const storageKey = `wealthwise_debts_${user.id}`
+                            localStorage.removeItem(storageKey)
+                          }
+                        }}
+                      >
+                        Clear All Debts
+                      </Button>
                     </div>
 
-                    {debtPayoffPlan.some((debt) => debt.estimatedPayoff === 999) && (
-                      <p className="text-xs text-gray-500 italic">
-                        * Payment doesn't cover monthly interest. Increase payment amount to pay off this debt.
-                      </p>
+                    {/* Debt-Free Countdown */}
+                    {debtPayoffPlan.debtFreeDate && (
+                      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+                        <CardContent className="pt-6">
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-muted-foreground">Projected Debt-Free Date</p>
+                            <p className="text-4xl font-bold text-green-600 my-2">
+                              {debtPayoffPlan.debtFreeDate.toLocaleDateString("en-US", {
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              That's {debtPayoffPlan.totalMonths} months from now!
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
                     )}
 
-                    <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-                      <h4 className="font-medium text-blue-900 mb-3 flex items-center gap-2">
-                        <Lightbulb className="w-4 h-4 text-yellow-500" />
-                        AI-Powered Tips
-                      </h4>
-                      <ul className="text-sm text-blue-700 space-y-2">
-                        <li>• Focus on the debt with the highest interest rate to save money.</li>
-                        <li>• Consider increasing your minimum payments to accelerate payoff.</li>
-                        <li>• Explore balance transfer options to lower interest rates.</li>
-                        <li>
-                          • The estimated payoff time assumes consistent payments and no additional charges or payments.
-                        </li>
-                      </ul>
+                    <div className="rounded-md border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Order</TableHead>
+                            <TableHead>Debt Name</TableHead>
+                            <TableHead className="text-right">Balance</TableHead>
+                            <TableHead className="text-right">Interest Rate</TableHead>
+                            <TableHead className="text-right">Monthly Payment</TableHead>
+                            <TableHead className="text-right">Time to Payoff</TableHead>
+                            <TableHead className="text-right">Total Interest</TableHead>
+                            <TableHead></TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {debtPayoffPlan.debts.map((debt, index) => (
+                            <TableRow key={index}>
+                              <TableCell>
+                                <Badge variant={index === 0 ? "default" : "secondary"}>
+                                  {index === 0 ? "Focus" : `#${debt.payoffOrder}`}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="font-medium">{debt.name}</TableCell>
+                              <TableCell className="text-right">${debt.balance.toLocaleString()}</TableCell>
+                              <TableCell className="text-right">{debt.interestRate}%</TableCell>
+                              <TableCell className="text-right">${debt.monthlyPayment.toLocaleString()}</TableCell>
+                              <TableCell className="text-right">
+                                {debt.canPayoff ? (
+                                  <span className="text-green-600 font-medium">{debt.estimatedPayoff}</span>
+                                ) : (
+                                  <span className="text-red-600 font-medium">Cannot pay off</span>
+                                )}
+                              </TableCell>
+                              <TableCell className="text-right">
+                                {debt.canPayoff ? (
+                                  `$${debt.totalInterest.toLocaleString()}`
+                                ) : (
+                                  <span className="text-red-600">N/A</span>
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    console.log("[v0] Removing debt:", debt.name)
+                                    setDebts(debts.filter((d) => d.name !== debt.name))
+                                  }}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
                     </div>
+
+                    {/* Summary */}
+                    <Card>
+                      <CardContent className="pt-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">Total Debt</p>
+                            <p className="text-2xl font-bold">
+                              ${debtPayoffPlan.debts.reduce((sum, d) => sum + d.balance, 0).toLocaleString()}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">Total Interest</p>
+                            <p className="text-2xl font-bold text-orange-600">
+                              ${debtPayoffPlan.totalInterest.toLocaleString()}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">Monthly Payments</p>
+                            <p className="text-2xl font-bold">
+                              ${debtPayoffPlan.debts.reduce((sum, d) => sum + d.monthlyPayment, 0).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Motivational Message */}
+                    <Card className="bg-blue-50 border-blue-200">
+                      <CardContent className="pt-6">
+                        <div className="flex items-start gap-3">
+                          <Lightbulb className="h-5 w-5 text-blue-600 mt-0.5" />
+                          <div>
+                            <p className="font-medium text-blue-900">Pro Tip</p>
+                            <p className="text-sm text-blue-700 mt-1">
+                              {debtPayoffStrategy === "snowball"
+                                ? "Focus all extra payments on your smallest debt while making minimum payments on others. Once it's paid off, roll that payment into the next smallest debt!"
+                                : "Focus all extra payments on your highest interest debt while making minimum payments on others. This saves you the most money in interest charges!"}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
+                )}
+
+                {/* Empty State */}
+                {debts.length === 0 && (
+                  <Card className="border-dashed">
+                    <CardContent className="pt-6">
+                      <div className="text-center py-8">
+                        <CreditCard className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                        <h3 className="text-lg font-semibold mb-2">No Debts Added Yet</h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Add your debts to create a personalized payoff plan and see how much you can save!
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 )}
               </CardContent>
             </Card>
