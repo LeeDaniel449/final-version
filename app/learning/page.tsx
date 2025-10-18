@@ -14,6 +14,8 @@ import { useUser } from "@clerk/nextjs"
 export default function LearningDashboard() {
   const { user, isLoaded: isClerkLoaded } = useUser()
 
+  const [isMounted, setIsMounted] = useState(false)
+
   const [userProgress, setUserProgress] = useState({
     completedModules: 0,
     totalProgress: 0,
@@ -27,6 +29,10 @@ export default function LearningDashboard() {
   const [previousSignInState, setPreviousSignInState] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
     if (isClerkLoaded && user) {
       userDataManager.setClerkUserId(user.id)
       console.log("[v0] Clerk user loaded for learning page:", user.id)
@@ -37,8 +43,8 @@ export default function LearningDashboard() {
   }, [user, isClerkLoaded])
 
   const refreshData = () => {
-    if (!isClerkLoaded) {
-      console.log("[v0] Waiting for Clerk to load...")
+    if (!isMounted || !isClerkLoaded) {
+      console.log("[v0] Waiting for client mount and Clerk to load...")
       return
     }
 
@@ -113,7 +119,22 @@ export default function LearningDashboard() {
       window.removeEventListener("progressUpdated", handleProgressUpdate)
       window.removeEventListener("userSignedIn", handleSignIn)
     }
-  }, [isClerkLoaded, user])
+  }, [isClerkLoaded, user, isMounted])
+
+  if (!isMounted || !isClerkLoaded) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-24 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (showUnlockAnimation) {
     return (
