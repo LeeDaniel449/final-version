@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { BookOpen, Clock, Trophy, Target, Star, Lock, User, LogIn } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { BookOpen, Clock, Trophy, Target, Star, Info, LogIn } from "lucide-react"
 import Link from "next/link"
 import { learningModules } from "@/lib/learning-data"
 import { userDataManager } from "@/lib/user-data"
@@ -15,7 +16,6 @@ export default function LearningDashboard() {
   const { user, isLoaded: isClerkLoaded } = useUser()
 
   const [isMounted, setIsMounted] = useState(false)
-
   const [userProgress, setUserProgress] = useState({
     completedModules: 0,
     totalProgress: 0,
@@ -23,10 +23,7 @@ export default function LearningDashboard() {
     currentStreak: 0,
     daysActive: 0,
   })
-  const [isSignedIn, setIsSignedIn] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [showUnlockAnimation, setShowUnlockAnimation] = useState(false)
-  const [previousSignInState, setPreviousSignInState] = useState(false)
+  const [hasClerkUser, setHasClerkUser] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -35,35 +32,22 @@ export default function LearningDashboard() {
   useEffect(() => {
     if (isClerkLoaded && user) {
       userDataManager.setClerkUserId(user.id)
+      setHasClerkUser(true)
       console.log("[v0] Clerk user loaded for learning page:", user.id)
     } else if (isClerkLoaded && !user) {
       userDataManager.setClerkUserId(null)
+      setHasClerkUser(false)
       console.log("[v0] No Clerk user for learning page")
     }
   }, [user, isClerkLoaded])
 
   const refreshData = () => {
     if (!isMounted) {
-      console.log("[v0] Waiting for client mount...")
       return
     }
 
-    const signedIn = userDataManager.isUserSignedIn()
-    console.log("[v0] Authentication check result:", signedIn)
-
-    if (signedIn && !previousSignInState && !loading) {
-      console.log("[v0] User just signed in - triggering unlock animation")
-      setShowUnlockAnimation(true)
-      setTimeout(() => setShowUnlockAnimation(false), 2000)
-    }
-
-    setPreviousSignInState(signedIn)
-    setIsSignedIn(signedIn)
-
-    if (signedIn) {
+    if (hasClerkUser && user) {
       userDataManager.checkAndUpdateDailyStreak()
-
-      console.log("[v0] Calculating learning progress from module data...")
 
       let totalCompletedLessons = 0
       let totalLessons = 0
@@ -84,17 +68,13 @@ export default function LearningDashboard() {
       const overallProgress = totalLessons > 0 ? Math.round((totalCompletedLessons / totalLessons) * 100) : 0
       const progress = userDataManager.getUserProgress()
 
-      const progressData = {
+      setUserProgress({
         completedModules: completedModulesCount,
         totalProgress: overallProgress,
         completedLessons: totalCompletedLessons,
         currentStreak: progress.currentStreak || 0,
         daysActive: progress.daysActive || 0,
-      }
-
-      console.log("[v0] Calculated progress:", progressData)
-      console.log("[v0] Total lessons across all modules:", totalLessons)
-      setUserProgress(progressData)
+      })
     } else {
       setUserProgress({
         completedModules: 0,
@@ -104,23 +84,18 @@ export default function LearningDashboard() {
         daysActive: 0,
       })
     }
-    setLoading(false)
   }
 
   useEffect(() => {
     refreshData()
 
     const handleProgressUpdate = () => refreshData()
-    const handleSignIn = () => refreshData()
-
     window.addEventListener("progressUpdated", handleProgressUpdate)
-    window.addEventListener("userSignedIn", handleSignIn)
 
     return () => {
       window.removeEventListener("progressUpdated", handleProgressUpdate)
-      window.removeEventListener("userSignedIn", handleSignIn)
     }
-  }, [isMounted])
+  }, [isMounted, hasClerkUser, user])
 
   if (!isMounted) {
     return (
@@ -137,150 +112,33 @@ export default function LearningDashboard() {
     )
   }
 
-  if (showUnlockAnimation) {
-    return (
-      <div className="container mx-auto p-6 min-h-screen flex items-center justify-center">
-        <div className="text-center animate-in fade-in zoom-in duration-500">
-          <div className="relative inline-block mb-6">
-            <Lock className="w-24 h-24 text-brand-blue animate-pulse" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-32 h-32 border-4 border-brand-blue rounded-full animate-ping opacity-75"></div>
-            </div>
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-          <p className="text-lg text-gray-600">Unlocking your learning dashboard...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (loading) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-24 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (!isSignedIn) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="text-center py-12">
-          <div className="relative inline-block mb-6">
-            <Lock className="w-20 h-20 text-gray-400 mx-auto" />
-            <div className="absolute -top-2 -right-2 bg-brand-blue text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
-              !
-            </div>
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Learning Hub Locked</h1>
-          <p className="text-lg text-gray-600 mb-2 max-w-md mx-auto">
-            Sign in to unlock your personalized learning dashboard
-          </p>
-          <p className="text-sm text-gray-500 mb-8 max-w-md mx-auto">
-            Track your progress, earn achievements, and access all {learningModules.length} learning modules
-          </p>
-
-          <div className="flex gap-4 justify-center mb-12">
-            <Button asChild size="lg" className="bg-brand-blue hover:bg-brand-blue/90">
-              <Link href="/signin">
-                <LogIn className="w-5 h-5 mr-2" />
-                Sign In to Unlock
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="/signup">
-                <User className="w-5 h-5 mr-2" />
-                Create Account
-              </Link>
-            </Button>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 mb-12">
-            <h3 className="text-xl font-semibold mb-4">What You'll Get When You Sign In:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-3xl mx-auto">
-              <div className="flex items-start gap-3">
-                <div className="bg-brand-blue text-white rounded-full p-2 mt-1">
-                  <Trophy className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Track Progress</h4>
-                  <p className="text-sm text-gray-600">Monitor your learning journey and celebrate milestones</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="bg-brand-blue text-white rounded-full p-2 mt-1">
-                  <Star className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Earn Achievements</h4>
-                  <p className="text-sm text-gray-600">Build streaks and unlock badges as you learn</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="bg-brand-blue text-white rounded-full p-2 mt-1">
-                  <BookOpen className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Full Access</h4>
-                  <p className="text-sm text-gray-600">Access all modules and personalized recommendations</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12">
-            <h2 className="text-2xl font-semibold mb-6 text-gray-900">Preview: Available Learning Modules</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {learningModules.slice(0, 6).map((module) => (
-                <Card key={module.id} className="relative overflow-hidden border-2 border-gray-200">
-                  <div className="absolute inset-0 bg-gray-900/5 backdrop-blur-[1px] z-10 flex items-center justify-center">
-                    <div className="bg-white rounded-full p-3 shadow-lg">
-                      <Lock className="w-6 h-6 text-gray-400" />
-                    </div>
-                  </div>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <Badge variant="secondary" className="text-xs">
-                        {module.category}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-lg">{module.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">{module.description}</p>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <BookOpen className="w-4 h-4" />
-                        <span>{module.lessons} lessons</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{module.duration}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="container mx-auto p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="container mx-auto p-6">
+      {!hasClerkUser && (
+        <Alert className="mb-6 border-brand-blue bg-blue-50">
+          <Info className="h-4 w-4 text-brand-blue" />
+          <AlertDescription className="flex items-center justify-between">
+            <span className="text-sm">
+              You're browsing as a guest. Sign in to save your progress and track your learning journey.
+            </span>
+            <Button asChild size="sm" className="ml-4 bg-brand-blue hover:bg-brand-blue/90">
+              <Link href="/signin">
+                <LogIn className="w-4 h-4 mr-2" />
+                Sign In
+              </Link>
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Learning Dashboard</h1>
-          <p className="text-gray-600">Track your progress and continue your financial education journey</p>
+          <p className="text-gray-600">
+            {hasClerkUser
+              ? "Track your progress and continue your financial education journey"
+              : "Explore our learning modules and start your financial education journey"}
+          </p>
         </div>
       </div>
 
@@ -339,7 +197,9 @@ export default function LearningDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {learningModules.map((module) => {
-          const moduleProgress = userDataManager.getModuleLessonProgress(module.id)
+          const moduleProgress = hasClerkUser
+            ? userDataManager.getModuleLessonProgress(module.id)
+            : { completedLessons: [] }
           const completedLessons = moduleProgress.completedLessons.length
           const progressPercentage = Math.round((completedLessons / module.lessons) * 100)
           const isCompleted = completedLessons >= module.lessons
