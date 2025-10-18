@@ -1216,45 +1216,82 @@ const BudgetDashboardContent = () => {
   }, [displayBudgetData, whatIfScenario])
 
   // CHANGE: Improved debt payoff calculation with accurate interest calculations
-  const calculateDebtPayoff = () => {
-    const sortedDebts =
-      debtPayoffStrategy === "snowball"
-        ? [...debts].sort((a, b) => a.balance - b.balance)
-        : [...debts].sort((a, b) => b.interestRate - a.interestRate)
+  const calculateDebtPayoff = (debts: DebtItem[], strategy: "snowball" | "avalanche") => {
+    console.log("[v0] calculateDebtPayoff called with strategy:", strategy)
+    console.log("[v0] Number of debts:", debts.length)
+    console.log("[v0] Debts data:", debts)
 
-    return sortedDebts.map((debt, index) => {
-      // Calculate accurate payoff time considering interest
-      let remainingBalance = debt.balance
-      let monthsToPayoff = 0
-      let totalInterestPaid = 0
-      const monthlyRate = debt.interestRate / 100 / 12
-      const payment = debt.minPayment * 1.5 // Assuming 1.5x minimum payment
+    if (debts.length === 0) {
+      console.log("[v0] No debts to calculate")
+      return []
+    }
 
-      // Simulate monthly payments until debt is paid off
-      while (remainingBalance > 0 && monthsToPayoff < 600) {
-        // Cap at 50 years to prevent infinite loops
-        const interestCharge = remainingBalance * monthlyRate
-        totalInterestPaid += interestCharge
-        const principalPayment = Math.min(payment - interestCharge, remainingBalance)
-
-        if (principalPayment <= 0) {
-          // Payment doesn't cover interest - debt will never be paid off
-          monthsToPayoff = 999
-          break
-        }
-
-        remainingBalance -= principalPayment
-        monthsToPayoff++
+    // Sort debts based on strategy
+    const sortedDebts = [...debts].sort((a, b) => {
+      if (strategy === "snowball") {
+        // Snowball: Pay off smallest balance first
+        console.log("[v0] Sorting by balance (snowball)")
+        return a.balance - b.balance
+      } else {
+        // Avalanche: Pay off highest interest rate first
+        console.log("[v0] Sorting by interest rate (avalanche)")
+        return b.interestRate - a.interestRate
       }
+    })
+
+    console.log("[v0] Sorted debts:", sortedDebts)
+
+    // Calculate payoff details for each debt
+    const payoffPlan = sortedDebts.map((debt, index) => {
+      const monthlyInterestRate = debt.interestRate / 100 / 12
+      console.log("[v0] Calculating payoff for:", debt.name)
+      console.log("[v0] Monthly interest rate:", monthlyInterestRate)
+
+      // Calculate months to payoff with compound interest
+      let balance = debt.balance
+      let months = 0
+      let totalInterest = 0
+      const maxMonths = 600 // Cap at 50 years
+
+      // Check if minimum payment covers interest
+      const monthlyInterest = balance * monthlyInterestRate
+      console.log("[v0] Initial monthly interest:", monthlyInterest)
+      console.log("[v0] Minimum payment:", debt.minPayment)
+
+      if (debt.minPayment <= monthlyInterest) {
+        console.log("[v0] WARNING: Payment doesn't cover interest!")
+        return {
+          ...debt,
+          payoffOrder: index + 1,
+          estimatedPayoff: 999, // Indicates never pays off
+          totalInterest: 0,
+          monthlyPayment: debt.minPayment,
+        }
+      }
+
+      // Simulate monthly payments with interest
+      while (balance > 0 && months < maxMonths) {
+        const interest = balance * monthlyInterestRate
+        totalInterest += interest
+        balance = balance + interest - debt.minPayment
+
+        if (balance < 0) balance = 0
+        months++
+      }
+
+      console.log("[v0] Payoff calculated - Months:", months, "Total interest:", totalInterest)
 
       return {
         ...debt,
         payoffOrder: index + 1,
-        estimatedPayoff: monthsToPayoff,
-        totalInterest: Math.round(totalInterestPaid),
-        monthlyPayment: Math.round(payment),
+        estimatedPayoff: months >= maxMonths ? 600 : months,
+        totalInterest: totalInterest,
+        monthlyPayment: debt.minPayment,
       }
     })
+
+    console.log("[v0] Final payoff plan:", payoffPlan)
+    return payoffPlan
   }
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -1318,7 +1355,13 @@ const BudgetDashboardContent = () => {
   }
 
   const insights = getAIInsights()
-  const debtPayoffPlan = calculateDebtPayoff()
+  const debtPayoffPlan = calculateDebtPayoff(debts, debtPayoffStrategy)
+
+  // NEW FUNCTION DEFINITION for handleStrategyChange
+  const handleStrategyChange = (strategy: "snowball" | "avalanche") => {
+    setDebtPayoffStrategy(strategy)
+    // No need to call calculateDebtPayoff here, as it's a dependency of debtPayoffPlan which will re-render
+  }
 
   // Now only checks if user is signed in, not if they've started budgeting
   if (!isUserSignedUp) {
@@ -2863,13 +2906,13 @@ const BudgetDashboardContent = () => {
                 <div className="flex gap-4">
                   <Button
                     variant={debtPayoffStrategy === "snowball" ? "default" : "outline"}
-                    onClick={() => setDebtPayoffStrategy("snowball")}
+                    onClick={() => handleStrategyChange("snowball")}
                   >
                     Debt Snowball
                   </Button>
                   <Button
                     variant={debtPayoffStrategy === "avalanche" ? "default" : "outline"}
-                    onClick={() => setDebtPayoffStrategy("avalanche")}
+                    onClick={() => handleStrategyChange("avalanche")}
                   >
                     Debt Avalanche
                   </Button>
