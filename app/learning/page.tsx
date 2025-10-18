@@ -43,12 +43,13 @@ export default function LearningDashboard() {
   }, [user, isClerkLoaded])
 
   const refreshData = () => {
-    if (!isMounted || !isClerkLoaded) {
-      console.log("[v0] Waiting for client mount and Clerk to load...")
+    if (!isMounted) {
+      console.log("[v0] Waiting for client mount...")
       return
     }
 
     const signedIn = userDataManager.isUserSignedIn()
+    console.log("[v0] Authentication check result:", signedIn)
 
     if (signedIn && !previousSignInState && !loading) {
       console.log("[v0] User just signed in - triggering unlock animation")
@@ -59,7 +60,7 @@ export default function LearningDashboard() {
     setPreviousSignInState(signedIn)
     setIsSignedIn(signedIn)
 
-    if (signedIn && user) {
+    if (signedIn) {
       userDataManager.checkAndUpdateDailyStreak()
 
       console.log("[v0] Calculating learning progress from module data...")
@@ -119,9 +120,9 @@ export default function LearningDashboard() {
       window.removeEventListener("progressUpdated", handleProgressUpdate)
       window.removeEventListener("userSignedIn", handleSignIn)
     }
-  }, [isClerkLoaded, user, isMounted])
+  }, [isMounted])
 
-  if (!isMounted || !isClerkLoaded) {
+  if (!isMounted) {
     return (
       <div className="container mx-auto p-6">
         <div className="animate-pulse">
