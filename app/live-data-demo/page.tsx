@@ -1,5 +1,14 @@
-import LiveDataDemo from "@/components/live-data-demo"
+"use client"
+
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function LiveDataDemoPage() {
-  return <LiveDataDemo />
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push("/")
+  }, [router])
+
+  return null
 }
