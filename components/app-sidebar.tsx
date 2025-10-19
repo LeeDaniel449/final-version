@@ -1,9 +1,10 @@
 "use client"
 
 import React from "react"
-import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send } from "lucide-react"
-import { useUser } from "@clerk/nextjs"
+import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from "lucide-react"
+import { useUser, useClerk } from "@clerk/nextjs"
 import { UserButton } from "@/components/user-button"
+import { Button } from "@/components/ui/button"
 
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
@@ -40,6 +41,7 @@ function getDisplayEmail(profile: any, isSignedIn: boolean) {
 */
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const { isSignedIn, user, isLoaded } = useUser()
+  const { signOut } = useClerk()
   const [userProfile, setUserProfile] = React.useState(userDataManager.getUserProfile())
 
   /* ----------------------------------------------------------------------- */
@@ -152,11 +154,27 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex items-center gap-3 px-2 py-2">
-              <UserButton />
+              <div className="hidden md:block">
+                <UserButton />
+              </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{displayName}</span>
                 <span className="truncate text-xs">{displayEmail}</span>
               </div>
+              {isSignedIn && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="md:hidden min-h-[48px] min-w-[48px] touch-manipulation"
+                  onClick={() => {
+                    console.log("[v0] Mobile sign out button clicked")
+                    signOut()
+                  }}
+                  aria-label="Sign out"
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              )}
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
