@@ -15,13 +15,21 @@ export function UserButton() {
   }
 
   return (
-    <div className="min-w-[44px] min-h-[44px] flex items-center justify-center" style={{ touchAction: "manipulation" }}>
+    <div
+      className="min-w-[48px] min-h-[48px] flex items-center justify-center p-1 cursor-pointer rounded-full hover:bg-accent/50 transition-colors"
+      style={{
+        touchAction: "manipulation",
+        WebkitTapHighlightColor: "transparent",
+      }}
+    >
       <ClerkUserButton
         appearance={{
           elements: {
-            avatarBox: "w-10 h-10",
+            avatarBox: "w-10 h-10 cursor-pointer",
             userButtonPopoverCard: "touch-manipulation",
-            userButtonPopoverActionButton: "min-h-[44px] touch-manipulation",
+            userButtonPopoverActionButton: "min-h-[48px] touch-manipulation cursor-pointer",
+            userButtonPopoverActionButtonText: "text-base",
+            userButtonPopoverActionButtonIcon: "w-5 h-5",
           },
         }}
       />
