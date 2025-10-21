@@ -26,8 +26,8 @@ export default function SignInPage() {
   useEffect(() => {
     const checkAuth = () => {
       if (userDataManager.isUserSignedUp()) {
-        console.log("[v0] User already signed in, redirecting to budget")
-        router.push("/budget")
+        console.log("[v0] User already signed in, redirecting to home")
+        router.push("/")
         return
       }
     }
@@ -54,8 +54,8 @@ export default function SignInPage() {
       console.log("[v0] Attempting to authenticate:", emailOrUsername)
 
       if (userDataManager.isUserSignedUp()) {
-        console.log("[v0] User already signed in, redirecting")
-        router.push("/budget")
+        console.log("[v0] User already signed in, redirecting to home")
+        router.push("/")
         return
       }
 
@@ -73,7 +73,7 @@ export default function SignInPage() {
       console.log("[v0] Authentication result:", authResult)
 
       if (authResult && authResult.success) {
-        console.log("[v0] Authentication successful, redirecting to budget")
+        console.log("[v0] Authentication successful, redirecting to home")
 
         // Set remember me preference
         if (rememberMe) {
@@ -91,8 +91,8 @@ export default function SignInPage() {
         setTimeout(dispatchEvents, 100)
         setTimeout(dispatchEvents, 300)
 
-        console.log("[v0] Sign in successful, redirecting to budget")
-        router.push("/budget")
+        console.log("[v0] Sign in successful, redirecting to home")
+        router.push("/")
         return
       } else {
         const errorMessage = authResult?.message || "Invalid email or password"
