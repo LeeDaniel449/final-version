@@ -999,7 +999,7 @@ const BudgetDashboardContent = () => {
 
   // CHANGE: Updated handleAddBudget to create category if it doesn't exist
   const handleAddBudget = () => {
-    console.log("[v0] Set Budget button clicked")
+    console.log("[v0] handleAddBudget called")
     console.log("[v0] isUserSignedUp:", isUserSignedUp)
     console.log("[v0] newBudgetAmount:", newBudgetAmount)
     console.log("[v0] selectedCategory:", selectedCategory)
@@ -1090,6 +1090,7 @@ const BudgetDashboardContent = () => {
       addNotification("Budget Added Successfully! 🎉", notificationMessage, "success")
     } else {
       console.log("[v0] Invalid amount, not proceeding with budget update")
+      addNotification("Invalid Amount", "Please enter a valid budget amount greater than 0.", "warning")
     }
   }
 
