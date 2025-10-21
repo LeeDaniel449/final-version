@@ -13,8 +13,11 @@ const inter = Inter({
   display: "swap",
 })
 
-// This ensures production keys are used when deployed
 const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+if (!CLERK_PUBLISHABLE_KEY) {
+  console.error("[v0] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is not set")
+}
 
 export default function RootLayout({
   children,
@@ -22,7 +25,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} signInFallbackRedirectUrl="/" signUpFallbackRedirectUrl="/">
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
+      appearance={{
+        elements: {
+          rootBox: "mx-auto",
+          card: "shadow-none",
+        },
+      }}
+    >
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
           <SidebarProvider>
