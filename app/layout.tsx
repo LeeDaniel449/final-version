@@ -13,7 +13,8 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY = "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
+// This ensures production keys are used when deployed
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
 export default function RootLayout({
   children,
