@@ -15,8 +15,8 @@ const inter = Inter({
 
 const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
-if (!CLERK_PUBLISHABLE_KEY) {
-  console.error("[v0] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is not set")
+if (!CLERK_PUBLISHABLE_KEY && typeof window !== "undefined") {
+  console.warn("[v0] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is not set")
 }
 
 export default function RootLayout({
