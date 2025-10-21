@@ -1071,6 +1071,9 @@ const BudgetDashboardContent = () => {
         })
       }
 
+      console.log("[v0] Budget set successfully, unlocking page")
+      setHasStartedBudgeting(true)
+
       // Refresh the data
       loadUserData()
       setShowAddBudgetDialog(false)
@@ -2653,9 +2656,9 @@ const BudgetDashboardContent = () => {
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-gray-900 text-lg">{category.name}</h3>
                               <p className="text-sm text-gray-600 truncate">
-                                {/* Added null checks for category spent and budgeted amounts */}$
-                                {(category.spent || 0).toLocaleString()} of ${(category.budgeted || 0).toLocaleString()}
-                                budget
+                                {/* CHANGE: Fixed syntax error and moved Budget Progress left by one character space */}
+                                ${(category.spent || 0).toLocaleString()} of $
+                                {(category.budgeted || 0).toLocaleString()} budget
                               </p>
                             </div>
                           </div>
@@ -2971,7 +2974,6 @@ const BudgetDashboardContent = () => {
             </Card>
           </TabsContent>
 
-          {/* CHANGE: Enhanced debt payoff section with interactive features */}
           <TabsContent value="debt" className="space-y-6">
             <Card>
               <CardHeader>
