@@ -1,34 +1,6 @@
-"use client"
-
 import { SignUp } from "@clerk/nextjs"
-import { useUser } from "@clerk/nextjs"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 
 export default function SignUpPage() {
-  const { isSignedIn, isLoaded } = useUser()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      console.log("[v0] User already signed in on sign-up page, redirecting to home")
-      router.replace("/")
-    }
-  }, [isLoaded, isSignedIn, router])
-
-  // Don't render sign-up form if user is already signed in
-  if (isLoaded && isSignedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting to home...</p>
-        </div>
-      </div>
-    )
-  }
-  // </CHANGE>
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
       <div className="w-full max-w-md">
@@ -46,10 +18,6 @@ export default function SignUpPage() {
           routing="path"
           path="/sign-up"
           signInUrl="/sign-in"
-          redirectUrl="/"
-          afterSignUpUrl="/"
-          forceRedirectUrl="/"
-          fallbackRedirectUrl="/"
         />
       </div>
     </div>

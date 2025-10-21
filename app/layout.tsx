@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} signInFallbackRedirectUrl="/" signUpFallbackRedirectUrl="/">
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
           <SidebarProvider>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { WelcomeStep } from "@/components/onboarding/welcome-step"
 import { PersonalInfoStep } from "@/components/onboarding/personal-info-step"
 import { ExperienceStep } from "@/components/onboarding/experience-step"
@@ -13,11 +13,6 @@ import { Progress } from "@/components/ui/progress"
 const STEPS = ["Welcome", "Personal Info", "Experience", "Goals", "Financial Situation", "Risk Assessment", "Summary"]
 
 export default function OnboardingPage() {
-  useEffect(() => {
-    console.log("[v0] Onboarding page accessed, redirecting to home page")
-    window.location.href = "/"
-  }, [])
-
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState({})
 
