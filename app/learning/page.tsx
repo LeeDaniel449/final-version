@@ -122,7 +122,7 @@ export default function LearningDashboard() {
               You're browsing as a guest. Sign in to save your progress and track your learning journey.
             </span>
             <Button asChild size="sm" className="ml-4 bg-brand-blue hover:bg-brand-blue/90">
-              <Link href="/signin">
+              <Link href="/sign-in">
                 <LogIn className="w-4 h-4 mr-2" />
                 Sign In
               </Link>
