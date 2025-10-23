@@ -16,6 +16,11 @@ const inter = Inter({
 const CLERK_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
 
+// Validate key exists before using
+if (!CLERK_PUBLISHABLE_KEY) {
+  throw new Error("Clerk publishable key is required")
+}
+
 export default function RootLayout({
   children,
 }: {
