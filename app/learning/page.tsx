@@ -10,7 +10,7 @@ import { BookOpen, Clock, Trophy, Target, Star, Info, LogIn } from "lucide-react
 import Link from "next/link"
 import { learningModules } from "@/lib/learning-data"
 import { userDataManager } from "@/lib/user-data"
-import { useUser } from "@clerk/nextjs"
+import { useUser, SignInButton } from "@clerk/nextjs"
 
 export default function LearningDashboard() {
   const { user, isLoaded: isClerkLoaded } = useUser()
@@ -121,12 +121,12 @@ export default function LearningDashboard() {
             <span className="text-sm">
               You're browsing as a guest. Sign in to save your progress and track your learning journey.
             </span>
-            <Button asChild size="sm" className="ml-4 bg-brand-blue hover:bg-brand-blue/90">
-              <Link href="/sign-in">
+            <SignInButton mode="modal">
+              <Button size="sm" className="ml-4 bg-brand-blue hover:bg-brand-blue/90">
                 <LogIn className="w-4 h-4 mr-2" />
                 Sign In
-              </Link>
-            </Button>
+              </Button>
+            </SignInButton>
           </AlertDescription>
         </Alert>
       )}
