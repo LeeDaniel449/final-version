@@ -7,10 +7,15 @@ export async function checkPremiumStatus(): Promise<boolean> {
     return false
   }
 
-  // Check if user has premium in their public metadata
-  const hasPremium = user.publicMetadata?.premium === true
+  // Check if user has an active subscription via Clerk Billing
+  const subscriptionStatus = user.publicMetadata?.subscriptionStatus as string | undefined
+  const hasPremium = subscriptionStatus === "active"
 
-  console.log("[v0] Premium status check:", { userId: user.id, hasPremium })
+  console.log("[v0] Premium status check:", {
+    userId: user.id,
+    subscriptionStatus,
+    hasPremium,
+  })
 
   return hasPremium
 }
@@ -19,12 +24,19 @@ export async function getUserSubscriptionStatus() {
   const user = await currentUser()
 
   if (!user) {
-    return { isPremium: false, userId: null }
+    return {
+      isPremium: false,
+      userId: null,
+      subscriptionStatus: null,
+    }
   }
 
+  const subscriptionStatus = user.publicMetadata?.subscriptionStatus as string | undefined
+
   return {
-    isPremium: user.publicMetadata?.premium === true,
+    isPremium: subscriptionStatus === "active",
     userId: user.id,
-    subscriptionId: user.publicMetadata?.stripeSubscriptionId as string | undefined,
+    subscriptionStatus,
+    planId: user.publicMetadata?.planId as string | undefined,
   }
 }

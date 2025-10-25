@@ -19,9 +19,9 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(signInUrl)
   }
 
-  // Check premium status for protected routes
   const user = await (await auth()).user
-  const isPremium = user?.publicMetadata?.premium === true
+  const subscriptionStatus = user?.publicMetadata?.subscriptionStatus as string | undefined
+  const isPremium = subscriptionStatus === "active"
 
   // If not premium, redirect to pricing page
   if (!isPremium) {
