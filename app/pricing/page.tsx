@@ -1,52 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { PricingTable } from "@clerk/nextjs"
-import { currentUser } from "@clerk/nextjs/server"
-import { redirect } from "next/navigation"
+import { Loader2 } from "lucide-react"
 
-export default async function PricingPage() {
-  const user = await currentUser()
+export default function PricingPage() {
+  const { user, isLoaded } = useUser()
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
 
-  if (user?.publicMetadata?.subscriptionStatus === "active") {
-    redirect("/")
+  useEffect(() => {
+    if (isLoaded && user?.publicMetadata?.subscriptionStatus === "active") {
+      console.log("[v0] User already has premium, redirecting to home")
+      router.push("/")
+    }
+  }, [isLoaded, user, router])
+
+  // Show loading while checking user status
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    )
   }
 
-  const isPremium = user?.publicMetadata?.premium === true
-
-  const handleSubscribe = async () => {
-    if (!user) {
-      router.push("/sign-in")
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      // Create Stripe price in your Stripe dashboard and use the price ID here
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          priceId: "price_1234567890", // Replace with your actual Stripe price ID
-        }),
-      })
-
-      const { url } = await response.json()
-
-      if (url) {
-        window.location.href = url
-      }
-    } catch (error) {
-      console.error("[v0] Error creating checkout session:", error)
-    } finally {
-      setLoading(false)
-    }
+  // If user already has premium, show loading while redirecting
+  if (user?.publicMetadata?.subscriptionStatus === "active") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Redirecting to dashboard...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
