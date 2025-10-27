@@ -21,12 +21,8 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const metadata = user.publicMetadata || {}
-    const hasPremium =
-      metadata.premium === true ||
-      metadata.subscriptionStatus === "active" ||
-      metadata.subscription === "active" ||
-      (metadata.subscriptions && Object.keys(metadata.subscriptions).length > 0)
+    // Check if user has premium in publicMetadata
+    const hasPremium = user.publicMetadata?.premium === true
 
     console.log("[v0] Premium check:", {
       userId: user.id,

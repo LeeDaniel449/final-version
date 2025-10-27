@@ -1,6 +1,5 @@
 "use client"
 
-import { PremiumGuard } from "@/components/premium-guard"
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -27,6 +26,7 @@ import {
   Brain,
 } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
+import { PremiumGuard } from "@/components/premium-guard"
 
 const PortfolioPage = () => {
   const [showInvestmentModal, setShowInvestmentModal] = useState(false)
