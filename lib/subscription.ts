@@ -7,13 +7,11 @@ export async function checkPremiumStatus(): Promise<boolean> {
     return false
   }
 
-  // Check if user has an active subscription via Clerk Billing
-  const subscriptionStatus = user.publicMetadata?.subscriptionStatus as string | undefined
-  const hasPremium = subscriptionStatus === "active"
+  const hasPremium = user.publicMetadata?.premium === true
 
   console.log("[v0] Premium status check:", {
     userId: user.id,
-    subscriptionStatus,
+    premium: user.publicMetadata?.premium,
     hasPremium,
   })
 
@@ -27,22 +25,21 @@ export async function getUserSubscriptionStatus() {
     return {
       isPremium: false,
       userId: null,
-      subscriptionStatus: null,
+      stripeSubscriptionId: null,
     }
   }
 
-  const subscriptionStatus = user.publicMetadata?.subscriptionStatus as string | undefined
+  const isPremium = user.publicMetadata?.premium === true
 
   return {
-    isPremium: subscriptionStatus === "active",
+    isPremium,
     userId: user.id,
-    subscriptionStatus,
-    planId: user.publicMetadata?.planId as string | undefined,
+    stripeSubscriptionId: user.publicMetadata?.stripeSubscriptionId as string | undefined,
+    stripeCustomerId: user.publicMetadata?.stripeCustomerId as string | undefined,
   }
 }
 
 export function checkClientPremiumStatus(user: any): boolean {
   if (!user) return false
-  const subscriptionStatus = user.publicMetadata?.subscriptionStatus as string | undefined
-  return subscriptionStatus === "active"
+  return user.publicMetadata?.premium === true
 }

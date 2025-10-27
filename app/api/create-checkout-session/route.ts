@@ -16,6 +16,10 @@ export async function POST(req: Request) {
 
     const { priceId } = await req.json()
 
+    const appUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "http://localhost:3000")
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       customer_email: user.emailAddresses[0]?.emailAddress,
@@ -26,10 +30,15 @@ export async function POST(req: Request) {
         },
       ],
       mode: "subscription",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/pricing`,
+      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/pricing`,
       metadata: {
         userId: user.id,
+      },
+      subscription_data: {
+        metadata: {
+          userId: user.id,
+        },
       },
     })
 
