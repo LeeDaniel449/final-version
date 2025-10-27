@@ -13,13 +13,8 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_live_Y2xlcmsud2VhbHRobGlua2FwcC5jb20k"
-
-// Validate key exists before using
-if (!CLERK_PUBLISHABLE_KEY) {
-  throw new Error("Clerk publishable key is required")
-}
+// For production deployment on wealthlinkapp.com
+const CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsud2VhbHRobGlua2FwcC5jb20k"
 
 export default function RootLayout({
   children,
