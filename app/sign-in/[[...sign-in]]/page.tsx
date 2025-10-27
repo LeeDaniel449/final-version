@@ -27,7 +27,6 @@ export default function SignInPage() {
       </div>
     )
   }
-  // </CHANGE>
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
