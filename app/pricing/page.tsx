@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { SignedIn, ClerkLoaded, useUser } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import {
   CheckoutProvider,
   useCheckout,
@@ -47,11 +47,7 @@ export default function PricingPage() {
         </div>
 
         <CheckoutProvider for="user" planId="cplan_34V21R75vXuGKwyVCpbw2bgdiXm" planPeriod="month">
-          <ClerkLoaded>
-            <SignedIn>
-              <CustomCheckout />
-            </SignedIn>
-          </ClerkLoaded>
+          <CustomCheckout />
         </CheckoutProvider>
 
         <p className="text-center text-sm text-gray-500 mt-6">Secure payment powered by Clerk. Cancel anytime.</p>
