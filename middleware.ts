@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
 
 // Routes that don't require authentication
 const isPublicRoute = createRouteMatcher([
@@ -11,25 +10,10 @@ const isPublicRoute = createRouteMatcher([
 ])
 
 export default clerkMiddleware(async (auth, req) => {
-  const { userId } = await auth()
-
-  // Allow public routes
-  if (isPublicRoute(req)) {
-    return NextResponse.next()
+  // Protect all routes except public ones
+  if (!isPublicRoute(req)) {
+    await auth.protect()
   }
-
-  // Require authentication for all other routes
-  if (!userId) {
-    const signInUrl = new URL("/sign-in", req.url)
-    signInUrl.searchParams.set("redirect_url", req.url)
-    return NextResponse.redirect(signInUrl)
-  }
-
-  // Premium check is now handled client-side on individual pages
-  // To enable server-side premium checks, configure Clerk session token to include publicMetadata:
-  // Dashboard > Sessions > Customize session token > Add: {"metadata":"{{user.public_metadata}}"}
-
-  return NextResponse.next()
 })
 
 export const config = {
