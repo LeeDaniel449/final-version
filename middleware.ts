@@ -1,21 +1,33 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
 
-// Routes that require authentication (empty for now to allow preview to work)
-const isProtectedRoute = createRouteMatcher([
-  // Temporarily disable route protection to fix preview issues
-  // Re-enable in production by uncommenting routes below:
-  // '/budget(.*)',
-  // '/goals(.*)',
-  // '/learning(.*)',
-  // '/portfolio(.*)',
-  // '/ai-advisor(.*)',
-])
+const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/pricing(.*)"])
 
-export default clerkMiddleware((auth, req) => {
-  // Only protect specific routes (currently none to allow preview to work)
-  if (isProtectedRoute(req)) {
-    auth().protect() // Removed await - protect() is synchronous
+export default clerkMiddleware(async (auth, req) => {
+  // Allow public routes
+  if (isPublicRoute(req)) {
+    return NextResponse.next()
   }
+
+  // Protect all other routes - require authentication
+  const authObj = await auth()
+
+  if (!authObj.userId) {
+    const signInUrl = new URL("/sign-in", req.url)
+    return NextResponse.redirect(signInUrl)
+  }
+
+  // Check if user has premium access
+  const user = authObj.sessionClaims
+  const hasPremium = user?.metadata?.premium === true
+
+  if (!hasPremium) {
+    // Redirect non-premium users to pricing page
+    const pricingUrl = new URL("/pricing", req.url)
+    return NextResponse.redirect(pricingUrl)
+  }
+
+  return NextResponse.next()
 })
 
 export const config = {

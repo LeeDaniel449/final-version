@@ -16,13 +16,12 @@ export default function SignUpPage() {
     }
   }, [isLoaded, isSignedIn, router])
 
-  // Don't render sign-up form if user is already signed in
   if (isLoaded && isSignedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting to pricing...</p>
+          <p className="text-gray-600">Redirecting to subscription...</p>
         </div>
       </div>
     )

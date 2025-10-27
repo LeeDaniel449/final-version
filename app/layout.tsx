@@ -3,7 +3,6 @@ import { Suspense } from "react"
 import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
-import { ClerkUserSync } from "@/components/clerk-user-sync"
 import "./globals.css"
 import { Analytics } from "@vercel/analytics/next"
 import { Inter } from "next/font/google"
@@ -17,6 +16,11 @@ const inter = Inter({
 const CLERK_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
 
+// Validate key exists before using
+if (!CLERK_PUBLISHABLE_KEY) {
+  throw new Error("Clerk publishable key is required")
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -25,8 +29,8 @@ export default function RootLayout({
   return (
     <ClerkProvider
       publishableKey={CLERK_PUBLISHABLE_KEY}
-      signInFallbackRedirectUrl="/pricing"
-      signUpFallbackRedirectUrl="/pricing"
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
       appearance={{
         elements: {
           rootBox: "mx-auto",
@@ -36,7 +40,6 @@ export default function RootLayout({
     >
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
-          <ClerkUserSync />
           <SidebarProvider>
             <Suspense fallback={<div>Loading...</div>}>
               <AppSidebar />

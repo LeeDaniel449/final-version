@@ -663,13 +663,6 @@ class UserDataManager {
     }
   }
 
-  // Store Clerk user object for premium checks
-  setClerkUser(user: any): void {
-    if (typeof window === "undefined") return
-    ;(window as any).__clerk_user = user
-    console.log("[v0] Clerk user object stored for premium checks")
-  }
-
   private getClerkUserId(): string | null {
     if (typeof window === "undefined") return null
     return (window as any).__clerk_user_id || null
@@ -733,22 +726,13 @@ class UserDataManager {
 
       if (!userId) {
         console.error("[v0] Cannot save categories - no Clerk user ID")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
-      const user = (window as any).__clerk_user
-      if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-        console.error("[v0] Cannot save categories - premium required")
-        throw new Error("PREMIUM_REQUIRED")
+        return
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
       localStorage.setItem(storageKey, JSON.stringify(categories))
       console.log("[v0] Budget categories saved for user:", userId, "- count:", categories.length)
     } catch (err) {
-      if (err.message === "PREMIUM_REQUIRED") {
-        throw err
-      }
       console.error("Error saving budget categories:", err)
     }
   }
@@ -823,22 +807,13 @@ class UserDataManager {
 
       if (!userId) {
         console.error("[v0] Cannot save entries - no Clerk user ID")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
-      const user = (window as any).__clerk_user
-      if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-        console.error("[v0] Cannot save entries - premium required")
-        throw new Error("PREMIUM_REQUIRED")
+        return
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
       localStorage.setItem(storageKey, JSON.stringify(entries))
       console.log("[v0] Budget entries saved for user:", userId, "- count:", entries.length)
     } catch (err) {
-      if (err.message === "PREMIUM_REQUIRED") {
-        throw err
-      }
       console.error("Error saving budget entries:", err)
     }
   }
@@ -848,13 +823,7 @@ class UserDataManager {
 
     if (!userId) {
       console.error("[v0] Cannot add budget entry - no Clerk user ID. User must sign in.")
-      throw new Error("PREMIUM_REQUIRED")
-    }
-
-    const user = (window as any).__clerk_user
-    if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-      console.error("[v0] Cannot add budget entry - premium required")
-      throw new Error("PREMIUM_REQUIRED")
+      return
     }
 
     const entries = this.getBudgetEntries()
@@ -899,27 +868,12 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
-
-      if (!userId) {
-        console.error("[v0] Cannot save budget data - no Clerk user ID")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
-      const user = (window as any).__clerk_user
-      if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-        console.error("[v0] Cannot save budget data - premium required")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
       const currentData = this.getBudgetData()
       const updatedData = { ...currentData, ...budgetData }
+      const userId = this.getClerkUserId()
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedData))
     } catch (error) {
-      if (error.message === "PREMIUM_REQUIRED") {
-        throw error
-      }
       console.error("Error saving budget data:", error)
     }
   }
@@ -1000,13 +954,7 @@ class UserDataManager {
 
       if (!userId) {
         console.error("[v0] Cannot save user progress - no Clerk user ID")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
-      const user = (window as any).__clerk_user
-      if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-        console.error("[v0] Cannot save user progress - premium required")
-        throw new Error("PREMIUM_REQUIRED")
+        return
       }
 
       const current = this.getUserProgress()
@@ -1044,9 +992,6 @@ class UserDataManager {
         window.dispatchEvent(new CustomEvent("progressUpdated", { detail: updated }))
       }
     } catch (error) {
-      if (error.message === "PREMIUM_REQUIRED") {
-        throw error
-      }
       console.error("❌ Error saving user progress:", error)
     }
   }
@@ -1080,21 +1025,12 @@ class UserDataManager {
 
       if (!userId) {
         console.error("[v0] Cannot save goals - no Clerk user ID")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
-      const user = (window as any).__clerk_user
-      if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-        console.error("[v0] Cannot save goals - premium required")
-        throw new Error("PREMIUM_REQUIRED")
+        return
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
       localStorage.setItem(storageKey, JSON.stringify(goals))
     } catch (error) {
-      if (error.message === "PREMIUM_REQUIRED") {
-        throw error
-      }
       console.error("Error saving goals:", error)
     }
   }
@@ -1104,13 +1040,7 @@ class UserDataManager {
 
     if (!userId) {
       console.error("[v0] Cannot add goal - no Clerk user ID. User must sign in.")
-      throw new Error("PREMIUM_REQUIRED")
-    }
-
-    const user = (window as any).__clerk_user
-    if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-      console.error("[v0] Cannot add goal - premium required")
-      throw new Error("PREMIUM_REQUIRED")
+      return
     }
 
     const goals = this.getGoals()
@@ -1185,13 +1115,7 @@ class UserDataManager {
 
       if (!userId) {
         console.error("[v0] Cannot save learning progress - no Clerk user ID")
-        throw new Error("PREMIUM_REQUIRED")
-      }
-
-      const user = (window as any).__clerk_user
-      if (!user || user.publicMetadata?.subscriptionStatus !== "active") {
-        console.error("[v0] Cannot save learning progress - premium required")
-        throw new Error("PREMIUM_REQUIRED")
+        return
       }
 
       const currentProgress = this.getLearningProgress()
@@ -1199,9 +1123,6 @@ class UserDataManager {
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.LEARNING_PROGRESS, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedProgress))
     } catch (error) {
-      if (error.message === "PREMIUM_REQUIRED") {
-        throw error
-      }
       console.error("Error saving learning progress:", error)
     }
   }

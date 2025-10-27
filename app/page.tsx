@@ -17,9 +17,21 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { NotificationBell } from "@/components/notification-bell"
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
 import { learningModules } from "@/lib/learning-data"
-import { ArrowRight } from "lucide-react"
+import {
+  BookOpen,
+  Target,
+  DollarSign,
+  CheckCircle,
+  Calendar,
+  Plus,
+  LogIn,
+  HelpCircle,
+  X,
+  ArrowRight,
+} from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
@@ -500,12 +512,33 @@ export default function HomePage() {
               variant="outline"
               className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white bg-transparent w-full sm:w-auto"
             >
-              <ArrowRight className="w-4 h-4 mr-2" />
+              <HelpCircle className="w-4 h-4 mr-2" />
               <span className="sm:inline">Start Tutorial</span>
             </Button>
             <div className="flex items-center gap-2 justify-between sm:justify-start">
-              {/* NotificationBell */}
-              {/* Sign In Button */}
+              <NotificationBell />
+              <Link href={isSignedIn ? "/settings" : "/sign-in"} className="flex-1 sm:flex-initial">
+                <Button
+                  className={`w-full sm:w-auto ${
+                    isSignedIn
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90"
+                  } text-white shadow-lg`}
+                  disabled={isSignedIn}
+                >
+                  {isSignedIn ? (
+                    <>
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Signed In
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="w-4 h-4 mr-2" />
+                      Sign In
+                    </>
+                  )}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -520,7 +553,7 @@ export default function HomePage() {
                   <p className="text-2xl sm:text-3xl font-bold text-brand-blue">{completedLessons}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-brand-blue to-brand-purple rounded-lg flex items-center justify-center">
-                  {/* BookOpen Icon */}
+                  <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -534,7 +567,7 @@ export default function HomePage() {
                   <p className="text-2xl sm:text-3xl font-bold text-brand-purple">{activeGoals.length}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-brand-purple to-brand-blue rounded-lg flex items-center justify-center">
-                  {/* Target Icon */}
+                  <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -548,7 +581,7 @@ export default function HomePage() {
                   <p className="text-2xl sm:text-3xl font-bold text-green-600">${totalSaved.toLocaleString()}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                  {/* DollarSign Icon */}
+                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -562,7 +595,7 @@ export default function HomePage() {
                   <p className="text-2xl sm:text-3xl font-bold text-blue-600">{completedGoals.length}</p>
                 </div>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  {/* CheckCircle Icon */}
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -615,14 +648,14 @@ export default function HomePage() {
           <CardContent className="p-4 sm:p-6 pt-0">
             {goals.length === 0 ? (
               <div className="text-center py-6 sm:py-8">
-                {/* Target Icon */}
+                <Target className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
                 <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">No goals set yet</p>
                 <div className="flex flex-col sm:flex-row gap-2 justify-center">
                   {!hasStartedBudgeting && (
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                       <DialogTrigger asChild>
                         <Button className="bg-gradient-to-r from-brand-purple to-brand-blue hover:from-brand-purple/90 hover:to-brand-blue/90 text-white w-full sm:w-auto">
-                          {/* Plus Icon */}
+                          <Plus className="w-4 h-4 mr-2" />
                           Add Your First Budget
                         </Button>
                       </DialogTrigger>
@@ -678,7 +711,7 @@ export default function HomePage() {
                   )}
                   <Link href="/goals" className="w-full sm:w-auto">
                     <Button variant="outline" className="bg-transparent w-full">
-                      {/* Target Icon */}
+                      <Target className="w-4 h-4 mr-2" />
                       Set Your First Goal
                     </Button>
                   </Link>
@@ -715,7 +748,7 @@ export default function HomePage() {
                           >
                             {goal.priority}
                           </Badge>
-                          {isCompleted && <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />}
+                          {isCompleted && <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />}
                         </div>
                       </div>
                       <p className="text-xs sm:text-sm text-purple-600 mb-2 sm:mb-3 line-clamp-2">{goal.description}</p>
@@ -728,7 +761,7 @@ export default function HomePage() {
                         <div className="flex items-center justify-between text-xs text-gray-600">
                           <span>{Math.round(progress)}% complete</span>
                           <div className="flex items-center gap-1">
-                            {/* Calendar Icon */}
+                            <Calendar className="w-3 h-3" />
                             <span>{daysUntilDue > 0 ? `${daysUntilDue} days left` : "Overdue"}</span>
                           </div>
                         </div>
@@ -795,7 +828,7 @@ export default function HomePage() {
               </div>
             ) : (
               <div className="text-center py-4">
-                {/* BookOpen Icon */}
+                <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
                 <p className="text-xs sm:text-sm text-gray-600">No lessons completed yet</p>
                 <p className="text-xs text-gray-500 mt-1">Start learning to track your progress!</p>
               </div>
@@ -810,7 +843,7 @@ export default function HomePage() {
                     .slice(0, 3)
                     .map((module) => (
                       <div key={module.id} className="flex items-center gap-2 text-xs sm:text-sm">
-                        {/* CheckCircle Icon */}
+                        <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
                         <span className="truncate">{module.title}</span>
                       </div>
                     ))}
@@ -823,7 +856,7 @@ export default function HomePage() {
 
             <Link href="/learning">
               <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white text-sm sm:text-base">
-                {/* BookOpen Icon */}
+                <BookOpen className="w-4 h-4 mr-2" />
                 Continue Learning
               </Button>
             </Link>
@@ -845,7 +878,7 @@ export default function HomePage() {
                     Step {tutorialStep + 1} of {tutorialSteps.length}
                   </CardTitle>
                   <Button variant="ghost" size="sm" onClick={skipTutorial} className="text-white hover:bg-white/20">
-                    {/* X Icon */}
+                    <X className="w-4 h-4" />
                   </Button>
                 </div>
               </CardHeader>
@@ -890,12 +923,12 @@ export default function HomePage() {
                       ) : tutorialSteps[tutorialStep].action ? (
                         <>
                           Visit
-                          {/* ArrowRight Icon */}
+                          <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                         </>
                       ) : (
                         <>
                           Next
-                          {/* ArrowRight Icon */}
+                          <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                         </>
                       )}
                     </Button>
