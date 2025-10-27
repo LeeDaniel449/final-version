@@ -2,17 +2,15 @@
 
 import * as React from "react"
 import { useUser } from "@clerk/nextjs"
+import { CheckoutButton } from "@clerk/nextjs/experimental"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Check, Loader2 } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import Checkout from "@/components/checkout"
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser()
   const router = useRouter()
-  const [showCheckout, setShowCheckout] = React.useState(false)
 
   React.useEffect(() => {
     if (isLoaded && !user) {
@@ -77,13 +75,17 @@ export default function PricingPage() {
             </div>
 
             <div className="pt-6 space-y-3">
-              <Button
-                onClick={() => setShowCheckout(true)}
-                className="w-full bg-brand-blue hover:bg-brand-blue/90"
-                size="lg"
+              <CheckoutButton
+                planId="cplan_34V21R75vXuGKwyVCpbw2bgdiXm"
+                for="user"
+                planPeriod="monthly"
+                afterCheckoutUrl="/"
+                asChild
               >
-                Subscribe Now
-              </Button>
+                <Button className="w-full bg-brand-blue hover:bg-brand-blue/90" size="lg">
+                  Subscribe Now
+                </Button>
+              </CheckoutButton>
 
               <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
@@ -100,18 +102,9 @@ export default function PricingPage() {
         </Card>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Secure payment powered by Stripe. Your subscription will be managed through Clerk.
+          Secure payment powered by Clerk Billing. Your subscription will be managed automatically.
         </p>
       </div>
-
-      <Dialog open={showCheckout} onOpenChange={setShowCheckout}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Complete Your Subscription</DialogTitle>
-          </DialogHeader>
-          <Checkout productId="premium" />
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
