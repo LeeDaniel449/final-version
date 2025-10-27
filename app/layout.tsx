@@ -3,6 +3,7 @@ import { Suspense } from "react"
 import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { ClerkUserSync } from "@/components/clerk-user-sync"
 import "./globals.css"
 import { Analytics } from "@vercel/analytics/next"
 import { Inter } from "next/font/google"
@@ -35,6 +36,7 @@ export default function RootLayout({
     >
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
+          <ClerkUserSync />
           <SidebarProvider>
             <Suspense fallback={<div>Loading...</div>}>
               <AppSidebar />

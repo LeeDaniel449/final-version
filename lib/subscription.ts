@@ -40,3 +40,9 @@ export async function getUserSubscriptionStatus() {
     planId: user.publicMetadata?.planId as string | undefined,
   }
 }
+
+export function checkClientPremiumStatus(user: any): boolean {
+  if (!user) return false
+  const subscriptionStatus = user.publicMetadata?.subscriptionStatus as string | undefined
+  return subscriptionStatus === "active"
+}
