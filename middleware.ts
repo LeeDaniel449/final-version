@@ -2,7 +2,13 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
 // Routes that don't require authentication
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/pricing(.*)", "/success(.*)"])
+const isPublicRoute = createRouteMatcher([
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/pricing(.*)",
+  "/success(.*)",
+  "/api/webhook(.*)", // Allow webhook routes for Stripe/Clerk webhooks
+])
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId } = await auth()
@@ -19,14 +25,9 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(signInUrl)
   }
 
-  const user = await (await auth()).user
-  const subscriptionStatus = user?.publicMetadata?.subscriptionStatus as string | undefined
-  const isPremium = subscriptionStatus === "active"
-
-  // If not premium, redirect to pricing page
-  if (!isPremium) {
-    return NextResponse.redirect(new URL("/pricing", req.url))
-  }
+  // Premium check is now handled client-side on individual pages
+  // To enable server-side premium checks, configure Clerk session token to include publicMetadata:
+  // Dashboard > Sessions > Customize session token > Add: {"metadata":"{{user.public_metadata}}"}
 
   return NextResponse.next()
 })
