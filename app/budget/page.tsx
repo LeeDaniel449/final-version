@@ -47,7 +47,6 @@ import {
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
-import { SubscriptionGuard } from "@/components/subscription-guard"
 import { AreaChart, Area } from "recharts"
 import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
@@ -1244,7 +1243,7 @@ const BudgetDashboardContent = () => {
     return insights
   }
 
-  // CHANGE: Updated calculateWhatIf function to be more comprehensive
+  // Update the calculateWhatIf function to be more comprehensive
   const whatIfResults = useMemo(() => {
     const category = displayBudgetData.find((cat) =>
       cat.name.toLowerCase().includes(whatIfScenario.category.toLowerCase()),
@@ -3411,10 +3410,8 @@ const BudgetDashboardContent = () => {
 
 export default function BudgetPage() {
   return (
-    <SubscriptionGuard>
-      <TutorialProvider>
-        <BudgetDashboardContent />
-      </TutorialProvider>
-    </SubscriptionGuard>
+    <TutorialProvider>
+      <BudgetDashboardContent />
+    </TutorialProvider>
   )
 }

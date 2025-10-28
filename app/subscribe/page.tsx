@@ -4,7 +4,6 @@ import { PricingTable } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { Sparkles } from "lucide-react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
@@ -25,9 +24,7 @@ export default function SubscribePage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
       <div className="w-full max-w-4xl">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mb-4">
-            <Sparkles className="w-8 h-8 text-white" />
-          </div>
+          <div className="text-6xl mb-4">✨</div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Complete Your Subscription</h1>
           <p className="text-lg text-gray-600">Choose a plan to unlock all premium features</p>
         </div>
