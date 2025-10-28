@@ -11,13 +11,21 @@ export default function PricingPage() {
   const router = useRouter()
   const [showFallback, setShowFallback] = React.useState(false)
 
+  console.log("[v0] Pricing page rendering", { isLoaded, hasUser: !!user, showFallback })
+
   React.useEffect(() => {
+    console.log("[v0] Pricing page useEffect", { isLoaded, hasUser: !!user })
+
     if (isLoaded && !user) {
+      console.log("[v0] No user, redirecting to sign-up")
       router.push("/sign-up")
+      return
     }
 
     if (isLoaded && user) {
       const metadata = user.publicMetadata as any
+      console.log("[v0] User metadata:", metadata)
+
       const hasPremium =
         metadata?.premium === true ||
         metadata?.subscriptionStatus === "active" ||
@@ -25,26 +33,38 @@ export default function PricingPage() {
           metadata.subscriptions.some((sub: any) => sub.status === "active")) ||
         metadata?.subscription?.status === "active"
 
+      console.log("[v0] Has premium:", hasPremium)
+
       if (hasPremium) {
+        console.log("[v0] User has premium, redirecting to home")
         router.push("/")
+        return
       }
     }
 
     // Show fallback after 3 seconds if PricingTable doesn't load
+    console.log("[v0] Setting fallback timer")
     const timer = setTimeout(() => {
+      console.log("[v0] Showing fallback UI")
       setShowFallback(true)
     }, 3000)
 
-    return () => clearTimeout(timer)
+    return () => {
+      console.log("[v0] Cleaning up timer")
+      clearTimeout(timer)
+    }
   }, [isLoaded, user, router])
 
   if (!isLoaded || !user) {
+    console.log("[v0] Showing loading spinner")
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     )
   }
+
+  console.log("[v0] Rendering main pricing content")
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-6">
@@ -58,6 +78,7 @@ export default function PricingPage() {
 
         {showFallback ? (
           <div className="max-w-3xl mx-auto">
+            {console.log("[v0] Rendering fallback UI")}
             <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-amber-200">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-amber-100 rounded-full p-3">
@@ -156,7 +177,10 @@ export default function PricingPage() {
             </div>
           </div>
         ) : (
-          <PricingTable />
+          <>
+            {console.log("[v0] Rendering PricingTable component")}
+            <PricingTable />
+          </>
         )}
       </div>
     </div>
