@@ -5,13 +5,11 @@ import { useUser, useClerk, SignedIn } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { Loader2, Check, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { setPremiumStatus } from "@/app/actions/set-premium"
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser()
   const clerk = useClerk()
   const router = useRouter()
-  const [isSyncing, setIsSyncing] = React.useState(false)
 
   React.useEffect(() => {
     if (isLoaded && !user) {
@@ -45,28 +43,6 @@ export default function PricingPage() {
         },
       },
     })
-  }
-
-  const handleSyncSubscription = async () => {
-    setIsSyncing(true)
-    try {
-      const result = await setPremiumStatus()
-
-      if (result.success) {
-        // Force reload user data from Clerk
-        await user?.reload()
-
-        // Redirect to home page
-        router.push("/")
-      } else {
-        alert("Failed to activate premium: " + (result.error || "Unknown error"))
-      }
-    } catch (error) {
-      console.error("[v0] Error syncing subscription:", error)
-      alert("Failed to sync subscription. Please try again.")
-    } finally {
-      setIsSyncing(false)
-    }
   }
 
   if (!isLoaded || !user) {
@@ -125,22 +101,6 @@ export default function PricingPage() {
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 px-8 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Subscribe Now
-              </Button>
-
-              <Button
-                onClick={handleSyncSubscription}
-                disabled={isSyncing}
-                variant="outline"
-                className="w-full mt-4 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-6 px-8 rounded-lg text-lg transition-all duration-200 bg-transparent"
-              >
-                {isSyncing ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    Checking Subscription...
-                  </>
-                ) : (
-                  "Already Subscribed? Click Here"
-                )}
               </Button>
             </SignedIn>
 

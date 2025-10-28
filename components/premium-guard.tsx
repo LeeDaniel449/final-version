@@ -71,10 +71,9 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!isLoaded) return
 
-    // If not signed in, redirect to sign-in
     if (!user) {
-      console.log("[v0] User not signed in, redirecting to sign-in")
-      router.replace("/sign-in")
+      console.log("[v0] User not signed in, redirecting to pricing")
+      router.replace("/pricing")
       return
     }
 
