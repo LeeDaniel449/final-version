@@ -1,16 +1,15 @@
 "use client"
 
-import { useUser, useClerk } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Check } from "lucide-react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
-  const { openUserProfile } = useClerk()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -22,61 +21,135 @@ export default function SubscribePage() {
     }
   }, [isLoaded, user, router])
 
-  const handleSubscribe = () => {
-    openUserProfile()
+  const handleSubscribe = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user?.id,
+          priceId: "price_premium_monthly", // This will be your Stripe price ID
+        }),
+      })
+
+      const { url } = await response.json()
+
+      if (url) {
+        window.location.href = url
+      }
+    } catch (error) {
+      console.error("[v0] Subscription error:", error)
+      setLoading(false)
+    }
+  }
+
+  if (!isLoaded || !user) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p>Loading...</p>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-6">
-      <Card className="w-full max-width-2xl shadow-2xl">
-        <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Complete Your Subscription
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        padding: "24px",
+      }}
+    >
+      <Card style={{ width: "100%", maxWidth: "600px" }}>
+        <CardHeader style={{ textAlign: "center" }}>
+          <CardTitle style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "8px" }}>
+            🎯 Complete Your Subscription
           </CardTitle>
-          <CardDescription className="text-lg">
-            Subscribe to unlock all premium features and start your financial journey
-          </CardDescription>
+          <CardDescription style={{ fontSize: "16px" }}>Subscribe now to unlock all premium features</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8">
-          <div className="grid gap-4">
-            <div className="flex items-start gap-3">
-              <Check className="h-6 w-6 text-green-600 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-lg">AI-Powered Financial Advisor</h3>
-                <p className="text-gray-600">Get personalized financial advice powered by advanced AI</p>
-              </div>
+        <CardContent style={{ padding: "24px" }}>
+          <div style={{ marginBottom: "32px" }}>
+            <div
+              style={{
+                padding: "24px",
+                background: "#f8f9fa",
+                borderRadius: "12px",
+                marginBottom: "24px",
+              }}
+            >
+              <h3 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>Premium Features</h3>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
+                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
+                  <span>AI-Powered Financial Advisor</span>
+                </li>
+                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
+                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
+                  <span>Portfolio Optimization Tools</span>
+                </li>
+                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
+                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
+                  <span>Budget & Goal Tracking</span>
+                </li>
+                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
+                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
+                  <span>Real-Time Market Data</span>
+                </li>
+                <li style={{ display: "flex", alignItems: "start" }}>
+                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
+                  <span>Unlimited Access to All Features</span>
+                </li>
+              </ul>
             </div>
-            <div className="flex items-start gap-3">
-              <Check className="h-6 w-6 text-green-600 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-lg">Portfolio Optimization</h3>
-                <p className="text-gray-600">Optimize your investment portfolio with smart algorithms</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Check className="h-6 w-6 text-green-600 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-lg">Budget & Goal Tracking</h3>
-                <p className="text-gray-600">Track your spending and achieve your financial goals</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Check className="h-6 w-6 text-green-600 mt-0.5 flex-shrink-0" />
-              <div>
-                <h3 className="font-semibold text-lg">Real-Time Market Data</h3>
-                <p className="text-gray-600">Access live stock quotes and market analysis</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="space-y-4">
+            <div
+              style={{
+                padding: "20px",
+                background: "#667eea",
+                color: "white",
+                borderRadius: "12px",
+                textAlign: "center",
+                marginBottom: "24px",
+              }}
+            >
+              <p style={{ fontSize: "18px", marginBottom: "8px" }}>Premium Plan</p>
+              <p style={{ fontSize: "36px", fontWeight: "bold" }}>
+                $29.99<span style={{ fontSize: "18px" }}>/month</span>
+              </p>
+            </div>
+
             <Button
               onClick={handleSubscribe}
-              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              disabled={loading}
+              style={{
+                width: "100%",
+                height: "56px",
+                fontSize: "18px",
+                fontWeight: "600",
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                border: "none",
+                borderRadius: "8px",
+                color: "white",
+                cursor: loading ? "not-allowed" : "pointer",
+                opacity: loading ? 0.7 : 1,
+              }}
             >
-              Subscribe Now
+              {loading ? "Processing..." : "Subscribe Now with Stripe"}
             </Button>
-            <p className="text-sm text-gray-500 text-center">Subscription required to access all features</p>
+
+            <p
+              style={{
+                textAlign: "center",
+                marginTop: "16px",
+                fontSize: "14px",
+                color: "#6b7280",
+              }}
+            >
+              Secure payment powered by Stripe
+            </p>
           </div>
         </CardContent>
       </Card>
