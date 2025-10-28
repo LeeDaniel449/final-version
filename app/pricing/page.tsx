@@ -1,16 +1,16 @@
 "use client"
 
 import * as React from "react"
-import { useUser, SignedIn } from "@clerk/nextjs"
+import { useUser, useClerk, SignedIn } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { Loader2, Check, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { activatePremium } from "@/app/actions/activate-premium"
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser()
+  const clerk = useClerk()
   const router = useRouter()
-  const [isActivating, setIsActivating] = React.useState(false)
+  const [isCheckingOut, setIsCheckingOut] = React.useState(false)
 
   React.useEffect(() => {
     if (isLoaded && !user) {
@@ -21,34 +21,33 @@ export default function PricingPage() {
     if (isLoaded && user) {
       const metadata = user.publicMetadata as any
 
-      if (metadata?.premium === true) {
+      const hasPremium =
+        metadata?.premium === true ||
+        metadata?.subscriptionStatus === "active" ||
+        (Array.isArray(metadata?.subscriptions) &&
+          metadata.subscriptions.some((sub: any) => sub.status === "active")) ||
+        metadata?.subscription?.status === "active"
+
+      if (hasPremium) {
         router.push("/")
         return
       }
     }
   }, [isLoaded, user, router])
 
-  const handleActivatePremium = async () => {
-    if (!user) return
-
-    setIsActivating(true)
+  const handleCheckout = async () => {
+    setIsCheckingOut(true)
     try {
-      const result = await activatePremium(user.id)
+      const planId = "cplan_34V21R75vXuGKwyVCpbw2bgdiXm"
 
-      if (result.success) {
-        // Reload user data to get updated metadata
-        await user.reload()
-        // Redirect to home page
-        router.push("/")
-      } else {
-        console.error("[v0] Failed to activate premium:", result.error)
-        alert("Failed to activate premium. Please try again.")
-      }
+      // Construct the Clerk billing checkout URL
+      const checkoutUrl = `https://billing.clerk.com/checkout/${planId}`
+
+      // Redirect to Clerk's checkout page
+      window.location.href = checkoutUrl
     } catch (error) {
-      console.error("[v0] Error activating premium:", error)
-      alert("An error occurred. Please try again.")
-    } finally {
-      setIsActivating(false)
+      console.error("[v0] Error opening checkout:", error)
+      setIsCheckingOut(false)
     }
   }
 
@@ -104,23 +103,27 @@ export default function PricingPage() {
 
             <SignedIn>
               <Button
-                onClick={handleActivatePremium}
-                disabled={isActivating}
+                onClick={handleCheckout}
+                disabled={isCheckingOut}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 px-8 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
               >
-                {isActivating ? (
+                {isCheckingOut ? (
                   <>
                     <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    Activating...
+                    Loading...
                   </>
                 ) : (
-                  "Activate Premium"
+                  "Subscribe Now"
                 )}
               </Button>
             </SignedIn>
 
-            <p className="text-center text-sm text-gray-500 mt-6">Click to activate premium access instantly</p>
+            <p className="text-center text-sm text-gray-500 mt-6">Cancel anytime. No hidden fees.</p>
           </div>
+        </div>
+
+        <div className="text-center mt-8 text-sm text-gray-500">
+          <p>Secure payment powered by Clerk Billing</p>
         </div>
       </div>
     </div>
