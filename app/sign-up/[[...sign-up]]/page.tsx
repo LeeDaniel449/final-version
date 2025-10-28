@@ -1,6 +1,6 @@
 "use client"
 
-import { SignUp, useUser, CheckoutButton } from "@clerk/nextjs"
+import { SignUp, useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -25,6 +25,19 @@ export default function SignUpPage() {
       }
     }
   }, [isLoaded, isSignedIn, user, router])
+
+  const handleSubscribe = () => {
+    if (window.Clerk) {
+      window.Clerk.openUserProfile({
+        appearance: {
+          elements: {
+            rootBox: "w-full",
+            card: "shadow-2xl",
+          },
+        },
+      })
+    }
+  }
 
   if (showSubscription) {
     return (
@@ -89,20 +102,26 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <div style={{ width: "100%", marginBottom: "16px" }}>
-            <CheckoutButton
-              planId="cplan_34V21R75vXuGKwyVCpbw2bgdiXm"
-              appearance={{
-                elements: {
-                  rootBox: "w-full",
-                  button:
-                    "w-full py-4 px-8 text-lg font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl hover:scale-105 transition-transform",
-                },
-              }}
-            >
-              Subscribe Now
-            </CheckoutButton>
-          </div>
+          <button
+            onClick={handleSubscribe}
+            style={{
+              width: "100%",
+              padding: "16px 32px",
+              fontSize: "18px",
+              fontWeight: "600",
+              color: "white",
+              background: "linear-gradient(to right, #667eea, #764ba2)",
+              border: "none",
+              borderRadius: "12px",
+              cursor: "pointer",
+              transition: "transform 0.2s",
+              marginBottom: "16px",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            Subscribe Now
+          </button>
 
           <p style={{ fontSize: "14px", color: "#718096" }}>Your subscription is required to access the platform</p>
         </div>
