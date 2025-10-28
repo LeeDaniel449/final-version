@@ -5,6 +5,7 @@ import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from 
 import { useUser, useClerk } from "@clerk/nextjs"
 import { UserButton } from "@/components/user-button"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
@@ -125,7 +126,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="/">
+              <Link href="/">
                 <div className="flex size-16 items-center justify-center rounded-lg overflow-hidden">
                   <img
                     src="/images/design-mode/image%281%29(1).png"
@@ -137,7 +138,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                   <span className="truncate font-semibold leading-6 text-blue-800 text-lg">WealthLink</span>
                   <span className="text-xs text-blue-800 whitespace-nowrap">Spend Smart, Save Fast</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
