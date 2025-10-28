@@ -38,15 +38,32 @@ export default function PricingPage() {
   const handleCheckout = async () => {
     setIsCheckingOut(true)
     try {
-      const planId = "cplan_34V21R75vXuGKwyVCpbw2bgdiXm"
+      const response = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user?.id,
+          email: user?.primaryEmailAddress?.emailAddress,
+        }),
+      })
 
-      // Construct the Clerk billing checkout URL
-      const checkoutUrl = `https://billing.clerk.com/checkout/${planId}`
+      const { url, error } = await response.json()
 
-      // Redirect to Clerk's checkout page
-      window.location.href = checkoutUrl
+      if (error) {
+        console.error("[v0] Checkout error:", error)
+        alert("Failed to start checkout. Please try again.")
+        setIsCheckingOut(false)
+        return
+      }
+
+      if (url) {
+        window.location.href = url
+      }
     } catch (error) {
       console.error("[v0] Error opening checkout:", error)
+      alert("Failed to start checkout. Please try again.")
       setIsCheckingOut(false)
     }
   }
@@ -123,7 +140,7 @@ export default function PricingPage() {
         </div>
 
         <div className="text-center mt-8 text-sm text-gray-500">
-          <p>Secure payment powered by Clerk Billing</p>
+          <p>Secure payment powered by Stripe</p>
         </div>
       </div>
     </div>
