@@ -48,11 +48,9 @@ import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
-import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PremiumGuard } from "@/components/premium-guard"
 
 interface BudgetCategory {
   name: string
@@ -358,42 +356,236 @@ const BudgetDashboardContent = () => {
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [editAmount, setEditAmount] = useState("")
 
-  // CHANGE: Add debt persistence to localStorage
-  useEffect(() => {
-    if (isClerkLoaded && user) {
-      // Use isClerkLoaded to ensure user object is stable
-      const storageKey = `wealthwise_debts_${user.id}`
-      const savedDebts = localStorage.getItem(storageKey)
-      if (savedDebts) {
-        try {
-          const parsedDebts = JSON.parse(savedDebts)
-          console.log("[v0] Loaded debts from localStorage:", parsedDebts)
-          setDebts(parsedDebts)
-        } catch (error) {
-          console.error("[v0] Error loading debts:", error)
+  // MOCK DATA AND HELPER FUNCTIONS (these would typically come from your data fetching logic)
+  // Mock data for displayBudgetData, displayMonthlyData, pieChartData, budgetVsActualData
+  const displayBudgetData: BudgetCategory[] = useMemo(() => {
+    const categories = userDataManager.getBudgetCategories()
+    const entries = userDataManager.getBudgetEntries()
+
+    const categoryMap = new Map<string, BudgetCategory>()
+
+    // Initialize with default categories and user-defined budgets
+    DEFAULT_CATEGORIES.forEach((name) => {
+      const userCategory = categories.find((cat) => cat.name === name)
+      categoryMap.set(name.toLowerCase(), {
+        id: userCategory?.id || name.toLowerCase(),
+        name: name,
+        budgeted: userCategory?.budgetAmount || 0,
+        spent: 0,
+        spendingLimit: userCategory?.spendingLimit || 0,
+        icon:
+          {
+            housing: Home,
+            transportation: Car,
+            "food & dining": Coffee,
+            shopping: ShoppingCart,
+            entertainment: Gamepad2,
+            healthcare: Heart,
+            utilities: Phone,
+            travel: Plane,
+          }[name.toLowerCase()] || Wallet,
+        trend: "stable",
+        trendPercent: 0,
+        color:
+          {
+            housing: "hsl(217, 91%, 60%)",
+            transportation: "hsl(200, 85%, 55%)",
+            "food & dining": "hsl(195, 80%, 50%)",
+            healthcare: "hsl(210, 88%, 65%)",
+            shopping: "hsl(225, 75%, 58%)",
+            entertainment: "hsl(185, 82%, 52%)",
+            utilities: "hsl(205, 78%, 60%)",
+            travel: "hsl(190, 85%, 48%)",
+          }[name.toLowerCase()] || "hsl(12, 90%, 50%)",
+      })
+    })
+
+    // Add any custom categories from user data
+    categories.forEach((userCat) => {
+      if (!DEFAULT_CATEGORIES.some((defaultCat) => defaultCat.toLowerCase() === userCat.name.toLowerCase())) {
+        categoryMap.set(userCat.name.toLowerCase(), {
+          id: userCat.id,
+          name: userCat.name,
+          budgeted: userCat.budgetAmount,
+          spent: 0,
+          spendingLimit: userCat.spendingLimit,
+          icon: Wallet, // Default icon for custom categories
+          trend: "stable",
+          trendPercent: 0,
+          color: userCat.color || "hsl(12, 90%, 50%)", // Use user-defined color or default
+        })
+      }
+    })
+
+    // Calculate spending for each category
+    entries.forEach((entry) => {
+      if (entry.type === "expense") {
+        const categoryName = entry.category.toLowerCase()
+        if (categoryMap.has(categoryName)) {
+          const category = categoryMap.get(categoryName)!
+          category.spent += entry.amount
+          categoryMap.set(categoryName, category)
+        } else {
+          // If an entry exists for a category not in default, add it
+          categoryMap.set(categoryName, {
+            id: categoryName,
+            name: entry.category,
+            budgeted: 0, // No initial budget for uncategorized
+            spent: entry.amount,
+            spendingLimit: 0,
+            icon: Wallet,
+            trend: "stable",
+            trendPercent: 0,
+            color: "hsl(12, 90%, 50%)", // Default color
+          })
         }
       }
-    }
-  }, [isClerkLoaded, user]) // Depend on isClerkLoaded and user
+    })
 
-  // CHANGE: Save debts to localStorage whenever they change
-  useEffect(() => {
-    if (isClerkLoaded && user) {
-      // Use isClerkLoaded to ensure user object is stable
-      const storageKey = `wealthwise_debts_${user.id}`
-      if (debts.length > 0) {
-        // Only save if there are debts to save
-        localStorage.setItem(storageKey, JSON.stringify(debts))
-        console.log("[v0] Saved debts to localStorage:", debts)
-      } else {
-        // If debts become empty, remove the item from localStorage
-        localStorage.removeItem(storageKey)
-        console.log("[v0] Cleared debts from localStorage as the list is empty")
+    // Calculate trends and update category objects
+    const calculatedData = Array.from(categoryMap.values()).map((category) => {
+      // Calculate spending for the previous month for trend analysis
+      const prevMonthEntries = entries.filter(
+        (entry) =>
+          entry.type === "expense" &&
+          entry.category.toLowerCase() === category.name.toLowerCase() &&
+          new Date(entry.date).getMonth() === new Date().getMonth() - 1,
+      )
+      const prevMonthSpent = prevMonthEntries.reduce((sum, entry) => sum + entry.amount, 0)
+      const currentMonthSpent = category.spent
+
+      let trend: "up" | "down" | "stable" = "stable"
+      let trendPercent = 0
+
+      if (prevMonthSpent > 0) {
+        const diff = currentMonthSpent - prevMonthSpent
+        trendPercent = Math.abs((diff / prevMonthSpent) * 100)
+        if (diff > 0) {
+          trend = "up"
+        } else if (diff < 0) {
+          trend = "down"
+        }
+      } else if (currentMonthSpent > 0) {
+        trend = "up" // If previous month had no spending, any spending now is an increase
+        trendPercent = 100 // Arbitrarily set to 100%
+      }
+
+      return {
+        ...category,
+        trend,
+        trendPercent,
+      }
+    })
+
+    return calculatedData
+  }, [userBudgetCategories, userBudgetEntries])
+
+  const displayMonthlyData: MonthlyData[] = useMemo(() => {
+    const entries = userDataManager.getBudgetEntries()
+    const monthsData: { [key: string]: MonthlyData } = {}
+
+    // Initialize months
+    for (let i = 0; i < 12; i++) {
+      const date = new Date()
+      date.setMonth(date.getMonth() - i)
+      const monthYear = date.toLocaleString("en-US", { month: "short", year: "numeric" })
+      monthsData[monthYear] = {
+        month: monthYear,
+        income: 0,
+        expenses: 0,
+        savings: 0,
+        housing: 0,
+        transportation: 0,
+        food: 0,
+        shopping: 0,
+        entertainment: 0,
+        healthcare: 0,
+        utilities: 0,
+        travel: 0,
       }
     }
-  }, [debts, isClerkLoaded, user]) // Depend on isClerkLoaded and user
 
-  const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
+    entries.forEach((entry) => {
+      const entryDate = new Date(entry.date)
+      const monthYear = entryDate.toLocaleString("en-US", { month: "short", year: "numeric" })
+
+      if (monthsData[monthYear]) {
+        if (entry.type === "income") {
+          monthsData[monthYear].income += entry.amount
+        } else {
+          monthsData[monthYear].expenses += entry.amount
+          // Distribute expenses to category-specific fields
+          const categoryName = entry.category.toLowerCase()
+          if (monthsData[monthYear][categoryName as keyof MonthlyData] !== undefined) {
+            monthsData[monthYear][categoryName as keyof MonthlyData] += entry.amount
+          }
+        }
+      }
+    })
+
+    // Calculate savings and ensure order
+    const sortedMonths = Object.values(monthsData).sort((a, b) => {
+      const dateA = new Date(a.month)
+      const dateB = new Date(b.month)
+      return dateA.getTime() - dateB.getTime()
+    })
+
+    return sortedMonths.map((month) => {
+      const savings = month.income - month.expenses
+      return { ...month, savings }
+    })
+  }, [userBudgetEntries])
+
+  const budgetVsActualData = useMemo(() => {
+    return displayBudgetData.map((category) => ({
+      name: category.name,
+      budgeted: category.budgeted,
+      spent: category.spent,
+      color: category.color,
+    }))
+  }, [displayBudgetData])
+
+  const pieChartData = useMemo(() => {
+    const totalSpent = displayBudgetData.reduce((sum, cat) => sum + cat.spent, 0)
+    if (totalSpent === 0) return []
+
+    return displayBudgetData
+      .filter((cat) => cat.spent > 0)
+      .map((category) => ({
+        name: category.name,
+        value: category.spent,
+        color: category.color,
+        percentage: ((category.spent / totalSpent) * 100).toFixed(1),
+        budget: category.budgeted,
+      }))
+  }, [displayBudgetData])
+
+  // ADDED: Function to calculate overall budget health
+  const calculateOverallBudgetHealth = () => {
+    const totalBudget = displayBudgetData.reduce((sum, cat) => sum + cat.budgeted, 0)
+    const totalSpent = displayBudgetData.reduce((sum, cat) => sum + cat.spent, 0)
+
+    if (totalBudget === 0) return { percentage: 0, status: "Not Set" }
+
+    const remainingBudget = totalBudget - totalSpent
+    const percentage = Math.max(0, Math.min(100, (remainingBudget / totalBudget) * 100)) // Cap between 0 and 100
+
+    let status: "Good" | "Needs Improvement" | "Poor" | "Excellent" = "Good"
+    if (percentage < 20) {
+      status = "Needs Improvement"
+    }
+    if (percentage < 0) {
+      status = "Poor"
+    }
+    if (percentage === 100) {
+      status = "Excellent"
+    }
+
+    return { percentage, status }
+  }
+
+  // ADDED: Function to add notifications
+  const addNotification = (title: string, message: string, type: "info" | "warning" | "success") => {
     const newNotification = {
       id: Date.now().toString(),
       title,
@@ -402,576 +594,148 @@ const BudgetDashboardContent = () => {
       timestamp: new Date(),
       read: false,
     }
-    setNotifications((prev) => [newNotification, ...prev.slice(0, 9)]) // Keep only 10 most recent
-    setUnreadCount((prev) => Math.min(prev + 1, 9))
+    setNotifications((prev) => [newNotification, ...prev].slice(0, 10)) // Keep only the latest 10
+    setUnreadCount((prev) => prev + 1)
   }
 
-  const markAsRead = (id: string) => {
-    setNotifications((prev) => prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif)))
-    setUnreadCount((prev) => Math.max(0, prev - 1))
-  }
-
+  // ADDED: Function to mark all notifications as read
   const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })))
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
     setUnreadCount(0)
   }
 
-  // Calculate income totals
-  const calculateIncomeData = useCallback(() => {
-    const incomeEntries = userBudgetEntries.filter((entry) => entry.type === "income")
-    const totalIncomeAmount = incomeEntries.reduce((sum, entry) => sum + entry.amount, 0)
+  // ADDED: Function to mark a single notification as read
+  const markAsRead = (id: string) => {
+    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)))
+    setUnreadCount((prev) => (prev > 0 ? prev - 1 : 0))
+  }
 
-    // Calculate total budgeted amounts
-    const totalBudgetedAmount = userBudgetCategories.reduce((sum, cat) => sum + (cat.budgetAmount || 0), 0)
-
-    const available = totalIncomeAmount - totalBudgetedAmount
-
-    setTotalIncome(totalIncomeAmount)
-    setAvailableIncome(available)
-  }, [userBudgetEntries, userBudgetCategories])
-
-  useEffect(() => {
-    if (isClerkLoaded && user) {
-      userDataManager.setClerkUserId(user.id)
-      console.log("[v0] Clerk user loaded:", user.id)
-
-      userDataManager.clearLegacyBudgetData()
-    } else if (isClerkLoaded && !user) {
-      userDataManager.setClerkUserId(null)
-      console.log("[v0] No Clerk user")
-    }
-  }, [user, isClerkLoaded])
-
+  // ADDED: Function to load user data
   const loadUserData = useCallback(() => {
-    if (!isClerkLoaded) {
-      console.log("[v0] Waiting for Clerk to load...")
+    setIsLoadingData(true)
+    console.log("[v0] loadUserData called")
+    const savedCategories = userDataManager.getBudgetCategories()
+    const savedEntries = userDataManager.getBudgetEntries()
+    const savedDebts = userDataManager.getDebts()
+    const savedIncome = userDataManager.getIncome()
+    const savedIncomeDescription = userDataManager.getIncomeDescription()
+
+    setUserBudgetCategories(savedCategories)
+    setUserBudgetEntries(savedEntries)
+    setDebts(savedDebts)
+    setTotalIncome(savedIncome || 0)
+    setIncomeDescription(savedIncomeDescription || "") // Ensure description is set
+
+    // Determine if budgeting has started based on categories or entries
+    setHasStartedBudgeting(savedCategories.length > 0 || savedEntries.filter((e) => e.type === "expense").length > 0)
+
+    setIsLoadingData(false)
+    setIsDataLoaded(true)
+    console.log("[v0] User data loaded:", {
+      categories: savedCategories.length,
+      entries: savedEntries.length,
+      debts: savedDebts.length,
+      income: savedIncome,
+    })
+  }, [])
+
+  // ADDED: Function to handle adding expense
+  const handleAddExpense = (categoryName: string, amount?: number, description?: string) => {
+    console.log("[v0] handleAddExpense called")
+    const expenseAmount = amount !== undefined ? amount : Number.parseFloat(newExpense.amount.toString()) || 0
+    const expenseDescription = description || newExpense.description
+    const expenseCategory = categoryName || newExpense.category
+
+    if (expenseAmount <= 0 || !expenseCategory) {
+      addNotification("Invalid Expense", "Please enter a valid amount and category.", "warning")
       return
     }
 
-    if (isLoadingData) return
+    // Check if budget needs updating (if newExpense.budgetAmount is provided)
+    if (newExpense.budgetAmount > 0) {
+      console.log("[v0] Updating budget for category:", expenseCategory)
+      userDataManager.updateBudgetCategory(expenseCategory, { budgetAmount: newExpense.budgetAmount })
+    }
 
-    setIsLoadingData(true)
+    const newExpenseEntry: BudgetEntry = {
+      id: Date.now().toString(),
+      amount: expenseAmount,
+      category: expenseCategory,
+      description: expenseDescription,
+      date: new Date().toISOString().split("T")[0], // Use current date for simplicity
+      type: "expense",
+    }
 
-    const signedUp = !!user
-    console.log("[v0] Loading user data, Clerk user:", user?.id)
+    console.log("[v0] Adding new expense entry:", newExpenseEntry)
+    const updatedEntries = [...userBudgetEntries, newExpenseEntry]
+    userDataManager.saveBudgetEntries(updatedEntries)
+    setUserBudgetEntries(updatedEntries)
 
-    if (signedUp) {
-      const categories = userDataManager.getBudgetCategories()
-      const entries = userDataManager.getBudgetEntries()
-      const budgetingStarted = userDataManager.hasStartedBudgeting()
+    addNotification("Expense Added!", `Added $${expenseAmount.toLocaleString()} for ${expenseCategory}.`, "success")
+    setNewExpense({ amount: 0, description: "", category: "", budgetAmount: 0 }) // Reset form
+  }
 
-      console.log("[v0] User data loaded:", { categories, entries, budgetingStarted })
+  // ADDED: Function to handle adding income
+  const handleAddIncome = () => {
+    console.log("[v0] handleAddIncome called")
+    const incomeAmount = Number.parseFloat(newIncomeAmount)
 
-      setHasStartedBudgeting(budgetingStarted)
-      setUserBudgetCategories(categories)
-      setUserBudgetEntries(entries)
-      setIsDataLoaded(true)
-    } else {
-      console.log("[v0] User not signed in via Clerk - showing zero data")
-      setHasStartedBudgeting(false)
+    if (incomeAmount <= 0 || !incomeDescription) {
+      addNotification("Invalid Income", "Please enter a valid amount and description.", "warning")
+      return
+    }
+
+    const newIncomeEntry: BudgetEntry = {
+      id: Date.now().toString(),
+      amount: incomeAmount,
+      category: "Income", // Standard category for income
+      description: incomeDescription,
+      date: new Date().toISOString().split("T")[0],
+      type: "income",
+    }
+
+    console.log("[v0] Adding new income entry:", newIncomeEntry)
+    const updatedEntries = [...userBudgetEntries, newIncomeEntry]
+    userDataManager.saveBudgetEntries(updatedEntries)
+    setUserBudgetEntries(updatedEntries)
+
+    // Update total income and available income
+    setTotalIncome((prev) => prev + incomeAmount)
+    setAvailableIncome((prev) => prev + incomeAmount)
+
+    addNotification("Income Added!", `Added $${incomeAmount.toLocaleString()} - ${incomeDescription}.`, "success")
+    setNewIncomeAmount("")
+    setIncomeDescription("")
+    setShowAddIncomeDialog(false)
+  }
+
+  // Effect to load user data on mount or when user changes
+  useEffect(() => {
+    console.log("[v0] useEffect running")
+    if (isClerkLoaded && user) {
+      console.log("[v0] Clerk loaded and user exists, calling loadUserData")
+      setIsUserSignedUp(true)
+      loadUserData()
+    } else if (isClerkLoaded && !user) {
+      console.log("[v0] Clerk loaded but user does not exist, setting isUserSignedUp to false")
+      setIsUserSignedUp(false)
+      // Clear any existing local data if user logs out
+      userDataManager.clearAllData()
       setUserBudgetCategories([])
       setUserBudgetEntries([])
-      setIsDataLoaded(true)
+      setDebts([])
+      setTotalIncome(0)
+      setAvailableIncome(0)
+      setHasStartedBudgeting(false)
     }
-    setIsLoadingData(false)
-  }, [isClerkLoaded, user, isLoadingData])
+  }, [isClerkLoaded, user, loadUserData]) // Added loadUserData as a dependency
 
+  // Effect to update available income when total income or total budget changes
   useEffect(() => {
-    if (isInitialized.current || isDataLoaded || isLoadingData || !isClerkLoaded) return
-    isInitialized.current = true
+    const totalBudget = displayBudgetData.reduce((sum, cat) => sum + cat.budgeted, 0)
+    setAvailableIncome(totalIncome - totalBudget)
+  }, [totalIncome, displayBudgetData])
 
-    const isAuthenticated = !!user
-    setIsUserSignedUp(isAuthenticated)
-
-    if (isAuthenticated) {
-      loadUserData()
-    } else {
-      setIsDataLoaded(true)
-    }
-  }, [loadUserData, isDataLoaded, isLoadingData, isClerkLoaded, user]) // Added loadUserData, isDataLoaded, isLoadingData, and isUserSignedUp to dependencies
-
-  useEffect(() => {
-    calculateIncomeData()
-  }, [calculateIncomeData])
-
-  // Handle adding income
-  const handleAddIncome = () => {
-    if (!isUserSignedUp) {
-      return
-    }
-
-    const amount = Number.parseFloat(newIncomeAmount)
-    if (amount > 0 && incomeDescription.trim()) {
-      userDataManager.addBudgetEntry({
-        amount,
-        category: "Income",
-        description: incomeDescription,
-        date: new Date().toISOString(),
-        type: "income",
-      })
-
-      // Refresh the data
-      loadUserData()
-      setShowAddIncomeDialog(false)
-      setNewIncomeAmount("")
-      setIncomeDescription("")
-
-      // Add notification
-      addNotification(
-        "Income Added Successfully! 💰",
-        `Added $${amount} income: ${incomeDescription}. Your available budget has increased!`,
-        "success",
-      )
-    }
-  }
-
-  // Icon mapping for categories
-  const getCategoryIcon = (categoryName: string) => {
-    const name = categoryName.toLowerCase()
-    if (name.includes("housing") || name.includes("rent") || name.includes("mortgage")) return Home
-    if (name.includes("transportation") || name.includes("car") || name.includes("gas")) return Car
-    if (name.includes("food") || name.includes("dining") || name.includes("grocery")) return Coffee
-    if (name.includes("shopping") || name.includes("retail")) return ShoppingCart
-    if (name.includes("entertainment") || name.includes("games") || name.includes("movies")) return Gamepad2
-    if (name.includes("healthcare") || name.includes("medical") || name.includes("health")) return Heart
-    if (name.includes("utilities") || name.includes("phone") || name.includes("internet")) return Phone
-    if (name.includes("travel") || name.includes("vacation")) return Plane
-    return DollarSign
-  }
-
-  const calculateCategorySpending = useCallback(() => {
-    const categorySpending: Record<string, number> = {}
-
-    // Get current month and year
-    const now = new Date()
-    const currentMonth = now.getMonth()
-    const currentYear = now.getFullYear()
-
-    // Filter entries to only include current month
-    const currentMonthEntries = userBudgetEntries.filter((entry) => {
-      const entryDate = new Date(entry.date)
-      return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear
-    })
-
-    currentMonthEntries.forEach((entry) => {
-      if (entry.type === "expense") {
-        // Normalize category names for better matching
-        const categoryKey = entry.category.toLowerCase().trim()
-        categorySpending[categoryKey] = (categorySpending[categoryKey] || 0) + entry.amount
-      }
-    })
-
-    return categorySpending
-  }, [userBudgetEntries])
-
-  // Convert user data to display format
-  const convertToDisplayData = (): BudgetCategory[] => {
-    const categorySpending = calculateCategorySpending()
-
-    const defaultCategories = [
-      { name: "Housing", key: "housing", color: "#FF0000" }, // bright red
-      { name: "Transportation", key: "transportation", color: "#00FF00" }, // bright green
-      { name: "Food & Dining", key: "food & dining", color: "#0000FF" }, // bright blue
-      { name: "Shopping", key: "shopping", color: "#FFFF00" }, // bright yellow
-      { name: "Entertainment", key: "entertainment", color: "#FF00FF" }, // bright magenta
-      { name: "Healthcare", key: "healthcare", color: "#FF8000" }, // bright orange
-      { name: "Utilities", key: "utilities", color: "#8000FF" }, // bright purple
-      { name: "Travel", key: "travel", color: "#00FFFF" }, // bright cyan
-    ]
-
-    return defaultCategories.map((category) => {
-      const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
-
-      let spent = categorySpending[category.key] || 0
-
-      // Try alternative matching strategies if no direct match
-      if (spent === 0) {
-        // Try exact name match
-        spent = categorySpending[category.name.toLowerCase()] || 0
-
-        // Try partial matching for common variations
-        if (spent === 0) {
-          Object.keys(categorySpending).forEach((key) => {
-            if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
-              spent += categorySpending[key]
-            }
-          })
-        }
-      }
-
-      return {
-        name: category.name,
-        key: category.key,
-        budgeted: userCategory?.budgetAmount || 0,
-        spent: spent,
-        color: category.color,
-        icon: getCategoryIcon(category.name),
-      }
-    })
-  }
-
-  const calculateBudgetProgress = (categories: BudgetCategory[]) => {
-    // Show zero progress if no spending data exists
-    const hasAnySpending = categories.some((cat) => (cat.spent || 0) > 0)
-    if (!hasAnySpending) {
-      return categories.map((cat) => ({
-        ...cat,
-        spent: 0,
-        percentage: 0,
-      }))
-    }
-
-    return categories.map((category) => {
-      const spent = category.spent || 0
-      const budgeted = category.budgeted || 0
-      const percentage = budgeted > 0 ? (spent / budgeted) * 100 : 0
-
-      return {
-        ...category,
-        spent,
-        percentage: Math.min(percentage, 100),
-      }
-    })
-  }
-
-  const calculateOverallBudgetHealth = () => {
-    const totalBudgeted = userBudgetCategories.reduce((sum, cat) => sum + (cat.budgetAmount || 0), 0)
-    const totalSpent = displayBudgetData.reduce((sum, cat) => sum + (cat.spent || 0), 0)
-
-    // Show zero progress if no spending or no budget set
-    if (totalBudgeted === 0) {
-      return {
-        percentage: 0,
-        status: "Not Started",
-        remaining: 0,
-      }
-    }
-
-    // Calculate how much budget is remaining (unspent)
-    const remaining = totalBudgeted - totalSpent
-    // Health score is percentage of budget NOT spent (inverse of spending)
-    const healthScore = Math.max(0, (remaining / totalBudgeted) * 100)
-
-    // Status based on health score (higher is better)
-    let status = "Excellent"
-    if (healthScore < 20) status = "Poor"
-    else if (healthScore < 50) status = "Needs Improvement"
-    else if (healthScore < 80) status = "Good"
-
-    return {
-      percentage: Math.min(healthScore, 100),
-      status,
-      remaining,
-    }
-  }
-
-  const COLORS = ["#FF0000", "#00FF00", "#0000FF", "#FF00FF", "#FFFF00", "#00FFFF", "#FF8000", "#8000FF"]
-
-  const categoryColors = {
-    housing: "hsl(217, 91%, 60%)", // WealthLink primary blue
-    transportation: "hsl(200, 85%, 55%)", // Sky blue
-    "food & dining": "hsl(195, 80%, 50%)", // Light blue
-    healthcare: "hsl(210, 88%, 65%)", // Soft blue
-    shopping: "hsl(225, 75%, 58%)", // Deep blue
-    entertainment: "hsl(185, 82%, 52%)", // Cyan blue
-    utilities: "hsl(205, 78%, 60%)", // Medium blue
-    travel: "hsl(190, 85%, 48%)", // Teal blue
-  }
-
-  const displayBudgetData = useMemo(() => {
-    const now = new Date()
-    const currentMonth = now.getMonth()
-    const currentYear = now.getFullYear()
-
-    const currentMonthEntries = userBudgetEntries.filter((entry) => {
-      const entryDate = new Date(entry.date)
-      return entryDate.getMonth() === currentMonth && entryDate.getFullYear() === currentYear
-    })
-
-    const categorySpending: { [key: string]: number } = {}
-
-    currentMonthEntries.forEach((entry) => {
-      if (entry.type === "expense") {
-        const key = entry.category.toLowerCase()
-        categorySpending[key] = (categorySpending[key] || 0) + entry.amount
-      }
-    })
-
-    const defaultCategories = [
-      { name: "Housing", key: "housing", color: "#FF0000" },
-      { name: "Transportation", key: "transportation", color: "#00FF00" },
-      { name: "Food & Dining", key: "food & dining", color: "#0000FF" },
-      { name: "Shopping", key: "shopping", color: "#FFFF00" },
-      { name: "Entertainment", key: "entertainment", color: "#FF00FF" },
-      { name: "Healthcare", key: "healthcare", color: "#FF8000" },
-      { name: "Utilities", key: "utilities", color: "#8000FF" },
-      { name: "Travel", key: "travel", color: "#00FFFF" },
-    ]
-
-    return defaultCategories.map((category) => {
-      const userCategory = userBudgetCategories.find((uc) => uc.name.toLowerCase() === category.name.toLowerCase())
-
-      let spent = categorySpending[category.key] || 0
-
-      if (spent === 0) {
-        spent = categorySpending[category.name.toLowerCase()] || 0
-
-        if (spent === 0) {
-          Object.keys(categorySpending).forEach((key) => {
-            if (key.includes(category.key.split(" ")[0]) || category.key.includes(key.split(" ")[0])) {
-              spent += categorySpending[key]
-            }
-          })
-        }
-      }
-
-      return {
-        name: category.name,
-        key: category.key,
-        budgeted: userCategory?.budgetAmount || 0,
-        spent: spent,
-        color: category.color,
-        icon: getCategoryIcon(category.name),
-        spendingLimit: userCategory?.spendingLimit || 0,
-      }
-    })
-  }, [userBudgetCategories, userBudgetEntries])
-
-  const handleAddExpense = (category: string, amount?: number, description?: string, budgetAmount?: number) => {
-    const expenseAmount = amount || newExpense.amount
-    const expenseDescription = description || newExpense.description
-    const expenseCategory = category || newExpense.category
-    const newBudgetAmount = budgetAmount || newExpense.budgetAmount
-
-    console.log("[v0] Adding expense:", {
-      category: expenseCategory,
-      amount: expenseAmount,
-      description: expenseDescription,
-      budgetAmount: newBudgetAmount,
-    })
-
-    // Add the expense entry
-    userDataManager.addBudgetEntry({
-      category: expenseCategory,
-      amount: expenseAmount,
-      description: expenseDescription,
-      date: new Date().toISOString(),
-      type: "expense",
-    })
-
-    if (newBudgetAmount > 0) {
-      const categoryName =
-        userBudgetCategories.find((cat) => cat.name.toLowerCase() === expenseCategory.toLowerCase())?.name ||
-        expenseCategory
-      userDataManager.updateBudgetCategory(categoryName, {
-        budgetAmount: newBudgetAmount,
-      })
-    }
-
-    console.log("[v0] User budget entries after adding expense:", userBudgetEntries)
-
-    addNotification("Expense Added", `Added $${expenseAmount} for ${expenseCategory}: ${expenseDescription}`, "info")
-
-    // Refresh data
-    loadUserData()
-  }
-
-  const handleAddEntry = () => {
-    if (!user) {
-      alert("Please sign in to add budget entries")
-      return
-    }
-
-    if (newEntry.description && newEntry.amount && newEntry.category && newEntry.date) {
-      userDataManager.addBudgetEntry({
-        description: newEntry.description,
-        amount: Number.parseFloat(newEntry.amount),
-        category: newEntry.category,
-        date: newEntry.date,
-        type: newEntry.type as "income" | "expense",
-      })
-
-      setNewEntry({
-        description: "",
-        amount: "",
-        category: "",
-        date: new Date().toISOString().split("T")[0],
-        type: "expense",
-      })
-
-      setIsAddDialogOpen(false)
-      loadUserData()
-    }
-  }
-
-  const handleUpdateCategory = () => {
-    if (!user) {
-      alert("Please sign in to update budget categories")
-      return
-    }
-
-    if (editingCategory && editAmount) {
-      userDataManager.updateBudgetCategory(editingCategory, {
-        budgetAmount: Number.parseFloat(editAmount),
-      })
-      setEditingCategory(null)
-      setEditAmount("")
-      setIsEditDialogOpen(false)
-      loadUserData()
-    }
-  }
-
-  const pieChartData = useMemo(() => {
-    if (!user || !userBudgetEntries || userBudgetEntries.length === 0) {
-      return []
-    }
-
-    const categorySpending = calculateCategorySpending()
-    const totalUserSpending = Object.values(categorySpending).reduce((sum, amount) => sum + amount, 0)
-
-    if (totalUserSpending === 0) {
-      return []
-    }
-
-    const result = Object.entries(categorySpending)
-      .filter(([_, amount]) => amount > 0)
-      .map(([categoryName, amount]) => {
-        const percentage = Math.round((amount / totalUserSpending) * 100)
-        const normalizedCategoryName = categoryName.toLowerCase()
-        const color = categoryColors[normalizedCategoryName] || "hsl(217, 91%, 60%)"
-
-        return {
-          name: categoryName,
-          value: amount,
-          color,
-          percentage,
-        }
-      })
-
-    return result
-  }, [user, userBudgetEntries, calculateCategorySpending])
-
-  const budgetVsActualData = useMemo(() => {
-    if (!user || userBudgetEntries.length === 0) return []
-
-    const categorySpending = calculateCategorySpending()
-
-    return Object.entries(categorySpending)
-      .filter(([_, amount]) => amount > 0)
-      .map(([categoryName, spent]) => {
-        const normalizedCategoryName = categoryName.toLowerCase()
-        const color = categoryColors[normalizedCategoryName] || "hsl(220, 14%, 96%)"
-        const budgetCategory = displayBudgetData.find((cat) => cat.name.toLowerCase() === normalizedCategoryName)
-
-        return {
-          name: categoryName,
-          budgeted: budgetCategory?.budgeted || 0,
-          spent: spent,
-          color: color,
-        }
-      })
-  }, [user, userBudgetEntries, displayBudgetData, calculateCategorySpending])
-
-  const displayMonthlyData: MonthlyData[] = React.useMemo(() => {
-    // Instead, check if we have entries to process
-    if (userBudgetEntries.length === 0) {
-      // Return empty months structure instead of empty array so chart still renders
-      const months: MonthlyData[] = []
-      const now = new Date()
-
-      for (let i = 5; i >= 0; i--) {
-        const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
-        const monthName = date.toLocaleDateString("en-US", { month: "short" })
-
-        months.push({
-          month: monthName,
-          income: 0,
-          expenses: 0,
-          savings: 0,
-          housing: 0,
-          transportation: 0,
-          food: 0,
-          shopping: 0,
-          entertainment: 0,
-          healthcare: 0,
-          utilities: 0,
-          travel: 0,
-        })
-      }
-      return months
-    }
-
-    const entries = userBudgetEntries
-
-    // Get last 6 months including current month
-    const months: MonthlyData[] = []
-    const now = new Date()
-
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
-      const monthName = date.toLocaleDateString("en-US", { month: "short" })
-      const year = date.getFullYear()
-      const month = date.getMonth()
-
-      // Filter entries for this month
-      const monthEntries = entries.filter((entry) => {
-        const entryDate = new Date(entry.date)
-        return entryDate.getFullYear() === year && entryDate.getMonth() === month
-      })
-
-      // Calculate totals
-      const income = monthEntries.filter((e) => e.type === "income").reduce((sum, e) => sum + e.amount, 0)
-
-      const expenses = monthEntries.filter((e) => e.type === "expense").reduce((sum, e) => sum + e.amount, 0)
-
-      // Calculate category breakdowns
-      const getCategoryTotal = (categoryName: string) => {
-        return monthEntries
-          .filter((e) => e.type === "expense" && e.category.toLowerCase() === categoryName.toLowerCase())
-          .reduce((sum, e) => sum + e.amount, 0)
-      }
-
-      months.push({
-        month: monthName,
-        income,
-        expenses,
-        savings: income - expenses,
-        housing: getCategoryTotal("housing"),
-        transportation: getCategoryTotal("transportation"),
-        food: getCategoryTotal("food & dining"),
-        shopping: getCategoryTotal("shopping"),
-        entertainment: getCategoryTotal("entertainment"),
-        healthcare: getCategoryTotal("healthcare"),
-        utilities: getCategoryTotal("utilities"),
-        travel: getCategoryTotal("travel"),
-      })
-    }
-
-    console.log("[v0] Calculated monthly data from user entries:", months)
-    return months
-  }, [userBudgetEntries]) // Removed 'user' dependency to prevent chart from disappearing during Clerk re-renders
-
-  const savingsRateData = displayMonthlyData.map((month) => ({
-    month: month.month,
-    savingsRate: month.income > 0 ? ((month.savings / month.income) * 100).toFixed(1) : "0",
-    income: month.income,
-    expenses: month.expenses,
-    savings: month.savings,
-  }))
-
-  const categoryTrendData: CategoryTrendData[] = displayMonthlyData.map((month) => ({
-    month: month.month,
-    Housing: month.housing,
-    Transportation: month.transportation,
-    "Food & Dining": month.food,
-    Shopping: month.shopping,
-    Entertainment: month.entertainment,
-    Healthcare: month.healthcare,
-    Utilities: month.utilities,
-    Travel: month.travel,
-  }))
-
-  // CHANGE: Show all transactions instead of just the last 5, sorted by date (newest first)
   const recentTransactions: Transaction[] =
     isUserSignedUp && userBudgetEntries.length > 0
       ? userBudgetEntries
@@ -1048,7 +812,7 @@ const BudgetDashboardContent = () => {
         const categoryName =
           DEFAULT_CATEGORIES.find((cat) => cat.toLowerCase() === selectedCategory.toLowerCase()) || selectedCategory
 
-        const newCategory: BudgetCategory = {
+        const newCategory: UserBudgetCategory = {
           id: Date.now().toString(),
           name: categoryName,
           budgetAmount: amount,
@@ -1290,7 +1054,7 @@ const BudgetDashboardContent = () => {
 
         // Check if minimum payment covers interest
         const monthlyInterest = remainingBalance * monthlyInterestRate
-        if (debt.minPayment <= monthlyInterest) {
+        if (debt.minPayment <= monthlyInterest && remainingBalance > 0) {
           console.warn("[v0] Debt cannot be paid off - payment doesn't cover interest:", debt.name)
           return {
             ...debt,
@@ -3411,10 +3175,10 @@ const BudgetDashboardContent = () => {
 
 export default function BudgetPage() {
   return (
-    <PremiumGuard>
-      <TutorialProvider>
-        <BudgetDashboardContent />
-      </TutorialProvider>
-    </PremiumGuard>
+    // <PremiumGuard> // Removed PremiumGuard component
+    <TutorialProvider>
+      <BudgetDashboardContent />
+    </TutorialProvider>
+    // </PremiumGuard>
   )
 }
