@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { PremiumGuard } from "@/components/premium-guard"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -364,520 +365,538 @@ const PortfolioImplementationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <Target className="w-8 h-8 text-brand-blue" />
-              Complete Portfolio Implementation
-            </h1>
-            <p className="text-gray-600">Execute all AI recommendations with step-by-step guidance</p>
+    <PremiumGuard>
+      <div className="min-h-screen bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+                <Target className="w-8 h-8 text-brand-blue" />
+                Complete Portfolio Implementation
+              </h1>
+              <p className="text-gray-600">Execute all AI recommendations with step-by-step guidance</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                {executionMode === "guided" ? "Guided Mode" : "Manual Mode"}
+              </Badge>
+              <Button
+                variant="outline"
+                onClick={() => setExecutionMode(executionMode === "guided" ? "manual" : "guided")}
+              >
+                Switch Mode
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="flex items-center gap-2">
-              <Zap className="w-4 h-4" />
-              {executionMode === "guided" ? "Guided Mode" : "Manual Mode"}
-            </Badge>
+
+          {/* Progress Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{Math.round(calculateProgress())}%</div>
+                <Progress value={calculateProgress()} className="mt-2" />
+                <p className="text-xs text-muted-foreground mt-2">
+                  {completedSteps.length} of {implementationSteps.length} completed
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Invested</CardTitle>
+                <DollarSign className="h-4 w-4 text-green-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">
+                  ${calculateTotalValue().totalBuys.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground">New investments made</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Sold</CardTitle>
+                <DollarSign className="h-4 w-4 text-red-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-red-600">
+                  ${calculateTotalValue().totalSells.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground">Positions trimmed</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Critical Actions</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {getStepsByPriority("critical").filter((s) => completedSteps.includes(s.id)).length}/
+                  {getStepsByPriority("critical").length}
+                </div>
+                <p className="text-xs text-muted-foreground">Must-do actions</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Time Invested</CardTitle>
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {implementationSteps
+                    .filter((s) => completedSteps.includes(s.id))
+                    .reduce((sum, s) => sum + Number.parseInt(s.estimatedTime), 0)}{" "}
+                  min
+                </div>
+                <p className="text-xs text-muted-foreground">Time spent optimizing</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Guided Execution Mode */}
+          {executionMode === "guided" && (
+            <Card className="border-2 border-brand-blue">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Play className="w-5 h-5 text-brand-blue" />
+                  Guided Execution - Step {currentStep + 1} of {implementationSteps.length}
+                </CardTitle>
+                <CardDescription>
+                  Follow the step-by-step process to implement all recommendations systematically
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {currentStep < implementationSteps.length && (
+                  <div className="space-y-4">
+                    {(() => {
+                      const step = implementationSteps[currentStep]
+                      return (
+                        <div className="border-2 border-brand-blue/30 rounded-lg p-4 bg-brand-blue/5">
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                              {getCategoryIcon(step.category)}
+                              <div>
+                                <h3 className="font-semibold text-lg">{step.title}</h3>
+                                <p className="text-sm text-gray-600">{step.description}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className={getPriorityColor(step.priority)}>{step.priority}</Badge>
+                              <Badge variant="outline">
+                                <Clock className="w-3 h-3 mr-1" />
+                                {step.estimatedTime}
+                              </Badge>
+                            </div>
+                          </div>
+
+                          {/* Action Summary */}
+                          <div className="bg-white rounded-lg p-4 mb-4 border">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              <div>
+                                <Label className="text-sm font-medium">Action Required</Label>
+                                <div className="text-lg font-semibold">
+                                  {step.category === "sell"
+                                    ? "SELL"
+                                    : step.category === "buy"
+                                      ? "BUY"
+                                      : step.category === "transfer"
+                                        ? "TRANSFER"
+                                        : "SETUP"}
+                                </div>
+                              </div>
+                              <div>
+                                <Label className="text-sm font-medium">Amount</Label>
+                                <div className="text-lg font-semibold">
+                                  ${Math.abs(step.actionAmount).toLocaleString()}
+                                  {step.ticker && ` (${step.ticker})`}
+                                </div>
+                              </div>
+                              <div>
+                                <Label className="text-sm font-medium">Platform</Label>
+                                <div className="text-sm">
+                                  {step.platform.slice(0, 2).join(", ")}
+                                  {step.platform.length > 2 && ` +${step.platform.length - 2} more`}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Detailed Instructions */}
+                          <div className="space-y-3">
+                            <h4 className="font-medium">Step-by-Step Instructions:</h4>
+                            <ol className="space-y-2">
+                              {step.instructions.map((instruction, index) => (
+                                <li key={index} className="flex items-start gap-3">
+                                  <Badge
+                                    variant="outline"
+                                    className="min-w-[24px] h-6 flex items-center justify-center text-xs"
+                                  >
+                                    {index + 1}
+                                  </Badge>
+                                  <span className="text-sm">{instruction}</span>
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
+
+                          {/* Platform Quick Links */}
+                          <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                            <h5 className="font-medium text-sm mb-2">Quick Access Links:</h5>
+                            <div className="flex flex-wrap gap-2">
+                              {step.platform.map((platform) => (
+                                <Button key={platform} size="sm" variant="outline" className="text-xs bg-transparent">
+                                  <ExternalLink className="w-3 h-3 mr-1" />
+                                  {platform}
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex items-center justify-between mt-6">
+                            <div className="flex items-center gap-2">
+                              <Checkbox
+                                checked={completedSteps.includes(step.id)}
+                                onCheckedChange={() => handleStepCompletion(step.id)}
+                              />
+                              <Label className="text-sm">Mark as completed</Label>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                                disabled={currentStep === 0}
+                              >
+                                Previous
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  setCurrentStep(Math.min(implementationSteps.length - 1, currentStep + 1))
+                                }
+                                disabled={currentStep === implementationSteps.length - 1}
+                                className="bg-brand-blue hover:bg-brand-blue/90"
+                              >
+                                Next Step
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })()}
+                  </div>
+                )}
+
+                {currentStep >= implementationSteps.length && (
+                  <div className="text-center py-8">
+                    <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">All Steps Completed!</h3>
+                    <p className="text-gray-600 mb-4">
+                      Congratulations! You've successfully implemented all portfolio optimizations.
+                    </p>
+                    <Button onClick={() => setCurrentStep(0)} className="bg-brand-blue hover:bg-brand-blue/90">
+                      Review All Steps
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Manual Mode - All Steps Overview */}
+          {executionMode === "manual" && (
+            <Tabs defaultValue="critical" className="space-y-6">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="critical">Critical (2)</TabsTrigger>
+                <TabsTrigger value="high">High Priority (3)</TabsTrigger>
+                <TabsTrigger value="medium">Medium Priority (4)</TabsTrigger>
+                <TabsTrigger value="low">Low Priority (1)</TabsTrigger>
+              </TabsList>
+
+              {["critical", "high", "medium", "low"].map((priority) => (
+                <TabsContent key={priority} value={priority} className="space-y-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <AlertTriangle
+                          className={`w-5 h-5 ${
+                            priority === "critical"
+                              ? "text-red-600"
+                              : priority === "high"
+                                ? "text-orange-600"
+                                : priority === "medium"
+                                  ? "text-yellow-600"
+                                  : "text-green-600"
+                          }`}
+                        />
+                        {priority.charAt(0).toUpperCase() + priority.slice(1)} Priority Actions
+                      </CardTitle>
+                      <CardDescription>
+                        {priority === "critical" && "Must complete immediately for portfolio safety"}
+                        {priority === "high" && "Important optimizations for better returns"}
+                        {priority === "medium" && "Beneficial improvements for diversification"}
+                        {priority === "low" && "Optional enhancements for fine-tuning"}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {getStepsByPriority(priority).map((step) => (
+                          <Card
+                            key={step.id}
+                            className={`border-l-4 ${
+                              completedSteps.includes(step.id)
+                                ? "border-l-green-500 bg-green-50"
+                                : "border-l-brand-blue"
+                            }`}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start justify-between">
+                                <div className="flex items-start gap-3 flex-1">
+                                  <Checkbox
+                                    checked={completedSteps.includes(step.id)}
+                                    onCheckedChange={() => handleStepCompletion(step.id)}
+                                    className="mt-1"
+                                  />
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      {getCategoryIcon(step.category)}
+                                      <h3
+                                        className={`font-semibold ${
+                                          completedSteps.includes(step.id) ? "line-through text-gray-500" : ""
+                                        }`}
+                                      >
+                                        {step.title}
+                                      </h3>
+                                      <Badge className={getPriorityColor(step.priority)}>{step.priority}</Badge>
+                                      {step.ticker && <Badge variant="outline">{step.ticker}</Badge>}
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">{step.description}</p>
+
+                                    {/* Action Summary */}
+                                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                                        <div>
+                                          <span className="font-medium">Action: </span>
+                                          <span
+                                            className={`font-semibold ${
+                                              step.category === "sell"
+                                                ? "text-red-600"
+                                                : step.category === "buy"
+                                                  ? "text-green-600"
+                                                  : step.category === "transfer"
+                                                    ? "text-blue-600"
+                                                    : "text-purple-600"
+                                            }`}
+                                          >
+                                            {step.category.toUpperCase()} $
+                                            {Math.abs(step.actionAmount).toLocaleString()}
+                                          </span>
+                                        </div>
+                                        <div>
+                                          <span className="font-medium">Time: </span>
+                                          <span>{step.estimatedTime}</span>
+                                        </div>
+                                        <div>
+                                          <span className="font-medium">Platform: </span>
+                                          <span>{step.platform[0]}</span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {/* Instructions */}
+                                    <div className="space-y-2">
+                                      <h4 className="font-medium text-sm">Instructions:</h4>
+                                      <ol className="text-sm space-y-1 list-decimal list-inside text-gray-700">
+                                        {step.instructions.slice(0, 3).map((instruction, index) => (
+                                          <li key={index}>{instruction}</li>
+                                        ))}
+                                        {step.instructions.length > 3 && (
+                                          <li className="text-gray-500">
+                                            +{step.instructions.length - 3} more steps...
+                                          </li>
+                                        )}
+                                      </ol>
+                                    </div>
+
+                                    {/* Platform Links */}
+                                    <div className="mt-3 flex flex-wrap gap-2">
+                                      {step.platform.slice(0, 3).map((platform) => (
+                                        <Button
+                                          key={platform}
+                                          size="sm"
+                                          variant="outline"
+                                          className="text-xs bg-transparent"
+                                        >
+                                          <ExternalLink className="w-3 h-3 mr-1" />
+                                          {platform}
+                                        </Button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col items-end gap-2">
+                                  {completedSteps.includes(step.id) && (
+                                    <Badge className="bg-green-100 text-green-800">
+                                      <CheckCircle className="w-3 h-3 mr-1" />
+                                      Done
+                                    </Badge>
+                                  )}
+                                  <Button
+                                    size="sm"
+                                    variant={completedSteps.includes(step.id) ? "outline" : "default"}
+                                    className={
+                                      completedSteps.includes(step.id) ? "" : "bg-brand-blue hover:bg-brand-blue/90"
+                                    }
+                                    onClick={() => handleStepCompletion(step.id)}
+                                  >
+                                    {completedSteps.includes(step.id) ? "Undo" : "Complete"}
+                                  </Button>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              ))}
+            </Tabs>
+          )}
+
+          {/* Final Results Summary */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calculator className="w-5 h-5 text-brand-blue" />
+                Implementation Results
+              </CardTitle>
+              <CardDescription>Expected portfolio improvements after completing all optimizations</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-semibold mb-3">Before Optimization</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Portfolio Value:</span>
+                      <span className="font-medium">$12,847</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Expected Annual Return:</span>
+                      <span className="font-medium">8.2%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Risk (Volatility):</span>
+                      <span className="font-medium">14.8%</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Sharpe Ratio:</span>
+                      <span className="font-medium">1.34</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>10-Year Projection:</span>
+                      <span className="font-medium">$287,000</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-semibold mb-3">After Optimization</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Portfolio Value:</span>
+                      <span className="font-medium">$12,847</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Expected Annual Return:</span>
+                      <span className="font-medium text-green-600">8.7% (+0.5%)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Risk (Volatility):</span>
+                      <span className="font-medium text-green-600">13.9% (-0.9%)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Sharpe Ratio:</span>
+                      <span className="font-medium text-green-600">1.52 (+0.18)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>10-Year Projection:</span>
+                      <span className="font-medium text-green-600">$312,000 (+$25,000)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingUp className="w-5 h-5 text-green-600" />
+                  <span className="font-semibold text-green-800">Key Improvements</span>
+                </div>
+                <ul className="text-sm text-green-700 space-y-1">
+                  <li>
+                    • <strong>+$25,000</strong> additional wealth over 10 years
+                  </li>
+                  <li>
+                    • <strong>+0.5%</strong> higher expected annual returns
+                  </li>
+                  <li>
+                    • <strong>-0.9%</strong> lower portfolio volatility (less risk)
+                  </li>
+                  <li>
+                    • <strong>Better diversification</strong> across sectors and geographies
+                  </li>
+                  <li>
+                    • <strong>Reduced concentration risk</strong> in US stocks and Apple
+                  </li>
+                  <li>
+                    • <strong>Emergency fund established</strong> for financial security
+                  </li>
+                  <li>
+                    • <strong>Automated investing</strong> for consistent growth
+                  </li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Action Buttons */}
+          <div className="flex gap-4">
             <Button
-              variant="outline"
-              onClick={() => setExecutionMode(executionMode === "guided" ? "manual" : "guided")}
+              className="bg-brand-blue hover:bg-brand-blue/90"
+              size="lg"
+              onClick={() => setExecutionMode("guided")}
             >
-              Switch Mode
+              <Play className="w-4 h-4 mr-2" />
+              Start Guided Implementation
+            </Button>
+            <Button variant="outline" size="lg">
+              <Copy className="w-4 h-4 mr-2" />
+              Export Checklist
+            </Button>
+            <Button variant="outline" size="lg">
+              <Calendar className="w-4 h-4 mr-2" />
+              Schedule Reminders
+            </Button>
+            <Button variant="outline" size="lg">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh Analysis
             </Button>
           </div>
         </div>
-
-        {/* Progress Dashboard */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{Math.round(calculateProgress())}%</div>
-              <Progress value={calculateProgress()} className="mt-2" />
-              <p className="text-xs text-muted-foreground mt-2">
-                {completedSteps.length} of {implementationSteps.length} completed
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Invested</CardTitle>
-              <DollarSign className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">
-                ${calculateTotalValue().totalBuys.toLocaleString()}
-              </div>
-              <p className="text-xs text-muted-foreground">New investments made</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Sold</CardTitle>
-              <DollarSign className="h-4 w-4 text-red-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-600">
-                ${calculateTotalValue().totalSells.toLocaleString()}
-              </div>
-              <p className="text-xs text-muted-foreground">Positions trimmed</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Critical Actions</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-red-500" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {getStepsByPriority("critical").filter((s) => completedSteps.includes(s.id)).length}/
-                {getStepsByPriority("critical").length}
-              </div>
-              <p className="text-xs text-muted-foreground">Must-do actions</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Time Invested</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {implementationSteps
-                  .filter((s) => completedSteps.includes(s.id))
-                  .reduce((sum, s) => sum + Number.parseInt(s.estimatedTime), 0)}{" "}
-                min
-              </div>
-              <p className="text-xs text-muted-foreground">Time spent optimizing</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Guided Execution Mode */}
-        {executionMode === "guided" && (
-          <Card className="border-2 border-brand-blue">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Play className="w-5 h-5 text-brand-blue" />
-                Guided Execution - Step {currentStep + 1} of {implementationSteps.length}
-              </CardTitle>
-              <CardDescription>
-                Follow the step-by-step process to implement all recommendations systematically
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {currentStep < implementationSteps.length && (
-                <div className="space-y-4">
-                  {(() => {
-                    const step = implementationSteps[currentStep]
-                    return (
-                      <div className="border-2 border-brand-blue/30 rounded-lg p-4 bg-brand-blue/5">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-3">
-                            {getCategoryIcon(step.category)}
-                            <div>
-                              <h3 className="font-semibold text-lg">{step.title}</h3>
-                              <p className="text-sm text-gray-600">{step.description}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge className={getPriorityColor(step.priority)}>{step.priority}</Badge>
-                            <Badge variant="outline">
-                              <Clock className="w-3 h-3 mr-1" />
-                              {step.estimatedTime}
-                            </Badge>
-                          </div>
-                        </div>
-
-                        {/* Action Summary */}
-                        <div className="bg-white rounded-lg p-4 mb-4 border">
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                              <Label className="text-sm font-medium">Action Required</Label>
-                              <div className="text-lg font-semibold">
-                                {step.category === "sell"
-                                  ? "SELL"
-                                  : step.category === "buy"
-                                    ? "BUY"
-                                    : step.category === "transfer"
-                                      ? "TRANSFER"
-                                      : "SETUP"}
-                              </div>
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium">Amount</Label>
-                              <div className="text-lg font-semibold">
-                                ${Math.abs(step.actionAmount).toLocaleString()}
-                                {step.ticker && ` (${step.ticker})`}
-                              </div>
-                            </div>
-                            <div>
-                              <Label className="text-sm font-medium">Platform</Label>
-                              <div className="text-sm">
-                                {step.platform.slice(0, 2).join(", ")}
-                                {step.platform.length > 2 && ` +${step.platform.length - 2} more`}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Detailed Instructions */}
-                        <div className="space-y-3">
-                          <h4 className="font-medium">Step-by-Step Instructions:</h4>
-                          <ol className="space-y-2">
-                            {step.instructions.map((instruction, index) => (
-                              <li key={index} className="flex items-start gap-3">
-                                <Badge
-                                  variant="outline"
-                                  className="min-w-[24px] h-6 flex items-center justify-center text-xs"
-                                >
-                                  {index + 1}
-                                </Badge>
-                                <span className="text-sm">{instruction}</span>
-                              </li>
-                            ))}
-                          </ol>
-                        </div>
-
-                        {/* Platform Quick Links */}
-                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                          <h5 className="font-medium text-sm mb-2">Quick Access Links:</h5>
-                          <div className="flex flex-wrap gap-2">
-                            {step.platform.map((platform) => (
-                              <Button key={platform} size="sm" variant="outline" className="text-xs">
-                                <ExternalLink className="w-3 h-3 mr-1" />
-                                {platform}
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex items-center justify-between mt-6">
-                          <div className="flex items-center gap-2">
-                            <Checkbox
-                              checked={completedSteps.includes(step.id)}
-                              onCheckedChange={() => handleStepCompletion(step.id)}
-                            />
-                            <Label className="text-sm">Mark as completed</Label>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                              disabled={currentStep === 0}
-                            >
-                              Previous
-                            </Button>
-                            <Button
-                              onClick={() => setCurrentStep(Math.min(implementationSteps.length - 1, currentStep + 1))}
-                              disabled={currentStep === implementationSteps.length - 1}
-                              className="bg-brand-blue hover:bg-brand-blue/90"
-                            >
-                              Next Step
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })()}
-                </div>
-              )}
-
-              {currentStep >= implementationSteps.length && (
-                <div className="text-center py-8">
-                  <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">All Steps Completed!</h3>
-                  <p className="text-gray-600 mb-4">
-                    Congratulations! You've successfully implemented all portfolio optimizations.
-                  </p>
-                  <Button onClick={() => setCurrentStep(0)} className="bg-brand-blue hover:bg-brand-blue/90">
-                    Review All Steps
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Manual Mode - All Steps Overview */}
-        {executionMode === "manual" && (
-          <Tabs defaultValue="critical" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="critical">Critical (2)</TabsTrigger>
-              <TabsTrigger value="high">High Priority (3)</TabsTrigger>
-              <TabsTrigger value="medium">Medium Priority (4)</TabsTrigger>
-              <TabsTrigger value="low">Low Priority (1)</TabsTrigger>
-            </TabsList>
-
-            {["critical", "high", "medium", "low"].map((priority) => (
-              <TabsContent key={priority} value={priority} className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <AlertTriangle
-                        className={`w-5 h-5 ${
-                          priority === "critical"
-                            ? "text-red-600"
-                            : priority === "high"
-                              ? "text-orange-600"
-                              : priority === "medium"
-                                ? "text-yellow-600"
-                                : "text-green-600"
-                        }`}
-                      />
-                      {priority.charAt(0).toUpperCase() + priority.slice(1)} Priority Actions
-                    </CardTitle>
-                    <CardDescription>
-                      {priority === "critical" && "Must complete immediately for portfolio safety"}
-                      {priority === "high" && "Important optimizations for better returns"}
-                      {priority === "medium" && "Beneficial improvements for diversification"}
-                      {priority === "low" && "Optional enhancements for fine-tuning"}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {getStepsByPriority(priority).map((step) => (
-                        <Card
-                          key={step.id}
-                          className={`border-l-4 ${
-                            completedSteps.includes(step.id) ? "border-l-green-500 bg-green-50" : "border-l-brand-blue"
-                          }`}
-                        >
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between">
-                              <div className="flex items-start gap-3 flex-1">
-                                <Checkbox
-                                  checked={completedSteps.includes(step.id)}
-                                  onCheckedChange={() => handleStepCompletion(step.id)}
-                                  className="mt-1"
-                                />
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    {getCategoryIcon(step.category)}
-                                    <h3
-                                      className={`font-semibold ${
-                                        completedSteps.includes(step.id) ? "line-through text-gray-500" : ""
-                                      }`}
-                                    >
-                                      {step.title}
-                                    </h3>
-                                    <Badge className={getPriorityColor(step.priority)}>{step.priority}</Badge>
-                                    {step.ticker && <Badge variant="outline">{step.ticker}</Badge>}
-                                  </div>
-                                  <p className="text-sm text-gray-600 mb-3">{step.description}</p>
-
-                                  {/* Action Summary */}
-                                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-                                      <div>
-                                        <span className="font-medium">Action: </span>
-                                        <span
-                                          className={`font-semibold ${
-                                            step.category === "sell"
-                                              ? "text-red-600"
-                                              : step.category === "buy"
-                                                ? "text-green-600"
-                                                : step.category === "transfer"
-                                                  ? "text-blue-600"
-                                                  : "text-purple-600"
-                                          }`}
-                                        >
-                                          {step.category.toUpperCase()} ${Math.abs(step.actionAmount).toLocaleString()}
-                                        </span>
-                                      </div>
-                                      <div>
-                                        <span className="font-medium">Time: </span>
-                                        <span>{step.estimatedTime}</span>
-                                      </div>
-                                      <div>
-                                        <span className="font-medium">Platform: </span>
-                                        <span>{step.platform[0]}</span>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Instructions */}
-                                  <div className="space-y-2">
-                                    <h4 className="font-medium text-sm">Instructions:</h4>
-                                    <ol className="text-sm space-y-1 list-decimal list-inside text-gray-700">
-                                      {step.instructions.slice(0, 3).map((instruction, index) => (
-                                        <li key={index}>{instruction}</li>
-                                      ))}
-                                      {step.instructions.length > 3 && (
-                                        <li className="text-gray-500">+{step.instructions.length - 3} more steps...</li>
-                                      )}
-                                    </ol>
-                                  </div>
-
-                                  {/* Platform Links */}
-                                  <div className="mt-3 flex flex-wrap gap-2">
-                                    {step.platform.slice(0, 3).map((platform) => (
-                                      <Button key={platform} size="sm" variant="outline" className="text-xs">
-                                        <ExternalLink className="w-3 h-3 mr-1" />
-                                        {platform}
-                                      </Button>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex flex-col items-end gap-2">
-                                {completedSteps.includes(step.id) && (
-                                  <Badge className="bg-green-100 text-green-800">
-                                    <CheckCircle className="w-3 h-3 mr-1" />
-                                    Done
-                                  </Badge>
-                                )}
-                                <Button
-                                  size="sm"
-                                  variant={completedSteps.includes(step.id) ? "outline" : "default"}
-                                  className={
-                                    completedSteps.includes(step.id) ? "" : "bg-brand-blue hover:bg-brand-blue/90"
-                                  }
-                                  onClick={() => handleStepCompletion(step.id)}
-                                >
-                                  {completedSteps.includes(step.id) ? "Undo" : "Complete"}
-                                </Button>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            ))}
-          </Tabs>
-        )}
-
-        {/* Final Results Summary */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calculator className="w-5 h-5 text-brand-blue" />
-              Implementation Results
-            </CardTitle>
-            <CardDescription>Expected portfolio improvements after completing all optimizations</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold mb-3">Before Optimization</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Portfolio Value:</span>
-                    <span className="font-medium">$12,847</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Expected Annual Return:</span>
-                    <span className="font-medium">8.2%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Risk (Volatility):</span>
-                    <span className="font-medium">14.8%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Sharpe Ratio:</span>
-                    <span className="font-medium">1.34</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>10-Year Projection:</span>
-                    <span className="font-medium">$287,000</span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-semibold mb-3">After Optimization</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Portfolio Value:</span>
-                    <span className="font-medium">$12,847</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Expected Annual Return:</span>
-                    <span className="font-medium text-green-600">8.7% (+0.5%)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Risk (Volatility):</span>
-                    <span className="font-medium text-green-600">13.9% (-0.9%)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Sharpe Ratio:</span>
-                    <span className="font-medium text-green-600">1.52 (+0.18)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>10-Year Projection:</span>
-                    <span className="font-medium text-green-600">$312,000 (+$25,000)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="w-5 h-5 text-green-600" />
-                <span className="font-semibold text-green-800">Key Improvements</span>
-              </div>
-              <ul className="text-sm text-green-700 space-y-1">
-                <li>
-                  • <strong>+$25,000</strong> additional wealth over 10 years
-                </li>
-                <li>
-                  • <strong>+0.5%</strong> higher expected annual returns
-                </li>
-                <li>
-                  • <strong>-0.9%</strong> lower portfolio volatility (less risk)
-                </li>
-                <li>
-                  • <strong>Better diversification</strong> across sectors and geographies
-                </li>
-                <li>
-                  • <strong>Reduced concentration risk</strong> in US stocks and Apple
-                </li>
-                <li>
-                  • <strong>Emergency fund established</strong> for financial security
-                </li>
-                <li>
-                  • <strong>Automated investing</strong> for consistent growth
-                </li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Action Buttons */}
-        <div className="flex gap-4">
-          <Button className="bg-brand-blue hover:bg-brand-blue/90" size="lg" onClick={() => setExecutionMode("guided")}>
-            <Play className="w-4 h-4 mr-2" />
-            Start Guided Implementation
-          </Button>
-          <Button variant="outline" size="lg">
-            <Copy className="w-4 h-4 mr-2" />
-            Export Checklist
-          </Button>
-          <Button variant="outline" size="lg">
-            <Calendar className="w-4 h-4 mr-2" />
-            Schedule Reminders
-          </Button>
-          <Button variant="outline" size="lg">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Refresh Analysis
-          </Button>
-        </div>
       </div>
-    </div>
+    </PremiumGuard>
   )
 }
 
