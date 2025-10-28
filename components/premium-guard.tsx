@@ -6,6 +6,26 @@ import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
+function checkPremiumStatus(publicMetadata: any): boolean {
+  if (!publicMetadata) return false
+
+  // Check for direct premium flag
+  if (publicMetadata.premium === true) return true
+
+  // Check for Clerk Billing subscription status
+  if (publicMetadata.subscriptionStatus === "active") return true
+
+  // Check for subscriptions array (Clerk Billing format)
+  if (Array.isArray(publicMetadata.subscriptions) && publicMetadata.subscriptions.length > 0) {
+    return publicMetadata.subscriptions.some((sub: any) => sub.status === "active")
+  }
+
+  // Check for subscription object
+  if (publicMetadata.subscription?.status === "active") return true
+
+  return false
+}
+
 export function PremiumGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const router = useRouter()
@@ -21,8 +41,7 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
       return
     }
 
-    // Check if user has premium in publicMetadata
-    const hasPremium = user.publicMetadata?.premium === true
+    const hasPremium = checkPremiumStatus(user.publicMetadata)
 
     console.log("[v0] Premium check:", {
       userId: user.id,
