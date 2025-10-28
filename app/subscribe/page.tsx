@@ -1,5 +1,8 @@
 "use client"
 
+import "clsx"
+import "class-variance-authority"
+
 import { PricingTable } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
