@@ -5,13 +5,19 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 export default function SubscribePage() {
+  console.log("[v0] SubscribePage component rendering")
+
   const { user, isLoaded } = useUser()
   const router = useRouter()
 
+  console.log("[v0] Subscribe page state:", { isLoaded, hasUser: !!user, userId: user?.id })
+
   useEffect(() => {
+    console.log("[v0] Subscribe page useEffect triggered")
     if (isLoaded && user) {
       console.log("[v0] Subscribe page loaded for user:", user.id)
       const hasPremium = user.publicMetadata?.premium === true || user.publicMetadata?.subscriptionStatus === "active"
+      console.log("[v0] User premium status:", hasPremium, "metadata:", user.publicMetadata)
 
       if (hasPremium) {
         console.log("[v0] User already has premium, redirecting to home")
@@ -25,7 +31,10 @@ export default function SubscribePage() {
     window.location.href = `https://accounts.clerk.dev/user/billing?redirect_url=${window.location.origin}`
   }
 
+  console.log("[v0] Rendering subscribe page UI, isLoaded:", isLoaded, "user:", !!user)
+
   if (!isLoaded || !user) {
+    console.log("[v0] Showing loading state")
     return (
       <div
         style={{
@@ -60,6 +69,8 @@ export default function SubscribePage() {
       </div>
     )
   }
+
+  console.log("[v0] Showing subscription UI")
 
   return (
     <div
