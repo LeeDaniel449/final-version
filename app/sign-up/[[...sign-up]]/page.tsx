@@ -1,6 +1,6 @@
 "use client"
 
-import { SignUp, useUser } from "@clerk/nextjs"
+import { SignUp, useUser, CheckoutButton } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -89,30 +89,20 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              if (window.Clerk) {
-                window.Clerk.openUserProfile({ routing: "virtual" })
-              }
-            }}
-            style={{
-              width: "100%",
-              padding: "16px 32px",
-              fontSize: "18px",
-              fontWeight: "600",
-              color: "white",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              border: "none",
-              borderRadius: "12px",
-              cursor: "pointer",
-              marginBottom: "16px",
-              transition: "transform 0.2s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            Subscribe Now
-          </button>
+          <div style={{ width: "100%", marginBottom: "16px" }}>
+            <CheckoutButton
+              planId="cplan_34V21R75vXuGKwyVCpbw2bgdiXm"
+              appearance={{
+                elements: {
+                  rootBox: "w-full",
+                  button:
+                    "w-full py-4 px-8 text-lg font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl hover:scale-105 transition-transform",
+                },
+              }}
+            >
+              Subscribe Now
+            </CheckoutButton>
+          </div>
 
           <p style={{ fontSize: "14px", color: "#718096" }}>Your subscription is required to access the platform</p>
         </div>
