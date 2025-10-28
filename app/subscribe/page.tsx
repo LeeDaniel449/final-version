@@ -2,14 +2,11 @@
 
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useEffect } from "react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -21,33 +18,43 @@ export default function SubscribePage() {
     }
   }, [isLoaded, user, router])
 
-  const handleSubscribe = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user?.id,
-          priceId: "price_premium_monthly", // This will be your Stripe price ID
-        }),
+  const handleSubscribe = () => {
+    if (window.Clerk) {
+      window.Clerk.openUserProfile({
+        appearance: {
+          elements: {
+            rootBox: "z-[9999]",
+          },
+        },
       })
-
-      const { url } = await response.json()
-
-      if (url) {
-        window.location.href = url
-      }
-    } catch (error) {
-      console.error("[v0] Subscription error:", error)
-      setLoading(false)
     }
   }
 
   if (!isLoaded || !user) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p>Loading...</p>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <div
+            style={{
+              width: "48px",
+              height: "48px",
+              border: "4px solid rgba(255,255,255,0.3)",
+              borderTop: "4px solid white",
+              borderRadius: "50%",
+              margin: "0 auto 16px",
+              animation: "spin 1s linear infinite",
+            }}
+          ></div>
+          <p style={{ fontSize: "18px" }}>Loading...</p>
+        </div>
       </div>
     )
   }
@@ -63,96 +70,124 @@ export default function SubscribePage() {
         padding: "24px",
       }}
     >
-      <Card style={{ width: "100%", maxWidth: "600px" }}>
-        <CardHeader style={{ textAlign: "center" }}>
-          <CardTitle style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "8px" }}>
-            🎯 Complete Your Subscription
-          </CardTitle>
-          <CardDescription style={{ fontSize: "16px" }}>Subscribe now to unlock all premium features</CardDescription>
-        </CardHeader>
-        <CardContent style={{ padding: "24px" }}>
+      <div
+        style={{
+          maxWidth: "600px",
+          width: "100%",
+          background: "white",
+          borderRadius: "16px",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+          overflow: "hidden",
+        }}
+      >
+        {/* Header */}
+        <div
+          style={{
+            padding: "48px 32px",
+            textAlign: "center",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+          }}
+        >
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🎯</div>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "12px", margin: 0 }}>
+            Complete Your Subscription
+          </h1>
+          <p style={{ fontSize: "18px", opacity: 0.9, margin: 0 }}>Subscribe now to unlock all premium features</p>
+        </div>
+
+        {/* Content */}
+        <div style={{ padding: "40px 32px" }}>
+          {/* Features */}
           <div style={{ marginBottom: "32px" }}>
-            <div
-              style={{
-                padding: "24px",
-                background: "#f8f9fa",
-                borderRadius: "12px",
-                marginBottom: "24px",
-              }}
-            >
-              <h3 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}>Premium Features</h3>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
-                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
-                  <span>AI-Powered Financial Advisor</span>
-                </li>
-                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
-                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
-                  <span>Portfolio Optimization Tools</span>
-                </li>
-                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
-                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
-                  <span>Budget & Goal Tracking</span>
-                </li>
-                <li style={{ marginBottom: "12px", display: "flex", alignItems: "start" }}>
-                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
-                  <span>Real-Time Market Data</span>
-                </li>
-                <li style={{ display: "flex", alignItems: "start" }}>
-                  <span style={{ marginRight: "12px", color: "#10b981", fontSize: "20px" }}>✓</span>
-                  <span>Unlimited Access to All Features</span>
-                </li>
-              </ul>
+            <h3 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "20px", color: "#1f2937" }}>
+              Premium Features Include:
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              <div style={{ display: "flex", alignItems: "start" }}>
+                <span style={{ fontSize: "24px", marginRight: "12px", color: "#10b981" }}>✓</span>
+                <span style={{ fontSize: "16px", color: "#4b5563" }}>AI-Powered Financial Advisor</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "start" }}>
+                <span style={{ fontSize: "24px", marginRight: "12px", color: "#10b981" }}>✓</span>
+                <span style={{ fontSize: "16px", color: "#4b5563" }}>Portfolio Optimization Tools</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "start" }}>
+                <span style={{ fontSize: "24px", marginRight: "12px", color: "#10b981" }}>✓</span>
+                <span style={{ fontSize: "16px", color: "#4b5563" }}>Budget & Goal Tracking</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "start" }}>
+                <span style={{ fontSize: "24px", marginRight: "12px", color: "#10b981" }}>✓</span>
+                <span style={{ fontSize: "16px", color: "#4b5563" }}>Real-Time Market Data</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "start" }}>
+                <span style={{ fontSize: "24px", marginRight: "12px", color: "#10b981" }}>✓</span>
+                <span style={{ fontSize: "16px", color: "#4b5563" }}>Unlimited Access to All Features</span>
+              </div>
             </div>
+          </div>
 
-            <div
-              style={{
-                padding: "20px",
-                background: "#667eea",
-                color: "white",
-                borderRadius: "12px",
-                textAlign: "center",
-                marginBottom: "24px",
-              }}
-            >
-              <p style={{ fontSize: "18px", marginBottom: "8px" }}>Premium Plan</p>
-              <p style={{ fontSize: "36px", fontWeight: "bold" }}>
-                $29.99<span style={{ fontSize: "18px" }}>/month</span>
-              </p>
-            </div>
-
-            <Button
-              onClick={handleSubscribe}
-              disabled={loading}
-              style={{
-                width: "100%",
-                height: "56px",
-                fontSize: "18px",
-                fontWeight: "600",
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                border: "none",
-                borderRadius: "8px",
-                color: "white",
-                cursor: loading ? "not-allowed" : "pointer",
-                opacity: loading ? 0.7 : 1,
-              }}
-            >
-              {loading ? "Processing..." : "Subscribe Now with Stripe"}
-            </Button>
-
-            <p
-              style={{
-                textAlign: "center",
-                marginTop: "16px",
-                fontSize: "14px",
-                color: "#6b7280",
-              }}
-            >
-              Secure payment powered by Stripe
+          {/* Pricing */}
+          <div
+            style={{
+              padding: "24px",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              borderRadius: "12px",
+              textAlign: "center",
+              marginBottom: "24px",
+            }}
+          >
+            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", marginBottom: "8px", margin: 0 }}>
+              Premium Plan
+            </p>
+            <p style={{ fontSize: "42px", fontWeight: "bold", color: "white", margin: "8px 0" }}>
+              $29.99<span style={{ fontSize: "20px", fontWeight: "normal" }}>/month</span>
             </p>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* CTA Button */}
+          <button
+            onClick={handleSubscribe}
+            style={{
+              width: "100%",
+              padding: "18px 32px",
+              fontSize: "18px",
+              fontWeight: "600",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              color: "white",
+              border: "none",
+              borderRadius: "12px",
+              cursor: "pointer",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)"
+              e.currentTarget.style.boxShadow = "0 6px 20px rgba(102, 126, 234, 0.6)"
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "translateY(0)"
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
+            }}
+          >
+            Subscribe Now with Clerk
+          </button>
+
+          <p
+            style={{ textAlign: "center", marginTop: "16px", fontSize: "14px", color: "#9ca3af", margin: "16px 0 0 0" }}
+          >
+            Secure payment powered by Clerk Billing
+          </p>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </div>
   )
 }
