@@ -6,23 +6,60 @@ import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-function checkPremiumStatus(publicMetadata: any): boolean {
-  if (!publicMetadata) return false
+function checkPremiumStatus(user: any): boolean {
+  console.log("[v0] Full user object:", {
+    id: user.id,
+    publicMetadata: user.publicMetadata,
+    privateMetadata: user.privateMetadata,
+    unsafeMetadata: user.unsafeMetadata,
+    organizationMemberships: user.organizationMemberships,
+  })
+
+  const publicMetadata = user.publicMetadata
+
+  if (!publicMetadata) {
+    console.log("[v0] No publicMetadata found")
+    return false
+  }
 
   // Check for direct premium flag
-  if (publicMetadata.premium === true) return true
+  if (publicMetadata.premium === true) {
+    console.log("[v0] Premium detected via premium flag")
+    return true
+  }
 
   // Check for Clerk Billing subscription status
-  if (publicMetadata.subscriptionStatus === "active") return true
+  if (publicMetadata.subscriptionStatus === "active") {
+    console.log("[v0] Premium detected via subscriptionStatus")
+    return true
+  }
 
   // Check for subscriptions array (Clerk Billing format)
   if (Array.isArray(publicMetadata.subscriptions) && publicMetadata.subscriptions.length > 0) {
-    return publicMetadata.subscriptions.some((sub: any) => sub.status === "active")
+    const hasActive = publicMetadata.subscriptions.some((sub: any) => sub.status === "active")
+    if (hasActive) {
+      console.log("[v0] Premium detected via subscriptions array")
+      return true
+    }
   }
 
   // Check for subscription object
-  if (publicMetadata.subscription?.status === "active") return true
+  if (publicMetadata.subscription?.status === "active") {
+    console.log("[v0] Premium detected via subscription object")
+    return true
+  }
 
+  if (publicMetadata.stripeSubscriptionId) {
+    console.log("[v0] Premium detected via stripeSubscriptionId")
+    return true
+  }
+
+  if (publicMetadata.clerkSubscriptionId) {
+    console.log("[v0] Premium detected via clerkSubscriptionId")
+    return true
+  }
+
+  console.log("[v0] No premium indicators found in metadata")
   return false
 }
 
@@ -41,12 +78,11 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const hasPremium = checkPremiumStatus(user.publicMetadata)
+    const hasPremium = checkPremiumStatus(user)
 
-    console.log("[v0] Premium check:", {
+    console.log("[v0] Premium check result:", {
       userId: user.id,
       hasPremium,
-      metadata: user.publicMetadata,
     })
 
     if (!hasPremium) {
@@ -56,6 +92,7 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
     }
 
     // User has premium, allow access
+    console.log("[v0] User has premium, granting access")
     setIsChecking(false)
   }, [user, isLoaded, router])
 
