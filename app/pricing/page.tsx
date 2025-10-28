@@ -10,7 +10,6 @@ export default function PricingPage() {
   const { user, isLoaded } = useUser()
   const clerk = useClerk()
   const router = useRouter()
-  const [isCheckingOut, setIsCheckingOut] = React.useState(false)
 
   React.useEffect(() => {
     if (isLoaded && !user) {
@@ -35,37 +34,15 @@ export default function PricingPage() {
     }
   }, [isLoaded, user, router])
 
-  const handleCheckout = async () => {
-    setIsCheckingOut(true)
-    try {
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+  const handleSubscribe = () => {
+    clerk.openUserProfile({
+      appearance: {
+        elements: {
+          rootBox: "w-full",
+          card: "w-full",
         },
-        body: JSON.stringify({
-          userId: user?.id,
-          email: user?.primaryEmailAddress?.emailAddress,
-        }),
-      })
-
-      const { url, error } = await response.json()
-
-      if (error) {
-        console.error("[v0] Checkout error:", error)
-        alert("Failed to start checkout. Please try again.")
-        setIsCheckingOut(false)
-        return
-      }
-
-      if (url) {
-        window.location.href = url
-      }
-    } catch (error) {
-      console.error("[v0] Error opening checkout:", error)
-      alert("Failed to start checkout. Please try again.")
-      setIsCheckingOut(false)
-    }
+      },
+    })
   }
 
   if (!isLoaded || !user) {
@@ -120,18 +97,10 @@ export default function PricingPage() {
 
             <SignedIn>
               <Button
-                onClick={handleCheckout}
-                disabled={isCheckingOut}
+                onClick={handleSubscribe}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 px-8 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
               >
-                {isCheckingOut ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    Loading...
-                  </>
-                ) : (
-                  "Subscribe Now"
-                )}
+                Subscribe Now
               </Button>
             </SignedIn>
 
@@ -140,7 +109,7 @@ export default function PricingPage() {
         </div>
 
         <div className="text-center mt-8 text-sm text-gray-500">
-          <p>Secure payment powered by Stripe</p>
+          <p>Secure payment powered by Clerk Billing</p>
         </div>
       </div>
     </div>
