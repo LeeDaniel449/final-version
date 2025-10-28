@@ -2,33 +2,11 @@
 
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import dynamic from "next/dynamic"
-
-const PricingTable = dynamic(() => import("@clerk/nextjs").then((mod) => mod.PricingTable), {
-  loading: () => (
-    <div style={{ textAlign: "center", padding: "48px" }}>
-      <div
-        style={{
-          width: "48px",
-          height: "48px",
-          border: "4px solid rgba(102, 126, 234, 0.3)",
-          borderTop: "4px solid #667eea",
-          borderRadius: "50%",
-          margin: "0 auto 16px",
-          animation: "spin 1s linear infinite",
-        }}
-      />
-      <p style={{ color: "#4a5568" }}>Loading pricing...</p>
-    </div>
-  ),
-  ssr: false,
-})
+import { useEffect } from "react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
   const router = useRouter()
-  const [showFallback, setShowFallback] = useState(false)
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -42,15 +20,8 @@ export default function SubscribePage() {
     }
   }, [isLoaded, user, router])
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowFallback(true)
-    }, 5000)
-    return () => clearTimeout(timer)
-  }, [])
-
   const handleSubscribe = () => {
-    console.log("[v0] Opening Clerk user profile for billing")
+    console.log("[v0] Opening Clerk billing page")
     window.location.href = `https://accounts.clerk.dev/user/billing?redirect_url=${window.location.origin}`
   }
 
@@ -114,69 +85,76 @@ export default function SubscribePage() {
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <div style={{ fontSize: "48px", marginBottom: "16px" }}>🎯</div>
           <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
-            Choose Your Plan
+            Premium Plan Required
           </h1>
           <p style={{ fontSize: "18px", color: "#4a5568" }}>
             Subscribe to unlock all premium features and start your financial journey
           </p>
         </div>
 
-        {!showFallback ? (
-          <div style={{ minHeight: "400px" }}>
-            <PricingTable />
+        <div
+          style={{
+            background: "#f7fafc",
+            borderRadius: "12px",
+            padding: "32px",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ marginBottom: "24px" }}>
+            <div style={{ fontSize: "48px", fontWeight: "bold", color: "#667eea", marginBottom: "8px" }}>
+              $9.99<span style={{ fontSize: "18px", fontWeight: "normal", color: "#718096" }}>/month</span>
+            </div>
+            <div style={{ fontSize: "14px", color: "#718096", textTransform: "uppercase", letterSpacing: "1px" }}>
+              Premium Plan
+            </div>
           </div>
-        ) : (
-          <div
+
+          <div style={{ marginBottom: "32px", textAlign: "left", maxWidth: "400px", margin: "0 auto 32px" }}>
+            {[
+              "AI-Powered Financial Advisor",
+              "Portfolio Optimization Tools",
+              "Budget & Goal Tracking",
+              "Real-time Market Data",
+              "Advanced Analytics",
+              "Priority Support",
+            ].map((feature, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", marginBottom: "12px" }}>
+                <span style={{ color: "#48bb78", marginRight: "12px", fontSize: "20px", fontWeight: "bold" }}>✓</span>
+                <span style={{ color: "#2d3748", fontSize: "16px" }}>{feature}</span>
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={handleSubscribe}
             style={{
-              background: "#f7fafc",
+              padding: "16px 48px",
+              fontSize: "18px",
+              fontWeight: "600",
+              color: "white",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              border: "none",
               borderRadius: "12px",
-              padding: "32px",
-              textAlign: "center",
+              cursor: "pointer",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "scale(1.02)"
+              e.currentTarget.style.boxShadow = "0 6px 20px rgba(102, 126, 234, 0.5)"
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "scale(1)"
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
             }}
           >
-            <div style={{ marginBottom: "24px" }}>
-              <div style={{ fontSize: "48px", fontWeight: "bold", color: "#667eea", marginBottom: "8px" }}>
-                $9.99<span style={{ fontSize: "18px", fontWeight: "normal", color: "#718096" }}>/month</span>
-              </div>
-              <div style={{ fontSize: "14px", color: "#718096" }}>Premium Plan</div>
-            </div>
+            Subscribe Now
+          </button>
 
-            <div style={{ marginBottom: "24px", textAlign: "left", maxWidth: "400px", margin: "0 auto 24px" }}>
-              {[
-                "AI-Powered Financial Advisor",
-                "Portfolio Optimization Tools",
-                "Budget & Goal Tracking",
-                "Real-time Market Data",
-                "Advanced Analytics",
-                "Priority Support",
-              ].map((feature, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", marginBottom: "12px" }}>
-                  <span style={{ color: "#48bb78", marginRight: "12px", fontSize: "20px" }}>✓</span>
-                  <span style={{ color: "#2d3748" }}>{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <button
-              onClick={handleSubscribe}
-              style={{
-                padding: "16px 48px",
-                fontSize: "18px",
-                fontWeight: "600",
-                color: "white",
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                border: "none",
-                borderRadius: "12px",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-              }}
-              onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-            >
-              Subscribe Now
-            </button>
-          </div>
-        )}
+          <p style={{ fontSize: "14px", color: "#718096", marginTop: "16px" }}>
+            Managed by Clerk • Secure Payment Processing
+          </p>
+        </div>
 
         <p style={{ fontSize: "14px", color: "#718096", textAlign: "center", marginTop: "24px" }}>
           Your subscription is required to access the platform
