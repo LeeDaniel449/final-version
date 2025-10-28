@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-// Authentication is handled at the page level via PremiumGuard components
-export default function middleware(req: any) {
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === "/onboarding") {
+    console.log("[v0] Redirecting from /onboarding to /")
+    return NextResponse.redirect(new URL("/", request.url))
+  }
+
+  // Allow all other requests to proceed
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: [],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 }

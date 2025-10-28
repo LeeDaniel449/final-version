@@ -52,7 +52,6 @@ import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PremiumGuard } from "@/components/premium-guard"
 
 interface BudgetCategory {
   name: string
@@ -383,7 +382,7 @@ const BudgetDashboardContent = () => {
       const storageKey = `wealthwise_debts_${user.id}`
       if (debts.length > 0) {
         // Only save if there are debts to save
-        localStorage.setItem(storageKey, JSON.stringify(debts))
+        localStorage.setItem(storageKey, JSON.JSON.stringify(debts))
         console.log("[v0] Saved debts to localStorage:", debts)
       } else {
         // If debts become empty, remove the item from localStorage
@@ -3411,10 +3410,8 @@ const BudgetDashboardContent = () => {
 
 export default function BudgetPage() {
   return (
-    <PremiumGuard>
-      <TutorialProvider>
-        <BudgetDashboardContent />
-      </TutorialProvider>
-    </PremiumGuard>
+    <TutorialProvider>
+      <BudgetDashboardContent />
+    </TutorialProvider>
   )
 }

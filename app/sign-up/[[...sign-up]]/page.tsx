@@ -11,21 +11,23 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      console.log("[v0] User signed up, redirecting to pricing")
-      router.replace("/pricing")
+      console.log("[v0] User already signed in on sign-up page, redirecting to home")
+      router.replace("/")
     }
   }, [isLoaded, isSignedIn, router])
 
+  // Don't render sign-up form if user is already signed in
   if (isLoaded && isSignedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting to subscription...</p>
+          <p className="text-gray-600">Redirecting to home...</p>
         </div>
       </div>
     )
   }
+  // </CHANGE>
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
@@ -44,10 +46,10 @@ export default function SignUpPage() {
           routing="path"
           path="/sign-up"
           signInUrl="/sign-in"
-          redirectUrl="/pricing"
-          afterSignUpUrl="/pricing"
-          forceRedirectUrl="/pricing"
-          fallbackRedirectUrl="/pricing"
+          redirectUrl="/"
+          afterSignUpUrl="/"
+          forceRedirectUrl="/"
+          fallbackRedirectUrl="/"
         />
       </div>
     </div>

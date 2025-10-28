@@ -6,63 +6,6 @@ import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-function checkPremiumStatus(user: any): boolean {
-  console.log("[v0] Full user object:", {
-    id: user.id,
-    publicMetadata: user.publicMetadata,
-    privateMetadata: user.privateMetadata,
-    unsafeMetadata: user.unsafeMetadata,
-    organizationMemberships: user.organizationMemberships,
-  })
-
-  const publicMetadata = user.publicMetadata
-
-  if (!publicMetadata) {
-    console.log("[v0] No publicMetadata found")
-    return false
-  }
-
-  // Check for direct premium flag
-  if (publicMetadata.premium === true) {
-    console.log("[v0] Premium detected via premium flag")
-    return true
-  }
-
-  // Check for Clerk Billing subscription status
-  if (publicMetadata.subscriptionStatus === "active") {
-    console.log("[v0] Premium detected via subscriptionStatus")
-    return true
-  }
-
-  // Check for subscriptions array (Clerk Billing format)
-  if (Array.isArray(publicMetadata.subscriptions) && publicMetadata.subscriptions.length > 0) {
-    const hasActive = publicMetadata.subscriptions.some((sub: any) => sub.status === "active")
-    if (hasActive) {
-      console.log("[v0] Premium detected via subscriptions array")
-      return true
-    }
-  }
-
-  // Check for subscription object
-  if (publicMetadata.subscription?.status === "active") {
-    console.log("[v0] Premium detected via subscription object")
-    return true
-  }
-
-  if (publicMetadata.stripeSubscriptionId) {
-    console.log("[v0] Premium detected via stripeSubscriptionId")
-    return true
-  }
-
-  if (publicMetadata.clerkSubscriptionId) {
-    console.log("[v0] Premium detected via clerkSubscriptionId")
-    return true
-  }
-
-  console.log("[v0] No premium indicators found in metadata")
-  return false
-}
-
 export function PremiumGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const router = useRouter()
@@ -71,17 +14,26 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!isLoaded) return
 
+    // If not signed in, redirect to sign-in
     if (!user) {
-      console.log("[v0] User not signed in, redirecting to pricing")
-      router.replace("/pricing")
+      console.log("[v0] User not signed in, redirecting to sign-in")
+      router.replace("/sign-in")
       return
     }
 
-    const hasPremium = checkPremiumStatus(user)
+    // Check if user has premium
+    const publicMetadata = user.publicMetadata || {}
+    const hasPremium =
+      publicMetadata.premium === true ||
+      publicMetadata.subscriptionStatus === "active" ||
+      (Array.isArray(publicMetadata.subscriptions) &&
+        publicMetadata.subscriptions.some((sub: any) => sub.status === "active")) ||
+      publicMetadata.subscription?.status === "active"
 
-    console.log("[v0] Premium check result:", {
+    console.log("[v0] Premium check:", {
       userId: user.id,
       hasPremium,
+      metadata: publicMetadata,
     })
 
     if (!hasPremium) {
@@ -90,18 +42,15 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
       return
     }
 
-    // User has premium, allow access
-    console.log("[v0] User has premium, granting access")
     setIsChecking(false)
   }, [user, isLoaded, router])
 
-  // Show loading state while checking
   if (!isLoaded || isChecking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Verifying access...</p>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     )
