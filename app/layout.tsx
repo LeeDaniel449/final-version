@@ -13,12 +13,13 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_live_Y2xlcmsud2VhbHRobGlua2FwcC5jb20k"
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
 // Validate key exists before using
 if (!CLERK_PUBLISHABLE_KEY) {
-  throw new Error("Clerk publishable key is required")
+  throw new Error(
+    "Clerk publishable key is required. Please set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY in your environment variables.",
+  )
 }
 
 export default function RootLayout({
