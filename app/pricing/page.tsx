@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { useUser } from "@clerk/nextjs"
-import { PricingTable } from "@clerk/nextjs"
+import { useUser, SignedIn } from "@clerk/nextjs"
+import { CheckoutButton } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { Loader2, AlertCircle, ExternalLink } from "lucide-react"
+import { Loader2, Check, Sparkles } from "lucide-react"
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser()
@@ -68,120 +68,66 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-6">
-      <div className="max-w-6xl mx-auto pt-8">
+      <div className="max-w-4xl mx-auto pt-12">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Unlock Premium Access</h1>
+          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <Sparkles className="h-4 w-4" />
+            Unlock Full Access
+          </div>
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">Upgrade to Premium</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Subscribe to access all premium features and unlock your financial potential
+            Get unlimited access to all features and take control of your financial future
           </p>
         </div>
 
-        {showFallback ? (
-          <div className="max-w-3xl mx-auto">
-            {console.log("[v0] Rendering fallback UI")}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-amber-200">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="bg-amber-100 rounded-full p-3">
-                  <AlertCircle className="h-8 w-8 text-amber-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Clerk Billing Configuration Required</h3>
-                  <p className="text-gray-700 mb-6 text-lg">
-                    Your pricing table is ready, but Clerk Billing needs to be enabled for your{" "}
-                    <strong>test instance</strong> to display it.
-                  </p>
-
-                  <div className="bg-blue-50 rounded-xl p-6 mb-6 border border-blue-200">
-                    <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                      <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
-                        1
-                      </span>
-                      Enable Billing on Your Test Instance
-                    </h4>
-                    <ol className="space-y-3 text-gray-700 ml-8">
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 font-bold">•</span>
-                        <span>
-                          Open your{" "}
-                          <a
-                            href="https://dashboard.clerk.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline font-medium inline-flex items-center gap-1"
-                          >
-                            Clerk Dashboard
-                            <ExternalLink className="h-3 w-3" />
-                          </a>
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 font-bold">•</span>
-                        <span>
-                          Select your <strong>test instance</strong> (artistic-deer-15.clerk.accounts.dev)
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 font-bold">•</span>
-                        <span>Navigate to Billing → Settings</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 font-bold">•</span>
-                        <span>Click "Enable Billing" and complete the setup</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-blue-600 font-bold">•</span>
-                        <span>Create your pricing plans with the plan ID you want to use</span>
-                      </li>
-                    </ol>
-                  </div>
-
-                  <div className="bg-green-50 rounded-xl p-6 border border-green-200">
-                    <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                      <span className="bg-green-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
-                        2
-                      </span>
-                      After Enabling Billing
-                    </h4>
-                    <p className="text-gray-700 ml-8">
-                      Once billing is enabled, refresh this page and your pricing table will appear automatically. Users
-                      will be able to subscribe and all premium features will unlock immediately after payment.
-                    </p>
-                  </div>
-
-                  <div className="mt-6 flex gap-4">
-                    <a
-                      href="https://dashboard.clerk.com/last-active?path=billing/settings"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-blue-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center inline-flex items-center justify-center gap-2"
-                    >
-                      Open Billing Settings
-                      <ExternalLink className="h-5 w-5" />
-                    </a>
-                    <button
-                      onClick={() => window.location.reload()}
-                      className="px-6 py-4 rounded-lg font-semibold border-2 border-gray-300 hover:border-gray-400 transition-colors"
-                    >
-                      Refresh Page
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 text-center text-sm text-gray-500">
-              <p>
-                Note: This message only appears in development when billing is not enabled. In production with billing
-                enabled, users will see your pricing table directly.
-              </p>
-            </div>
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8 text-white text-center">
+            <h2 className="text-3xl font-bold mb-2">Premium Plan</h2>
+            <div className="text-5xl font-bold mb-2">$9.99</div>
+            <p className="text-blue-100">per month</p>
           </div>
-        ) : (
-          <>
-            {console.log("[v0] Rendering PricingTable component")}
-            <PricingTable />
-          </>
-        )}
+
+          <div className="p-8">
+            <div className="space-y-4 mb-8">
+              {[
+                "AI-Powered Financial Advisor",
+                "Advanced Portfolio Optimization",
+                "Real-Time Stock Market Data",
+                "Personalized Budget Planning",
+                "Goal Tracking & Analytics",
+                "Interactive Financial Simulator",
+                "Comprehensive Learning Modules",
+                "Priority Support",
+              ].map((feature, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <div className="bg-green-100 rounded-full p-1 mt-0.5">
+                    <Check className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="text-gray-700 text-lg">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <SignedIn>
+              <CheckoutButton
+                planId="cplan_34V21R75vXuGKwyVCpbw2bgdiXm"
+                appearance={{
+                  elements: {
+                    rootBox: "w-full",
+                    button:
+                      "w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-xl",
+                  },
+                }}
+              />
+            </SignedIn>
+
+            <p className="text-center text-sm text-gray-500 mt-6">Cancel anytime. No hidden fees.</p>
+          </div>
+        </div>
+
+        <div className="text-center mt-8 text-sm text-gray-500">
+          <p>Secure payment powered by Clerk Billing</p>
+        </div>
       </div>
     </div>
   )
