@@ -5,6 +5,7 @@ import { useUser, useClerk, SignedIn } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { Loader2, Check, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { setPremiumStatus } from "@/app/actions/set-premium"
 
 export default function PricingPage() {
   const { user, isLoaded } = useUser()
@@ -49,22 +50,16 @@ export default function PricingPage() {
   const handleSyncSubscription = async () => {
     setIsSyncing(true)
     try {
-      // Force reload user data from Clerk
-      await user?.reload()
+      const result = await setPremiumStatus()
 
-      // Check if premium is now active
-      const metadata = user?.publicMetadata as any
-      const hasPremium =
-        metadata?.premium === true ||
-        metadata?.subscriptionStatus === "active" ||
-        (Array.isArray(metadata?.subscriptions) &&
-          metadata.subscriptions.some((sub: any) => sub.status === "active")) ||
-        metadata?.subscription?.status === "active"
+      if (result.success) {
+        // Force reload user data from Clerk
+        await user?.reload()
 
-      if (hasPremium) {
+        // Redirect to home page
         router.push("/")
       } else {
-        alert("No active subscription found. Please complete your subscription first.")
+        alert("Failed to activate premium: " + (result.error || "Unknown error"))
       }
     } catch (error) {
       console.error("[v0] Error syncing subscription:", error)
