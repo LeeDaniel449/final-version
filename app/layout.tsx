@@ -4,7 +4,6 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import "./globals.css"
-import { Analytics } from "@vercel/analytics/next"
 import { Inter } from "next/font/google"
 
 const inter = Inter({
@@ -46,7 +45,6 @@ export default function RootLayout({
               </SidebarInset>
             </Suspense>
           </SidebarProvider>
-          <Analytics />
         </body>
       </html>
     </ClerkProvider>
