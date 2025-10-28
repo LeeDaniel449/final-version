@@ -1,26 +1,36 @@
 "use client"
 
-import "clsx"
-import "class-variance-authority"
-
-import { PricingTable } from "@clerk/nextjs"
-import { useUser } from "@clerk/nextjs"
+import { useUser, useClerk } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
+  const { openUserProfile } = useClerk()
   const router = useRouter()
 
   useEffect(() => {
     if (isLoaded && user) {
+      console.log("[v0] Subscribe page loaded for user:", user.id)
       const hasPremium = user.publicMetadata?.premium === true || user.publicMetadata?.subscriptionStatus === "active"
 
       if (hasPremium) {
+        console.log("[v0] User already has premium, redirecting to home")
         router.replace("/")
       }
     }
   }, [isLoaded, user, router])
+
+  const handleSubscribe = () => {
+    console.log("[v0] Opening Clerk billing modal")
+    openUserProfile({
+      appearance: {
+        elements: {
+          rootBox: "z-50",
+        },
+      },
+    })
+  }
 
   if (!isLoaded || !user) {
     return (
@@ -44,7 +54,7 @@ export default function SubscribePage() {
               margin: "0 auto 16px",
               animation: "spin 1s linear infinite",
             }}
-          ></div>
+          />
           <p style={{ fontSize: "18px" }}>Loading...</p>
         </div>
         <style jsx>{`
@@ -71,33 +81,78 @@ export default function SubscribePage() {
     >
       <div
         style={{
-          maxWidth: "900px",
+          maxWidth: "600px",
           width: "100%",
           background: "white",
           borderRadius: "16px",
           boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-          overflow: "hidden",
+          padding: "48px 32px",
+          textAlign: "center",
         }}
       >
-        {/* Header */}
+        <div style={{ fontSize: "48px", marginBottom: "24px" }}>🎯</div>
+        <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
+          Complete Your Subscription
+        </h1>
+        <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "32px" }}>
+          Subscribe to unlock all premium features and start your financial journey
+        </p>
+
         <div
           style={{
-            padding: "48px 32px",
-            textAlign: "center",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            color: "white",
+            background: "#f7fafc",
+            borderRadius: "12px",
+            padding: "32px",
+            marginBottom: "32px",
+            textAlign: "left",
           }}
         >
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🎯</div>
-          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "12px", margin: 0 }}>
-            Complete Your Subscription
-          </h1>
-          <p style={{ fontSize: "18px", opacity: 0.9, margin: 0 }}>Choose your plan to unlock all premium features</p>
+          <div style={{ marginBottom: "24px" }}>
+            <div style={{ fontSize: "48px", fontWeight: "bold", color: "#667eea", marginBottom: "8px" }}>
+              $9.99<span style={{ fontSize: "18px", fontWeight: "normal", color: "#718096" }}>/month</span>
+            </div>
+            <div style={{ fontSize: "14px", color: "#718096" }}>Premium Plan</div>
+          </div>
+
+          <div style={{ marginBottom: "16px" }}>
+            {[
+              "AI-Powered Financial Advisor",
+              "Portfolio Optimization Tools",
+              "Budget & Goal Tracking",
+              "Real-time Market Data",
+              "Advanced Analytics",
+              "Priority Support",
+            ].map((feature, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", marginBottom: "12px" }}>
+                <span style={{ color: "#48bb78", marginRight: "12px", fontSize: "20px" }}>✓</span>
+                <span style={{ color: "#2d3748" }}>{feature}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div style={{ padding: "40px 32px" }}>
-          <PricingTable />
-        </div>
+        <button
+          onClick={handleSubscribe}
+          style={{
+            width: "100%",
+            padding: "16px 32px",
+            fontSize: "18px",
+            fontWeight: "600",
+            color: "white",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            border: "none",
+            borderRadius: "12px",
+            cursor: "pointer",
+            transition: "transform 0.2s",
+            marginBottom: "16px",
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+          onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        >
+          Subscribe Now with Clerk
+        </button>
+
+        <p style={{ fontSize: "14px", color: "#718096" }}>Your subscription is required to access the platform</p>
       </div>
 
       <style jsx>{`
