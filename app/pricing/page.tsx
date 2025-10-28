@@ -10,6 +10,7 @@ export default function PricingPage() {
   const { user, isLoaded } = useUser()
   const clerk = useClerk()
   const router = useRouter()
+  const [isSyncing, setIsSyncing] = React.useState(false)
 
   React.useEffect(() => {
     if (isLoaded && !user) {
@@ -43,6 +44,34 @@ export default function PricingPage() {
         },
       },
     })
+  }
+
+  const handleSyncSubscription = async () => {
+    setIsSyncing(true)
+    try {
+      // Force reload user data from Clerk
+      await user?.reload()
+
+      // Check if premium is now active
+      const metadata = user?.publicMetadata as any
+      const hasPremium =
+        metadata?.premium === true ||
+        metadata?.subscriptionStatus === "active" ||
+        (Array.isArray(metadata?.subscriptions) &&
+          metadata.subscriptions.some((sub: any) => sub.status === "active")) ||
+        metadata?.subscription?.status === "active"
+
+      if (hasPremium) {
+        router.push("/")
+      } else {
+        alert("No active subscription found. Please complete your subscription first.")
+      }
+    } catch (error) {
+      console.error("[v0] Error syncing subscription:", error)
+      alert("Failed to sync subscription. Please try again.")
+    } finally {
+      setIsSyncing(false)
+    }
   }
 
   if (!isLoaded || !user) {
@@ -101,6 +130,22 @@ export default function PricingPage() {
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-6 px-8 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Subscribe Now
+              </Button>
+
+              <Button
+                onClick={handleSyncSubscription}
+                disabled={isSyncing}
+                variant="outline"
+                className="w-full mt-4 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-6 px-8 rounded-lg text-lg transition-all duration-200 bg-transparent"
+              >
+                {isSyncing ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                    Checking Subscription...
+                  </>
+                ) : (
+                  "Already Subscribed? Click Here"
+                )}
               </Button>
             </SignedIn>
 
