@@ -5,32 +5,22 @@ import type React from "react"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { syncSubscriptionStatus } from "@/app/actions/sync-subscription"
 
 function checkPremiumStatus(user: any): boolean {
-  console.log("[v0] Full user object:", {
-    id: user.id,
-    publicMetadata: user.publicMetadata,
-    privateMetadata: user.privateMetadata,
-    unsafeMetadata: user.unsafeMetadata,
-    organizationMemberships: user.organizationMemberships,
-  })
-
   const publicMetadata = user.publicMetadata
 
   if (!publicMetadata) {
-    console.log("[v0] No publicMetadata found")
     return false
   }
 
   // Check for direct premium flag
   if (publicMetadata.premium === true) {
-    console.log("[v0] Premium detected via premium flag")
     return true
   }
 
   // Check for Clerk Billing subscription status
   if (publicMetadata.subscriptionStatus === "active") {
-    console.log("[v0] Premium detected via subscriptionStatus")
     return true
   }
 
@@ -38,28 +28,15 @@ function checkPremiumStatus(user: any): boolean {
   if (Array.isArray(publicMetadata.subscriptions) && publicMetadata.subscriptions.length > 0) {
     const hasActive = publicMetadata.subscriptions.some((sub: any) => sub.status === "active")
     if (hasActive) {
-      console.log("[v0] Premium detected via subscriptions array")
       return true
     }
   }
 
   // Check for subscription object
   if (publicMetadata.subscription?.status === "active") {
-    console.log("[v0] Premium detected via subscription object")
     return true
   }
 
-  if (publicMetadata.stripeSubscriptionId) {
-    console.log("[v0] Premium detected via stripeSubscriptionId")
-    return true
-  }
-
-  if (publicMetadata.clerkSubscriptionId) {
-    console.log("[v0] Premium detected via clerkSubscriptionId")
-    return true
-  }
-
-  console.log("[v0] No premium indicators found in metadata")
   return false
 }
 
@@ -67,34 +44,55 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const router = useRouter()
   const [isChecking, setIsChecking] = useState(true)
+  const [hasSynced, setHasSynced] = useState(false)
 
   useEffect(() => {
-    if (!isLoaded) return
+    async function checkAccess() {
+      if (!isLoaded) return
 
-    // If not signed in, redirect to sign-in
-    if (!user) {
-      console.log("[v0] User not signed in, redirecting to sign-in")
-      router.replace("/sign-in")
-      return
+      // If not signed in, redirect to sign-in
+      if (!user) {
+        console.log("[v0] User not signed in, redirecting to sign-in")
+        router.replace("/sign-in")
+        return
+      }
+
+      let hasPremium = checkPremiumStatus(user)
+
+      console.log("[v0] Initial premium check:", {
+        userId: user.id,
+        hasPremium,
+        metadata: user.publicMetadata,
+      })
+
+      if (!hasPremium && !hasSynced) {
+        console.log("[v0] No premium in metadata, syncing from Clerk Billing...")
+        setHasSynced(true)
+
+        const result = await syncSubscriptionStatus()
+        console.log("[v0] Sync result:", result)
+
+        if (result.success && result.hasPremium) {
+          // Reload user data to get updated metadata
+          await user.reload()
+          hasPremium = checkPremiumStatus(user)
+          console.log("[v0] After sync, premium status:", hasPremium)
+        }
+      }
+
+      if (!hasPremium) {
+        console.log("[v0] User does not have premium, redirecting to pricing")
+        router.replace("/pricing")
+        return
+      }
+
+      // User has premium, allow access
+      console.log("[v0] User has premium, granting access")
+      setIsChecking(false)
     }
 
-    const hasPremium = checkPremiumStatus(user)
-
-    console.log("[v0] Premium check result:", {
-      userId: user.id,
-      hasPremium,
-    })
-
-    if (!hasPremium) {
-      console.log("[v0] User does not have premium, redirecting to pricing")
-      router.replace("/pricing")
-      return
-    }
-
-    // User has premium, allow access
-    console.log("[v0] User has premium, granting access")
-    setIsChecking(false)
-  }, [user, isLoaded, router])
+    checkAccess()
+  }, [user, isLoaded, router, hasSynced])
 
   // Show loading state while checking
   if (!isLoaded || isChecking) {
