@@ -1,11 +1,12 @@
 "use client"
 
-import { SignUp, useUser } from "@clerk/nextjs"
+import { SignUp, useUser, useClerk } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function SignUpPage() {
   const { isSignedIn, isLoaded, user } = useUser()
+  const clerk = useClerk()
   const router = useRouter()
   const [showSubscription, setShowSubscription] = useState(false)
 
@@ -26,8 +27,13 @@ export default function SignUpPage() {
 
   if (showSubscription) {
     const handleSubscribe = () => {
-      // Open Clerk's user profile to billing section
-      window.open(`${window.location.origin}/user-profile#/billing`, "_blank")
+      clerk.openUserProfile({
+        appearance: {
+          elements: {
+            rootBox: "z-50",
+          },
+        },
+      })
     }
 
     return (
