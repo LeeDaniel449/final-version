@@ -34,6 +34,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { SubscriptionGuard } from "@/components/subscription-guard"
 
 export default function HomePage() {
   const { isSignedIn, user, isLoaded } = useUser()
@@ -496,461 +497,465 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-4 sm:p-6">
-      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-4xl font-bold text-brand-blue">
-              Welcome back{user?.firstName ? `, ${user.firstName}` : ""}!
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Here's your financial overview</p>
-          </div>
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
-            <Button
-              onClick={startTutorial}
-              variant="outline"
-              className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white bg-transparent w-full sm:w-auto"
-            >
-              <HelpCircle className="w-4 h-4 mr-2" />
-              <span className="sm:inline">Start Tutorial</span>
-            </Button>
-            <div className="flex items-center gap-2 justify-between sm:justify-start">
-              <NotificationBell />
-              <Link href={isSignedIn ? "/settings" : "/sign-in"} className="flex-1 sm:flex-initial">
-                <Button
-                  className={`w-full sm:w-auto ${
-                    isSignedIn
-                      ? "bg-green-600 hover:bg-green-700"
-                      : "bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90"
-                  } text-white shadow-lg`}
-                  disabled={isSignedIn}
-                >
-                  {isSignedIn ? (
-                    <>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Signed In
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="w-4 h-4 mr-2" />
-                      Sign In
-                    </>
-                  )}
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Overview */}
-        <div id="stats-overview" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          <Card className="border-brand-blue/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Lessons Completed</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-brand-blue">{completedLessons}</p>
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-brand-blue to-brand-purple rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-brand-purple/20 shadow-lg hover:shadow-xl transition-shadow">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Active Goals</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-brand-purple">{activeGoals.length}</p>
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-brand-purple to-brand-blue rounded-lg flex items-center justify-center">
-                  <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-green-200 shadow-lg hover:shadow-xl transition-shadow">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Total Saved</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-green-600">${totalSaved.toLocaleString()}</p>
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-blue-200 shadow-lg hover:shadow-xl transition-shadow">
-            <CardContent className="p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Goals Completed</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-blue-600">{completedGoals.length}</p>
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Personalized Notifications */}
-        <Card id="notifications" className="border-brand-blue/20 shadow-lg">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="text-brand-blue text-lg sm:text-xl">
-              {isSignedIn ? "Personalized for You" : "Get Started"}
-            </CardTitle>
-            <CardDescription className="text-sm">
-              {isSignedIn
-                ? "Your personalized updates and recommendations"
-                : "Sign in to get personalized recommendations"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
-            {personalizedNotifications.map((notification, index) => (
-              <Link key={index} href={notification.link || "#"}>
-                <Card
-                  className={`bg-gradient-to-r ${notification.bgGradient} ${notification.borderColor} hover:shadow-md transition-shadow cursor-pointer`}
-                >
-                  <CardContent className="p-3 sm:p-4">
-                    <div className="flex items-start sm:items-center justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-800 text-sm sm:text-base truncate">
-                          {notification.title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{notification.description}</p>
-                      </div>
-                      <Badge variant="secondary" className={`${notification.badgeColor} text-xs whitespace-nowrap`}>
-                        {notification.badge}
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Your Goals */}
-        <Card id="goals-section" className="border-brand-purple/20 shadow-lg">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="text-brand-purple text-lg sm:text-xl">Your Goals</CardTitle>
-            <CardDescription className="text-sm">Track your financial objectives</CardDescription>
-          </CardHeader>
-          <CardContent className="p-4 sm:p-6 pt-0">
-            {goals.length === 0 ? (
-              <div className="text-center py-6 sm:py-8">
-                <Target className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
-                <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">No goals set yet</p>
-                <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                  {!hasStartedBudgeting && (
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                      <DialogTrigger asChild>
-                        <Button className="bg-gradient-to-r from-brand-purple to-brand-blue hover:from-brand-purple/90 hover:to-brand-blue/90 text-white w-full sm:w-auto">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add Your First Budget
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-[95vw] sm:max-w-md">
-                        <DialogHeader>
-                          <DialogTitle className="text-lg sm:text-xl">Add Your First Budget</DialogTitle>
-                          <DialogDescription className="text-sm">
-                            Start your financial journey by setting up your first budget category.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="category" className="text-sm">
-                              Category
-                            </Label>
-                            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a category" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Housing">Housing</SelectItem>
-                                <SelectItem value="Food & Dining">Food & Dining</SelectItem>
-                                <SelectItem value="Transportation">Transportation</SelectItem>
-                                <SelectItem value="Entertainment">Entertainment</SelectItem>
-                                <SelectItem value="Utilities">Utilities</SelectItem>
-                                <SelectItem value="Healthcare">Healthcare</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="amount" className="text-sm">
-                              Monthly Budget Amount
-                            </Label>
-                            <Input
-                              id="amount"
-                              type="number"
-                              placeholder="Enter amount"
-                              value={budgetAmount}
-                              onChange={(e) => setBudgetAmount(e.target.value)}
-                              className="text-base"
-                            />
-                          </div>
-                          <Button
-                            onClick={handleAddBudget}
-                            className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90"
-                            disabled={!selectedCategory || !budgetAmount}
-                          >
-                            Add Budget
-                          </Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                  <Link href="/goals" className="w-full sm:w-auto">
-                    <Button variant="outline" className="bg-transparent w-full">
-                      <Target className="w-4 h-4 mr-2" />
-                      Set Your First Goal
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3 sm:space-y-4">
-                {goals.slice(0, 3).map((goal) => {
-                  const progress = (goal.currentAmount / goal.targetAmount) * 100
-                  const isCompleted = goal.currentAmount >= goal.targetAmount
-                  const daysUntilDue = Math.ceil(
-                    (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-                  )
-
-                  return (
-                    <div
-                      key={goal.id}
-                      className="p-3 sm:p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-blue-50"
-                    >
-                      <div className="flex items-start sm:items-center justify-between mb-2 gap-2">
-                        <h3 className="font-semibold text-purple-800 text-sm sm:text-base flex-1 min-w-0 truncate">
-                          {goal.title}
-                        </h3>
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                          <Badge
-                            variant={
-                              goal.priority === "high"
-                                ? "destructive"
-                                : goal.priority === "medium"
-                                  ? "default"
-                                  : "secondary"
-                            }
-                            className="text-xs"
-                          >
-                            {goal.priority}
-                          </Badge>
-                          {isCompleted && <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />}
-                        </div>
-                      </div>
-                      <p className="text-xs sm:text-sm text-purple-600 mb-2 sm:mb-3 line-clamp-2">{goal.description}</p>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs sm:text-sm">
-                          <span>${goal.currentAmount.toLocaleString()}</span>
-                          <span>${goal.targetAmount.toLocaleString()}</span>
-                        </div>
-                        <Progress value={Math.min(progress, 100)} className="h-2" />
-                        <div className="flex items-center justify-between text-xs text-gray-600">
-                          <span>{Math.round(progress)}% complete</span>
-                          <div className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" />
-                            <span>{daysUntilDue > 0 ? `${daysUntilDue} days left` : "Overdue"}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-                {goals.length > 3 && (
-                  <Link href="/goals">
-                    <Button variant="outline" className="w-full bg-transparent text-sm sm:text-base">
-                      View All Goals ({goals.length})
-                    </Button>
-                  </Link>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Learning Progress Summary */}
-        <Card id="learning-section" className="border-brand-blue/20 shadow-lg">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="text-brand-blue text-lg sm:text-xl">Learning Progress Summary</CardTitle>
-            <CardDescription className="text-sm">Your financial education journey</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6 pt-0">
+    <SubscriptionGuard>
+      <div className="min-h-screen bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-4 sm:p-6">
+        <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs sm:text-sm font-medium">Overall Progress</span>
-                <span className="text-xs sm:text-sm text-gray-600">
-                  {completedModulesCount} of {totalModules} modules
-                </span>
-              </div>
-              <Progress value={learningProgress} className="h-2 sm:h-3" />
-              <p className="text-xs text-gray-500 mt-1">{learningProgress}% complete</p>
+              <h1 className="text-2xl sm:text-4xl font-bold text-brand-blue">
+                Welcome back{user?.firstName ? `, ${user.firstName}` : ""}!
+              </h1>
+              <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Here's your financial overview</p>
             </div>
-
-            {completedLessonsDetails.length > 0 ? (
-              <div>
-                <h4 className="font-medium mb-2 sm:mb-3 text-blue-800 text-sm sm:text-base">
-                  Completed Lessons ({totalCompletedLessonsCount})
-                </h4>
-                <div className="space-y-2 sm:space-y-3 max-h-64 overflow-y-auto">
-                  {completedLessonsDetails.map((detail) => (
-                    <div key={detail.moduleId} className="p-2 sm:p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-medium text-xs sm:text-sm text-blue-900 truncate flex-1 mr-2">
-                          {detail.moduleTitle}
-                        </span>
-                        <Badge variant="secondary" className="text-xs flex-shrink-0">
-                          {detail.completedLessons.length}/{detail.totalLessons}
-                        </Badge>
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {detail.completedLessons.map((lessonIndex) => (
-                          <Badge key={lessonIndex} variant="outline" className="text-xs bg-white">
-                            Lesson {lessonIndex + 1}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-4">
-                <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-xs sm:text-sm text-gray-600">No lessons completed yet</p>
-                <p className="text-xs text-gray-500 mt-1">Start learning to track your progress!</p>
-              </div>
-            )}
-
-            {completedModulesCount > 0 && (
-              <div>
-                <h4 className="font-medium mb-2 sm:mb-3 text-green-800 text-sm sm:text-base">Completed Modules</h4>
-                <div className="space-y-2">
-                  {learningModules
-                    .filter((module) => realCompletedModules.includes(module.id))
-                    .slice(0, 3)
-                    .map((module) => (
-                      <div key={module.id} className="flex items-center gap-2 text-xs sm:text-sm">
-                        <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
-                        <span className="truncate">{module.title}</span>
-                      </div>
-                    ))}
-                  {completedModulesCount > 3 && (
-                    <p className="text-xs sm:text-sm text-gray-600">+{completedModulesCount - 3} more modules</p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            <Link href="/learning">
-              <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white text-sm sm:text-base">
-                <BookOpen className="w-4 h-4 mr-2" />
-                Continue Learning
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+              <Button
+                onClick={startTutorial}
+                variant="outline"
+                className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white bg-transparent w-full sm:w-auto"
+              >
+                <HelpCircle className="w-4 h-4 mr-2" />
+                <span className="sm:inline">Start Tutorial</span>
               </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-
-      {showTutorial && (
-        <>
-          {/* Overlay with highlight */}
-          <div className="fixed inset-0 bg-black/50 z-40" onClick={skipTutorial} />
-
-          {/* Tutorial Dialog */}
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-[95vw] sm:max-w-md px-4 sm:px-0">
-            <Card className="shadow-2xl border-2 border-brand-blue">
-              <CardHeader className="bg-gradient-to-r from-brand-blue to-brand-purple text-white p-4 sm:p-6">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg sm:text-xl">
-                    Step {tutorialStep + 1} of {tutorialSteps.length}
-                  </CardTitle>
-                  <Button variant="ghost" size="sm" onClick={skipTutorial} className="text-white hover:bg-white/20">
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
-                    {tutorialSteps[tutorialStep].title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                    {tutorialSteps[tutorialStep].description}
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between pt-3 sm:pt-4">
-                  <div className="flex gap-1">
-                    {tutorialSteps.map((_, index) => (
-                      <div
-                        key={index}
-                        className={`h-2 w-2 rounded-full ${index === tutorialStep ? "bg-brand-blue" : "bg-gray-300"}`}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="flex gap-2">
-                    {tutorialStep > 0 && (
-                      <Button
-                        variant="outline"
-                        onClick={() => setTutorialStep(tutorialStep - 1)}
-                        size="sm"
-                        className="text-xs sm:text-sm"
-                      >
-                        Back
-                      </Button>
+              <div className="flex items-center gap-2 justify-between sm:justify-start">
+                <NotificationBell />
+                <Link href={isSignedIn ? "/settings" : "/sign-in"} className="flex-1 sm:flex-initial">
+                  <Button
+                    className={`w-full sm:w-auto ${
+                      isSignedIn
+                        ? "bg-green-600 hover:bg-green-700"
+                        : "bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90"
+                    } text-white shadow-lg`}
+                    disabled={isSignedIn}
+                  >
+                    {isSignedIn ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Signed In
+                      </>
+                    ) : (
+                      <>
+                        <LogIn className="w-4 h-4 mr-2" />
+                        Sign In
+                      </>
                     )}
-                    <Button
-                      onClick={nextTutorialStep}
-                      className="bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white text-xs sm:text-sm"
-                      size="sm"
-                    >
-                      {tutorialStep === tutorialSteps.length - 1 ? (
-                        "Finish"
-                      ) : tutorialSteps[tutorialStep].action ? (
-                        <>
-                          Visit
-                          <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
-                        </>
-                      ) : (
-                        <>
-                          Next
-                          <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
-                        </>
-                      )}
-                    </Button>
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Overview */}
+          <div id="stats-overview" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <Card className="border-brand-blue/20 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Lessons Completed</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-brand-blue">{completedLessons}</p>
+                  </div>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-brand-blue to-brand-purple rounded-lg flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-brand-purple/20 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Active Goals</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-brand-purple">{activeGoals.length}</p>
+                  </div>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-brand-purple to-brand-blue rounded-lg flex items-center justify-center">
+                    <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-green-200 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Total Saved</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-green-600">${totalSaved.toLocaleString()}</p>
+                  </div>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                    <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-blue-200 shadow-lg hover:shadow-xl transition-shadow">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs sm:text-sm font-medium text-gray-600">Goals Completed</p>
+                    <p className="text-2xl sm:text-3xl font-bold text-blue-600">{completedGoals.length}</p>
+                  </div>
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Highlight specific sections */}
-          {tutorialSteps[tutorialStep].highlight && (
-            <style jsx global>{`
-              #${tutorialSteps[tutorialStep].highlight} {
-                position: relative;
-                z-index: 45;
-                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.5);
-                border-radius: 0.5rem;
-              }
-            `}</style>
-          )}
-        </>
-      )}
-    </div>
+          {/* Personalized Notifications */}
+          <Card id="notifications" className="border-brand-blue/20 shadow-lg">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-brand-blue text-lg sm:text-xl">
+                {isSignedIn ? "Personalized for You" : "Get Started"}
+              </CardTitle>
+              <CardDescription className="text-sm">
+                {isSignedIn
+                  ? "Your personalized updates and recommendations"
+                  : "Sign in to get personalized recommendations"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
+              {personalizedNotifications.map((notification, index) => (
+                <Link key={index} href={notification.link || "#"}>
+                  <Card
+                    className={`bg-gradient-to-r ${notification.bgGradient} ${notification.borderColor} hover:shadow-md transition-shadow cursor-pointer`}
+                  >
+                    <CardContent className="p-3 sm:p-4">
+                      <div className="flex items-start sm:items-center justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-800 text-sm sm:text-base truncate">
+                            {notification.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{notification.description}</p>
+                        </div>
+                        <Badge variant="secondary" className={`${notification.badgeColor} text-xs whitespace-nowrap`}>
+                          {notification.badge}
+                        </Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Your Goals */}
+          <Card id="goals-section" className="border-brand-purple/20 shadow-lg">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-brand-purple text-lg sm:text-xl">Your Goals</CardTitle>
+              <CardDescription className="text-sm">Track your financial objectives</CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 sm:p-6 pt-0">
+              {goals.length === 0 ? (
+                <div className="text-center py-6 sm:py-8">
+                  <Target className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">No goals set yet</p>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    {!hasStartedBudgeting && (
+                      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Button className="bg-gradient-to-r from-brand-purple to-brand-blue hover:from-brand-purple/90 hover:to-brand-blue/90 text-white w-full sm:w-auto">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add Your First Budget
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-[95vw] sm:max-w-md">
+                          <DialogHeader>
+                            <DialogTitle className="text-lg sm:text-xl">Add Your First Budget</DialogTitle>
+                            <DialogDescription className="text-sm">
+                              Start your financial journey by setting up your first budget category.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="category" className="text-sm">
+                                Category
+                              </Label>
+                              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Housing">Housing</SelectItem>
+                                  <SelectItem value="Food & Dining">Food & Dining</SelectItem>
+                                  <SelectItem value="Transportation">Transportation</SelectItem>
+                                  <SelectItem value="Entertainment">Entertainment</SelectItem>
+                                  <SelectItem value="Utilities">Utilities</SelectItem>
+                                  <SelectItem value="Healthcare">Healthcare</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="amount" className="text-sm">
+                                Monthly Budget Amount
+                              </Label>
+                              <Input
+                                id="amount"
+                                type="number"
+                                placeholder="Enter amount"
+                                value={budgetAmount}
+                                onChange={(e) => setBudgetAmount(e.target.value)}
+                                className="text-base"
+                              />
+                            </div>
+                            <Button
+                              onClick={handleAddBudget}
+                              className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90"
+                              disabled={!selectedCategory || !budgetAmount}
+                            >
+                              Add Budget
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    )}
+                    <Link href="/goals" className="w-full sm:w-auto">
+                      <Button variant="outline" className="bg-transparent w-full">
+                        <Target className="w-4 h-4 mr-2" />
+                        Set Your First Goal
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3 sm:space-y-4">
+                  {goals.slice(0, 3).map((goal) => {
+                    const progress = (goal.currentAmount / goal.targetAmount) * 100
+                    const isCompleted = goal.currentAmount >= goal.targetAmount
+                    const daysUntilDue = Math.ceil(
+                      (new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
+                    )
+
+                    return (
+                      <div
+                        key={goal.id}
+                        className="p-3 sm:p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-blue-50"
+                      >
+                        <div className="flex items-start sm:items-center justify-between mb-2 gap-2">
+                          <h3 className="font-semibold text-purple-800 text-sm sm:text-base flex-1 min-w-0 truncate">
+                            {goal.title}
+                          </h3>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <Badge
+                              variant={
+                                goal.priority === "high"
+                                  ? "destructive"
+                                  : goal.priority === "medium"
+                                    ? "default"
+                                    : "secondary"
+                              }
+                              className="text-xs"
+                            >
+                              {goal.priority}
+                            </Badge>
+                            {isCompleted && <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />}
+                          </div>
+                        </div>
+                        <p className="text-xs sm:text-sm text-purple-600 mb-2 sm:mb-3 line-clamp-2">
+                          {goal.description}
+                        </p>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-xs sm:text-sm">
+                            <span>${goal.currentAmount.toLocaleString()}</span>
+                            <span>${goal.targetAmount.toLocaleString()}</span>
+                          </div>
+                          <Progress value={Math.min(progress, 100)} className="h-2" />
+                          <div className="flex items-center justify-between text-xs text-gray-600">
+                            <span>{Math.round(progress)}% complete</span>
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              <span>{daysUntilDue > 0 ? `${daysUntilDue} days left` : "Overdue"}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  {goals.length > 3 && (
+                    <Link href="/goals">
+                      <Button variant="outline" className="w-full bg-transparent text-sm sm:text-base">
+                        View All Goals ({goals.length})
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Learning Progress Summary */}
+          <Card id="learning-section" className="border-brand-blue/20 shadow-lg">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="text-brand-blue text-lg sm:text-xl">Learning Progress Summary</CardTitle>
+              <CardDescription className="text-sm">Your financial education journey</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6 pt-0">
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-xs sm:text-sm font-medium">Overall Progress</span>
+                  <span className="text-xs sm:text-sm text-gray-600">
+                    {completedModulesCount} of {totalModules} modules
+                  </span>
+                </div>
+                <Progress value={learningProgress} className="h-2 sm:h-3" />
+                <p className="text-xs text-gray-500 mt-1">{learningProgress}% complete</p>
+              </div>
+
+              {completedLessonsDetails.length > 0 ? (
+                <div>
+                  <h4 className="font-medium mb-2 sm:mb-3 text-blue-800 text-sm sm:text-base">
+                    Completed Lessons ({totalCompletedLessonsCount})
+                  </h4>
+                  <div className="space-y-2 sm:space-y-3 max-h-64 overflow-y-auto">
+                    {completedLessonsDetails.map((detail) => (
+                      <div key={detail.moduleId} className="p-2 sm:p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-medium text-xs sm:text-sm text-blue-900 truncate flex-1 mr-2">
+                            {detail.moduleTitle}
+                          </span>
+                          <Badge variant="secondary" className="text-xs flex-shrink-0">
+                            {detail.completedLessons.length}/{detail.totalLessons}
+                          </Badge>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {detail.completedLessons.map((lessonIndex) => (
+                            <Badge key={lessonIndex} variant="outline" className="text-xs bg-white">
+                              Lesson {lessonIndex + 1}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-4">
+                  <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-xs sm:text-sm text-gray-600">No lessons completed yet</p>
+                  <p className="text-xs text-gray-500 mt-1">Start learning to track your progress!</p>
+                </div>
+              )}
+
+              {completedModulesCount > 0 && (
+                <div>
+                  <h4 className="font-medium mb-2 sm:mb-3 text-green-800 text-sm sm:text-base">Completed Modules</h4>
+                  <div className="space-y-2">
+                    {learningModules
+                      .filter((module) => realCompletedModules.includes(module.id))
+                      .slice(0, 3)
+                      .map((module) => (
+                        <div key={module.id} className="flex items-center gap-2 text-xs sm:text-sm">
+                          <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
+                          <span className="truncate">{module.title}</span>
+                        </div>
+                      ))}
+                    {completedModulesCount > 3 && (
+                      <p className="text-xs sm:text-sm text-gray-600">+{completedModulesCount - 3} more modules</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <Link href="/learning">
+                <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white text-sm sm:text-base">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Continue Learning
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+
+        {showTutorial && (
+          <>
+            {/* Overlay with highlight */}
+            <div className="fixed inset-0 bg-black/50 z-40" onClick={skipTutorial} />
+
+            {/* Tutorial Dialog */}
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-[95vw] sm:max-w-md px-4 sm:px-0">
+              <Card className="shadow-2xl border-2 border-brand-blue">
+                <CardHeader className="bg-gradient-to-r from-brand-blue to-brand-purple text-white p-4 sm:p-6">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg sm:text-xl">
+                      Step {tutorialStep + 1} of {tutorialSteps.length}
+                    </CardTitle>
+                    <Button variant="ghost" size="sm" onClick={skipTutorial} className="text-white hover:bg-white/20">
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
+                      {tutorialSteps[tutorialStep].title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                      {tutorialSteps[tutorialStep].description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-3 sm:pt-4">
+                    <div className="flex gap-1">
+                      {tutorialSteps.map((_, index) => (
+                        <div
+                          key={index}
+                          className={`h-2 w-2 rounded-full ${index === tutorialStep ? "bg-brand-blue" : "bg-gray-300"}`}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                      {tutorialStep > 0 && (
+                        <Button
+                          variant="outline"
+                          onClick={() => setTutorialStep(tutorialStep - 1)}
+                          size="sm"
+                          className="text-xs sm:text-sm"
+                        >
+                          Back
+                        </Button>
+                      )}
+                      <Button
+                        onClick={nextTutorialStep}
+                        className="bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white text-xs sm:text-sm"
+                        size="sm"
+                      >
+                        {tutorialStep === tutorialSteps.length - 1 ? (
+                          "Finish"
+                        ) : tutorialSteps[tutorialStep].action ? (
+                          <>
+                            Visit
+                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
+                          </>
+                        ) : (
+                          <>
+                            Next
+                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Highlight specific sections */}
+            {tutorialSteps[tutorialStep].highlight && (
+              <style jsx global>{`
+                #${tutorialSteps[tutorialStep].highlight} {
+                  position: relative;
+                  z-index: 45;
+                  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.5);
+                  border-radius: 0.5rem;
+                }
+              `}</style>
+            )}
+          </>
+        )}
+      </div>
+    </SubscriptionGuard>
   )
 }
