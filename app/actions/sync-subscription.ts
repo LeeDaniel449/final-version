@@ -1,13 +1,11 @@
 "use server"
 
-import { auth, clerkClient } from "@clerk/nextjs/server"
+import { clerkClient } from "@clerk/nextjs/server"
 
-export async function syncSubscriptionStatus() {
+export async function syncSubscriptionStatus(userId: string) {
   try {
-    const { userId } = await auth()
-
     if (!userId) {
-      console.log("[v0] No user ID found")
+      console.log("[v0] No user ID provided")
       return { success: false, hasPremium: false }
     }
 

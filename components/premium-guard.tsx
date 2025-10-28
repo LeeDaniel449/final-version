@@ -69,7 +69,7 @@ export function PremiumGuard({ children }: { children: React.ReactNode }) {
         console.log("[v0] No premium in metadata, syncing from Clerk Billing...")
         setHasSynced(true)
 
-        const result = await syncSubscriptionStatus()
+        const result = await syncSubscriptionStatus(user.id)
         console.log("[v0] Sync result:", result)
 
         if (result.success && result.hasPremium) {
