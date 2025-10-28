@@ -1,12 +1,11 @@
 "use client"
 
-import { useUser, useClerk } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
-  const { openUserProfile } = useClerk()
   const router = useRouter()
 
   useEffect(() => {
@@ -22,14 +21,9 @@ export default function SubscribePage() {
   }, [isLoaded, user, router])
 
   const handleSubscribe = () => {
-    console.log("[v0] Opening Clerk billing modal")
-    openUserProfile({
-      appearance: {
-        elements: {
-          rootBox: "z-50",
-        },
-      },
-    })
+    console.log("[v0] Redirecting to Clerk user profile for billing")
+    // Direct navigation to Clerk's user profile page with billing focus
+    window.location.href = `https://accounts.clerk.dev/user/billing?redirect_url=${window.location.origin}`
   }
 
   if (!isLoaded || !user) {
