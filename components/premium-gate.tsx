@@ -27,35 +27,33 @@ const LockIcon = () => (
 export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
-  const [hasPremium, setHasPremium] = useState(false)
-  const [hasChecked, setHasChecked] = useState(false)
+  const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
 
   useEffect(() => {
     if (isLoaded) {
       if (user) {
+        // User is signed in, check for premium
         const premium = user.publicMetadata?.premium === true
         setHasPremium(premium)
         console.log("[v0] Premium status:", premium)
         console.log("[v0] User metadata:", user.publicMetadata)
       } else {
+        // User is not signed in, no premium access
         setHasPremium(false)
-        console.log("[v0] User not signed in")
+        console.log("[v0] No user signed in, setting hasPremium to false")
       }
-      setHasChecked(true)
     }
   }, [isLoaded, user])
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
-  if (!hasChecked || isPublicRoute) {
+  // Show content while loading, if user has premium, or on public routes
+  if (!isLoaded || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
 
-  if (hasPremium) {
-    return <>{children}</>
-  }
-
+  // Show overlay for non-premium users on protected pages
   return (
     <div className="relative">
       {/* Blurred content */}
@@ -69,17 +67,16 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
               <LockIcon />
             </div>
           </div>
-          <h2 className="mb-2 text-2xl font-bold">Premium Access Required</h2>
+          <h2 className="mb-2 text-2xl font-bold">Subscribe to Unlock</h2>
           <p className="mb-6 text-muted-foreground">
-            {!user
-              ? "Sign in and subscribe to unlock all features including AI-powered financial advice, portfolio optimization, and personalized learning paths."
-              : "Subscribe to unlock all features including AI-powered financial advice, portfolio optimization, and personalized learning paths."}
+            Get premium access to unlock all features including AI-powered financial advice, portfolio optimization, and
+            personalized learning paths.
           </p>
           <Link
             href="/subscribe"
             className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {!user ? "Sign In & Subscribe" : "View Plans"}
+            View Plans
           </Link>
         </div>
       </div>
