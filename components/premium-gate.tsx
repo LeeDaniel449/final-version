@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -24,46 +25,37 @@ const LockIcon = () => (
 )
 
 export function PremiumGate({ children }: { children: React.ReactNode }) {
-  const userHook = useUser()
+  const { user, isLoaded } = useUser()
   const pathname = usePathname()
-  const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
-  const [isChecking, setIsChecking] = useState(true)
-
-  const user = userHook.user
-  const isLoaded = userHook.isLoaded
+  const [hasPremium, setHasPremium] = useState(false)
+  const [hasChecked, setHasChecked] = useState(false)
 
   useEffect(() => {
-    try {
-      if (isLoaded) {
-        if (user) {
-          const premium = user.publicMetadata?.premium === true
-          console.log("[v0] Premium check - User:", user.id, "Premium:", premium)
-          console.log("[v0] User metadata:", user.publicMetadata)
-          setHasPremium(premium)
-        } else {
-          // No user logged in
-          console.log("[v0] No user logged in")
-          setHasPremium(false)
-        }
-        setIsChecking(false)
+    if (isLoaded) {
+      if (user) {
+        const premium = user.publicMetadata?.premium === true
+        setHasPremium(premium)
+        console.log("[v0] Premium status:", premium)
+        console.log("[v0] User metadata:", user.publicMetadata)
+      } else {
+        setHasPremium(false)
+        console.log("[v0] User not signed in")
       }
-    } catch (error) {
-      console.error("[v0] Error checking premium status:", error)
-      // On error, allow access to avoid breaking the app
-      setHasPremium(true)
-      setIsChecking(false)
+      setHasChecked(true)
     }
   }, [isLoaded, user])
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
-  // Show content while checking, if user has premium, or on public routes
-  if (isChecking || hasPremium || isPublicRoute) {
+  if (!hasChecked || isPublicRoute) {
     return <>{children}</>
   }
 
-  // Show overlay for non-premium users on protected pages
+  if (hasPremium) {
+    return <>{children}</>
+  }
+
   return (
     <div className="relative">
       {/* Blurred content */}
@@ -77,16 +69,17 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
               <LockIcon />
             </div>
           </div>
-          <h2 className="mb-2 text-2xl font-bold">Subscribe to Unlock</h2>
+          <h2 className="mb-2 text-2xl font-bold">Premium Access Required</h2>
           <p className="mb-6 text-muted-foreground">
-            Get premium access to unlock all features including AI-powered financial advice, portfolio optimization, and
-            personalized learning paths.
+            {!user
+              ? "Sign in and subscribe to unlock all features including AI-powered financial advice, portfolio optimization, and personalized learning paths."
+              : "Subscribe to unlock all features including AI-powered financial advice, portfolio optimization, and personalized learning paths."}
           </p>
           <Link
             href="/subscribe"
             className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            View Plans
+            {!user ? "Sign In & Subscribe" : "View Plans"}
           </Link>
         </div>
       </div>
