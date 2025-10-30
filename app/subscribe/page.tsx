@@ -139,38 +139,7 @@ export default function SubscribePage() {
         </div>
 
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <button
-            onClick={handleStripeCheckout}
-            disabled={isActivating}
-            style={{
-              padding: "16px 48px",
-              fontSize: "18px",
-              fontWeight: "600",
-              color: "white",
-              background: isActivating ? "#9ca3af" : "#667eea",
-              border: "none",
-              borderRadius: "12px",
-              cursor: isActivating ? "not-allowed" : "pointer",
-              transition: "all 0.2s",
-              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
-            }}
-            onMouseEnter={(e) => {
-              if (!isActivating) {
-                e.currentTarget.style.background = "#5568d3"
-                e.currentTarget.style.transform = "translateY(-2px)"
-                e.currentTarget.style.boxShadow = "0 6px 16px rgba(102, 126, 234, 0.5)"
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!isActivating) {
-                e.currentTarget.style.background = "#667eea"
-                e.currentTarget.style.transform = "translateY(0)"
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
-              }
-            }}
-          >
-            {isActivating ? "Loading..." : "Subscribe Now - $29.99/month"}
-          </button>
+          
           {activationError && (
             <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
           )}
