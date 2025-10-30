@@ -30,18 +30,20 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
 
   useEffect(() => {
+    console.log("[v0] PremiumGate useEffect triggered, isLoaded:", isLoaded, "user:", !!user, "userId:", user?.id)
+
     if (isLoaded) {
       if (user) {
         const premium = user.publicMetadata?.premium === true
         setHasPremium(premium)
-        console.log("[v0] Premium status:", premium)
-        console.log("[v0] User metadata:", user.publicMetadata)
+        console.log("[v0] PremiumGate - Premium status:", premium)
+        console.log("[v0] PremiumGate - User metadata:", user.publicMetadata)
       } else {
         setHasPremium(true)
-        console.log("[v0] No user signed in, allowing access")
+        console.log("[v0] PremiumGate - No user signed in, allowing access")
       }
     }
-  }, [isLoaded, user])
+  }, [isLoaded, user, user?.id])
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
