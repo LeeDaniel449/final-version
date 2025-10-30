@@ -32,28 +32,34 @@ export default function SubscribePage() {
     }
   }, [isLoaded, user, router])
 
-  const handleActivatePremium = async () => {
+  const handleStripeCheckout = async () => {
     setIsActivating(true)
     setActivationError(null)
-    console.log("[v0] Activating premium status...")
+    console.log("[v0] Starting Stripe checkout...")
 
     try {
-      const response = await fetch("/api/set-premium", {
+      const response = await fetch("/api/create-checkout-session", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
       })
 
       if (!response.ok) {
-        throw new Error("Failed to activate premium")
+        throw new Error("Failed to create checkout session")
       }
 
       const data = await response.json()
-      console.log("[v0] Premium activated successfully:", data)
+      console.log("[v0] Checkout session created:", data)
 
-      // Reload the page to refresh user data
-      window.location.reload()
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url
+      }
     } catch (error) {
-      console.error("[v0] Premium activation error:", error)
-      setActivationError("Failed to activate premium. Please try again.")
+      console.error("[v0] Stripe checkout error:", error)
+      setActivationError("Failed to start checkout. Please try again.")
       setIsActivating(false)
     }
   }
@@ -134,35 +140,41 @@ export default function SubscribePage() {
 
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <button
-            onClick={handleActivatePremium}
+            onClick={handleStripeCheckout}
             disabled={isActivating}
             style={{
-              padding: "12px 32px",
-              fontSize: "16px",
+              padding: "16px 48px",
+              fontSize: "18px",
               fontWeight: "600",
               color: "white",
-              background: isActivating ? "#9ca3af" : "#10b981",
+              background: isActivating ? "#9ca3af" : "#667eea",
               border: "none",
-              borderRadius: "8px",
+              borderRadius: "12px",
               cursor: isActivating ? "not-allowed" : "pointer",
               transition: "all 0.2s",
+              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
             }}
             onMouseEnter={(e) => {
               if (!isActivating) {
-                e.currentTarget.style.background = "#059669"
+                e.currentTarget.style.background = "#5568d3"
+                e.currentTarget.style.transform = "translateY(-2px)"
+                e.currentTarget.style.boxShadow = "0 6px 16px rgba(102, 126, 234, 0.5)"
               }
             }}
             onMouseLeave={(e) => {
               if (!isActivating) {
-                e.currentTarget.style.background = "#10b981"
+                e.currentTarget.style.background = "#667eea"
+                e.currentTarget.style.transform = "translateY(0)"
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
               }
             }}
           >
-            {isActivating ? "Activating..." : "Activate Premium (Testing)"}
+            {isActivating ? "Loading..." : "Subscribe Now - $29.99/month"}
           </button>
           {activationError && (
             <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
           )}
+          <p style={{ color: "#6b7280", marginTop: "16px", fontSize: "14px" }}>Secure payment powered by Stripe</p>
         </div>
 
         <PricingTable />
