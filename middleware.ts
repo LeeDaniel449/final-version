@@ -4,7 +4,7 @@ import { NextResponse } from "next/server"
 const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/subscribe(.*)", "/api(.*)"])
 
 export default clerkMiddleware(async (auth, req) => {
-  const { userId, sessionClaims } = await auth()
+  const { userId } = await auth()
 
   if (req.nextUrl.pathname === "/onboarding") {
     console.log("[v0] Redirecting from /onboarding to /")
@@ -22,16 +22,7 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(new URL("/sign-up", req.url))
   }
 
-  const hasPremium =
-    sessionClaims?.metadata?.premium === true || sessionClaims?.metadata?.subscriptionStatus === "active"
-
-  // If user doesn't have premium, redirect to subscribe page
-  if (!hasPremium) {
-    console.log("[v0] User doesn't have premium, redirecting to subscribe")
-    return NextResponse.redirect(new URL("/subscribe", req.url))
-  }
-
-  // User has premium, allow access
+  // User is signed in, allow access (premium check will be done client-side)
   return NextResponse.next()
 })
 
