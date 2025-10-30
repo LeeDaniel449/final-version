@@ -27,7 +27,7 @@ const LockIcon = () => (
 export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
-  const [hasPremium, setHasPremium] = useState(true)
+  const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
 
   useEffect(() => {
     if (isLoaded && user) {
@@ -35,32 +35,25 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
         user.publicMetadata?.premium === true ||
         user.publicMetadata?.subscriptionStatus === "active" ||
         user.publicMetadata?.freeTrialActive === true
-
       setHasPremium(premium)
-
-      console.log("[v0] PremiumGate - User loaded")
-      console.log("[v0] PremiumGate - Premium status:", premium)
-      console.log("[v0] PremiumGate - Full metadata:", JSON.stringify(user.publicMetadata))
-      console.log("[v0] PremiumGate - Checking: premium =", user.publicMetadata?.premium)
-      console.log("[v0] PremiumGate - Checking: subscriptionStatus =", user.publicMetadata?.subscriptionStatus)
-      console.log("[v0] PremiumGate - Checking: freeTrialActive =", user.publicMetadata?.freeTrialActive)
-    } else if (isLoaded && !user) {
-      setHasPremium(false)
-      console.log("[v0] PremiumGate - No user signed in")
+      console.log("[v0] Premium status:", premium)
+      console.log("[v0] User metadata:", user.publicMetadata)
     }
   }, [isLoaded, user])
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
-  if (hasPremium || isPublicRoute) {
+  // Show content while loading, if user has premium, or on public routes
+  if (!isLoaded || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
 
+  // Show overlay for non-premium users on protected pages
   return (
-    <>
-      {/* Blurred content in background */}
-      <div className="pointer-events-none blur-sm">{children}</div>
+    <div className="relative">
+      {/* Blurred content */}
+      <div className="pointer-events-none blur-sm select-none">{children}</div>
 
       {/* Overlay */}
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
@@ -83,6 +76,6 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   )
 }
