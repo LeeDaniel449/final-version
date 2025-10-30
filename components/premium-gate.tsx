@@ -17,7 +17,9 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     if (isLoaded && user) {
       const premium = user.publicMetadata?.premium === true || user.publicMetadata?.subscriptionStatus === "active"
       setHasPremium(premium)
-      console.log("[v0] Premium status:", premium)
+      console.log("[v0] PremiumGate - User:", user.id, "Premium:", premium, "Metadata:", user.publicMetadata)
+    } else if (isLoaded && !user) {
+      setHasPremium(false)
     }
   }, [isLoaded, user])
 
