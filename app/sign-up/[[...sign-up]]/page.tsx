@@ -12,7 +12,10 @@ export default function SignUpPage() {
   useEffect(() => {
     if (isLoaded && isSignedIn && user) {
       console.log("[v0] User signed in, checking premium status")
-      const hasPremium = user.publicMetadata?.premium === true || user.publicMetadata?.subscriptionStatus === "active"
+      const hasPremium =
+        user.publicMetadata?.premium === true ||
+        user.publicMetadata?.subscriptionStatus === "active" ||
+        user.publicMetadata?.freeTrialActive === true
 
       if (hasPremium) {
         console.log("[v0] User has premium, redirecting to home")
