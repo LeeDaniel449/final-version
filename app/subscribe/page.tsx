@@ -133,7 +133,33 @@ export default function SubscribePage() {
         </div>
 
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          
+          <button
+            onClick={handleActivatePremium}
+            disabled={isActivating}
+            style={{
+              padding: "12px 32px",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "white",
+              background: isActivating ? "#9ca3af" : "#10b981",
+              border: "none",
+              borderRadius: "8px",
+              cursor: isActivating ? "not-allowed" : "pointer",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              if (!isActivating) {
+                e.currentTarget.style.background = "#059669"
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActivating) {
+                e.currentTarget.style.background = "#10b981"
+              }
+            }}
+          >
+            {isActivating ? "Activating..." : "Activate Premium (Testing)"}
+          </button>
           {activationError && (
             <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
           )}
