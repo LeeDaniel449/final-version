@@ -32,15 +32,13 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (isLoaded) {
       if (user) {
-        // User is signed in, check for premium
         const premium = user.publicMetadata?.premium === true
         setHasPremium(premium)
         console.log("[v0] Premium status:", premium)
         console.log("[v0] User metadata:", user.publicMetadata)
       } else {
-        // User is not signed in, no premium access
-        setHasPremium(false)
-        console.log("[v0] No user signed in, setting hasPremium to false")
+        setHasPremium(true)
+        console.log("[v0] No user signed in, allowing access")
       }
     }
   }, [isLoaded, user])
