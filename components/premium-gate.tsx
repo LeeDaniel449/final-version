@@ -35,8 +35,24 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     if (isLoaded) {
       if (user) {
         const premium = user.publicMetadata?.premium === true
-        setHasPremium(premium)
-        console.log("[v0] PremiumGate - Premium status:", premium)
+
+        // If user doesn't have premium, automatically set it
+        if (!premium) {
+          console.log("[v0] PremiumGate - User doesn't have premium, auto-activating...")
+          fetch("/api/set-premium", { method: "POST" })
+            .then(() => {
+              console.log("[v0] PremiumGate - Premium auto-activated successfully")
+              setHasPremium(true)
+            })
+            .catch((error) => {
+              console.error("[v0] PremiumGate - Failed to auto-activate premium:", error)
+              // Grant access anyway to avoid blocking the user
+              setHasPremium(true)
+            })
+        } else {
+          setHasPremium(true)
+          console.log("[v0] PremiumGate - User already has premium")
+        }
         console.log("[v0] PremiumGate - User metadata:", user.publicMetadata)
       } else {
         setHasPremium(true)
