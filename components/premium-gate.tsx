@@ -5,10 +5,12 @@ import type React from "react"
 import { useUser } from "@clerk/nextjs"
 import { Lock } from "lucide-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
+  const pathname = usePathname()
   const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
 
   useEffect(() => {
@@ -19,12 +21,15 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     }
   }, [isLoaded, user])
 
-  // Show content while loading or if user has premium
-  if (!isLoaded || hasPremium) {
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
+  const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
+
+  // Show content while loading, if user has premium, or on public routes
+  if (!isLoaded || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
 
-  // Show overlay for non-premium users
+  // Show overlay for non-premium users on protected pages
   return (
     <div className="relative">
       {/* Blurred content */}
