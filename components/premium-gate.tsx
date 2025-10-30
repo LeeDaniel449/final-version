@@ -31,10 +31,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isLoaded && user) {
-      const premium =
-        user.publicMetadata?.premium === true ||
-        user.publicMetadata?.subscriptionStatus === "active" ||
-        user.publicMetadata?.freeTrialActive === true
+      const premium = user.publicMetadata?.premium === true
       setHasPremium(premium)
       console.log("[v0] Premium status:", premium)
       console.log("[v0] User metadata:", user.publicMetadata)
