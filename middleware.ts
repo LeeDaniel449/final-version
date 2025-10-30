@@ -1,23 +1,17 @@
-import { authMiddleware } from "@clerk/nextjs"
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-export default authMiddleware({
-  publicRoutes: ["/sign-in(.*)", "/sign-up(.*)", "/subscribe(.*)", "/api(.*)"],
-  afterAuth(auth, req) {
-    // Redirect from onboarding to home
-    if (req.nextUrl.pathname === "/onboarding") {
-      return Response.redirect(new URL("/", req.url))
-    }
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
 
-    // If user is not signed in and trying to access a protected route, redirect to sign-up
-    if (!auth.userId && !auth.isPublicRoute) {
-      const signUpUrl = new URL("/sign-up", req.url)
-      return Response.redirect(signUpUrl)
-    }
+  if (pathname === "/onboarding") {
+    return NextResponse.redirect(new URL("/", request.url))
+  }
 
-    // Allow the request to proceed
-    return
-  },
-})
+  // Auth is handled by Clerk's components
+  // Premium checks are handled by PremiumGate component
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
