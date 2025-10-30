@@ -39,8 +39,8 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
         console.log("[v0] PremiumGate - Premium status:", premium)
         console.log("[v0] PremiumGate - User metadata:", user.publicMetadata)
       } else {
-        setHasPremium(false)
-        console.log("[v0] PremiumGate - No user signed in, blocking access")
+        setHasPremium(true)
+        console.log("[v0] PremiumGate - No user signed in, allowing access")
       }
     }
   }, [isLoaded, user, user?.id])
