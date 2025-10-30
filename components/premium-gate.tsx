@@ -5,7 +5,6 @@ import type React from "react"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
 
 const LockIcon = () => (
   <svg
@@ -27,7 +26,11 @@ const LockIcon = () => (
 export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
-  const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
+
+  const hasPremium = true
+
+  /*
+  const [hasPremium, setHasPremium] = useState(true)
 
   useEffect(() => {
     console.log("[v0] PremiumGate useEffect triggered, isLoaded:", isLoaded, "user:", !!user, "userId:", user?.id)
@@ -44,11 +47,11 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       }
     }
   }, [isLoaded, user, user?.id])
+  */
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
-  // Show content while loading, if user has premium, or on public routes
   if (!isLoaded || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
