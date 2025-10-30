@@ -11,7 +11,9 @@ export default function SubscribePage() {
   const { user, isLoaded } = useUser()
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
+  const [isStartingTrial, setIsStartingTrial] = useState(false)
   const [activationError, setActivationError] = useState<string | null>(null)
+  const [trialError, setTrialError] = useState<string | null>(null)
 
   console.log("[v0] Subscribe page state:", { isLoaded, hasUser: !!user, userId: user?.id })
 
@@ -31,6 +33,32 @@ export default function SubscribePage() {
       }
     }
   }, [isLoaded, user, router])
+
+  const handleStartFreeTrial = async () => {
+    setIsStartingTrial(true)
+    setTrialError(null)
+    console.log("[v0] Starting free trial...")
+
+    try {
+      const response = await fetch("/api/start-free-trial", {
+        method: "POST",
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to start free trial")
+      }
+
+      const data = await response.json()
+      console.log("[v0] Free trial started successfully:", data)
+
+      // Reload the page to refresh user data
+      window.location.reload()
+    } catch (error) {
+      console.error("[v0] Free trial error:", error)
+      setTrialError("Failed to start free trial. Please try again.")
+      setIsStartingTrial(false)
+    }
+  }
 
   const handleActivatePremium = async () => {
     setIsActivating(true)
@@ -56,11 +84,6 @@ export default function SubscribePage() {
       setActivationError("Failed to activate premium. Please try again.")
       setIsActivating(false)
     }
-  }
-
-  const handleSubscribe = () => {
-    console.log("[v0] Opening Clerk billing page")
-    window.location.href = `https://accounts.clerk.dev/user/billing?redirect_url=${window.location.origin}`
   }
 
   console.log("[v0] Rendering subscribe page UI, isLoaded:", isLoaded, "user:", !!user)
@@ -134,6 +157,37 @@ export default function SubscribePage() {
 
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <button
+            onClick={handleStartFreeTrial}
+            disabled={isStartingTrial}
+            style={{
+              padding: "16px 32px",
+              fontSize: "18px",
+              fontWeight: "600",
+              color: "white",
+              background: isStartingTrial ? "#9ca3af" : "#3b82f6",
+              border: "none",
+              borderRadius: "8px",
+              cursor: isStartingTrial ? "not-allowed" : "pointer",
+              boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)",
+              transition: "all 0.2s",
+              marginRight: "16px",
+            }}
+            onMouseOver={(e) => {
+              if (!isStartingTrial) {
+                e.currentTarget.style.background = "#2563eb"
+                e.currentTarget.style.transform = "translateY(-2px)"
+              }
+            }}
+            onMouseOut={(e) => {
+              if (!isStartingTrial) {
+                e.currentTarget.style.background = "#3b82f6"
+                e.currentTarget.style.transform = "translateY(0)"
+              }
+            }}
+          >
+            {isStartingTrial ? "Starting Trial..." : "Start 14-Day Free Trial"}
+          </button>
+          <button
             onClick={handleActivatePremium}
             disabled={isActivating}
             style={{
@@ -163,6 +217,7 @@ export default function SubscribePage() {
           >
             {isActivating ? "Activating..." : "Activate Premium (Testing)"}
           </button>
+          {trialError && <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{trialError}</p>}
           {activationError && (
             <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
           )}
