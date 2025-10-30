@@ -1,29 +1,22 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
+import { authMiddleware } from "@clerk/nextjs"
 
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)", "/subscribe(.*)", "/api(.*)"])
+export default authMiddleware({
+  publicRoutes: ["/sign-in(.*)", "/sign-up(.*)", "/subscribe(.*)", "/api(.*)"],
+  afterAuth(auth, req) {
+    // Redirect from onboarding to home
+    if (req.nextUrl.pathname === "/onboarding") {
+      return Response.redirect(new URL("/", req.url))
+    }
 
-export default clerkMiddleware(async (auth, req) => {
-  const { userId } = await auth()
+    // If user is not signed in and trying to access a protected route, redirect to sign-up
+    if (!auth.userId && !auth.isPublicRoute) {
+      const signUpUrl = new URL("/sign-up", req.url)
+      return Response.redirect(signUpUrl)
+    }
 
-  if (req.nextUrl.pathname === "/onboarding") {
-    console.log("[v0] Redirecting from /onboarding to /")
-    return NextResponse.redirect(new URL("/", req.url))
-  }
-
-  // Allow public routes
-  if (isPublicRoute(req)) {
-    return NextResponse.next()
-  }
-
-  // If user is not signed in, redirect to sign-up
-  if (!userId) {
-    console.log("[v0] User not signed in, redirecting to sign-up")
-    return NextResponse.redirect(new URL("/sign-up", req.url))
-  }
-
-  // User is signed in, allow access (premium check will be done client-side)
-  return NextResponse.next()
+    // Allow the request to proceed
+    return
+  },
 })
 
 export const config = {
