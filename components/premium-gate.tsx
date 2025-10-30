@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useState, useEffect } from "react"
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -27,10 +27,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
 
-  const hasPremium = true
-
-  /*
-  const [hasPremium, setHasPremium] = useState(true)
+  const [hasPremium, setHasPremium] = useState(false)
 
   useEffect(() => {
     console.log("[v0] PremiumGate useEffect triggered, isLoaded:", isLoaded, "user:", !!user, "userId:", user?.id)
@@ -42,12 +39,11 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
         console.log("[v0] PremiumGate - Premium status:", premium)
         console.log("[v0] PremiumGate - User metadata:", user.publicMetadata)
       } else {
-        setHasPremium(true)
-        console.log("[v0] PremiumGate - No user signed in, allowing access")
+        setHasPremium(false)
+        console.log("[v0] PremiumGate - No user signed in, blocking access")
       }
     }
   }, [isLoaded, user, user?.id])
-  */
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
@@ -56,7 +52,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 
-  // Show overlay for non-premium users on protected pages
+  // Show overlay for non-premium users and signed-out users on protected pages
   return (
     <div className="relative">
       {/* Blurred content */}
