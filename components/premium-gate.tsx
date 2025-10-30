@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useUser } from "@clerk/nextjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -25,24 +24,42 @@ const LockIcon = () => (
 )
 
 export function PremiumGate({ children }: { children: React.ReactNode }) {
-  const { user, isLoaded } = useUser()
+  const userHook = useUser()
   const pathname = usePathname()
   const [hasPremium, setHasPremium] = useState(true) // Default to true to avoid flash
+  const [isChecking, setIsChecking] = useState(true)
+
+  const user = userHook.user
+  const isLoaded = userHook.isLoaded
 
   useEffect(() => {
-    if (isLoaded && user) {
-      const premium = user.publicMetadata?.premium === true
-      setHasPremium(premium)
-      console.log("[v0] Premium status:", premium)
-      console.log("[v0] User metadata:", user.publicMetadata)
+    try {
+      if (isLoaded) {
+        if (user) {
+          const premium = user.publicMetadata?.premium === true
+          console.log("[v0] Premium check - User:", user.id, "Premium:", premium)
+          console.log("[v0] User metadata:", user.publicMetadata)
+          setHasPremium(premium)
+        } else {
+          // No user logged in
+          console.log("[v0] No user logged in")
+          setHasPremium(false)
+        }
+        setIsChecking(false)
+      }
+    } catch (error) {
+      console.error("[v0] Error checking premium status:", error)
+      // On error, allow access to avoid breaking the app
+      setHasPremium(true)
+      setIsChecking(false)
     }
   }, [isLoaded, user])
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
-  // Show content while loading, if user has premium, or on public routes
-  if (!isLoaded || hasPremium || isPublicRoute) {
+  // Show content while checking, if user has premium, or on public routes
+  if (isChecking || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
 
