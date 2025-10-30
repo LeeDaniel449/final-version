@@ -27,7 +27,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
 
-  const [hasPremium, setHasPremium] = useState(false)
+  const [hasPremium, setHasPremium] = useState(true)
 
   useEffect(() => {
     console.log("[v0] PremiumGate useEffect triggered, isLoaded:", isLoaded, "user:", !!user, "userId:", user?.id)
@@ -35,28 +35,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     if (isLoaded) {
       if (user) {
         const premium = user.publicMetadata?.premium === true
-
-        // If user doesn't have premium, automatically set it
-        if (!premium) {
-          console.log("[v0] PremiumGate - User doesn't have premium, auto-activating...")
-          fetch("/api/set-premium", { method: "POST" })
-            .then(() => {
-              console.log("[v0] PremiumGate - Premium auto-activated successfully")
-              setHasPremium(true)
-            })
-            .catch((error) => {
-              console.error("[v0] PremiumGate - Failed to auto-activate premium:", error)
-              // Grant access anyway to avoid blocking the user
-              setHasPremium(true)
-            })
-        } else {
-          setHasPremium(true)
-          console.log("[v0] PremiumGate - User already has premium")
-        }
+        console.log("[v0] PremiumGate - User premium status:", premium)
         console.log("[v0] PremiumGate - User metadata:", user.publicMetadata)
+        setHasPremium(premium)
       } else {
-        setHasPremium(true)
         console.log("[v0] PremiumGate - No user signed in, allowing access")
+        setHasPremium(true)
       }
     }
   }, [isLoaded, user, user?.id])
@@ -68,7 +52,6 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 
-  // Show overlay for non-premium users and signed-out users on protected pages
   return (
     <div className="relative">
       {/* Blurred content */}
