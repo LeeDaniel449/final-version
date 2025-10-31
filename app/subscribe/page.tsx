@@ -2,7 +2,7 @@
 
 import { useUser, useOrganizationList } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { PricingTable } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 
@@ -15,6 +15,18 @@ export default function SubscribePage() {
   })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
+  const [pollCount, setPollCount] = useState(0)
+
+  useEffect(() => {
+    if (!isLoaded || !orgsLoaded || !user) return
+
+    const interval = setInterval(() => {
+      setPollCount((prev) => prev + 1)
+      console.log("[v0] Polling for organization membership changes...")
+    }, 2000)
+
+    return () => clearInterval(interval)
+  }, [isLoaded, orgsLoaded, user])
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -39,6 +51,7 @@ export default function SubscribePage() {
   console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
   console.log("[v0] hasOrgMembership:", hasOrgMembership)
   console.log("[v0] showActivateButton:", showActivateButton)
+  console.log("[v0] pollCount:", pollCount)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
   const handleActivate = async () => {
