@@ -108,7 +108,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     setHasPremium(shouldHavePremium)
     setCheckComplete(true)
-  }, [isLoaded, orgsLoaded, user, userMemberships])
+  }, [isLoaded, orgsLoaded, user, user?.id, userMemberships])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]

@@ -1,107 +1,189 @@
 "use client"
 
-import { useUser } from "@clerk/nextjs"
-import { PricingTable } from "@clerk/nextjs"
+import { useUser, useOrganizationList } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { PricingTable } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
-  const [activating, setActivating] = useState(false)
+  const { isLoaded: orgsLoaded, userMemberships } = useOrganizationList({
+    userMemberships: { infinite: true },
+  })
+  const router = useRouter()
+  const [isActivating, setIsActivating] = useState(false)
 
-  console.log("[v0] SubscribePage component rendering")
-  console.log("[v0] Subscribe page state:", { isLoaded, hasUser: !!user })
+  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
+  console.log("[v0] isLoaded:", isLoaded)
+  console.log("[v0] orgsLoaded:", orgsLoaded)
+  console.log("[v0] user exists:", !!user)
+  if (user) {
+    console.log("[v0] user id:", user.id)
+    console.log("[v0] publicMetadata:", user.publicMetadata)
+  }
+  console.log("[v0] userMemberships:", userMemberships)
+  console.log("[v0] userMemberships.data:", userMemberships?.data)
+  console.log("[v0] userMemberships.data.length:", userMemberships?.data?.length)
 
-  const hasPremium = user?.publicMetadata?.premium === true || user?.publicMetadata?.subscriptionStatus === "active"
+  // Check if user already has premium in metadata
+  const hasPremiumMetadata =
+    user?.publicMetadata?.premium === true ||
+    user?.publicMetadata?.subscriptionStatus === "active" ||
+    user?.publicMetadata?.freeTrialActive === true
+
+  // Check if user is member of any organization (indicates subscription)
+  const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
+
+  console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
+  console.log("[v0] hasOrgMembership:", hasOrgMembership)
+
+  const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
+
+  console.log("[v0] showActivateButton:", showActivateButton)
+  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
   const handleActivate = async () => {
-    setActivating(true)
+    setIsActivating(true)
+    console.log("[v0] User clicked activate subscription button")
+
     try {
-      const response = await fetch("/api/set-premium", { method: "POST" })
+      const response = await fetch("/api/set-premium", {
+        method: "POST",
+      })
+
       if (response.ok) {
+        console.log("[v0] Premium activated successfully")
+        // Reload to get updated user metadata and redirect
         window.location.href = "/"
       } else {
+        console.error("[v0] Failed to activate premium")
         alert("Failed to activate premium. Please try again.")
+        setIsActivating(false)
       }
     } catch (error) {
-      console.error("[v0] Activation error:", error)
+      console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
-    } finally {
-      setActivating(false)
+      setIsActivating(false)
     }
   }
 
-  if (!isLoaded) {
-    console.log("[v0] Showing loading state")
+  if (!isLoaded || !orgsLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900">
-        <div className="text-center text-white">
-          <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-lg">Loading...</p>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <div
+            style={{
+              width: "48px",
+              height: "48px",
+              border: "4px solid rgba(255,255,255,0.3)",
+              borderTop: "4px solid white",
+              borderRadius: "50%",
+              margin: "0 auto 16px",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+          <p style={{ fontSize: "18px" }}>Loading...</p>
         </div>
+        <style jsx>{`
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
       </div>
     )
   }
 
-  if (isLoaded && user && hasPremium) {
-    console.log("[v0] User has premium, showing success message")
+  if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900 p-6">
-        <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-12 text-center">
-          <div className="text-6xl mb-6">🎉</div>
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Premium Activated!</h1>
-          <p className="text-lg text-gray-600 mb-8">
-            Your payment was successful. You now have full access to all features!
-          </p>
-          <a
-            href="/"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg font-bold text-lg hover:shadow-lg transition-shadow"
-          >
-            Start Learning
-          </a>
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <p style={{ fontSize: "18px" }}>Please sign in to subscribe</p>
         </div>
       </div>
     )
   }
-
-  console.log("[v0] Rendering subscribe page UI, isLoaded:", isLoaded, "user:", !!user)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900 p-6">
-      <div className="max-w-6xl w-full bg-white rounded-2xl shadow-2xl p-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">Choose Your Plan</h1>
-          <p className="text-lg text-gray-600">Unlock all features and start your financial literacy journey</p>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        padding: "24px",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1200px",
+          width: "100%",
+          background: "white",
+          borderRadius: "16px",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+          padding: "48px 32px",
+        }}
+      >
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
+            Choose Your Plan
+          </h1>
+          <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
         </div>
 
-        <div className="w-full">
-          <PricingTable />
-        </div>
-
-        {user && !hasPremium && (
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Testing & Development</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                For testing purposes, you can manually activate premium access. In production, this happens
-                automatically via webhook after payment.
-              </p>
-              <button
-                onClick={handleActivate}
-                disabled={activating}
-                className="px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {activating ? "Activating..." : "Activate Premium (Test)"}
-              </button>
-            </div>
+        {showActivateButton && (
+          <div
+            style={{
+              marginBottom: "32px",
+              padding: "24px",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              borderRadius: "12px",
+              textAlign: "center",
+            }}
+          >
+            <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "white", marginBottom: "12px" }}>
+              🎉 Subscription Detected!
+            </h2>
+            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", marginBottom: "20px" }}>
+              Click the button below to activate your premium access and unlock all features.
+            </p>
+            <Button
+              onClick={handleActivate}
+              disabled={isActivating}
+              size="lg"
+              style={{
+                background: "white",
+                color: "#667eea",
+                fontSize: "18px",
+                padding: "12px 32px",
+                fontWeight: "bold",
+              }}
+            >
+              {isActivating ? "Activating..." : "Activate Subscription"}
+            </Button>
           </div>
         )}
 
-        <div className="text-center text-sm text-gray-500 mt-8">
-          <p>After successful payment, all pages will be immediately accessible</p>
-          <p className="mt-2 text-xs">
-            Webhook URL: <code className="bg-gray-100 px-2 py-1 rounded">/api/webhooks/clerk</code>
-          </p>
-        </div>
+        <PricingTable />
       </div>
     </div>
   )
