@@ -26,20 +26,11 @@ export default clerkMiddleware(async (auth, req) => {
 
   if (userId) {
     const metadata = (sessionClaims?.publicMetadata as any) || {}
-
-    // Check for premium indicators
-    const hasPremium =
-      metadata.premium === true || metadata.subscriptionStatus === "active" || metadata.freeTrialActive === true
-
-    console.log("[v0] Middleware - userId:", userId, "hasPremium:", hasPremium, "metadata:", JSON.stringify(metadata))
-
-    // If user doesn't have premium, redirect to subscribe page
-    if (!hasPremium && pathname !== "/subscribe") {
-      console.log("[v0] Middleware - Redirecting non-premium user to /subscribe")
-      return NextResponse.redirect(new URL("/subscribe", req.url))
-    }
+    console.log("[v0] Middleware - userId:", userId, "metadata:", JSON.stringify(metadata))
+    console.log("[v0] Middleware - Granting access to signed-in user")
+    return NextResponse.next()
   } else {
-    console.log("[v0] Middleware - No user, allowing access")
+    console.log("[v0] Middleware - No user, allowing access to signed-out users")
   }
 
   return NextResponse.next()
