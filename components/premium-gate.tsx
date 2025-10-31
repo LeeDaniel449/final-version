@@ -34,47 +34,8 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   })
   const pathname = usePathname()
 
-  const [hasPremium, setHasPremium] = useState(true)
+  const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
-  const [isCheckingSubscription, setIsCheckingSubscription] = useState(false)
-
-  useEffect(() => {
-    if (!user || !isLoaded || !orgsLoaded) return
-
-    // Check if user has organization membership (indicates subscription)
-    const hasOrgMembership = (userMemberships?.data?.length || 0) > 0
-    const hasPremiumMetadata = user.publicMetadata?.premium === true
-
-    // If user has org membership but no premium metadata, activate premium
-    if (hasOrgMembership && !hasPremiumMetadata && !isCheckingSubscription) {
-      console.log("[v0] 🔄 Detected subscription without premium metadata - activating...")
-      setIsCheckingSubscription(true)
-
-      fetch("/api/set-premium", {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("[v0] ✅ Premium activated via auto-detection:", data)
-          // Reload user to get updated metadata
-          window.location.reload()
-        })
-        .catch((error) => {
-          console.error("[v0] ❌ Error activating premium:", error)
-          setIsCheckingSubscription(false)
-        })
-    }
-
-    // Poll for changes every 3 seconds if user doesn't have premium
-    if (!hasPremiumMetadata && !hasOrgMembership) {
-      const interval = setInterval(() => {
-        console.log("[v0] 🔄 Polling for subscription changes...")
-        user.reload()
-      }, 3000)
-
-      return () => clearInterval(interval)
-    }
-  }, [user, isLoaded, orgsLoaded, userMemberships, isCheckingSubscription])
 
   useEffect(() => {
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
@@ -83,8 +44,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     console.log("[v0] user id:", user?.id)
 
     if (!isLoaded || !orgsLoaded) {
-      console.log("[v0] Still loading, granting access by default")
-      setHasPremium(true)
+      console.log("[v0] Still loading, waiting for data")
       return
     }
 
@@ -160,7 +120,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   console.log("  - pathname:", pathname)
   console.log("  - will show overlay:", checkComplete && !hasPremium && !isPublicRoute)
 
-  if (!checkComplete || hasPremium || isPublicRoute) {
+  if (!checkComplete) {
+    console.log("[v0] Still checking premium status, showing loading")
+    return <>{children}</>
+  }
+
+  if (hasPremium || isPublicRoute) {
     console.log("[v0] Showing children without overlay")
     return <>{children}</>
   }
