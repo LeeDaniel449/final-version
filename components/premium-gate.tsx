@@ -31,7 +31,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     console.log("[v0] ========== PREMIUM GATE DEBUG START ==========")
-    console.log("[v0] PremiumGate useEffect triggered")
+    console.log("[v0] PremiumGate useEffect triggered at:", new Date().toISOString())
     console.log("[v0] isLoaded:", isLoaded)
     console.log("[v0] user exists:", !!user)
     console.log("[v0] user?.id:", user?.id)
@@ -42,18 +42,29 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
         console.log("[v0] user.publicMetadata:", JSON.stringify(user.publicMetadata, null, 2))
         console.log("[v0] user.unsafeMetadata:", JSON.stringify(user.unsafeMetadata, null, 2))
 
-        // Check multiple possible locations for premium flag
-        const premiumFromPublic = user.publicMetadata?.premium === true
-        const subscriptionActive = user.publicMetadata?.subscriptionStatus === "active"
-        const freeTrialActive = user.publicMetadata?.freeTrialActive === true
-        const premiumFromUnsafe = (user.unsafeMetadata as any)?.premium === true
+        const metadata = user.publicMetadata as any
+        const unsafeMetadata = user.unsafeMetadata as any
 
-        console.log("[v0] Premium from publicMetadata:", premiumFromPublic)
-        console.log("[v0] Subscription status active:", subscriptionActive)
-        console.log("[v0] Free trial active:", freeTrialActive)
-        console.log("[v0] Premium from unsafeMetadata:", premiumFromUnsafe)
+        // Check all possible premium flags
+        const checks = {
+          "publicMetadata.premium": metadata?.premium === true,
+          "publicMetadata.subscriptionStatus": metadata?.subscriptionStatus === "active",
+          "publicMetadata.freeTrialActive": metadata?.freeTrialActive === true,
+          "publicMetadata.isPremium": metadata?.isPremium === true,
+          "publicMetadata.subscription": metadata?.subscription === "active" || metadata?.subscription === "premium",
+          "publicMetadata.plan": metadata?.plan === "premium" || metadata?.plan === "pro",
+          "unsafeMetadata.premium": unsafeMetadata?.premium === true,
+          "unsafeMetadata.subscriptionStatus": unsafeMetadata?.subscriptionStatus === "active",
+          // Check for any Clerk-specific subscription fields
+          "publicMetadata has subscription key": "subscription" in (metadata || {}),
+          "publicMetadata has plan key": "plan" in (metadata || {}),
+          "publicMetadata has premium key": "premium" in (metadata || {}),
+        }
 
-        const hasPremiumAccess = premiumFromPublic || subscriptionActive || freeTrialActive || premiumFromUnsafe
+        console.log("[v0] Premium checks:", JSON.stringify(checks, null, 2))
+
+        // If ANY check passes, grant premium
+        const hasPremiumAccess = Object.values(checks).some((check) => check === true)
         console.log("[v0] Final premium status:", hasPremiumAccess)
 
         setHasPremium(hasPremiumAccess)
