@@ -1,6 +1,6 @@
 "use client"
 
-import { useUser, useOrganizationList } from "@clerk/nextjs"
+import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { PricingTable } from "@clerk/nextjs"
@@ -8,44 +8,31 @@ import { Button } from "@/components/ui/button"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
-  const { isLoaded: orgsLoaded, userMemberships } = useOrganizationList({
-    userMemberships: { infinite: true },
-  })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
-  console.log("[v0] orgsLoaded:", orgsLoaded)
   console.log("[v0] user exists:", !!user)
   if (user) {
     console.log("[v0] user id:", user.id)
     console.log("[v0] publicMetadata:", user.publicMetadata)
   }
-  console.log("[v0] userMemberships:", userMemberships)
-  console.log("[v0] userMemberships.data:", userMemberships?.data)
-  console.log("[v0] userMemberships.data.length:", userMemberships?.data?.length)
 
-  // Check if user already has premium in metadata
   const hasPremiumMetadata =
     user?.publicMetadata?.premium === true ||
     user?.publicMetadata?.subscriptionStatus === "active" ||
     user?.publicMetadata?.freeTrialActive === true
 
-  // Check if user is member of any organization (indicates subscription)
-  const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
+  const showActivateButton = isLoaded && user && !hasPremiumMetadata
 
   console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
-  console.log("[v0] hasOrgMembership:", hasOrgMembership)
-
-  const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
-
   console.log("[v0] showActivateButton:", showActivateButton)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
   const handleActivate = async () => {
     setIsActivating(true)
-    console.log("[v0] User clicked activate subscription button")
+    console.log("[v0] User clicked activate premium button")
 
     try {
       const response = await fetch("/api/set-premium", {
@@ -68,7 +55,7 @@ export default function SubscribePage() {
     }
   }
 
-  if (!isLoaded || !orgsLoaded) {
+  if (!isLoaded) {
     return (
       <div
         style={{
@@ -161,7 +148,7 @@ export default function SubscribePage() {
             }}
           >
             <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "white", marginBottom: "12px" }}>
-              🎉 Subscription Detected!
+              🎉 Ready to Get Premium?
             </h2>
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", marginBottom: "20px" }}>
               Click the button below to activate your premium access and unlock all features.
@@ -178,7 +165,7 @@ export default function SubscribePage() {
                 fontWeight: "bold",
               }}
             >
-              {isActivating ? "Activating..." : "Activate Subscription"}
+              {isActivating ? "Activating..." : "Activate Premium Access"}
             </Button>
           </div>
         )}
