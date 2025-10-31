@@ -80,14 +80,13 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 
-  console.log("[v0] Showing premium overlay")
-
+  // Only show overlay for signed-in users without premium
   return (
     <div className="relative">
       {/* Blurred content */}
       <div className="pointer-events-none blur-sm select-none">{children}</div>
 
-      {/* Overlay - only shown when user is signed in but doesn't have premium */}
+      {/* Overlay */}
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
         <div className="mx-4 max-w-lg rounded-lg border bg-card p-8 text-center shadow-lg">
           <div className="mb-4 flex justify-center">
