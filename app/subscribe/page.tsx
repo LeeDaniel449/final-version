@@ -14,6 +14,18 @@ export default function SubscribePage() {
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
 
+  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
+  console.log("[v0] isLoaded:", isLoaded)
+  console.log("[v0] orgsLoaded:", orgsLoaded)
+  console.log("[v0] user exists:", !!user)
+  if (user) {
+    console.log("[v0] user id:", user.id)
+    console.log("[v0] publicMetadata:", user.publicMetadata)
+  }
+  console.log("[v0] userMemberships:", userMemberships)
+  console.log("[v0] userMemberships.data:", userMemberships?.data)
+  console.log("[v0] userMemberships.data.length:", userMemberships?.data?.length)
+
   // Check if user already has premium in metadata
   const hasPremiumMetadata =
     user?.publicMetadata?.premium === true ||
@@ -23,7 +35,13 @@ export default function SubscribePage() {
   // Check if user is member of any organization (indicates subscription)
   const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
 
+  console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
+  console.log("[v0] hasOrgMembership:", hasOrgMembership)
+
   const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
+
+  console.log("[v0] showActivateButton:", showActivateButton)
+  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
   const handleActivate = async () => {
     setIsActivating(true)
