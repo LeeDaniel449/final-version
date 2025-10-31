@@ -44,12 +44,16 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
         // Check multiple possible locations for premium flag
         const premiumFromPublic = user.publicMetadata?.premium === true
+        const subscriptionActive = user.publicMetadata?.subscriptionStatus === "active"
+        const freeTrialActive = user.publicMetadata?.freeTrialActive === true
         const premiumFromUnsafe = (user.unsafeMetadata as any)?.premium === true
 
         console.log("[v0] Premium from publicMetadata:", premiumFromPublic)
+        console.log("[v0] Subscription status active:", subscriptionActive)
+        console.log("[v0] Free trial active:", freeTrialActive)
         console.log("[v0] Premium from unsafeMetadata:", premiumFromUnsafe)
 
-        const hasPremiumAccess = premiumFromPublic || premiumFromUnsafe
+        const hasPremiumAccess = premiumFromPublic || subscriptionActive || freeTrialActive || premiumFromUnsafe
         console.log("[v0] Final premium status:", hasPremiumAccess)
 
         setHasPremium(hasPremiumAccess)
