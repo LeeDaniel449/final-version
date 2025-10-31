@@ -2,64 +2,27 @@
 
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { PricingTable } from "@clerk/nextjs"
 
 export default function SubscribePage() {
-  console.log("[v0] SubscribePage component rendering")
-
   const { user, isLoaded } = useUser()
   const router = useRouter()
-  const [isActivating, setIsActivating] = useState(false)
-  const [activationError, setActivationError] = useState<string | null>(null)
-
-  console.log("[v0] Subscribe page state:", { isLoaded, hasUser: !!user, userId: user?.id })
 
   useEffect(() => {
-    console.log("[v0] Subscribe page useEffect triggered")
     if (isLoaded && user) {
-      console.log("[v0] Subscribe page loaded for user:", user.id)
       const hasPremium =
         user.publicMetadata?.premium === true ||
         user.publicMetadata?.subscriptionStatus === "active" ||
         user.publicMetadata?.freeTrialActive === true
-      console.log("[v0] User premium status:", hasPremium, "metadata:", user.publicMetadata)
 
       if (hasPremium) {
-        console.log("[v0] User already has premium, redirecting to home")
         router.replace("/")
       }
     }
   }, [isLoaded, user, router])
 
-  const handleActivatePremium = async () => {
-    setIsActivating(true)
-    setActivationError(null)
-    console.log("[v0] Activating premium for testing...")
-
-    try {
-      const response = await fetch("/api/set-premium", {
-        method: "POST",
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to activate premium")
-      }
-
-      console.log("[v0] Premium activated successfully")
-      // Reload to update user metadata
-      window.location.reload()
-    } catch (error) {
-      console.error("[v0] Premium activation error:", error)
-      setActivationError("Failed to activate premium. Please try again.")
-      setIsActivating(false)
-    }
-  }
-
-  console.log("[v0] Rendering subscribe page UI, isLoaded:", isLoaded, "user:", !!user)
-
   if (!isLoaded || !user) {
-    console.log("[v0] Showing loading state")
     return (
       <div
         style={{
@@ -95,8 +58,6 @@ export default function SubscribePage() {
     )
   }
 
-  console.log("[v0] Showing subscription UI")
-
   return (
     <div
       style={{
@@ -123,43 +84,6 @@ export default function SubscribePage() {
             Choose Your Plan
           </h1>
           <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
-        </div>
-
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <button
-            onClick={handleActivatePremium}
-            disabled={isActivating}
-            style={{
-              padding: "16px 48px",
-              fontSize: "18px",
-              fontWeight: "600",
-              color: "white",
-              background: isActivating ? "#9ca3af" : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              border: "none",
-              borderRadius: "8px",
-              cursor: isActivating ? "not-allowed" : "pointer",
-              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
-              transition: "all 0.3s ease",
-            }}
-            onMouseEnter={(e) => {
-              if (!isActivating) {
-                e.currentTarget.style.transform = "translateY(-2px)"
-                e.currentTarget.style.boxShadow = "0 6px 16px rgba(102, 126, 234, 0.5)"
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)"
-              e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
-            }}
-          >
-            {isActivating ? "Activating..." : "Activate Premium (Testing)"}
-          </button>
-          {activationError && (
-            <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
-          )}
-          <p style={{ color: "#6b7280", marginTop: "16px", fontSize: "14px" }}>
-            For testing: Click to activate premium access
-          </p>
         </div>
 
         <PricingTable />
