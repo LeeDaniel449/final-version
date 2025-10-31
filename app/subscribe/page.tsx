@@ -13,6 +13,7 @@ export default function SubscribePage() {
   })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
+  const [isTesting, setIsTesting] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -26,13 +27,11 @@ export default function SubscribePage() {
   console.log("[v0] userMemberships.data:", userMemberships?.data)
   console.log("[v0] userMemberships.data.length:", userMemberships?.data?.length)
 
-  // Check if user already has premium in metadata
   const hasPremiumMetadata =
     user?.publicMetadata?.premium === true ||
     user?.publicMetadata?.subscriptionStatus === "active" ||
     user?.publicMetadata?.freeTrialActive === true
 
-  // Check if user is member of any organization (indicates subscription)
   const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
 
   console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
@@ -54,7 +53,6 @@ export default function SubscribePage() {
 
       if (response.ok) {
         console.log("[v0] Premium activated successfully")
-        // Reload to get updated user metadata and redirect
         window.location.href = "/"
       } else {
         console.error("[v0] Failed to activate premium")
@@ -65,6 +63,31 @@ export default function SubscribePage() {
       console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
       setIsActivating(false)
+    }
+  }
+
+  const handleTestWebhook = async () => {
+    setIsTesting(true)
+    console.log("[v0] User clicked test webhook button")
+
+    try {
+      const response = await fetch("/api/test-webhook", {
+        method: "POST",
+      })
+
+      if (response.ok) {
+        console.log("[v0] Test webhook successful")
+        alert("Webhook test successful! Premium activated. Redirecting...")
+        window.location.href = "/"
+      } else {
+        console.error("[v0] Test webhook failed")
+        alert("Test webhook failed. Check console for details.")
+        setIsTesting(false)
+      }
+    } catch (error) {
+      console.error("[v0] Error testing webhook:", error)
+      alert("An error occurred. Please try again.")
+      setIsTesting(false)
     }
   }
 
@@ -149,6 +172,42 @@ export default function SubscribePage() {
           </h1>
           <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
         </div>
+
+        {!hasPremiumMetadata && (
+          <div
+            style={{
+              marginBottom: "32px",
+              padding: "24px",
+              background: "#fef3c7",
+              border: "2px solid #f59e0b",
+              borderRadius: "12px",
+              textAlign: "center",
+            }}
+          >
+            <h2 style={{ fontSize: "20px", fontWeight: "bold", color: "#92400e", marginBottom: "12px" }}>
+              🧪 Testing & Debugging
+            </h2>
+            <p style={{ fontSize: "14px", color: "#78350f", marginBottom: "16px" }}>
+              If the webhook isn't working after subscribing, click this button to manually activate premium and test
+              the system.
+            </p>
+            <Button
+              onClick={handleTestWebhook}
+              disabled={isTesting}
+              variant="outline"
+              style={{
+                background: "white",
+                color: "#f59e0b",
+                borderColor: "#f59e0b",
+                fontSize: "16px",
+                padding: "10px 24px",
+                fontWeight: "600",
+              }}
+            >
+              {isTesting ? "Testing..." : "Test Webhook & Activate Premium"}
+            </Button>
+          </div>
+        )}
 
         {showActivateButton && (
           <div
