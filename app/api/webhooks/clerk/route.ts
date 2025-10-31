@@ -38,35 +38,44 @@ export async function POST(req: Request) {
   }
 
   const eventType = evt.type
-  const userId = evt.data.id
 
-  console.log("[v0] Clerk webhook received:", eventType, "for user:", userId)
+  console.log("[v0] Clerk webhook received:", eventType)
+  console.log("[v0] Webhook payload:", JSON.stringify(evt.data, null, 2))
 
-  if (
-    eventType === "organizationMembership.created" ||
-    eventType === "organization.created" ||
-    eventType === "user.updated"
-  ) {
-    try {
-      const client = await clerkClient()
+  let userId: string | null = null
 
-      // Set premium metadata when user joins an organization or is updated
-      await client.users.updateUserMetadata(userId, {
-        publicMetadata: {
-          premium: true,
-          subscriptionStatus: "active",
-          premiumActivatedAt: new Date().toISOString(),
-        },
-      })
-
-      console.log("[v0] Premium activated for user:", userId)
-
-      return new Response("Premium activated", { status: 200 })
-    } catch (error) {
-      console.error("[v0] Error activating premium:", error)
-      return new Response("Error activating premium", { status: 500 })
-    }
+  if (eventType === "organizationMembership.created") {
+    // For organization membership events, user ID is in public_user_data.user_id
+    userId = evt.data.public_user_data?.user_id
+  } else if (eventType === "user.updated") {
+    // For user events, user ID is in id
+    userId = evt.data.id
   }
 
-  return new Response("Webhook processed", { status: 200 })
+  if (!userId) {
+    console.log("[v0] No user ID found for event type:", eventType)
+    return new Response("No user ID found", { status: 200 })
+  }
+
+  console.log("[v0] Processing premium activation for user:", userId)
+
+  try {
+    const client = await clerkClient()
+
+    // Set premium metadata when user joins an organization or is updated
+    await client.users.updateUserMetadata(userId, {
+      publicMetadata: {
+        premium: true,
+        subscriptionStatus: "active",
+        premiumActivatedAt: new Date().toISOString(),
+      },
+    })
+
+    console.log("[v0] ✅ Premium activated successfully for user:", userId)
+
+    return new Response("Premium activated", { status: 200 })
+  } catch (error) {
+    console.error("[v0] ❌ Error activating premium:", error)
+    return new Response("Error activating premium", { status: 500 })
+  }
 }
