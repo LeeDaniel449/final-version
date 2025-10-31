@@ -1,6 +1,6 @@
 "use client"
 
-import { useUser } from "@clerk/nextjs"
+import { useUser, useOrganizationList } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { PricingTable } from "@clerk/nextjs"
@@ -8,25 +8,36 @@ import { Button } from "@/components/ui/button"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
+  const { isLoaded: orgsLoaded, userMemberships } = useOrganizationList({
+    userMemberships: {
+      infinite: true,
+    },
+  })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
+  console.log("[v0] orgsLoaded:", orgsLoaded)
   console.log("[v0] user exists:", !!user)
   if (user) {
     console.log("[v0] user id:", user.id)
     console.log("[v0] publicMetadata:", user.publicMetadata)
   }
+  console.log("[v0] userMemberships count:", userMemberships?.data?.length || 0)
+  console.log("[v0] userMemberships:", userMemberships?.data)
 
   const hasPremiumMetadata =
     user?.publicMetadata?.premium === true ||
     user?.publicMetadata?.subscriptionStatus === "active" ||
     user?.publicMetadata?.freeTrialActive === true
 
-  const showActivateButton = isLoaded && user && !hasPremiumMetadata
+  const hasOrgMembership = (userMemberships?.data?.length || 0) > 0
+
+  const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
 
   console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
+  console.log("[v0] hasOrgMembership:", hasOrgMembership)
   console.log("[v0] showActivateButton:", showActivateButton)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
@@ -148,10 +159,10 @@ export default function SubscribePage() {
             }}
           >
             <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "white", marginBottom: "12px" }}>
-              🎉 Ready to Get Premium?
+              🎉 Ready to Activate Your Subscription?
             </h2>
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", marginBottom: "20px" }}>
-              Click the button below to activate your premium access and unlock all features.
+              You've subscribed! Click the button below to activate your premium access and unlock all features.
             </p>
             <Button
               onClick={handleActivate}
