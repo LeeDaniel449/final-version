@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useUser } from "@clerk/nextjs"
+import { useUser, useOrganizationList } from "@clerk/nextjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -25,25 +25,57 @@ const LockIcon = () => (
 
 export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
+  const { userMemberships, isLoaded: orgsLoaded } = useOrganizationList({
+    userMemberships: {
+      infinite: true,
+    },
+  })
   const pathname = usePathname()
 
   const [hasPremium, setHasPremium] = useState(true)
 
   useEffect(() => {
-    console.log("[v0] PremiumGate check - isLoaded:", isLoaded, "user:", !!user)
+    console.log("[v0] PremiumGate check - isLoaded:", isLoaded, "orgsLoaded:", orgsLoaded, "user:", !!user)
 
-    if (isLoaded) {
-      if (user) {
-        console.log("[v0] User is signed in - granting premium access")
-        console.log("[v0] User metadata:", JSON.stringify(user.publicMetadata, null, 2))
-        setHasPremium(true)
-      } else {
-        // Signed-out users also get access
+    if (isLoaded && orgsLoaded) {
+      if (!user) {
         console.log("[v0] No user signed in - allowing access")
         setHasPremium(true)
+      } else {
+        const metadata = user.publicMetadata || {}
+        const unsafeMetadata = user.unsafeMetadata || {}
+
+        // Check metadata fields
+        const hasPremiumFlag = metadata.premium === true || (unsafeMetadata as any).premium === true
+        const hasActiveSubscription =
+          metadata.subscriptionStatus === "active" || (unsafeMetadata as any).subscriptionStatus === "active"
+        const hasFreeTrial = metadata.freeTrialActive === true || (unsafeMetadata as any).freeTrialActive === true
+
+        // Check if user is member of any organization (Clerk's subscription system)
+        const hasOrganization = userMemberships && userMemberships.data && userMemberships.data.length > 0
+
+        console.log("[v0] Premium checks:")
+        console.log("  - hasPremiumFlag:", hasPremiumFlag)
+        console.log("  - hasActiveSubscription:", hasActiveSubscription)
+        console.log("  - hasFreeTrial:", hasFreeTrial)
+        console.log("  - hasOrganization:", hasOrganization)
+        console.log("  - publicMetadata:", JSON.stringify(metadata))
+        console.log("  - unsafeMetadata:", JSON.stringify(unsafeMetadata))
+
+        if (hasOrganization) {
+          console.log(
+            "  - Organizations:",
+            userMemberships.data.map((m: any) => m.organization.name),
+          )
+        }
+
+        const premium = hasPremiumFlag || hasActiveSubscription || hasFreeTrial || hasOrganization
+
+        console.log("[v0] Final premium status:", premium)
+        setHasPremium(premium)
       }
     }
-  }, [isLoaded, user, user?.id])
+  }, [isLoaded, orgsLoaded, user, user?.id, userMemberships])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
@@ -58,11 +90,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     pathname,
   )
 
-  if (!isLoaded || hasPremium || isPublicRoute) {
+  if (!isLoaded || !orgsLoaded || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
 
-  // Only show overlay for signed-in users without premium
   return (
     <div className="relative">
       {/* Blurred content */}
