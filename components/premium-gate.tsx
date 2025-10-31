@@ -30,28 +30,57 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(true)
 
   useEffect(() => {
-    console.log("[v0] PremiumGate useEffect triggered, isLoaded:", isLoaded, "user:", !!user, "userId:", user?.id)
+    console.log("[v0] ========== PREMIUM GATE DEBUG START ==========")
+    console.log("[v0] PremiumGate useEffect triggered")
+    console.log("[v0] isLoaded:", isLoaded)
+    console.log("[v0] user exists:", !!user)
+    console.log("[v0] user?.id:", user?.id)
 
     if (isLoaded) {
       if (user) {
-        const premium = user.publicMetadata?.premium === true
-        console.log("[v0] PremiumGate - User premium status:", premium)
-        console.log("[v0] PremiumGate - User metadata:", user.publicMetadata)
-        setHasPremium(premium)
+        console.log("[v0] Full user object keys:", Object.keys(user))
+        console.log("[v0] user.publicMetadata:", JSON.stringify(user.publicMetadata, null, 2))
+        console.log("[v0] user.unsafeMetadata:", JSON.stringify(user.unsafeMetadata, null, 2))
+
+        // Check multiple possible locations for premium flag
+        const premiumFromPublic = user.publicMetadata?.premium === true
+        const premiumFromUnsafe = (user.unsafeMetadata as any)?.premium === true
+
+        console.log("[v0] Premium from publicMetadata:", premiumFromPublic)
+        console.log("[v0] Premium from unsafeMetadata:", premiumFromUnsafe)
+
+        const hasPremiumAccess = premiumFromPublic || premiumFromUnsafe
+        console.log("[v0] Final premium status:", hasPremiumAccess)
+
+        setHasPremium(hasPremiumAccess)
       } else {
-        console.log("[v0] PremiumGate - No user signed in, allowing access")
+        console.log("[v0] No user signed in - allowing access")
         setHasPremium(true)
       }
+    } else {
+      console.log("[v0] Clerk not loaded yet")
     }
+    console.log("[v0] ========== PREMIUM GATE DEBUG END ==========")
   }, [isLoaded, user, user?.id])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
+  console.log(
+    "[v0] PremiumGate render - hasPremium:",
+    hasPremium,
+    "isPublicRoute:",
+    isPublicRoute,
+    "pathname:",
+    pathname,
+  )
+
   if (!isLoaded || hasPremium || isPublicRoute) {
     return <>{children}</>
   }
+
+  console.log("[v0] Showing premium overlay")
 
   return (
     <div className="relative">
