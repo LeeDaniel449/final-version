@@ -14,20 +14,7 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.next()
   }
 
-  const { userId, sessionClaims } = await auth()
-
-  if (!userId) {
-    return NextResponse.next()
-  }
-
-  const hasPremium = sessionClaims?.metadata?.premium === true
-
-  console.log("[v0] Middleware - User:", userId, "Premium:", hasPremium)
-
-  if (!hasPremium && pathname !== "/subscribe") {
-    return NextResponse.redirect(new URL("/subscribe", req.url))
-  }
-
+  // Signed-out users also have access (no auth required)
   return NextResponse.next()
 })
 
