@@ -77,8 +77,30 @@ export default function SubscribePage() {
           <PricingTable />
         </div>
 
+        {user && !hasPremium && (
+          <div className="mt-12 pt-8 border-t border-gray-200">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Testing & Development</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                For testing purposes, you can manually activate premium access. In production, this happens
+                automatically via webhook after payment.
+              </p>
+              <button
+                onClick={handleActivate}
+                disabled={activating}
+                className="px-6 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {activating ? "Activating..." : "Activate Premium (Test)"}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="text-center text-sm text-gray-500 mt-8">
           <p>After successful payment, all pages will be immediately accessible</p>
+          <p className="mt-2 text-xs">
+            Webhook URL: <code className="bg-gray-100 px-2 py-1 rounded">/api/webhooks/clerk</code>
+          </p>
         </div>
       </div>
     </div>
