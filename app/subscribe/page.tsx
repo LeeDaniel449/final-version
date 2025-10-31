@@ -32,41 +32,28 @@ export default function SubscribePage() {
     }
   }, [isLoaded, user, router])
 
-  const handleStripeCheckout = async () => {
+  const handleActivatePremium = async () => {
     setIsActivating(true)
     setActivationError(null)
-    console.log("[v0] Starting Stripe checkout...")
+    console.log("[v0] Activating premium for testing...")
 
     try {
-      const response = await fetch("/api/create-checkout-session", {
+      const response = await fetch("/api/set-premium", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
       })
 
       if (!response.ok) {
-        throw new Error("Failed to create checkout session")
+        throw new Error("Failed to activate premium")
       }
 
-      const data = await response.json()
-      console.log("[v0] Checkout session created:", data)
-
-      // Redirect to Stripe checkout
-      if (data.url) {
-        window.location.href = data.url
-      }
+      console.log("[v0] Premium activated successfully")
+      // Reload to update user metadata
+      window.location.reload()
     } catch (error) {
-      console.error("[v0] Stripe checkout error:", error)
-      setActivationError("Failed to start checkout. Please try again.")
+      console.error("[v0] Premium activation error:", error)
+      setActivationError("Failed to activate premium. Please try again.")
       setIsActivating(false)
     }
-  }
-
-  const handleSubscribe = () => {
-    console.log("[v0] Opening Clerk billing page")
-    window.location.href = `https://accounts.clerk.dev/user/billing?redirect_url=${window.location.origin}`
   }
 
   console.log("[v0] Rendering subscribe page UI, isLoaded:", isLoaded, "user:", !!user)
@@ -140,7 +127,7 @@ export default function SubscribePage() {
 
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <button
-            onClick={handleStripeCheckout}
+            onClick={handleActivatePremium}
             disabled={isActivating}
             style={{
               padding: "16px 48px",
@@ -165,12 +152,14 @@ export default function SubscribePage() {
               e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
             }}
           >
-            {isActivating ? "Processing..." : "Subscribe Now - $29.99/month"}
+            {isActivating ? "Activating..." : "Activate Premium (Testing)"}
           </button>
           {activationError && (
             <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
           )}
-          <p style={{ color: "#6b7280", marginTop: "16px", fontSize: "14px" }}>Secure payment powered by Stripe</p>
+          <p style={{ color: "#6b7280", marginTop: "16px", fontSize: "14px" }}>
+            For testing: Click to activate premium access
+          </p>
         </div>
 
         <PricingTable />
