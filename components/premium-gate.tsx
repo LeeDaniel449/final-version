@@ -45,6 +45,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     }
   }, [isLoaded, user, user?.id])
 
+  // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
@@ -57,7 +58,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       {/* Blurred content */}
       <div className="pointer-events-none blur-sm select-none">{children}</div>
 
-      {/* Overlay */}
+      {/* Overlay - only shown when user is signed in but doesn't have premium */}
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
         <div className="mx-4 max-w-lg rounded-lg border bg-card p-8 text-center shadow-lg">
           <div className="mb-4 flex justify-center">
