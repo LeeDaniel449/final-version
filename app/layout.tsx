@@ -3,9 +3,9 @@ import { Suspense } from "react"
 import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { PremiumGate } from "@/components/premium-gate"
 import "./globals.css"
 import { Inter } from "next/font/google"
-import { PremiumGate } from "@/components/premium-gate"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,19 +35,19 @@ export default function RootLayout({
     >
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
-          <PremiumGate>
-            <SidebarProvider>
-              <Suspense fallback={<div>Loading...</div>}>
-                <AppSidebar />
-                <SidebarInset>
-                  <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10">
-                    <SidebarTrigger className="-ml-1" />
-                  </header>
-                  <main className="flex-1 overflow-auto">{children}</main>
-                </SidebarInset>
-              </Suspense>
-            </SidebarProvider>
-          </PremiumGate>
+          <SidebarProvider>
+            <Suspense fallback={<div>Loading...</div>}>
+              <AppSidebar />
+              <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10">
+                  <SidebarTrigger className="-ml-1" />
+                </header>
+                <main className="flex-1 overflow-auto">
+                  <PremiumGate>{children}</PremiumGate>
+                </main>
+              </SidebarInset>
+            </Suspense>
+          </SidebarProvider>
         </body>
       </html>
     </ClerkProvider>

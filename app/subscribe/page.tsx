@@ -3,65 +3,76 @@
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { PricingTable } from "@clerk/nextjs"
 
 export default function SubscribePage() {
+  console.log("[v0] SubscribePage component rendering")
+
   const { user, isLoaded } = useUser()
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
-  const [activationError, setActivationError] = useState("")
+  const [activationError, setActivationError] = useState<string | null>(null)
+
+  console.log("[v0] Subscribe page state:", { isLoaded, hasUser: !!user, userId: user?.id })
 
   useEffect(() => {
+    console.log("[v0] Subscribe page useEffect triggered")
     if (isLoaded && user) {
-      const hasPremium = user.publicMetadata?.premium === true
-      console.log("[v0] Subscribe page - User premium status:", hasPremium, "metadata:", user.publicMetadata)
+      console.log("[v0] Subscribe page loaded for user:", user.id)
+      const hasPremium =
+        user.publicMetadata?.premium === true ||
+        user.publicMetadata?.subscriptionStatus === "active" ||
+        user.publicMetadata?.freeTrialActive === true
+      console.log("[v0] User premium status:", hasPremium, "metadata:", user.publicMetadata)
 
       if (hasPremium) {
-        console.log("[v0] User has premium, redirecting to home")
+        console.log("[v0] User already has premium, redirecting to home")
         router.replace("/")
       }
     }
   }, [isLoaded, user, router])
 
-  const handleActivatePremium = async () => {
+  const handleStripeCheckout = async () => {
     setIsActivating(true)
-    setActivationError("")
+    setActivationError(null)
+    console.log("[v0] Starting Stripe checkout...")
 
-    try {
-      const response = await fetch("/api/set-premium", {
-        method: "POST",
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to activate premium")
-      }
-
-      // Reload to update user metadata
-      window.location.reload()
-    } catch (error) {
-      console.error("[v0] Error activating premium:", error)
-      setActivationError("Failed to activate premium. Please try again.")
-      setIsActivating(false)
-    }
-  }
-
-  const handleSubscribe = async () => {
     try {
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
       })
 
       if (!response.ok) {
         throw new Error("Failed to create checkout session")
       }
 
-      const { url } = await response.json()
-      window.location.href = url
+      const data = await response.json()
+      console.log("[v0] Checkout session created:", data)
+
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url
+      }
     } catch (error) {
-      console.error("[v0] Error creating checkout session:", error)
+      console.error("[v0] Stripe checkout error:", error)
+      setActivationError("Failed to start checkout. Please try again.")
+      setIsActivating(false)
     }
   }
 
-  if (!isLoaded) {
+  const handleSubscribe = () => {
+    console.log("[v0] Opening Clerk billing page")
+    window.location.href = `https://accounts.clerk.dev/user/billing?redirect_url=${window.location.origin}`
+  }
+
+  console.log("[v0] Rendering subscribe page UI, isLoaded:", isLoaded, "user:", !!user)
+
+  if (!isLoaded || !user) {
+    console.log("[v0] Showing loading state")
     return (
       <div
         style={{
@@ -97,6 +108,8 @@ export default function SubscribePage() {
     )
   }
 
+  console.log("[v0] Showing subscription UI")
+
   return (
     <div
       style={{
@@ -105,109 +118,62 @@ export default function SubscribePage() {
         alignItems: "center",
         justifyContent: "center",
         background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        padding: "20px",
+        padding: "24px",
       }}
     >
       <div
         style={{
-          maxWidth: "600px",
+          maxWidth: "1200px",
           width: "100%",
           background: "white",
           borderRadius: "16px",
-          padding: "48px",
           boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+          padding: "48px 32px",
         }}
       >
-        <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", textAlign: "center" }}>
-          Unlock Premium Features
-        </h1>
-        <p style={{ fontSize: "18px", color: "#666", marginBottom: "32px", textAlign: "center" }}>
-          Get access to AI-powered financial advice, portfolio optimization, and personalized learning paths.
-        </p>
-
-        <div style={{ marginBottom: "24px", padding: "24px", background: "#f8f9fa", borderRadius: "8px" }}>
-          <div style={{ fontSize: "48px", fontWeight: "bold", textAlign: "center", marginBottom: "8px" }}>
-            $29.99<span style={{ fontSize: "18px", fontWeight: "normal", color: "#666" }}>/month</span>
-          </div>
-          <ul style={{ listStyle: "none", padding: 0, margin: "24px 0" }}>
-            <li style={{ padding: "8px 0", fontSize: "16px" }}>✓ AI-Powered Financial Advice</li>
-            <li style={{ padding: "8px 0", fontSize: "16px" }}>✓ Portfolio Optimization</li>
-            <li style={{ padding: "8px 0", fontSize: "16px" }}>✓ Personalized Learning Paths</li>
-            <li style={{ padding: "8px 0", fontSize: "16px" }}>✓ Advanced Analytics</li>
-            <li style={{ padding: "8px 0", fontSize: "16px" }}>✓ Priority Support</li>
-          </ul>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
+            Choose Your Plan
+          </h1>
+          <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
         </div>
 
-        <button
-          onClick={handleSubscribe}
-          style={{
-            width: "100%",
-            padding: "16px",
-            fontSize: "18px",
-            fontWeight: "600",
-            color: "white",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            marginBottom: "16px",
-          }}
-        >
-          Subscribe Now
-        </button>
-
-        <div style={{ textAlign: "center", marginBottom: "16px" }}>
-          <div style={{ borderTop: "1px solid #e0e0e0", margin: "24px 0", position: "relative" }}>
-            <span
-              style={{
-                position: "absolute",
-                top: "-12px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                background: "white",
-                padding: "0 16px",
-                color: "#666",
-                fontSize: "14px",
-              }}
-            >
-              OR FOR TESTING
-            </span>
-          </div>
-        </div>
-
-        <button
-          onClick={handleActivatePremium}
-          disabled={isActivating}
-          style={{
-            width: "100%",
-            padding: "16px",
-            fontSize: "16px",
-            fontWeight: "600",
-            color: "#667eea",
-            background: "white",
-            border: "2px solid #667eea",
-            borderRadius: "8px",
-            cursor: isActivating ? "not-allowed" : "pointer",
-            opacity: isActivating ? 0.6 : 1,
-          }}
-        >
-          {isActivating ? "Activating..." : "Activate Premium (Testing)"}
-        </button>
-
-        {activationError && (
-          <div
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <button
+            onClick={handleStripeCheckout}
+            disabled={isActivating}
             style={{
-              marginTop: "16px",
-              padding: "12px",
-              background: "#fee",
-              color: "#c33",
+              padding: "16px 48px",
+              fontSize: "18px",
+              fontWeight: "600",
+              color: "white",
+              background: isActivating ? "#9ca3af" : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              border: "none",
               borderRadius: "8px",
-              fontSize: "14px",
+              cursor: isActivating ? "not-allowed" : "pointer",
+              boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              if (!isActivating) {
+                e.currentTarget.style.transform = "translateY(-2px)"
+                e.currentTarget.style.boxShadow = "0 6px 16px rgba(102, 126, 234, 0.5)"
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)"
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.4)"
             }}
           >
-            {activationError}
-          </div>
-        )}
+            {isActivating ? "Processing..." : "Subscribe Now - $29.99/month"}
+          </button>
+          {activationError && (
+            <p style={{ color: "#ef4444", marginTop: "12px", fontSize: "14px" }}>{activationError}</p>
+          )}
+          <p style={{ color: "#6b7280", marginTop: "16px", fontSize: "14px" }}>Secure payment powered by Stripe</p>
+        </div>
+
+        <PricingTable />
       </div>
     </div>
   )
