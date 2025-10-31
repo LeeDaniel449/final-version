@@ -58,7 +58,17 @@ export async function POST(req: Request) {
 
   let userId: string | null = null
 
-  if (eventType === "organizationMembership.created") {
+  if (
+    eventType === "subscription.created" ||
+    eventType === "subscription.active" ||
+    eventType === "subscription.updated"
+  ) {
+    // For subscription events, user ID is in userId field
+    userId = evt.data.userId || evt.data.user_id
+    console.log("[v0] Extracted user ID from subscription event:", userId)
+    console.log("[v0] Subscription status:", evt.data.status)
+    console.log("[v0] Subscription ID:", evt.data.id)
+  } else if (eventType === "organizationMembership.created") {
     // For organization membership events, user ID is in public_user_data.user_id
     userId = evt.data.public_user_data?.user_id
     console.log("[v0] Extracted user ID from organizationMembership.created:", userId)
@@ -80,12 +90,12 @@ export async function POST(req: Request) {
   try {
     const client = await clerkClient()
 
-    // Set premium metadata when user joins an organization or is updated
     await client.users.updateUserMetadata(userId, {
       publicMetadata: {
         premium: true,
         subscriptionStatus: "active",
         premiumActivatedAt: new Date().toISOString(),
+        subscriptionId: evt.data.id || null,
       },
     })
 
