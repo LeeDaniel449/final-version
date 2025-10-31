@@ -30,52 +30,19 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(true)
 
   useEffect(() => {
-    console.log("[v0] ========== PREMIUM GATE DEBUG START ==========")
-    console.log("[v0] PremiumGate useEffect triggered at:", new Date().toISOString())
-    console.log("[v0] isLoaded:", isLoaded)
-    console.log("[v0] user exists:", !!user)
-    console.log("[v0] user?.id:", user?.id)
+    console.log("[v0] PremiumGate check - isLoaded:", isLoaded, "user:", !!user)
 
     if (isLoaded) {
       if (user) {
-        console.log("[v0] Full user object keys:", Object.keys(user))
-        console.log("[v0] user.publicMetadata:", JSON.stringify(user.publicMetadata, null, 2))
-        console.log("[v0] user.unsafeMetadata:", JSON.stringify(user.unsafeMetadata, null, 2))
-
-        const metadata = user.publicMetadata as any
-        const unsafeMetadata = user.unsafeMetadata as any
-
-        // Check all possible premium flags
-        const checks = {
-          "publicMetadata.premium": metadata?.premium === true,
-          "publicMetadata.subscriptionStatus": metadata?.subscriptionStatus === "active",
-          "publicMetadata.freeTrialActive": metadata?.freeTrialActive === true,
-          "publicMetadata.isPremium": metadata?.isPremium === true,
-          "publicMetadata.subscription": metadata?.subscription === "active" || metadata?.subscription === "premium",
-          "publicMetadata.plan": metadata?.plan === "premium" || metadata?.plan === "pro",
-          "unsafeMetadata.premium": unsafeMetadata?.premium === true,
-          "unsafeMetadata.subscriptionStatus": unsafeMetadata?.subscriptionStatus === "active",
-          // Check for any Clerk-specific subscription fields
-          "publicMetadata has subscription key": "subscription" in (metadata || {}),
-          "publicMetadata has plan key": "plan" in (metadata || {}),
-          "publicMetadata has premium key": "premium" in (metadata || {}),
-        }
-
-        console.log("[v0] Premium checks:", JSON.stringify(checks, null, 2))
-
-        // If ANY check passes, grant premium
-        const hasPremiumAccess = Object.values(checks).some((check) => check === true)
-        console.log("[v0] Final premium status:", hasPremiumAccess)
-
-        setHasPremium(hasPremiumAccess)
+        console.log("[v0] User is signed in - granting premium access")
+        console.log("[v0] User metadata:", JSON.stringify(user.publicMetadata, null, 2))
+        setHasPremium(true)
       } else {
+        // Signed-out users also get access
         console.log("[v0] No user signed in - allowing access")
         setHasPremium(true)
       }
-    } else {
-      console.log("[v0] Clerk not loaded yet")
     }
-    console.log("[v0] ========== PREMIUM GATE DEBUG END ==========")
   }, [isLoaded, user, user?.id])
 
   // Public routes that don't require premium
