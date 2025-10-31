@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@clerk/clerk-react':
+        specifier: latest
+        version: 5.53.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@clerk/nextjs':
         specifier: latest
         version: 6.34.1(next@15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -99,10 +102,10 @@ importers:
         specifier: latest
         version: 2.17.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.0.2)
       '@stripe/react-stripe-js':
-        specifier: latest
+        specifier: 5.3.0
         version: 5.3.0(@stripe/stripe-js@8.2.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@stripe/stripe-js':
-        specifier: latest
+        specifier: 8.2.0
         version: 8.2.0
       '@sveltejs/kit':
         specifier: latest
@@ -165,7 +168,7 @@ importers:
         specifier: latest
         version: 3.3.0(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react-is@19.1.1)(react@19.0.0)(redux@5.0.1)
       server-only:
-        specifier: latest
+        specifier: 0.0.1
         version: 0.0.1
       sonner:
         specifier: ^1.7.1

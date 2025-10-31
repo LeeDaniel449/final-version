@@ -1,7 +1,7 @@
 "use client"
 
 import { useUser } from "@clerk/nextjs"
-import Checkout from "@/components/checkout"
+import { PricingTable } from "@clerk/clerk-react"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
@@ -10,53 +10,20 @@ export default function SubscribePage() {
 
   if (!isLoaded) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        }}
-      >
-        <div style={{ textAlign: "center", color: "white" }}>
-          <div
-            style={{
-              width: "48px",
-              height: "48px",
-              border: "4px solid rgba(255,255,255,0.3)",
-              borderTop: "4px solid white",
-              borderRadius: "50%",
-              margin: "0 auto 16px",
-              animation: "spin 1s linear infinite",
-            }}
-          />
-          <p style={{ fontSize: "18px" }}>Loading...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900">
+        <div className="text-center text-white">
+          <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-lg">Loading...</p>
         </div>
-        <style jsx>{`
-          @keyframes spin {
-            to {
-              transform: rotate(360deg);
-            }
-          }
-        `}</style>
       </div>
     )
   }
 
   if (!user) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        }}
-      >
-        <div style={{ textAlign: "center", color: "white" }}>
-          <p style={{ fontSize: "18px" }}>Please sign in to subscribe</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900">
+        <div className="text-center text-white">
+          <p className="text-lg">Please sign in to subscribe</p>
         </div>
       </div>
     )
@@ -64,46 +31,16 @@ export default function SubscribePage() {
 
   if (hasPremium) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          padding: "24px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "600px",
-            width: "100%",
-            background: "white",
-            borderRadius: "16px",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-            padding: "48px 32px",
-            textAlign: "center",
-          }}
-        >
-          <div style={{ fontSize: "64px", marginBottom: "24px" }}>🎉</div>
-          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
-            Premium Activated!
-          </h1>
-          <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "32px" }}>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900 p-6">
+        <div className="max-w-2xl w-full bg-white rounded-2xl shadow-2xl p-12 text-center">
+          <div className="text-6xl mb-6">🎉</div>
+          <h1 className="text-4xl font-bold mb-4 text-gray-900">Premium Activated!</h1>
+          <p className="text-lg text-gray-600 mb-8">
             Your payment was successful. You now have full access to all features!
           </p>
           <a
             href="/"
-            style={{
-              display: "inline-block",
-              padding: "12px 32px",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              color: "white",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "bold",
-              fontSize: "16px",
-            }}
+            className="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-lg font-bold text-lg hover:shadow-lg transition-shadow"
           >
             Start Learning
           </a>
@@ -113,39 +50,18 @@ export default function SubscribePage() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        padding: "24px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "800px",
-          width: "100%",
-          background: "white",
-          borderRadius: "16px",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
-          padding: "48px 32px",
-        }}
-      >
-        <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
-            Get Premium Access
-          </h1>
-          <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "16px" }}>
-            Unlock all features and start your financial literacy journey
-          </p>
-          <p style={{ fontSize: "14px", color: "#718096" }}>
-            After payment, you'll automatically get full access to all pages
-          </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 to-purple-900 p-6">
+      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4 text-gray-900">Get Premium Access</h1>
+          <p className="text-lg text-gray-600 mb-4">Unlock all features and start your financial literacy journey</p>
+          <p className="text-sm text-gray-500">After payment, you'll automatically get full access to all pages</p>
         </div>
 
-        <Checkout productId="premium-monthly" />
+        <div className="flex justify-center">
+          <PricingTable />
+        </div>
+        {/* Note: To configure your pricing plans, go to your Clerk Dashboard → Monetization → Pricing Tables */}
       </div>
     </div>
   )
