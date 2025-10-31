@@ -2,8 +2,9 @@
 
 import { useUser, useOrganizationList } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { PricingTable } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
@@ -13,53 +14,43 @@ export default function SubscribePage() {
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
 
-  useEffect(() => {
-    async function checkAndActivatePremium() {
-      if (!isLoaded || !orgsLoaded || !user || isActivating) return
+  // Check if user already has premium in metadata
+  const hasPremiumMetadata =
+    user?.publicMetadata?.premium === true ||
+    user?.publicMetadata?.subscriptionStatus === "active" ||
+    user?.publicMetadata?.freeTrialActive === true
 
-      // Check if user already has premium in metadata
-      const hasPremiumMetadata =
-        user.publicMetadata?.premium === true ||
-        user.publicMetadata?.subscriptionStatus === "active" ||
-        user.publicMetadata?.freeTrialActive === true
+  // Check if user is member of any organization (indicates subscription)
+  const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
 
-      if (hasPremiumMetadata) {
-        console.log("[v0] User already has premium metadata, redirecting")
-        router.replace("/")
-        return
+  const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
+
+  const handleActivate = async () => {
+    setIsActivating(true)
+    console.log("[v0] User clicked activate subscription button")
+
+    try {
+      const response = await fetch("/api/set-premium", {
+        method: "POST",
+      })
+
+      if (response.ok) {
+        console.log("[v0] Premium activated successfully")
+        // Reload to get updated user metadata and redirect
+        window.location.href = "/"
+      } else {
+        console.error("[v0] Failed to activate premium")
+        alert("Failed to activate premium. Please try again.")
+        setIsActivating(false)
       }
-
-      // Check if user is member of any organization (indicates subscription)
-      const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
-
-      if (hasOrgMembership) {
-        console.log("[v0] User has organization membership, activating premium")
-        setIsActivating(true)
-
-        try {
-          const response = await fetch("/api/set-premium", {
-            method: "POST",
-          })
-
-          if (response.ok) {
-            console.log("[v0] Premium activated successfully")
-            // Reload to get updated user metadata
-            window.location.href = "/"
-          } else {
-            console.error("[v0] Failed to activate premium")
-            setIsActivating(false)
-          }
-        } catch (error) {
-          console.error("[v0] Error activating premium:", error)
-          setIsActivating(false)
-        }
-      }
+    } catch (error) {
+      console.error("[v0] Error activating premium:", error)
+      alert("An error occurred. Please try again.")
+      setIsActivating(false)
     }
+  }
 
-    checkAndActivatePremium()
-  }, [isLoaded, orgsLoaded, user, userMemberships, router, isActivating])
-
-  if (!isLoaded || !orgsLoaded || isActivating) {
+  if (!isLoaded || !orgsLoaded) {
     return (
       <div
         style={{
@@ -82,7 +73,7 @@ export default function SubscribePage() {
               animation: "spin 1s linear infinite",
             }}
           />
-          <p style={{ fontSize: "18px" }}>{isActivating ? "Activating premium..." : "Loading..."}</p>
+          <p style={{ fontSize: "18px" }}>Loading...</p>
         </div>
         <style jsx>{`
           @keyframes spin {
@@ -140,6 +131,39 @@ export default function SubscribePage() {
           </h1>
           <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
         </div>
+
+        {showActivateButton && (
+          <div
+            style={{
+              marginBottom: "32px",
+              padding: "24px",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              borderRadius: "12px",
+              textAlign: "center",
+            }}
+          >
+            <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "white", marginBottom: "12px" }}>
+              🎉 Subscription Detected!
+            </h2>
+            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", marginBottom: "20px" }}>
+              Click the button below to activate your premium access and unlock all features.
+            </p>
+            <Button
+              onClick={handleActivate}
+              disabled={isActivating}
+              size="lg"
+              style={{
+                background: "white",
+                color: "#667eea",
+                fontSize: "18px",
+                padding: "12px 32px",
+                fontWeight: "bold",
+              }}
+            >
+              {isActivating ? "Activating..." : "Activate Subscription"}
+            </Button>
+          </div>
+        )}
 
         <PricingTable />
       </div>
