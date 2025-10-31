@@ -1,18 +1,30 @@
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
 
-export function middleware(request: NextRequest) {
+// Define public routes that don't require authentication
+const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)", "/api/webhooks(.*)"])
+
+export default clerkMiddleware(async (auth, request) => {
   const { pathname } = request.nextUrl
 
   if (pathname === "/onboarding") {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
-  // Auth is handled by Clerk's components
-  // Premium checks are handled by PremiumGate component
+  // Allow public routes without authentication
+  if (isPublicRoute(request)) {
+    return NextResponse.next()
+  }
+
+  // For all other routes, Clerk will handle authentication
   return NextResponse.next()
-}
+})
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
 }
