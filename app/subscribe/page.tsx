@@ -1,7 +1,7 @@
 "use client"
 
 import { useUser } from "@clerk/nextjs"
-import { PricingTable } from "@clerk/clerk-react"
+import { PricingTable } from "@clerk/nextjs"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
