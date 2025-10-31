@@ -6,18 +6,7 @@ import Checkout from "@/components/checkout"
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
 
-  console.log("[v0] ========== SUBSCRIBE PAGE ==========")
-  console.log("[v0] isLoaded:", isLoaded)
-  console.log("[v0] user exists:", !!user)
-  if (user) {
-    console.log("[v0] user id:", user.id)
-    console.log("[v0] publicMetadata:", user.publicMetadata)
-  }
-
   const hasPremium = user?.publicMetadata?.premium === true || user?.publicMetadata?.subscriptionStatus === "active"
-
-  console.log("[v0] hasPremium:", hasPremium)
-  console.log("[v0] ========== SUBSCRIBE PAGE END ==========")
 
   if (!isLoaded) {
     return (
@@ -73,7 +62,6 @@ export default function SubscribePage() {
     )
   }
 
-  // If user already has premium, show success message
   if (hasPremium) {
     return (
       <div
@@ -99,10 +87,10 @@ export default function SubscribePage() {
         >
           <div style={{ fontSize: "64px", marginBottom: "24px" }}>🎉</div>
           <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
-            You're All Set!
+            Premium Activated!
           </h1>
           <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "32px" }}>
-            You have premium access. Enjoy all features!
+            Your payment was successful. You now have full access to all features!
           </p>
           <a
             href="/"
@@ -117,7 +105,7 @@ export default function SubscribePage() {
               fontSize: "16px",
             }}
           >
-            Go to Dashboard
+            Start Learning
           </a>
         </div>
       </div>
@@ -149,7 +137,12 @@ export default function SubscribePage() {
           <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
             Get Premium Access
           </h1>
-          <p style={{ fontSize: "18px", color: "#4a5568" }}>Unlock all features for just $9.99/month</p>
+          <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "16px" }}>
+            Unlock all features and start your financial literacy journey
+          </p>
+          <p style={{ fontSize: "14px", color: "#718096" }}>
+            After payment, you'll automatically get full access to all pages
+          </p>
         </div>
 
         <Checkout productId="premium-monthly" />
