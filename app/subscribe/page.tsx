@@ -1,28 +1,65 @@
 "use client"
 
-import { useUser } from "@clerk/nextjs"
+import { useUser, useOrganizationList } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { PricingTable } from "@clerk/nextjs"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
+  const { isLoaded: orgsLoaded, userMemberships } = useOrganizationList({
+    userMemberships: { infinite: true },
+  })
   const router = useRouter()
+  const [isActivating, setIsActivating] = useState(false)
 
   useEffect(() => {
-    if (isLoaded && user) {
-      const hasPremium =
+    async function checkAndActivatePremium() {
+      if (!isLoaded || !orgsLoaded || !user || isActivating) return
+
+      // Check if user already has premium in metadata
+      const hasPremiumMetadata =
         user.publicMetadata?.premium === true ||
         user.publicMetadata?.subscriptionStatus === "active" ||
         user.publicMetadata?.freeTrialActive === true
 
-      if (hasPremium) {
+      if (hasPremiumMetadata) {
+        console.log("[v0] User already has premium metadata, redirecting")
         router.replace("/")
+        return
+      }
+
+      // Check if user is member of any organization (indicates subscription)
+      const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
+
+      if (hasOrgMembership) {
+        console.log("[v0] User has organization membership, activating premium")
+        setIsActivating(true)
+
+        try {
+          const response = await fetch("/api/set-premium", {
+            method: "POST",
+          })
+
+          if (response.ok) {
+            console.log("[v0] Premium activated successfully")
+            // Reload to get updated user metadata
+            window.location.href = "/"
+          } else {
+            console.error("[v0] Failed to activate premium")
+            setIsActivating(false)
+          }
+        } catch (error) {
+          console.error("[v0] Error activating premium:", error)
+          setIsActivating(false)
+        }
       }
     }
-  }, [isLoaded, user, router])
 
-  if (!isLoaded || !user) {
+    checkAndActivatePremium()
+  }, [isLoaded, orgsLoaded, user, userMemberships, router, isActivating])
+
+  if (!isLoaded || !orgsLoaded || isActivating) {
     return (
       <div
         style={{
@@ -45,7 +82,7 @@ export default function SubscribePage() {
               animation: "spin 1s linear infinite",
             }}
           />
-          <p style={{ fontSize: "18px" }}>Loading...</p>
+          <p style={{ fontSize: "18px" }}>{isActivating ? "Activating premium..." : "Loading..."}</p>
         </div>
         <style jsx>{`
           @keyframes spin {
@@ -54,6 +91,24 @@ export default function SubscribePage() {
             }
           }
         `}</style>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <p style={{ fontSize: "18px" }}>Please sign in to subscribe</p>
+        </div>
       </div>
     )
   }
