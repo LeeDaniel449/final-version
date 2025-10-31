@@ -1,83 +1,23 @@
 "use client"
 
-import { useUser, useOrganizationList } from "@clerk/nextjs"
-import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
-import { PricingTable } from "@clerk/nextjs"
-import { Button } from "@/components/ui/button"
+import { useUser } from "@clerk/nextjs"
+import Checkout from "@/components/checkout"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
-  const { isLoaded: orgsLoaded, userMemberships } = useOrganizationList({
-    userMemberships: {
-      infinite: true,
-    },
-  })
-  const router = useRouter()
-  const [isActivating, setIsActivating] = useState(false)
-  const [pollCount, setPollCount] = useState(0)
 
-  useEffect(() => {
-    if (!isLoaded || !orgsLoaded || !user) return
-
-    const interval = setInterval(() => {
-      setPollCount((prev) => prev + 1)
-      console.log("[v0] Polling for organization membership changes...")
-    }, 2000)
-
-    return () => clearInterval(interval)
-  }, [isLoaded, orgsLoaded, user])
-
-  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
+  console.log("[v0] ========== SUBSCRIBE PAGE ==========")
   console.log("[v0] isLoaded:", isLoaded)
-  console.log("[v0] orgsLoaded:", orgsLoaded)
   console.log("[v0] user exists:", !!user)
   if (user) {
     console.log("[v0] user id:", user.id)
     console.log("[v0] publicMetadata:", user.publicMetadata)
   }
-  console.log("[v0] userMemberships count:", userMemberships?.data?.length || 0)
-  console.log("[v0] userMemberships:", userMemberships?.data)
 
-  const hasPremiumMetadata =
-    user?.publicMetadata?.premium === true ||
-    user?.publicMetadata?.subscriptionStatus === "active" ||
-    user?.publicMetadata?.freeTrialActive === true
+  const hasPremium = user?.publicMetadata?.premium === true || user?.publicMetadata?.subscriptionStatus === "active"
 
-  const hasOrgMembership = (userMemberships?.data?.length || 0) > 0
-
-  const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
-
-  console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
-  console.log("[v0] hasOrgMembership:", hasOrgMembership)
-  console.log("[v0] showActivateButton:", showActivateButton)
-  console.log("[v0] pollCount:", pollCount)
-  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
-
-  const handleActivate = async () => {
-    setIsActivating(true)
-    console.log("[v0] User clicked activate premium button")
-
-    try {
-      const response = await fetch("/api/set-premium", {
-        method: "POST",
-      })
-
-      if (response.ok) {
-        console.log("[v0] Premium activated successfully")
-        // Reload to get updated user metadata and redirect
-        window.location.href = "/"
-      } else {
-        console.error("[v0] Failed to activate premium")
-        alert("Failed to activate premium. Please try again.")
-        setIsActivating(false)
-      }
-    } catch (error) {
-      console.error("[v0] Error activating premium:", error)
-      alert("An error occurred. Please try again.")
-      setIsActivating(false)
-    }
-  }
+  console.log("[v0] hasPremium:", hasPremium)
+  console.log("[v0] ========== SUBSCRIBE PAGE END ==========")
 
   if (!isLoaded) {
     return (
@@ -133,6 +73,57 @@ export default function SubscribePage() {
     )
   }
 
+  // If user already has premium, show success message
+  if (hasPremium) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          padding: "24px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "600px",
+            width: "100%",
+            background: "white",
+            borderRadius: "16px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+            padding: "48px 32px",
+            textAlign: "center",
+          }}
+        >
+          <div style={{ fontSize: "64px", marginBottom: "24px" }}>🎉</div>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
+            You're All Set!
+          </h1>
+          <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "32px" }}>
+            You have premium access. Enjoy all features!
+          </p>
+          <a
+            href="/"
+            style={{
+              display: "inline-block",
+              padding: "12px 32px",
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+              color: "white",
+              borderRadius: "8px",
+              textDecoration: "none",
+              fontWeight: "bold",
+              fontSize: "16px",
+            }}
+          >
+            Go to Dashboard
+          </a>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       style={{
@@ -146,7 +137,7 @@ export default function SubscribePage() {
     >
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "800px",
           width: "100%",
           background: "white",
           borderRadius: "16px",
@@ -156,45 +147,12 @@ export default function SubscribePage() {
       >
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
-            Choose Your Plan
+            Get Premium Access
           </h1>
-          <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
+          <p style={{ fontSize: "18px", color: "#4a5568" }}>Unlock all features for just $9.99/month</p>
         </div>
 
-        {showActivateButton && (
-          <div
-            style={{
-              marginBottom: "32px",
-              padding: "24px",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              borderRadius: "12px",
-              textAlign: "center",
-            }}
-          >
-            <h2 style={{ fontSize: "24px", fontWeight: "bold", color: "white", marginBottom: "12px" }}>
-              🎉 Ready to Activate Your Subscription?
-            </h2>
-            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.9)", marginBottom: "20px" }}>
-              You've subscribed! Click the button below to activate your premium access and unlock all features.
-            </p>
-            <Button
-              onClick={handleActivate}
-              disabled={isActivating}
-              size="lg"
-              style={{
-                background: "white",
-                color: "#667eea",
-                fontSize: "18px",
-                padding: "12px 32px",
-                fontWeight: "bold",
-              }}
-            >
-              {isActivating ? "Activating..." : "Activate Premium Access"}
-            </Button>
-          </div>
-        )}
-
-        <PricingTable />
+        <Checkout productId="premium-monthly" />
       </div>
     </div>
   )
