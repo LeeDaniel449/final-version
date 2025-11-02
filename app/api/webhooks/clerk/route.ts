@@ -25,6 +25,11 @@ export async function POST(req: Request) {
     console.log("[v0] Request body received, length:", bodyText.length)
 
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
+    const CLERK_SECRET = process.env.CLERK_SECRET_KEY
+
+    console.log("[v0] Environment variables check:")
+    console.log("[v0] - CLERK_WEBHOOK_SECRET:", WEBHOOK_SECRET ? "✅ Set" : "❌ Missing")
+    console.log("[v0] - CLERK_SECRET_KEY:", CLERK_SECRET ? "✅ Set" : "❌ Missing")
 
     if (!WEBHOOK_SECRET) {
       console.error("[v0] ❌ CLERK_WEBHOOK_SECRET is not set!")
@@ -34,7 +39,15 @@ export async function POST(req: Request) {
       })
     }
 
-    console.log("[v0] ✅ Webhook secret is configured")
+    if (!CLERK_SECRET) {
+      console.error("[v0] ❌ CLERK_SECRET_KEY is not set!")
+      return new Response(JSON.stringify({ error: "Clerk secret key not configured" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    console.log("[v0] ✅ All required secrets are configured")
 
     const svix_id = req.headers.get("svix-id")
     const svix_timestamp = req.headers.get("svix-timestamp")
@@ -123,8 +136,11 @@ export async function POST(req: Request) {
     console.log("[v0] 🚀 Processing premium activation for user:", userId)
 
     try {
+      console.log("[v0] Initializing Clerk client...")
       const client = await clerkClient()
+      console.log("[v0] ✅ Clerk client initialized successfully")
 
+      console.log("[v0] Updating user metadata...")
       await client.users.updateUserMetadata(userId, {
         publicMetadata: {
           premium: true,
@@ -143,17 +159,33 @@ export async function POST(req: Request) {
       })
     } catch (error) {
       console.error("[v0] ❌ Error activating premium:", error)
-      return new Response(JSON.stringify({ error: "Error activating premium" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      })
+      console.error("[v0] Error name:", error instanceof Error ? error.name : "Unknown")
+      console.error("[v0] Error message:", error instanceof Error ? error.message : String(error))
+      console.error("[v0] Error stack:", error instanceof Error ? error.stack : "No stack trace")
+      return new Response(
+        JSON.stringify({
+          error: "Error activating premium",
+          details: error instanceof Error ? error.message : String(error),
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        },
+      )
     }
   } catch (error) {
     console.error("[v0] ❌ Unexpected error in webhook handler:", error)
     console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    })
+    console.error("[v0] Error stack:", error instanceof Error ? error.stack : "No stack trace")
+    return new Response(
+      JSON.stringify({
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : String(error),
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    )
   }
 }
