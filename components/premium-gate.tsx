@@ -106,7 +106,8 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       hasFreeTrialInUnsafe
 
     if (hasOrganization && !hasPremiumMetadata && !isAutoActivating) {
-      console.log("[v0] 🚀 Organization membership detected without premium metadata - auto-activating...")
+      console.log("[v0] User has organization membership, checking for auto-activation...")
+      console.log("[v0] Attempting auto-activation for user with org membership...")
       setIsAutoActivating(true)
 
       fetch("/api/webhooks/clerk?client=true", {
@@ -116,14 +117,19 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       })
         .then(async (response) => {
           const data = await response.json()
+          console.log("[v0] Auto-activation response status:", response.status)
+          console.log("[v0] Auto-activation response data:", JSON.stringify(data))
+
           if (response.ok) {
-            console.log("[v0] ✅ Premium auto-activated successfully")
+            console.log("[v0] Auto-activation successful, reloading user...")
             await user.reload()
+            console.log("[v0] User reloaded, new metadata:", JSON.stringify(user.publicMetadata))
             setHasPremium(true)
             setCheckComplete(true)
             setIsAutoActivating(false)
           } else {
-            console.error("[v0] ❌ Auto-activation failed:", data)
+            console.error("[v0] Auto-activation failed with status:", response.status)
+            console.error("[v0] Error details:", JSON.stringify(data))
             setIsAutoActivating(false)
             // Still grant access based on org membership
             setHasPremium(true)
@@ -131,7 +137,8 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
           }
         })
         .catch((error) => {
-          console.error("[v0] ❌ Error during auto-activation:", error)
+          console.error("[v0] Auto-activation fetch error:", error.message)
+          console.error("[v0] Error stack:", error.stack)
           setIsAutoActivating(false)
           // Still grant access based on org membership
           setHasPremium(true)

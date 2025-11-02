@@ -53,9 +53,12 @@ export async function POST(req: Request) {
       console.log("[v0] 🚀 Processing client-triggered premium activation for user:", userId)
 
       try {
+        console.log("[v0] Getting Clerk client...")
         const client = await clerkClient()
+        console.log("[v0] Clerk client obtained successfully")
 
-        await client.users.updateUserMetadata(userId, {
+        console.log("[v0] Updating user metadata for user:", userId)
+        const result = await client.users.updateUserMetadata(userId, {
           publicMetadata: {
             premium: true,
             subscriptionStatus: "active",
@@ -64,19 +67,28 @@ export async function POST(req: Request) {
           },
         })
 
-        console.log("[v0] ✅ Premium activated successfully via client trigger for user:", userId)
+        console.log("[v0] ✅ User metadata updated successfully")
+        console.log("[v0] Updated user ID:", result.id)
+        console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
         console.log("[v0] ========== CLIENT-TRIGGERED WEBHOOK PROCESSING COMPLETE ==========")
 
-        return new Response(JSON.stringify({ success: true, userId }), {
+        return new Response(JSON.stringify({ success: true, userId, metadata: result.publicMetadata }), {
           status: 200,
           headers: { "Content-Type": "application/json" },
         })
       } catch (error) {
         console.error("[v0] ❌ Error activating premium:", error)
+        console.error("[v0] Error type:", typeof error)
+        console.error("[v0] Error name:", error instanceof Error ? error.name : "Unknown")
+        console.error("[v0] Error message:", error instanceof Error ? error.message : String(error))
+        console.error("[v0] Error stack:", error instanceof Error ? error.stack : "No stack")
+
         return new Response(
           JSON.stringify({
+            success: false,
             error: "Error activating premium",
             details: error instanceof Error ? error.message : String(error),
+            errorType: error instanceof Error ? error.name : typeof error,
           }),
           {
             status: 500,
@@ -213,7 +225,7 @@ export async function POST(req: Request) {
 
       console.log("[v0] Updating user metadata...")
       console.log("[v0] Setting subscriptionStatus to:", subscriptionStatus)
-      await client.users.updateUserMetadata(userId, {
+      const result = await client.users.updateUserMetadata(userId, {
         publicMetadata: {
           premium: true,
           subscriptionStatus,
@@ -222,10 +234,12 @@ export async function POST(req: Request) {
         },
       })
 
-      console.log("[v0] ✅ Premium activated successfully for user:", userId)
+      console.log("[v0] ✅ User metadata updated successfully")
+      console.log("[v0] Updated user ID:", result.id)
+      console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
       console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
 
-      return new Response(JSON.stringify({ success: true, userId }), {
+      return new Response(JSON.stringify({ success: true, userId, metadata: result.publicMetadata }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       })
