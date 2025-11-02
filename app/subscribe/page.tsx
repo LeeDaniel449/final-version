@@ -15,7 +15,6 @@ export default function SubscribePage() {
   const [isActivating, setIsActivating] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isManualActivating, setIsManualActivating] = useState(false)
-  const [isForceActivating, setIsForceActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -129,39 +128,6 @@ export default function SubscribePage() {
       console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
       setIsActivating(false)
-    }
-  }
-
-  const handleForceActivate = async () => {
-    if (!user) return
-
-    setIsForceActivating(true)
-    console.log("[v0] Force premium activation requested")
-
-    try {
-      const response = await fetch("/api/force-activate-premium", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user.id }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        console.log("[v0] Premium force activated successfully")
-        await user.reload()
-        window.location.href = "/"
-      } else {
-        console.error("[v0] Failed to force activate premium:", data)
-        alert(`Failed to activate premium: ${data.error || "Unknown error"}`)
-        setIsForceActivating(false)
-      }
-    } catch (error) {
-      console.error("[v0] Error during force activation:", error)
-      alert("An error occurred. Please try again.")
-      setIsForceActivating(false)
     }
   }
 
@@ -339,16 +305,22 @@ export default function SubscribePage() {
         )}
 
         {!hasPremiumMetadata && user && (
-          <div style={{ marginTop: "32px", textAlign: "center" }}>
-            <p style={{ marginBottom: "16px", color: "#4a5568", fontSize: "14px" }}>
-              Already subscribed but don't see premium access?
-            </p>
+          <div
+            style={{
+              marginTop: "32px",
+              textAlign: "center",
+              padding: "24px",
+              background: "#f7fafc",
+              borderRadius: "12px",
+            }}
+          >
+            
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Button
                 onClick={handleRefresh}
                 disabled={isRefreshing}
                 style={{
-                  background: "#4299e1",
+                  background: "#667eea",
                   color: "white",
                   padding: "10px 24px",
                   borderRadius: "8px",
@@ -365,7 +337,7 @@ export default function SubscribePage() {
                 onClick={handleManualActivate}
                 disabled={isManualActivating}
                 style={{
-                  background: "#805ad5",
+                  background: "#48bb78",
                   color: "white",
                   padding: "10px 24px",
                   borderRadius: "8px",
@@ -378,27 +350,8 @@ export default function SubscribePage() {
               >
                 {isManualActivating ? "Activating..." : "Manually Activate Premium"}
               </Button>
-              <Button
-                onClick={handleForceActivate}
-                disabled={isForceActivating}
-                style={{
-                  background: "#e53e3e",
-                  color: "white",
-                  padding: "10px 24px",
-                  borderRadius: "8px",
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  border: "none",
-                  cursor: isForceActivating ? "not-allowed" : "pointer",
-                  opacity: isForceActivating ? 0.6 : 1,
-                }}
-              >
-                {isForceActivating ? "Activating..." : "Activate Premium (After Payment)"}
-              </Button>
             </div>
-            <p style={{ marginTop: "12px", fontSize: "12px", color: "#718096" }}>
-              ⚠️ Only use manual activation if you have already completed payment
-            </p>
+            
           </div>
         )}
       </div>
