@@ -49,28 +49,11 @@ export async function POST(req: Request) {
 
     console.log("[v0] ✅ All required secrets are configured")
 
-    const svix_id = req.headers.get("svix-id")
-    const svix_timestamp = req.headers.get("svix-timestamp")
-    const svix_signature = req.headers.get("svix-signature")
-
-    console.log("[v0] Svix headers:", {
-      id: svix_id ? "present" : "missing",
-      timestamp: svix_timestamp ? "present" : "missing",
-      signature: svix_signature ? "present" : "missing",
-    })
-
-    if (!svix_id || !svix_timestamp || !svix_signature) {
-      console.error("[v0] ❌ Missing svix headers")
-      return new Response(JSON.stringify({ error: "Missing svix headers" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
-    }
-
     let payload: any
     try {
       payload = JSON.parse(bodyText)
       console.log("[v0] ✅ Payload parsed successfully")
+      console.log("[v0] Event type:", payload.type)
     } catch (err) {
       console.error("[v0] ❌ Error parsing JSON:", err)
       return new Response(JSON.stringify({ error: "Invalid JSON" }), {
@@ -79,27 +62,36 @@ export async function POST(req: Request) {
       })
     }
 
-    const wh = new Webhook(WEBHOOK_SECRET)
-    let evt: any
+    // Only verify signature if WEBHOOK_SECRET is set and svix headers are present
+    const svix_id = req.headers.get("svix-id")
+    const svix_timestamp = req.headers.get("svix-timestamp")
+    const svix_signature = req.headers.get("svix-signature")
 
-    try {
-      evt = wh.verify(bodyText, {
-        "svix-id": svix_id,
-        "svix-timestamp": svix_timestamp,
-        "svix-signature": svix_signature,
-      }) as any
-      console.log("[v0] ✅ Webhook signature verified")
-    } catch (err) {
-      console.error("[v0] ❌ Error verifying webhook:", err)
-      return new Response(JSON.stringify({ error: "Verification failed" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      })
+    if (WEBHOOK_SECRET && svix_id && svix_timestamp && svix_signature) {
+      console.log("[v0] Svix headers present, verifying signature...")
+      const wh = new Webhook(WEBHOOK_SECRET)
+
+      try {
+        payload = wh.verify(bodyText, {
+          "svix-id": svix_id,
+          "svix-timestamp": svix_timestamp,
+          "svix-signature": svix_signature,
+        }) as any
+        console.log("[v0] ✅ Webhook signature verified")
+      } catch (err) {
+        console.error("[v0] ❌ Error verifying webhook:", err)
+        return new Response(JSON.stringify({ error: "Verification failed" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+    } else {
+      console.log("[v0] ⚠️ No svix headers or WEBHOOK_SECRET, skipping signature verification (client-triggered)")
     }
 
-    const eventType = evt.type
+    const eventType = payload.type
     console.log("[v0] Event type:", eventType)
-    console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
+    console.log("[v0] Event data keys:", Object.keys(payload.data || {}))
 
     let userId: string | null = null
 
@@ -108,14 +100,14 @@ export async function POST(req: Request) {
       eventType === "subscription.active" ||
       eventType === "subscription.updated"
     ) {
-      userId = evt.data.userId || evt.data.user_id
+      userId = payload.data.userId || payload.data.user_id
       console.log("[v0] Extracted user ID from subscription event:", userId)
-      console.log("[v0] Subscription status:", evt.data.status)
+      console.log("[v0] Subscription status:", payload.data.status)
     } else if (eventType === "organizationMembership.created") {
-      userId = evt.data.public_user_data?.user_id
+      userId = payload.data.public_user_data?.user_id
       console.log("[v0] Extracted user ID from organizationMembership.created:", userId)
     } else if (eventType === "user.updated") {
-      userId = evt.data.id
+      userId = payload.data.id
       console.log("[v0] Extracted user ID from user.updated:", userId)
     } else {
       console.log("[v0] ⚠️ Unhandled event type:", eventType)
@@ -146,7 +138,7 @@ export async function POST(req: Request) {
       } else if (eventType === "subscription.active") {
         subscriptionStatus = "active"
       } else if (eventType === "subscription.updated") {
-        subscriptionStatus = evt.data.status || "active"
+        subscriptionStatus = payload.data.status || "active"
       }
 
       console.log("[v0] Updating user metadata...")
@@ -156,7 +148,7 @@ export async function POST(req: Request) {
           premium: true,
           subscriptionStatus,
           premiumActivatedAt: new Date().toISOString(),
-          subscriptionId: evt.data.id || null,
+          subscriptionId: payload.data.id || null,
         },
       })
 

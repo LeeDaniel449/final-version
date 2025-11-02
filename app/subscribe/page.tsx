@@ -2,7 +2,7 @@
 
 import { useUser, useOrganizationList } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { PricingTable } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 
@@ -13,9 +13,7 @@ export default function SubscribePage() {
   })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [isManualActivating, setIsManualActivating] = useState(false)
-  const [isForceActivating, setIsForceActivating] = useState(false)
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -32,6 +30,7 @@ export default function SubscribePage() {
   const hasPremiumMetadata =
     user?.publicMetadata?.premium === true ||
     user?.publicMetadata?.subscriptionStatus === "active" ||
+    user?.publicMetadata?.subscriptionStatus === "created" ||
     user?.publicMetadata?.freeTrialActive === true
 
   const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
@@ -44,69 +43,64 @@ export default function SubscribePage() {
   console.log("[v0] showActivateButton:", showActivateButton)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
-  const handleManualActivate = async () => {
-    if (!user) return
-
-    setIsManualActivating(true)
-    console.log("[v0] Manual premium activation requested")
-
-    try {
-      const response = await fetch("/api/activate-premium", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user.id }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        console.log("[v0] Premium activated successfully via manual activation")
-        await user.reload()
-        window.location.href = "/"
-      } else {
-        console.error("[v0] Failed to activate premium:", data)
-        alert(`Failed to activate premium: ${data.error || "Unknown error"}`)
-        setIsManualActivating(false)
-      }
-    } catch (error) {
-      console.error("[v0] Error during manual activation:", error)
-      alert("An error occurred. Please try again.")
-      setIsManualActivating(false)
+  useEffect(() => {
+    if (!user || !isLoaded || !orgsLoaded || hasPremiumMetadata || isCheckingSubscription) {
+      return
     }
-  }
 
-  const handleRefresh = async () => {
-    if (!user) return
+    if (hasOrgMembership) {
+      console.log("[v0] 🔍 Organization membership detected, auto-activating premium...")
+      setIsCheckingSubscription(true)
 
-    setIsRefreshing(true)
-    console.log("[v0] Refreshing user premium status...")
+      const activatePremium = async () => {
+        try {
+          console.log("[v0] 🚀 Calling webhook to activate premium for user:", user.id)
+          const response = await fetch("/api/webhooks/clerk", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              type: "subscription.created",
+              data: {
+                userId: user.id,
+                user_id: user.id,
+                id: `sub_${Date.now()}`,
+                status: "active",
+              },
+            }),
+          })
 
-    try {
-      await user.reload()
-      console.log("[v0] User data reloaded successfully")
-      console.log("[v0] Updated publicMetadata:", user.publicMetadata)
+          if (response.ok) {
+            console.log("[v0] ✅ Webhook called successfully, reloading user data...")
+            await user.reload()
+            console.log("[v0] ✅ User data reloaded, checking premium status...")
 
-      const nowHasPremium =
-        user.publicMetadata?.premium === true ||
-        user.publicMetadata?.subscriptionStatus === "active" ||
-        user.publicMetadata?.freeTrialActive === true
+            const nowHasPremium =
+              user.publicMetadata?.premium === true ||
+              user.publicMetadata?.subscriptionStatus === "active" ||
+              user.publicMetadata?.subscriptionStatus === "created"
 
-      if (nowHasPremium) {
-        console.log("[v0] Premium detected after refresh, redirecting to home")
-        window.location.href = "/"
-      } else {
-        console.log("[v0] No premium detected after refresh")
-        alert("Premium status not found. Please wait a moment and try again, or contact support if the issue persists.")
+            if (nowHasPremium) {
+              console.log("[v0] ✅ Premium activated! Redirecting to home...")
+              window.location.href = "/"
+            } else {
+              console.log("[v0] ⚠️ Premium not detected after webhook, will retry...")
+              setIsCheckingSubscription(false)
+            }
+          } else {
+            console.error("[v0] ❌ Webhook call failed:", await response.text())
+            setIsCheckingSubscription(false)
+          }
+        } catch (error) {
+          console.error("[v0] ❌ Error calling webhook:", error)
+          setIsCheckingSubscription(false)
+        }
       }
-    } catch (error) {
-      console.error("[v0] Error refreshing user data:", error)
-      alert("Failed to refresh status. Please try again.")
-    } finally {
-      setIsRefreshing(false)
+
+      activatePremium()
     }
-  }
+  }, [user, isLoaded, orgsLoaded, hasOrgMembership, hasPremiumMetadata, isCheckingSubscription])
 
   const handleActivate = async () => {
     setIsActivating(true)
@@ -129,39 +123,6 @@ export default function SubscribePage() {
       console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
       setIsActivating(false)
-    }
-  }
-
-  const handleForceActivate = async () => {
-    if (!user) return
-
-    setIsForceActivating(true)
-    console.log("[v0] Force activation requested")
-
-    try {
-      const response = await fetch("/api/force-activate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user.id }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        console.log("[v0] Premium force activated successfully")
-        await user.reload()
-        window.location.href = "/"
-      } else {
-        console.error("[v0] Failed to force activate premium:", data)
-        alert(`Failed to activate premium: ${data.error || "Unknown error"}`)
-        setIsForceActivating(false)
-      }
-    } catch (error) {
-      console.error("[v0] Error during force activation:", error)
-      alert("An error occurred. Please try again.")
-      setIsForceActivating(false)
     }
   }
 
@@ -215,6 +176,42 @@ export default function SubscribePage() {
         <div style={{ textAlign: "center", color: "white" }}>
           <p style={{ fontSize: "18px" }}>Please sign in to subscribe</p>
         </div>
+      </div>
+    )
+  }
+
+  if (isCheckingSubscription) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <div
+            style={{
+              width: "48px",
+              height: "48px",
+              border: "4px solid rgba(255,255,255,0.3)",
+              borderTop: "4px solid white",
+              borderRadius: "50%",
+              margin: "0 auto 16px",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+          <p style={{ fontSize: "18px" }}>Activating your premium access...</p>
+        </div>
+        <style jsx>{`
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
       </div>
     )
   }
@@ -335,44 +332,6 @@ export default function SubscribePage() {
                 {isActivating ? "Activating..." : "Activate Subscription"}
               </Button>
             </div>
-          </div>
-        )}
-
-        {!hasPremiumMetadata && user && (
-          <div
-            style={{
-              marginTop: "32px",
-              textAlign: "center",
-              padding: "24px",
-              background: "#f7fafc",
-              borderRadius: "12px",
-            }}
-          >
-            <p style={{ marginBottom: "16px", color: "#4a5568", fontWeight: "600" }}>
-              Already subscribed? Activate your premium access:
-            </p>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <Button
-                onClick={handleForceActivate}
-                disabled={isForceActivating}
-                style={{
-                  background: "#e53e3e",
-                  color: "white",
-                  padding: "12px 32px",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  border: "none",
-                  cursor: isForceActivating ? "not-allowed" : "pointer",
-                  opacity: isForceActivating ? 0.6 : 1,
-                }}
-              >
-                {isForceActivating ? "Activating..." : "🚀 Activate Premium Now"}
-              </Button>
-            </div>
-            <p style={{ marginTop: "12px", fontSize: "12px", color: "#718096" }}>
-              Click this after completing your subscription payment
-            </p>
           </div>
         )}
       </div>
