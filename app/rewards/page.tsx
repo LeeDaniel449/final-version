@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -21,13 +20,9 @@ import {
   Gift,
   Crown,
   Medal,
-  LogIn,
 } from "lucide-react"
-import Link from "next/link"
 
 const RewardsPage = () => {
-  const { user, isLoaded } = useUser()
-
   const [userProgress, setUserProgress] = useState({
     totalPoints: 850,
     level: 9,
@@ -170,42 +165,6 @@ const RewardsPage = () => {
 
   const completedAchievements = achievements.filter((a) => a.completed)
   const inProgressAchievements = achievements.filter((a) => !a.completed)
-
-  if (isLoaded && !user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 p-6">
-        <div className="max-w-6xl mx-auto space-y-6">
-          <div className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-2">
-              <Award className="w-8 h-8 text-yellow-600" />
-              <h1 className="text-3xl font-bold text-gray-900">Rewards & Achievements</h1>
-            </div>
-            <p className="text-gray-600 text-lg">Earn points and unlock rewards as you learn and invest</p>
-          </div>
-
-          <Card className="bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200">
-            <CardContent className="p-8 text-center">
-              <div className="flex items-center justify-center mb-4">
-                <LogIn className="h-12 w-12 text-yellow-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-yellow-900 mb-2">Sign In to Start Earning Rewards</h3>
-              <p className="text-yellow-800 mb-6 max-w-md mx-auto">
-                Sign in to track your achievements, earn points, and unlock exclusive rewards.
-              </p>
-              <div className="flex gap-4 justify-center">
-                <Button asChild className="bg-yellow-600 hover:bg-yellow-700 text-white">
-                  <Link href="/sign-in">
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Sign In
-                  </Link>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 p-6">
