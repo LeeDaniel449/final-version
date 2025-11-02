@@ -339,3 +339,69 @@ export default function SubscribePage() {
         )}
 
         {!hasPremiumMetadata && user && (
+          <div style={{ marginTop: "32px", textAlign: "center" }}>
+            <p style={{ marginBottom: "16px", color: "#4a5568", fontSize: "14px" }}>
+              Already subscribed but don't see premium access?
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <Button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                style={{
+                  background: "#4299e1",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: isRefreshing ? "not-allowed" : "pointer",
+                  opacity: isRefreshing ? 0.6 : 1,
+                }}
+              >
+                {isRefreshing ? "Refreshing..." : "Refresh Premium Status"}
+              </Button>
+              <Button
+                onClick={handleManualActivate}
+                disabled={isManualActivating}
+                style={{
+                  background: "#805ad5",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: isManualActivating ? "not-allowed" : "pointer",
+                  opacity: isManualActivating ? 0.6 : 1,
+                }}
+              >
+                {isManualActivating ? "Activating..." : "Manually Activate Premium"}
+              </Button>
+              <Button
+                onClick={handleForceActivate}
+                disabled={isForceActivating}
+                style={{
+                  background: "#e53e3e",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: isForceActivating ? "not-allowed" : "pointer",
+                  opacity: isForceActivating ? 0.6 : 1,
+                }}
+              >
+                {isForceActivating ? "Activating..." : "Activate Premium (After Payment)"}
+              </Button>
+            </div>
+            <p style={{ marginTop: "12px", fontSize: "12px", color: "#718096" }}>
+              ⚠️ Only use manual activation if you have already completed payment
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
