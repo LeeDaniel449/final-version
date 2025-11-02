@@ -1,19 +1,28 @@
-import { auth } from "@clerk/nextjs/server"
 import { clerkClient } from "@clerk/nextjs/server"
 
 export async function POST(req: Request) {
   console.log("[v0] ========== TEST WEBHOOK ENDPOINT CALLED ==========")
 
-  const { userId } = await auth()
-
-  if (!userId) {
-    console.log("[v0] ❌ No authenticated user")
-    return new Response("Unauthorized", { status: 401 })
-  }
-
-  console.log("[v0] Testing webhook logic for user:", userId)
-
   try {
+    const body = await req.json()
+    const userId = body.userId
+
+    if (!userId) {
+      console.log("[v0] ❌ No user ID provided in request")
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "No user ID provided",
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        },
+      )
+    }
+
+    console.log("[v0] Testing webhook logic for user:", userId)
+
     const client = await clerkClient()
 
     // Simulate what the webhook does: set premium metadata

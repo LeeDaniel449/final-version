@@ -73,6 +73,12 @@ export default function SubscribePage() {
     try {
       const response = await fetch("/api/test-webhook", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user.id,
+        }),
       })
 
       if (response.ok) {
@@ -80,8 +86,9 @@ export default function SubscribePage() {
         alert("Webhook test successful! Premium activated. Redirecting...")
         window.location.href = "/"
       } else {
-        console.error("[v0] Test webhook failed")
-        alert("Test webhook failed. Check console for details.")
+        const errorData = await response.json()
+        console.error("[v0] Test webhook failed:", errorData)
+        alert(`Test webhook failed: ${errorData.error || "Unknown error"}`)
         setIsTesting(false)
       }
     } catch (error) {
