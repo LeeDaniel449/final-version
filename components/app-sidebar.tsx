@@ -2,7 +2,7 @@
 
 import React from "react"
 import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from "lucide-react"
-import { useUser, useClerk, SignInButton } from "@clerk/nextjs"
+import { useUser, useClerk } from "@clerk/nextjs"
 import { UserButton } from "@/components/user-button"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -150,32 +150,19 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
 
-      {/* ── User footer ────────────────────────────────────────────── */}
+      {/* ── User footer ────────────────────────────────────────────────── */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            {!isSignedIn ? (
-              <div className="flex flex-col gap-2 px-2 py-2">
-                <SignInButton mode="modal">
-                  <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white">
-                    Sign In
-                  </Button>
-                </SignInButton>
-                <Link href="/sign-up">
-                  <Button variant="outline" className="w-full bg-transparent">
-                    Sign Up
-                  </Button>
-                </Link>
+            <div className="flex items-center gap-3 px-2 py-2">
+              <div className="hidden md:block">
+                <UserButton />
               </div>
-            ) : (
-              <div className="flex items-center gap-3 px-2 py-2">
-                <div className="hidden md:block">
-                  <UserButton />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{displayName}</span>
-                  <span className="truncate text-xs">{displayEmail}</span>
-                </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{displayName}</span>
+                <span className="truncate text-xs">{displayEmail}</span>
+              </div>
+              {isSignedIn && (
                 <Button
                   variant="ghost"
                   size="icon"
@@ -188,8 +175,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 >
                   <LogOut className="h-5 w-5" />
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

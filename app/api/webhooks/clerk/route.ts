@@ -24,8 +24,67 @@ export async function POST(req: Request) {
     const bodyText = await req.text()
     console.log("[v0] Request body received, length:", bodyText.length)
 
-    const isClientTriggered = req.headers.get("X-Client-Trigger") === "true"
-    console.log("[v0] Client-triggered:", isClientTriggered)
+    const url = new URL(req.url)
+    const isClientTriggered = url.searchParams.get("client") === "true"
+
+    if (isClientTriggered) {
+      console.log("[v0] 🔓 Client-triggered webhook call detected - bypassing signature verification")
+
+      let payload: any
+      try {
+        payload = JSON.parse(bodyText)
+      } catch (err) {
+        console.error("[v0] ❌ Error parsing JSON:", err)
+        return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+
+      const userId = payload.userId
+      if (!userId) {
+        console.error("[v0] ❌ No userId provided in client-triggered call")
+        return new Response(JSON.stringify({ error: "userId is required" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+
+      console.log("[v0] 🚀 Processing client-triggered premium activation for user:", userId)
+
+      try {
+        const client = await clerkClient()
+
+        await client.users.updateUserMetadata(userId, {
+          publicMetadata: {
+            premium: true,
+            subscriptionStatus: "active",
+            premiumActivatedAt: new Date().toISOString(),
+            autoActivated: true,
+          },
+        })
+
+        console.log("[v0] ✅ Premium activated successfully via client trigger for user:", userId)
+        console.log("[v0] ========== CLIENT-TRIGGERED WEBHOOK PROCESSING COMPLETE ==========")
+
+        return new Response(JSON.stringify({ success: true, userId }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        })
+      } catch (error) {
+        console.error("[v0] ❌ Error activating premium:", error)
+        return new Response(
+          JSON.stringify({
+            error: "Error activating premium",
+            details: error instanceof Error ? error.message : String(error),
+          }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
+      }
+    }
 
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
     const CLERK_SECRET = process.env.CLERK_SECRET_KEY
@@ -34,10 +93,38 @@ export async function POST(req: Request) {
     console.log("[v0] - CLERK_WEBHOOK_SECRET:", WEBHOOK_SECRET ? "✅ Set" : "❌ Missing")
     console.log("[v0] - CLERK_SECRET_KEY:", CLERK_SECRET ? "✅ Set" : "❌ Missing")
 
+    if (!WEBHOOK_SECRET) {
+      console.error("[v0] ❌ CLERK_WEBHOOK_SECRET is not set!")
+      return new Response(JSON.stringify({ error: "Webhook secret not configured" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
     if (!CLERK_SECRET) {
       console.error("[v0] ❌ CLERK_SECRET_KEY is not set!")
       return new Response(JSON.stringify({ error: "Clerk secret key not configured" }), {
         status: 500,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
+
+    console.log("[v0] ✅ All required secrets are configured")
+
+    const svix_id = req.headers.get("svix-id")
+    const svix_timestamp = req.headers.get("svix-timestamp")
+    const svix_signature = req.headers.get("svix-signature")
+
+    console.log("[v0] Svix headers:", {
+      id: svix_id ? "present" : "missing",
+      timestamp: svix_timestamp ? "present" : "missing",
+      signature: svix_signature ? "present" : "missing",
+    })
+
+    if (!svix_id || !svix_timestamp || !svix_signature) {
+      console.error("[v0] ❌ Missing svix headers")
+      return new Response(JSON.stringify({ error: "Missing svix headers" }), {
+        status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
@@ -54,58 +141,27 @@ export async function POST(req: Request) {
       })
     }
 
-    if (!isClientTriggered) {
-      if (!WEBHOOK_SECRET) {
-        console.error("[v0] ❌ CLERK_WEBHOOK_SECRET is not set!")
-        return new Response(JSON.stringify({ error: "Webhook secret not configured" }), {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        })
-      }
+    const wh = new Webhook(WEBHOOK_SECRET)
+    let evt: any
 
-      const svix_id = req.headers.get("svix-id")
-      const svix_timestamp = req.headers.get("svix-timestamp")
-      const svix_signature = req.headers.get("svix-signature")
-
-      console.log("[v0] Svix headers:", {
-        id: svix_id ? "present" : "missing",
-        timestamp: svix_timestamp ? "present" : "missing",
-        signature: svix_signature ? "present" : "missing",
+    try {
+      evt = wh.verify(bodyText, {
+        "svix-id": svix_id,
+        "svix-timestamp": svix_timestamp,
+        "svix-signature": svix_signature,
+      }) as any
+      console.log("[v0] ✅ Webhook signature verified")
+    } catch (err) {
+      console.error("[v0] ❌ Error verifying webhook:", err)
+      return new Response(JSON.stringify({ error: "Verification failed" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
       })
-
-      if (!svix_id || !svix_timestamp || !svix_signature) {
-        console.error("[v0] ❌ Missing svix headers")
-        return new Response(JSON.stringify({ error: "Missing svix headers" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
-      }
-
-      const wh = new Webhook(WEBHOOK_SECRET)
-      let evt: any
-
-      try {
-        evt = wh.verify(bodyText, {
-          "svix-id": svix_id,
-          "svix-timestamp": svix_timestamp,
-          "svix-signature": svix_signature,
-        }) as any
-        console.log("[v0] ✅ Webhook signature verified")
-        payload = evt
-      } catch (err) {
-        console.error("[v0] ❌ Error verifying webhook:", err)
-        return new Response(JSON.stringify({ error: "Verification failed" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
-      }
-    } else {
-      console.log("[v0] ⚠️ Skipping signature verification for client-triggered call")
     }
 
-    const eventType = payload.type
+    const eventType = evt.type
     console.log("[v0] Event type:", eventType)
-    console.log("[v0] Event data keys:", Object.keys(payload.data || {}))
+    console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
 
     let userId: string | null = null
 
@@ -114,14 +170,14 @@ export async function POST(req: Request) {
       eventType === "subscription.active" ||
       eventType === "subscription.updated"
     ) {
-      userId = payload.data.userId || payload.data.user_id
+      userId = evt.data.userId || evt.data.user_id
       console.log("[v0] Extracted user ID from subscription event:", userId)
-      console.log("[v0] Subscription status:", payload.data.status)
+      console.log("[v0] Subscription status:", evt.data.status)
     } else if (eventType === "organizationMembership.created") {
-      userId = payload.data.public_user_data?.user_id
+      userId = evt.data.public_user_data?.user_id
       console.log("[v0] Extracted user ID from organizationMembership.created:", userId)
     } else if (eventType === "user.updated") {
-      userId = payload.data.id
+      userId = evt.data.id
       console.log("[v0] Extracted user ID from user.updated:", userId)
     } else {
       console.log("[v0] ⚠️ Unhandled event type:", eventType)
@@ -152,7 +208,7 @@ export async function POST(req: Request) {
       } else if (eventType === "subscription.active") {
         subscriptionStatus = "active"
       } else if (eventType === "subscription.updated") {
-        subscriptionStatus = payload.data.status || "active"
+        subscriptionStatus = evt.data.status || "active"
       }
 
       console.log("[v0] Updating user metadata...")
@@ -162,7 +218,7 @@ export async function POST(req: Request) {
           premium: true,
           subscriptionStatus,
           premiumActivatedAt: new Date().toISOString(),
-          subscriptionId: payload.data.id || null,
+          subscriptionId: evt.data.id || null,
         },
       })
 

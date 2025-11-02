@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
-import { SignUpButton, SignInButton } from "@clerk/nextjs"
+import { SignUpButton } from "@clerk/nextjs"
 
 interface AuthButtonsProps {
   variant?: "header" | "hero" | "card"
@@ -39,24 +39,7 @@ export function AuthButtons({ variant = "header", size = "md" }: AuthButtonsProp
   if (variant === "card") {
     return (
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <SignInButton mode="modal">
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white px-8 py-3 text-lg font-semibold transition-all duration-200 bg-transparent"
-          >
-            Sign In
-          </Button>
-        </SignInButton>
-        <SignUpButton mode="modal" redirectUrl="/subscribe">
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
-          >
-            Sign Up Free
-            <ArrowRight className="w-5 h-5 ml-2" />
-          </Button>
-        </SignUpButton>
+        {/* Sign Up Free button removed */}
       </div>
     )
   }
@@ -64,15 +47,6 @@ export function AuthButtons({ variant = "header", size = "md" }: AuthButtonsProp
   // Default header variant
   return (
     <div className="flex gap-3">
-      <SignInButton mode="modal">
-        <Button
-          size={size === "lg" ? "lg" : "default"}
-          variant="outline"
-          className="border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white bg-transparent"
-        >
-          Sign In
-        </Button>
-      </SignInButton>
       <SignUpButton mode="modal" redirectUrl="/subscribe">
         <Button
           size={size === "lg" ? "lg" : "default"}

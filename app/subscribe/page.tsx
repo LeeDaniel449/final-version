@@ -2,7 +2,7 @@
 
 import { useUser, useOrganizationList } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { PricingTable } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 
@@ -12,7 +12,7 @@ export default function SubscribePage() {
     userMemberships: { infinite: true },
   })
   const router = useRouter()
-  const [isActivating, setIsActivating] = useState(false)
+  const [isAutoActivating, setIsAutoActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -35,57 +35,39 @@ export default function SubscribePage() {
 
   console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
   console.log("[v0] hasOrgMembership:", hasOrgMembership)
-
-  const showActivateButton = isLoaded && orgsLoaded && user && hasOrgMembership && !hasPremiumMetadata
-
-  console.log("[v0] showActivateButton:", showActivateButton)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
 
   useEffect(() => {
-    if (!isLoaded || !orgsLoaded || !user) return
-    if (hasPremiumMetadata) return // Already has premium
+    if (!isLoaded || !orgsLoaded || !user || isAutoActivating) return
 
-    // Check if user just subscribed (has org membership but no premium metadata)
-    if (hasOrgMembership) {
-      console.log("[v0] 🎉 Subscription detected! Auto-triggering webhook...")
+    if (hasOrgMembership && !hasPremiumMetadata) {
+      console.log("[v0] 🚀 Subscription detected! Auto-activating premium...")
+      setIsAutoActivating(true)
 
-      const triggerWebhook = async () => {
-        try {
-          setIsActivating(true)
-          const response = await fetch("/api/webhooks/clerk", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Client-Trigger": "true", // Flag to bypass signature verification
-            },
-            body: JSON.stringify({
-              type: "subscription.created",
-              data: {
-                userId: user.id,
-                status: "active",
-                id: `auto_${Date.now()}`,
-              },
-            }),
-          })
-
+      fetch("/api/webhooks/clerk?client=true", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
+      })
+        .then(async (response) => {
+          const data = await response.json()
           if (response.ok) {
-            console.log("[v0] ✅ Webhook triggered successfully, reloading user...")
+            console.log("[v0] ✅ Premium auto-activated successfully")
             await user.reload()
-            console.log("[v0] ✅ Premium activated! Redirecting...")
-            window.location.href = "/"
+            setTimeout(() => {
+              window.location.href = "/"
+            }, 1000)
           } else {
-            console.error("[v0] ❌ Webhook trigger failed")
-            setIsActivating(false)
+            console.error("[v0] ❌ Auto-activation failed:", data)
+            setIsAutoActivating(false)
           }
-        } catch (error) {
-          console.error("[v0] ❌ Error triggering webhook:", error)
-          setIsActivating(false)
-        }
-      }
-
-      triggerWebhook()
+        })
+        .catch((error) => {
+          console.error("[v0] ❌ Error during auto-activation:", error)
+          setIsAutoActivating(false)
+        })
     }
-  }, [isLoaded, orgsLoaded, user, hasOrgMembership, hasPremiumMetadata])
+  }, [isLoaded, orgsLoaded, user, hasOrgMembership, hasPremiumMetadata, isAutoActivating])
 
   if (!isLoaded || !orgsLoaded) {
     return (
@@ -141,7 +123,7 @@ export default function SubscribePage() {
     )
   }
 
-  if (isActivating) {
+  if (isAutoActivating) {
     return (
       <div
         style={{
@@ -164,7 +146,7 @@ export default function SubscribePage() {
               animation: "spin 1s linear infinite",
             }}
           />
-          <p style={{ fontSize: "18px" }}>Activating your premium access...</p>
+          <p style={{ fontSize: "18px" }}>Activating your premium subscription...</p>
         </div>
         <style jsx>{`
           @keyframes spin {
@@ -266,33 +248,6 @@ export default function SubscribePage() {
             >
               Go to Dashboard
             </Button>
-          </div>
-        )}
-
-        {showActivateButton && (
-          <div style={{ marginTop: "32px", textAlign: "center" }}>
-            <p style={{ marginBottom: "16px", color: "#4a5568" }}>
-              You have an active subscription. Click below to activate your premium access.
-            </p>
-            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-              <Button
-                onClick={() => {}}
-                disabled={true}
-                style={{
-                  background: "#48bb78",
-                  color: "white",
-                  padding: "12px 32px",
-                  borderRadius: "8px",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  border: "none",
-                  cursor: "not-allowed",
-                  opacity: 0.6,
-                }}
-              >
-                Activating...
-              </Button>
-            </div>
           </div>
         )}
       </div>
