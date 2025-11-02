@@ -4,6 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
+import { Button } from "@/components/ui/button"
 import "./globals.css"
 import { Inter } from "next/font/google"
 
@@ -39,8 +41,29 @@ export default function RootLayout({
             <Suspense fallback={<div>Loading...</div>}>
               <AppSidebar />
               <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10">
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10 justify-between">
                   <SidebarTrigger className="-ml-1" />
+
+                  <div className="flex items-center gap-2">
+                    <SignedOut>
+                      <SignInButton mode="modal">
+                        <Button variant="outline" size="sm">
+                          Sign In
+                        </Button>
+                      </SignInButton>
+                      <SignUpButton mode="modal">
+                        <Button
+                          size="sm"
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                        >
+                          Sign Up
+                        </Button>
+                      </SignUpButton>
+                    </SignedOut>
+                    <SignedIn>
+                      <UserButton afterSignOutUrl="/" />
+                    </SignedIn>
+                  </div>
                 </header>
                 <main className="flex-1 overflow-auto">
                   <PremiumGate>{children}</PremiumGate>
