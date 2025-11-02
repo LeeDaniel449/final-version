@@ -13,6 +13,7 @@ export default function SubscribePage() {
   })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -40,6 +41,37 @@ export default function SubscribePage() {
 
   console.log("[v0] showActivateButton:", showActivateButton)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
+
+  const handleRefresh = async () => {
+    if (!user) return
+
+    setIsRefreshing(true)
+    console.log("[v0] Refreshing user premium status...")
+
+    try {
+      await user.reload()
+      console.log("[v0] User data reloaded successfully")
+      console.log("[v0] Updated publicMetadata:", user.publicMetadata)
+
+      const nowHasPremium =
+        user.publicMetadata?.premium === true ||
+        user.publicMetadata?.subscriptionStatus === "active" ||
+        user.publicMetadata?.freeTrialActive === true
+
+      if (nowHasPremium) {
+        console.log("[v0] Premium detected after refresh, redirecting to home")
+        window.location.href = "/"
+      } else {
+        console.log("[v0] No premium detected after refresh")
+        alert("Premium status not found. Please wait a moment and try again, or contact support if the issue persists.")
+      }
+    } catch (error) {
+      console.error("[v0] Error refreshing user data:", error)
+      alert("Failed to refresh status. Please try again.")
+    } finally {
+      setIsRefreshing(false)
+    }
+  }
 
   const handleActivate = async () => {
     setIsActivating(true)
@@ -232,6 +264,39 @@ export default function SubscribePage() {
               }}
             >
               {isActivating ? "Activating..." : "Activate Subscription"}
+            </Button>
+          </div>
+        )}
+
+        {!hasPremiumMetadata && user && (
+          <div
+            style={{
+              marginTop: "32px",
+              textAlign: "center",
+              padding: "24px",
+              background: "#f7fafc",
+              borderRadius: "12px",
+            }}
+          >
+            <p style={{ marginBottom: "12px", color: "#4a5568", fontSize: "14px" }}>
+              Just subscribed? Click below to refresh your premium status.
+            </p>
+            <Button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              style={{
+                background: "#667eea",
+                color: "white",
+                padding: "10px 24px",
+                borderRadius: "8px",
+                fontSize: "14px",
+                fontWeight: "600",
+                border: "none",
+                cursor: isRefreshing ? "not-allowed" : "pointer",
+                opacity: isRefreshing ? 0.6 : 1,
+              }}
+            >
+              {isRefreshing ? "Refreshing..." : "Refresh Premium Status"}
             </Button>
           </div>
         )}
