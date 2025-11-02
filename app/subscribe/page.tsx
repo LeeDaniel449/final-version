@@ -282,23 +282,25 @@ export default function SubscribePage() {
             <p style={{ marginBottom: "16px", color: "#4a5568" }}>
               You have an active subscription. Click below to activate your premium access.
             </p>
-            <Button
-              onClick={handleActivate}
-              disabled={isActivating}
-              style={{
-                background: "#48bb78",
-                color: "white",
-                padding: "12px 32px",
-                borderRadius: "8px",
-                fontSize: "16px",
-                fontWeight: "600",
-                border: "none",
-                cursor: isActivating ? "not-allowed" : "pointer",
-                opacity: isActivating ? 0.6 : 1,
-              }}
-            >
-              {isActivating ? "Activating..." : "Activate Subscription"}
-            </Button>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <Button
+                onClick={handleActivate}
+                disabled={isActivating}
+                style={{
+                  background: "#48bb78",
+                  color: "white",
+                  padding: "12px 32px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: isActivating ? "not-allowed" : "pointer",
+                  opacity: isActivating ? 0.6 : 1,
+                }}
+              >
+                {isActivating ? "Activating..." : "Activate Subscription"}
+              </Button>
+            </div>
           </div>
         )}
 
@@ -351,9 +353,23 @@ export default function SubscribePage() {
                 {isManualActivating ? "Activating..." : "Manually Activate Premium"}
               </Button>
             </div>
-            <p style={{ marginTop: "12px", color: "#718096", fontSize: "12px" }}>
-              If the webhook didn't activate your premium automatically, use the manual activation button.
-            </p>
+            <div
+              style={{
+                marginTop: "16px",
+                padding: "12px",
+                background: "#fff3cd",
+                border: "1px solid #ffc107",
+                borderRadius: "8px",
+              }}
+            >
+              <p style={{ color: "#856404", fontSize: "13px", fontWeight: "600", marginBottom: "4px" }}>
+                ⚠️ Important: Manual Activation
+              </p>
+              <p style={{ color: "#856404", fontSize: "12px" }}>
+                Only use "Manually Activate Premium" if you have already completed payment through the subscription form
+                above. This button should only be used if the automatic webhook activation failed.
+              </p>
+            </div>
           </div>
         )}
       </div>

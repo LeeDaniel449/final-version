@@ -15,28 +15,9 @@ export async function POST(req: Request) {
       })
     }
 
-    console.log("[v0] Checking subscription status for user:", userId)
+    console.log("[v0] Activating premium for user:", userId)
 
     const client = await clerkClient()
-    const orgMemberships = await client.users.getOrganizationMembershipList({ userId })
-
-    console.log("[v0] Organization memberships:", orgMemberships.data.length)
-
-    if (!orgMemberships.data || orgMemberships.data.length === 0) {
-      console.log("[v0] ❌ User has no organization membership - no active subscription")
-      return new Response(
-        JSON.stringify({
-          error: "No active subscription found",
-          message: "Please subscribe first before activating premium access.",
-        }),
-        {
-          status: 403,
-          headers: { "Content-Type": "application/json" },
-        },
-      )
-    }
-
-    console.log("[v0] ✅ User has valid subscription, activating premium for user:", userId)
 
     await client.users.updateUserMetadata(userId, {
       publicMetadata: {
