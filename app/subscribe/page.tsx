@@ -14,6 +14,7 @@ export default function SubscribePage() {
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isManualActivating, setIsManualActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -41,6 +42,35 @@ export default function SubscribePage() {
 
   console.log("[v0] showActivateButton:", showActivateButton)
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
+
+  const handleManualActivate = async () => {
+    if (!user) return
+
+    setIsManualActivating(true)
+    console.log("[v0] Manual premium activation requested")
+
+    try {
+      const response = await fetch("/api/activate-premium", {
+        method: "POST",
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log("[v0] Premium activated successfully via manual activation")
+        await user.reload()
+        window.location.href = "/"
+      } else {
+        console.error("[v0] Failed to activate premium:", data)
+        alert(`Failed to activate premium: ${data.error || "Unknown error"}`)
+        setIsManualActivating(false)
+      }
+    } catch (error) {
+      console.error("[v0] Error during manual activation:", error)
+      alert("An error occurred. Please try again.")
+      setIsManualActivating(false)
+    }
+  }
 
   const handleRefresh = async () => {
     if (!user) return
@@ -281,23 +311,45 @@ export default function SubscribePage() {
             <p style={{ marginBottom: "12px", color: "#4a5568", fontSize: "14px" }}>
               Just subscribed? Click below to refresh your premium status.
             </p>
-            <Button
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              style={{
-                background: "#667eea",
-                color: "white",
-                padding: "10px 24px",
-                borderRadius: "8px",
-                fontSize: "14px",
-                fontWeight: "600",
-                border: "none",
-                cursor: isRefreshing ? "not-allowed" : "pointer",
-                opacity: isRefreshing ? 0.6 : 1,
-              }}
-            >
-              {isRefreshing ? "Refreshing..." : "Refresh Premium Status"}
-            </Button>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <Button
+                onClick={handleRefresh}
+                disabled={isRefreshing}
+                style={{
+                  background: "#667eea",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: isRefreshing ? "not-allowed" : "pointer",
+                  opacity: isRefreshing ? 0.6 : 1,
+                }}
+              >
+                {isRefreshing ? "Refreshing..." : "Refresh Premium Status"}
+              </Button>
+              <Button
+                onClick={handleManualActivate}
+                disabled={isManualActivating}
+                style={{
+                  background: "#48bb78",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: isManualActivating ? "not-allowed" : "pointer",
+                  opacity: isManualActivating ? 0.6 : 1,
+                }}
+              >
+                {isManualActivating ? "Activating..." : "Manually Activate Premium"}
+              </Button>
+            </div>
+            <p style={{ marginTop: "12px", color: "#718096", fontSize: "12px" }}>
+              If the webhook didn't activate your premium automatically, use the manual activation button.
+            </p>
           </div>
         )}
       </div>
