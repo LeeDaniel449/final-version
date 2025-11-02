@@ -36,6 +36,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
+  const [isAutoActivating, setIsAutoActivating] = useState(false)
 
   useEffect(() => {
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
@@ -96,6 +97,49 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       )
     }
 
+    const hasPremiumMetadata =
+      hasPremiumInPublic ||
+      hasPremiumInUnsafe ||
+      hasActiveSubInPublic ||
+      hasActiveSubInUnsafe ||
+      hasFreeTrialInPublic ||
+      hasFreeTrialInUnsafe
+
+    if (hasOrganization && !hasPremiumMetadata && !isAutoActivating) {
+      console.log("[v0] 🚀 Organization membership detected without premium metadata - auto-activating...")
+      setIsAutoActivating(true)
+
+      fetch("/api/webhooks/clerk?client=true", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
+      })
+        .then(async (response) => {
+          const data = await response.json()
+          if (response.ok) {
+            console.log("[v0] ✅ Premium auto-activated successfully")
+            await user.reload()
+            setHasPremium(true)
+            setCheckComplete(true)
+            setIsAutoActivating(false)
+          } else {
+            console.error("[v0] ❌ Auto-activation failed:", data)
+            setIsAutoActivating(false)
+            // Still grant access based on org membership
+            setHasPremium(true)
+            setCheckComplete(true)
+          }
+        })
+        .catch((error) => {
+          console.error("[v0] ❌ Error during auto-activation:", error)
+          setIsAutoActivating(false)
+          // Still grant access based on org membership
+          setHasPremium(true)
+          setCheckComplete(true)
+        })
+      return
+    }
+
     const shouldHavePremium =
       hasPremiumInPublic ||
       hasPremiumInUnsafe ||
@@ -110,7 +154,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     setHasPremium(shouldHavePremium)
     setCheckComplete(true)
-  }, [isLoaded, user, userMemberships])
+  }, [isLoaded, user, userMemberships, isAutoActivating])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
@@ -121,7 +165,13 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   console.log("  - checkComplete:", checkComplete)
   console.log("  - isPublicRoute:", isPublicRoute)
   console.log("  - pathname:", pathname)
+  console.log("  - isAutoActivating:", isAutoActivating)
   console.log("  - will show overlay:", checkComplete && !hasPremium && !isPublicRoute)
+
+  if (isAutoActivating) {
+    console.log("[v0] Auto-activating premium, showing loading")
+    return <>{children}</>
+  }
 
   if (!checkComplete) {
     console.log("[v0] Still checking premium status, showing loading")
