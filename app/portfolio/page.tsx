@@ -1,33 +1,30 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
 import { useStockSearch } from "@/hooks/use-stock-search"
 import {
   PieChart,
   TrendingUp,
   TrendingDown,
   DollarSign,
-  Plus,
   Info,
-  X,
-  Heart,
   Star,
-  ThumbsUp,
   HelpCircle,
   BarChart,
   LineChart,
   Target,
-  ListChecks,
-  Brain,
+  LogIn,
 } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
+import Link from "next/link"
 
 const PortfolioPage = () => {
+  const { user, isLoaded } = useUser()
   const [showInvestmentModal, setShowInvestmentModal] = useState(false)
   const [selectedInvestment, setSelectedInvestment] = useState(null)
   const [searchQuery, setSearchQuery] = useState("")
@@ -350,6 +347,42 @@ const PortfolioPage = () => {
     ((livePortfolioValue - holdings.reduce((sum, h) => sum + h.shares * h.avgCost, 0)) /
       holdings.reduce((sum, h) => sum + h.shares * h.avgCost, 0)) *
     100
+
+  if (isLoaded && !user) {
+    return (
+      <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 to-purple-50">
+        <div className="max-w-6xl mx-auto p-4 lg:p-6 space-y-4 lg:space-y-6">
+          <div className="text-center space-y-4">
+            <div className="flex items-center justify-center gap-2">
+              <PieChart className="w-6 h-6 lg:w-8 lg:h-8 text-blue-600" />
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Smart Budget Dashboard</h1>
+            </div>
+            <p className="text-gray-600 text-base lg:text-lg">Take control of your finances and achieve your goals</p>
+          </div>
+
+          <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+            <CardContent className="p-8 text-center">
+              <div className="flex items-center justify-center mb-4">
+                <LogIn className="h-12 w-12 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-blue-900 mb-2">Sign In to Access Your Dashboard</h3>
+              <p className="text-blue-800 mb-6 max-w-md mx-auto">
+                Sign in to track your budget, manage expenses, and get AI-powered financial insights.
+              </p>
+              <div className="flex gap-4 justify-center">
+                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Link href="/sign-in">
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Sign In
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 to-purple-50">
@@ -716,7 +749,7 @@ const PortfolioPage = () => {
                       ⏰ <strong>Stay motivated:</strong> Keep your goals in mind
                     </p>
                     <p>
-                      📚 <strong>Adjust as needed:</strong> Be flexible and adjust your goals as needed
+                      📚 <strong>Adjust as needed:</strong> Be flexible and adjust your goals as your situation changes
                     </p>
                   </div>
                 </div>
@@ -727,142 +760,29 @@ const PortfolioPage = () => {
           <TabsContent value="transaction-categories" className="space-y-4 lg:space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <ListChecks className="w-5 h-5 text-blue-500" />
-                  Transaction Categories
-                </CardTitle>
-                <CardDescription>Categorize your transactions to understand your spending</CardDescription>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Info className="w-4 h-4 text-blue-600" />
-                    <span className="font-medium text-blue-800">How to Use This</span>
-                  </div>
-                  <div className="text-blue-700 text-sm">
-                    Categorize your transactions to see where your money is going.
-                  </div>
-                </div>
+                <CardTitle>Transaction Categories</CardTitle>
+                <CardDescription>View your spending by category</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Input
-                      type="search"
-                      placeholder="Search for a transaction..."
-                      value={searchQuery}
-                      onChange={(e) => handleSearch(e.target.value)}
-                    />
-                    {isSearching && <p className="text-gray-500 text-sm">Searching...</p>}
-                    {error && <p className="text-red-500 text-sm">Error: {error}</p>}
+                  <div className="border rounded-lg p-4 bg-white">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold">Groceries</h4>
+                        <p className="text-sm text-gray-600">$450 this month</p>
+                      </div>
+                      <Badge className="bg-blue-100 text-blue-600">Essential</Badge>
+                    </div>
                   </div>
-
-                  {searchResults.length > 0 && (
-                    <div className="space-y-2">
-                      <h4 className="text-lg font-medium">Search Results</h4>
-                      <ul className="space-y-1">
-                        {searchResults.map((result) => (
-                          <li
-                            key={result.symbol}
-                            className="flex items-center justify-between p-2 rounded-md hover:bg-gray-50 cursor-pointer"
-                            onClick={() => handleSelectFromSearch(result)}
-                          >
-                            <div className="min-w-0 flex-1">
-                              <p className="font-medium truncate"></p>
-                              <p className="text-sm text-gray-500">{result.symbol}</p>
-                            </div>
-                            <Button size="sm" variant="outline" className="flex-shrink-0 bg-transparent">
-                              Select
-                            </Button>
-                          </li>
-                        ))}
-                      </ul>
+                  <div className="border rounded-lg p-4 bg-white">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold">Entertainment</h4>
+                        <p className="text-sm text-gray-600">$250 this month</p>
+                      </div>
+                      <Badge className="bg-orange-100 text-orange-600">Discretionary</Badge>
                     </div>
-                  )}
-
-                  {stockQuotes.length > 0 && (
-                    <div className="space-y-2">
-                      <h4 className="text-lg font-medium">Your Stocks</h4>
-                      <ul className="space-y-4">
-                        {stockQuotes.map((quote) => (
-                          <li key={quote.symbol} className="border rounded-lg p-4 bg-white">
-                            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-2">
-                                  <h4 className="font-bold text-lg">{quote.symbol}</h4>
-                                  <Badge variant="outline" className="text-xs">
-                                    Realtime Quote
-                                  </Badge>
-                                </div>
-                                <p className="text-sm text-gray-600 mb-2 truncate">{quote.name}</p>
-                                <div className="bg-blue-50 rounded-lg p-3">
-                                  <div className="text-xl font-bold text-blue-600 mb-1">${quote.price.toFixed(2)}</div>
-                                  <div
-                                    className={`text-sm flex items-center ${
-                                      quote.changePercent >= 0 ? "text-green-600" : "text-red-600"
-                                    }`}
-                                  >
-                                    {quote.changePercent >= 0 ? (
-                                      <TrendingUp className="w-4 h-4 mr-1" />
-                                    ) : (
-                                      <TrendingDown className="w-4 h-4 mr-1" />
-                                    )}
-                                    {quote.changePercent >= 0 ? "+" : ""}
-                                    {quote.changePercent.toFixed(2)}% today
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex flex-col gap-2 flex-shrink-0">
-                                <Button
-                                  size="sm"
-                                  onClick={() =>
-                                    handleInvest({
-                                      symbol: quote.symbol,
-                                      name: quote.name,
-                                      price: quote.price,
-                                      recommendation: "From your search",
-                                      riskLevel: "Medium",
-                                      whyGood: "You've been tracking this stock",
-                                    })
-                                  }
-                                  className="bg-green-600 hover:bg-green-700 text-white"
-                                >
-                                  <Plus className="w-4 h-4 mr-1" />
-                                  Invest
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => {
-                                    if (!isInWatchlist(quote.symbol)) {
-                                      addToWatchlist(quote)
-                                    }
-                                  }}
-                                  disabled={isInWatchlist(quote.symbol)}
-                                  className={isInWatchlist(quote.symbol) ? "bg-green-100 text-green-800" : ""}
-                                >
-                                  <Heart
-                                    className={`w-4 h-4 mr-1 ${isInWatchlist(quote.symbol) ? "fill-current" : ""}`}
-                                  />
-                                  {isInWatchlist(quote.symbol) ? "In Watchlist" : "Add to Watchlist"}
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => removeStockQuote(quote.symbol)}
-                                  className="text-red-600 hover:text-red-700"
-                                >
-                                  <X className="w-4 h-4 mr-1" />
-                                  Remove
-                                </Button>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                      <Button variant="outline" onClick={clearSearch}>
-                        Clear All
-                      </Button>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -871,260 +791,22 @@ const PortfolioPage = () => {
           <TabsContent value="ai-coaching" className="space-y-4 lg:space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Brain className="w-5 h-5 text-purple-500" />
-                  AI Coaching
-                </CardTitle>
-                <CardDescription>Get personalized financial advice from our AI coach</CardDescription>
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Info className="w-4 h-4 text-purple-600" />
-                    <span className="font-medium text-purple-800">AI-Powered Advice</span>
-                  </div>
-                  <div className="text-purple-700 text-sm">
-                    Our AI coach analyzes your financial data and provides personalized advice to help you achieve your
-                    goals.
-                  </div>
-                </div>
+                <CardTitle>AI Financial Coach</CardTitle>
+                <CardDescription>Get personalized financial advice</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
-                  {/* Search Filters */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Question</label>
-                      <Input
-                        type="search"
-                        placeholder="Ask a question..."
-                        value={searchQuery}
-                        onChange={(e) => handleSearch(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Search Results */}
-                  {isSearching && (
-                    <div className="text-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-                      <p className="text-gray-500">Searching for stocks...</p>
-                    </div>
-                  )}
-
-                  {error && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <p className="text-red-600">Error: {error}</p>
-                    </div>
-                  )}
-
-                  {searchResults.length > 0 && (
-                    <div className="space-y-4">
-                      <h4 className="text-lg font-medium flex items-center gap-2">
-                        <TrendingUp className="w-5 h-5 text-green-600" />
-                        Search Results ({searchResults.length})
-                      </h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {searchResults.map((result) => (
-                          <div
-                            key={result.symbol}
-                            className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow"
-                          >
-                            <div className="flex items-center justify-between mb-3">
-                              <div>
-                                <h5 className="font-bold text-lg">{result.symbol}</h5>
-                                <p className="text-sm text-gray-600">{result.name}</p>
-                              </div>
-                              <Badge variant="outline" className="text-xs">
-                                {result.type || "Stock"}
-                              </Badge>
-                            </div>
-
-                            <div className="space-y-2 mb-4">
-                              <div className="flex justify-between text-sm">
-                                <span className="text-gray-600">Current Price:</span>
-                                <span className="font-medium">Loading...</span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 text-center">
+                  <div className="text-4xl mb-4">🤖</div>
+                  <h3 className="text-xl font-bold mb-2">Your AI Coach is Coming Soon!</h3>
+                  <p className="text-gray-600">
+                    Get personalized financial advice, budget recommendations, and smart insights powered by AI.
+                  </p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
       </div>
-
-      {/* Learn More Modal */}
-      {showLearnMoreModal && selectedLearningItem && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-blue-800">📚 Learn About {selectedLearningItem.name}</h2>
-              <Button variant="outline" size="sm" onClick={() => setShowLearnMoreModal(false)}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="space-y-6">
-              {/* Basic Info */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="font-bold text-blue-800 mb-2">What is {selectedLearningItem.name}?</h3>
-                <p className="text-blue-700 text-sm mb-3">{selectedLearningItem.description}</p>
-                <div className="flex items-center gap-4">
-                  <Badge className={`text-xs px-2 py-1 rounded ${getSimpleRiskColor(selectedLearningItem.riskLevel)}`}>
-                    {selectedLearningItem.riskLevel} Risk
-                  </Badge>
-                  <span className="text-sm font-medium">${selectedLearningItem.price.toFixed(2)} per share</span>
-                </div>
-              </div>
-
-              {/* Why It's Good */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <h3 className="font-bold text-green-800 mb-2 flex items-center gap-2">
-                  <ThumbsUp className="w-4 h-4" />
-                  Why This Investment is Great for Beginners
-                </h3>
-                <p className="text-green-700 text-sm">{selectedLearningItem.whyGood}</p>
-              </div>
-
-              {/* Detailed Explanation */}
-              <div className="space-y-4">
-                {selectedLearningItem.symbol === "SPY" && (
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="font-bold mb-2">🏢 What You Actually Own</h3>
-                    <p className="text-sm text-gray-700 mb-3">
-                      When you buy SPY, you instantly own tiny pieces of 500 of America's biggest companies including:
-                    </p>
-                    <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                      <div>• Apple (Technology)</div>
-                      <div>• Microsoft (Technology)</div>
-                      <div>• Amazon (E-commerce)</div>
-                      <div>• Google (Internet)</div>
-                      <div>• Tesla (Electric Cars)</div>
-                      <div>• Johnson & Johnson (Healthcare)</div>
-                    </div>
-                    <p className="text-sm text-gray-700 mt-3">
-                      <strong>The Magic:</strong> If any one company fails, you still own 499 others!
-                    </p>
-                  </div>
-                )}
-
-                {selectedLearningItem.symbol === "SCHD" && (
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="font-bold mb-2">💰 How Dividends Work</h3>
-                    <p className="text-sm text-gray-700 mb-3">
-                      SCHD focuses on companies that regularly pay you money (called dividends) just for owning their
-                      stock.
-                    </p>
-                    <div className="text-xs text-gray-600 space-y-1">
-                      <div>• Companies like Coca-Cola pay you every 3 months</div>
-                      <div>• You get paid even if the stock price doesn't go up</div>
-                      <div>• It's like getting rent from your investments</div>
-                      <div>• Perfect for people who want regular income</div>
-                    </div>
-                    <p className="text-sm text-gray-700 mt-3">
-                      <strong>Example:</strong> If you own $1,000 of SCHD, you might get $30-40 per year in dividend
-                      payments!
-                    </p>
-                  </div>
-                )}
-
-                {selectedLearningItem.symbol === "VTI" && (
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="font-bold mb-2">🇺🇸 The Entire US Stock Market</h3>
-                    <p className="text-sm text-gray-700 mb-3">
-                      VTI is like buying a tiny piece of every public company in America - over 4,000 companies!
-                    </p>
-                    <div className="text-xs text-gray-600 space-y-1">
-                      <div>• Big companies (Apple, Microsoft) - 80%</div>
-                      <div>• Medium companies - 15%</div>
-                      <div>• Small growing companies - 5%</div>
-                      <div>• Costs only 0.03% per year (super cheap!)</div>
-                    </div>
-                    <p className="text-sm text-gray-700 mt-3">
-                      <strong>Warren Buffett says:</strong> "Just buy the whole market and hold forever. Most people
-                      can't beat it."
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Beginner Tips */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <h3 className="font-bold text-yellow-800 mb-2 flex items-center gap-2">
-                  <Star className="w-4 h-4" />
-                  Beginner Tips for {selectedLearningItem.name}
-                </h3>
-                <div className="text-yellow-700 text-sm space-y-2">
-                  <p>
-                    • <strong>Start small:</strong> You can buy just 1 share to begin
-                  </p>
-                  <p>
-                    • <strong>Dollar-cost average:</strong> Buy a little bit every month
-                  </p>
-                  <p>
-                    • <strong>Be patient:</strong> These investments work best over 5+ years
-                  </p>
-                  <p>
-                    • <strong>Don't panic:</strong> Prices will go up and down - that's normal
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-3 pt-4">
-                <Button
-                  className="bg-blue-600 hover:bg-blue-700 text-white flex-1"
-                  onClick={() => {
-                    setShowLearnMoreModal(false)
-                    handleInvest(selectedLearningItem)
-                  }}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  I'm Ready to Invest
-                </Button>
-                <Button variant="outline" onClick={() => setShowLearnMoreModal(false)} className="flex-1">
-                  Maybe Later
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Beginner Tutorial Modal */}
-      {showBeginnerTutorial && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">{tutorialSteps[currentTutorialStep].title}</h2>
-            <p className="text-gray-700 mb-6">{tutorialSteps[currentTutorialStep].content}</p>
-            <div className="flex justify-between">
-              <Button
-                variant="outline"
-                disabled={currentTutorialStep === 0}
-                onClick={() => setCurrentTutorialStep(currentTutorialStep - 1)}
-              >
-                Previous
-              </Button>
-              {currentTutorialStep === tutorialSteps.length - 1 ? (
-                <Button
-                  onClick={() => {
-                    setShowBeginnerTutorial(false)
-                    localStorage.setItem("portfolio-tutorial-completed", "true")
-                    setTutorialCompleted(true)
-                  }}
-                >
-                  Finish Tutorial
-                </Button>
-              ) : (
-                <Button onClick={() => setCurrentTutorialStep(currentTutorialStep + 1)}>Next</Button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
