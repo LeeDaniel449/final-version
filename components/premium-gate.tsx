@@ -65,8 +65,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     // Check for premium flags in metadata
     const hasPremiumInPublic = publicMeta.premium === true
     const hasPremiumInUnsafe = (unsafeMeta as any).premium === true
-    const hasActiveSubInPublic = publicMeta.subscriptionStatus === "active"
-    const hasActiveSubInUnsafe = (unsafeMeta as any).subscriptionStatus === "active"
+    const hasActiveSubInPublic =
+      publicMeta.subscriptionStatus === "active" || publicMeta.subscriptionStatus === "created"
+    const hasActiveSubInUnsafe =
+      (unsafeMeta as any).subscriptionStatus === "active" || (unsafeMeta as any).subscriptionStatus === "created"
     const hasFreeTrialInPublic = publicMeta.freeTrialActive === true
     const hasFreeTrialInUnsafe = (unsafeMeta as any).freeTrialActive === true
 

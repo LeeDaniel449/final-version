@@ -140,11 +140,21 @@ export async function POST(req: Request) {
       const client = await clerkClient()
       console.log("[v0] ✅ Clerk client initialized successfully")
 
+      let subscriptionStatus = "active"
+      if (eventType === "subscription.created") {
+        subscriptionStatus = "created"
+      } else if (eventType === "subscription.active") {
+        subscriptionStatus = "active"
+      } else if (eventType === "subscription.updated") {
+        subscriptionStatus = evt.data.status || "active"
+      }
+
       console.log("[v0] Updating user metadata...")
+      console.log("[v0] Setting subscriptionStatus to:", subscriptionStatus)
       await client.users.updateUserMetadata(userId, {
         publicMetadata: {
           premium: true,
-          subscriptionStatus: "active",
+          subscriptionStatus,
           premiumActivatedAt: new Date().toISOString(),
           subscriptionId: evt.data.id || null,
         },
