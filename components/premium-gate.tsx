@@ -110,10 +110,9 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       console.log("[v0] Attempting auto-activation for user with org membership...")
       setIsAutoActivating(true)
 
-      fetch("/api/webhooks/clerk?client=true", {
+      fetch("/api/activate-premium-simple", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: user.id }),
       })
         .then(async (response) => {
           const data = await response.json()
