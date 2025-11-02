@@ -148,3 +148,94 @@ export default function SubscribePage() {
         </div>
 
         {!hasPremiumMetadata && (
+          <div style={{ marginBottom: "32px" }}>
+            <PricingTable />
+          </div>
+        )}
+
+        {hasPremiumMetadata && (
+          <div
+            style={{
+              textAlign: "center",
+              padding: "48px 24px",
+              background: "#f7fafc",
+              borderRadius: "12px",
+            }}
+          >
+            <div
+              style={{
+                width: "64px",
+                height: "64px",
+                background: "#48bb78",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 24px",
+              }}
+            >
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "12px", color: "#1a202c" }}>
+              You're Already Subscribed!
+            </h2>
+            <p style={{ fontSize: "16px", color: "#4a5568", marginBottom: "24px" }}>
+              You have access to all premium features.
+            </p>
+            <Button
+              onClick={() => router.push("/")}
+              style={{
+                background: "#667eea",
+                color: "white",
+                padding: "12px 32px",
+                borderRadius: "8px",
+                fontSize: "16px",
+                fontWeight: "600",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              Go to Dashboard
+            </Button>
+          </div>
+        )}
+
+        {showActivateButton && (
+          <div style={{ marginTop: "32px", textAlign: "center" }}>
+            <p style={{ marginBottom: "16px", color: "#4a5568" }}>
+              You have an active subscription. Click below to activate your premium access.
+            </p>
+            <Button
+              onClick={handleActivate}
+              disabled={isActivating}
+              style={{
+                background: "#48bb78",
+                color: "white",
+                padding: "12px 32px",
+                borderRadius: "8px",
+                fontSize: "16px",
+                fontWeight: "600",
+                border: "none",
+                cursor: isActivating ? "not-allowed" : "pointer",
+                opacity: isActivating ? 0.6 : 1,
+              }}
+            >
+              {isActivating ? "Activating..." : "Activate Subscription"}
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
