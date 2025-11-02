@@ -36,7 +36,6 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
-  const [isAutoActivating, setIsAutoActivating] = useState(false)
 
   useEffect(() => {
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
@@ -63,6 +62,22 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     console.log("[v0] publicMetadata:", JSON.stringify(publicMeta))
     console.log("[v0] unsafeMetadata:", JSON.stringify(unsafeMeta))
 
+    const orgCount = userMemberships?.data?.length || 0
+    const hasOrganization = orgCount > 0
+
+    console.log("[v0] Organization membership count:", orgCount)
+    console.log("[v0] Has organization:", hasOrganization)
+
+    if (hasOrganization && userMemberships?.data) {
+      console.log(
+        "[v0] Organizations:",
+        userMemberships.data.map((m: any) => ({
+          name: m.organization.name,
+          role: m.role,
+        })),
+      )
+    }
+
     // Check for premium flags in metadata
     const hasPremiumInPublic = publicMeta.premium === true
     const hasPremiumInUnsafe = (unsafeMeta as any).premium === true
@@ -73,10 +88,6 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     const hasFreeTrialInPublic = publicMeta.freeTrialActive === true
     const hasFreeTrialInUnsafe = (unsafeMeta as any).freeTrialActive === true
 
-    // Check organization membership
-    const orgCount = userMemberships?.data?.length || 0
-    const hasOrganization = orgCount > 0
-
     console.log("[v0] Premium indicators:")
     console.log("  - premium in publicMetadata:", hasPremiumInPublic)
     console.log("  - premium in unsafeMetadata:", hasPremiumInUnsafe)
@@ -84,20 +95,9 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     console.log("  - subscriptionStatus active in unsafeMetadata:", hasActiveSubInUnsafe)
     console.log("  - freeTrialActive in publicMetadata:", hasFreeTrialInPublic)
     console.log("  - freeTrialActive in unsafeMetadata:", hasFreeTrialInUnsafe)
-    console.log("  - organization membership count:", orgCount)
-    console.log("  - has organization:", hasOrganization)
 
-    if (hasOrganization && userMemberships?.data) {
-      console.log(
-        "  - organizations:",
-        userMemberships.data.map((m: any) => ({
-          name: m.organization.name,
-          role: m.role,
-        })),
-      )
-    }
-
-    const hasPremiumMetadata =
+    const shouldHavePremium =
+      hasOrganization ||
       hasPremiumInPublic ||
       hasPremiumInUnsafe ||
       hasActiveSubInPublic ||
@@ -105,62 +105,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       hasFreeTrialInPublic ||
       hasFreeTrialInUnsafe
 
-    if (hasOrganization && !hasPremiumMetadata && !isAutoActivating) {
-      console.log("[v0] User has organization membership, checking for auto-activation...")
-      console.log("[v0] Attempting auto-activation for user with org membership...")
-      setIsAutoActivating(true)
-
-      fetch("/api/activate-premium-simple", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      })
-        .then(async (response) => {
-          const data = await response.json()
-          console.log("[v0] Auto-activation response status:", response.status)
-          console.log("[v0] Auto-activation response data:", JSON.stringify(data))
-
-          if (response.ok) {
-            console.log("[v0] Auto-activation successful, reloading user...")
-            await user.reload()
-            console.log("[v0] User reloaded, new metadata:", JSON.stringify(user.publicMetadata))
-            setHasPremium(true)
-            setCheckComplete(true)
-            setIsAutoActivating(false)
-          } else {
-            console.error("[v0] Auto-activation failed with status:", response.status)
-            console.error("[v0] Error details:", JSON.stringify(data))
-            setIsAutoActivating(false)
-            // Still grant access based on org membership
-            setHasPremium(true)
-            setCheckComplete(true)
-          }
-        })
-        .catch((error) => {
-          console.error("[v0] Auto-activation fetch error:", error.message)
-          console.error("[v0] Error stack:", error.stack)
-          setIsAutoActivating(false)
-          // Still grant access based on org membership
-          setHasPremium(true)
-          setCheckComplete(true)
-        })
-      return
-    }
-
-    const shouldHavePremium =
-      hasPremiumInPublic ||
-      hasPremiumInUnsafe ||
-      hasActiveSubInPublic ||
-      hasActiveSubInUnsafe ||
-      hasFreeTrialInPublic ||
-      hasFreeTrialInUnsafe ||
-      hasOrganization
-
     console.log("[v0] FINAL DECISION: shouldHavePremium =", shouldHavePremium)
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT END ==========")
 
     setHasPremium(shouldHavePremium)
     setCheckComplete(true)
-  }, [isLoaded, user, userMemberships, isAutoActivating])
+  }, [isLoaded, user, userMemberships])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
@@ -171,13 +121,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   console.log("  - checkComplete:", checkComplete)
   console.log("  - isPublicRoute:", isPublicRoute)
   console.log("  - pathname:", pathname)
-  console.log("  - isAutoActivating:", isAutoActivating)
   console.log("  - will show overlay:", checkComplete && !hasPremium && !isPublicRoute)
-
-  if (isAutoActivating) {
-    console.log("[v0] Auto-activating premium, showing loading")
-    return <>{children}</>
-  }
 
   if (!checkComplete) {
     console.log("[v0] Still checking premium status, showing loading")
