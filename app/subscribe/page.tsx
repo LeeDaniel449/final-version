@@ -13,6 +13,7 @@ export default function SubscribePage() {
   })
   const router = useRouter()
   const [isAutoActivating, setIsAutoActivating] = useState(false)
+  const [isManualActivating, setIsManualActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -68,6 +69,39 @@ export default function SubscribePage() {
         })
     }
   }, [isLoaded, orgsLoaded, user, hasOrgMembership, hasPremiumMetadata, isAutoActivating])
+
+  const handleManualActivation = async () => {
+    if (!user) return
+
+    setIsManualActivating(true)
+    console.log("[v0] 🔧 Manual activation requested by user")
+
+    try {
+      const response = await fetch("/api/activate-premium-simple", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log("[v0] ✅ Manual activation successful")
+        await user.reload()
+        setTimeout(() => {
+          window.location.href = "/"
+        }, 1000)
+      } else {
+        console.error("[v0] ❌ Manual activation failed:", data)
+        alert(`Activation failed: ${data.error || "Unknown error"}`)
+        setIsManualActivating(false)
+      }
+    } catch (error) {
+      console.error("[v0] ❌ Error during manual activation:", error)
+      alert("Activation failed. Please try again.")
+      setIsManualActivating(false)
+    }
+  }
 
   if (!isLoaded || !orgsLoaded) {
     return (
@@ -159,6 +193,42 @@ export default function SubscribePage() {
     )
   }
 
+  if (isManualActivating) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+      >
+        <div style={{ textAlign: "center", color: "white" }}>
+          <div
+            style={{
+              width: "48px",
+              height: "48px",
+              border: "4px solid rgba(255,255,255,0.3)",
+              borderTop: "4px solid white",
+              borderRadius: "50%",
+              margin: "0 auto 16px",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+          <p style={{ fontSize: "18px" }}>Activating premium access...</p>
+        </div>
+        <style jsx>{`
+          @keyframes spin {
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+      </div>
+    )
+  }
+
   return (
     <div
       style={{
@@ -181,16 +251,72 @@ export default function SubscribePage() {
         }}
       >
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
+          <h1
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              marginBottom: "16px",
+              color: "#1a202c",
+            }}
+          >
             Choose Your Plan
           </h1>
           <p style={{ fontSize: "18px", color: "#4a5568" }}>Subscribe to unlock all premium features</p>
         </div>
 
         {!hasPremiumMetadata && (
-          <div style={{ marginBottom: "32px" }}>
-            <PricingTable />
-          </div>
+          <>
+            <div style={{ marginBottom: "32px" }}>
+              <PricingTable />
+            </div>
+
+            <div
+              style={{
+                marginTop: "32px",
+                padding: "24px",
+                background: "#f7fafc",
+                borderRadius: "12px",
+                border: "2px dashed #cbd5e0",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "600",
+                  marginBottom: "12px",
+                  color: "#1a202c",
+                }}
+              >
+                Already Subscribed?
+              </h3>
+              <p
+                style={{
+                  fontSize: "14px",
+                  color: "#4a5568",
+                  marginBottom: "16px",
+                }}
+              >
+                If you've completed your subscription but still see the premium overlay, click below to manually
+                activate your premium access.
+              </p>
+              <Button
+                onClick={handleManualActivation}
+                disabled={isManualActivating}
+                style={{
+                  background: "#48bb78",
+                  color: "white",
+                  padding: "10px 24px",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Activate Premium Access
+              </Button>
+            </div>
+          </>
         )}
 
         {hasPremiumMetadata && (
@@ -227,10 +353,23 @@ export default function SubscribePage() {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "12px", color: "#1a202c" }}>
+            <h2
+              style={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                marginBottom: "12px",
+                color: "#1a202c",
+              }}
+            >
               You're Already Subscribed!
             </h2>
-            <p style={{ fontSize: "16px", color: "#4a5568", marginBottom: "24px" }}>
+            <p
+              style={{
+                fontSize: "16px",
+                color: "#4a5568",
+                marginBottom: "24px",
+              }}
+            >
               You have access to all premium features.
             </p>
             <Button
