@@ -13,7 +13,6 @@ export default function SubscribePage() {
   })
   const router = useRouter()
   const [isActivating, setIsActivating] = useState(false)
-  const [isTesting, setIsTesting] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -63,38 +62,6 @@ export default function SubscribePage() {
       console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
       setIsActivating(false)
-    }
-  }
-
-  const handleTestWebhook = async () => {
-    setIsTesting(true)
-    console.log("[v0] User clicked test webhook button")
-
-    try {
-      const response = await fetch("/api/test-webhook", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-        }),
-      })
-
-      if (response.ok) {
-        console.log("[v0] Test webhook successful")
-        alert("Webhook test successful! Premium activated. Redirecting...")
-        window.location.href = "/"
-      } else {
-        const errorData = await response.json()
-        console.error("[v0] Test webhook failed:", errorData)
-        alert(`Test webhook failed: ${errorData.error || "Unknown error"}`)
-        setIsTesting(false)
-      }
-    } catch (error) {
-      console.error("[v0] Error testing webhook:", error)
-      alert("An error occurred. Please try again.")
-      setIsTesting(false)
     }
   }
 
@@ -185,34 +152,38 @@ export default function SubscribePage() {
             style={{
               marginBottom: "32px",
               padding: "24px",
-              background: "#fef3c7",
-              border: "2px solid #f59e0b",
+              background: "#dbeafe",
+              border: "2px solid #3b82f6",
               borderRadius: "12px",
-              textAlign: "center",
             }}
           >
-            <h2 style={{ fontSize: "20px", fontWeight: "bold", color: "#92400e", marginBottom: "12px" }}>
-              🧪 Testing & Debugging
+            <h2 style={{ fontSize: "20px", fontWeight: "bold", color: "#1e40af", marginBottom: "12px" }}>
+              🚀 How Automatic Premium Activation Works
             </h2>
-            <p style={{ fontSize: "14px", color: "#78350f", marginBottom: "16px" }}>
-              If the webhook isn't working after subscribing, click this button to manually activate premium and test
-              the system.
-            </p>
-            <Button
-              onClick={handleTestWebhook}
-              disabled={isTesting}
-              variant="outline"
-              style={{
-                background: "white",
-                color: "#f59e0b",
-                borderColor: "#f59e0b",
-                fontSize: "16px",
-                padding: "10px 24px",
-                fontWeight: "600",
-              }}
-            >
-              {isTesting ? "Testing..." : "Test Webhook & Activate Premium"}
-            </Button>
+            <div style={{ fontSize: "14px", color: "#1e3a8a", lineHeight: "1.6" }}>
+              <p style={{ marginBottom: "12px" }}>
+                <strong>After you subscribe through Clerk:</strong>
+              </p>
+              <ol style={{ marginLeft: "20px", marginBottom: "12px" }}>
+                <li>Clerk sends a webhook to your deployed app</li>
+                <li>The webhook automatically grants you premium access</li>
+                <li>You'll be able to access all premium features immediately</li>
+              </ol>
+              <p style={{ marginBottom: "12px" }}>
+                <strong>To enable automatic activation:</strong>
+              </p>
+              <ol style={{ marginLeft: "20px" }}>
+                <li>Deploy this code to Vercel (click GitHub button in top right)</li>
+                <li>
+                  Configure webhook in Clerk dashboard:{" "}
+                  <code style={{ background: "#e0e7ff", padding: "2px 6px", borderRadius: "4px" }}>
+                    https://your-app.vercel.app/api/webhooks/clerk
+                  </code>
+                </li>
+                <li>Add webhook events: subscription.created, subscription.active, subscription.updated</li>
+                <li>Set CLERK_WEBHOOK_SECRET environment variable in Vercel</li>
+              </ol>
+            </div>
           </div>
         )}
 
