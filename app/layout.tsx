@@ -3,9 +3,9 @@ import { Suspense } from "react"
 import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { PremiumGate } from "@/components/premium-gate"
 import "./globals.css"
 import { Inter } from "next/font/google"
-import { AuthButtonsClient } from "./auth-buttons-client"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,10 +15,6 @@ const inter = Inter({
 
 const CLERK_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
-
-export const metadata = {
-  generator: "v0.dev",
-}
 
 export default function RootLayout({
   children,
@@ -43,11 +39,12 @@ export default function RootLayout({
             <Suspense fallback={<div>Loading...</div>}>
               <AppSidebar />
               <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10 justify-between">
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10">
                   <SidebarTrigger className="-ml-1" />
-                  <AuthButtonsClient />
                 </header>
-                <main className="flex-1 overflow-auto">{children}</main>
+                <main className="flex-1 overflow-auto">
+                  <PremiumGate>{children}</PremiumGate>
+                </main>
               </SidebarInset>
             </Suspense>
           </SidebarProvider>
@@ -55,4 +52,8 @@ export default function RootLayout({
       </html>
     </ClerkProvider>
   )
+}
+
+export const metadata = {
+  generator: "v0.dev",
 }
