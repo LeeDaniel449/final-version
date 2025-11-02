@@ -52,6 +52,10 @@ export default function SubscribePage() {
     try {
       const response = await fetch("/api/activate-premium", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user.id }),
       })
 
       const data = await response.json()

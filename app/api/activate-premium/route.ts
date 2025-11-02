@@ -1,15 +1,16 @@
-import { auth, clerkClient } from "@clerk/nextjs/server"
+import { clerkClient } from "@clerk/nextjs/server"
 
-export async function POST() {
+export async function POST(req: Request) {
   console.log("[v0] ========== MANUAL PREMIUM ACTIVATION ==========")
 
   try {
-    const { userId } = await auth()
+    const body = await req.json()
+    const { userId } = body
 
     if (!userId) {
-      console.log("[v0] ❌ No user ID found")
-      return new Response(JSON.stringify({ error: "Not authenticated" }), {
-        status: 401,
+      console.log("[v0] ❌ No user ID provided in request")
+      return new Response(JSON.stringify({ error: "User ID is required" }), {
+        status: 400,
         headers: { "Content-Type": "application/json" },
       })
     }
