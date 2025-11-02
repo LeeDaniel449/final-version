@@ -2,7 +2,7 @@ import { Webhook } from "svix"
 import { clerkClient } from "@clerk/nextjs/server"
 
 export async function GET() {
-  console.log("[v0] Webhook endpoint GET request received")
+  console.log("[v0] ✅ Webhook endpoint GET request - endpoint is reachable!")
   return new Response(
     JSON.stringify({
       status: "ok",
@@ -17,11 +17,12 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  console.log("[v0] ========== CLERK WEBHOOK POST RECEIVED ==========")
+  console.log("[v0] Timestamp:", new Date().toISOString())
+
   try {
-    console.log("[v0] ========== CLERK WEBHOOK RECEIVED ==========")
-    console.log("[v0] Timestamp:", new Date().toISOString())
-    console.log("[v0] Request URL:", req.url)
-    console.log("[v0] Request method:", req.method)
+    const bodyText = await req.text()
+    console.log("[v0] Request body received, length:", bodyText.length)
 
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
 
@@ -53,17 +54,23 @@ export async function POST(req: Request) {
       })
     }
 
-    const payload = await req.json()
-    const body = JSON.stringify(payload)
-
-    console.log("[v0] Payload received, size:", body.length, "bytes")
+    let payload: any
+    try {
+      payload = JSON.parse(bodyText)
+      console.log("[v0] ✅ Payload parsed successfully")
+    } catch (err) {
+      console.error("[v0] ❌ Error parsing JSON:", err)
+      return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
 
     const wh = new Webhook(WEBHOOK_SECRET)
-
     let evt: any
 
     try {
-      evt = wh.verify(body, {
+      evt = wh.verify(bodyText, {
         "svix-id": svix_id,
         "svix-timestamp": svix_timestamp,
         "svix-signature": svix_signature,
@@ -78,7 +85,6 @@ export async function POST(req: Request) {
     }
 
     const eventType = evt.type
-
     console.log("[v0] Event type:", eventType)
     console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
 
@@ -144,6 +150,7 @@ export async function POST(req: Request) {
     }
   } catch (error) {
     console.error("[v0] ❌ Unexpected error in webhook handler:", error)
+    console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
     return new Response(JSON.stringify({ error: "Internal server error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
