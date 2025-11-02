@@ -15,6 +15,7 @@ export default function SubscribePage() {
   const [isActivating, setIsActivating] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isManualActivating, setIsManualActivating] = useState(false)
+  const [isForceActivating, setIsForceActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -128,6 +129,39 @@ export default function SubscribePage() {
       console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
       setIsActivating(false)
+    }
+  }
+
+  const handleForceActivate = async () => {
+    if (!user) return
+
+    setIsForceActivating(true)
+    console.log("[v0] Force activation requested")
+
+    try {
+      const response = await fetch("/api/force-activate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user.id }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log("[v0] Premium force activated successfully")
+        await user.reload()
+        window.location.href = "/"
+      } else {
+        console.error("[v0] Failed to force activate premium:", data)
+        alert(`Failed to activate premium: ${data.error || "Unknown error"}`)
+        setIsForceActivating(false)
+      }
+    } catch (error) {
+      console.error("[v0] Error during force activation:", error)
+      alert("An error occurred. Please try again.")
+      setIsForceActivating(false)
     }
   }
 
@@ -314,44 +348,31 @@ export default function SubscribePage() {
               borderRadius: "12px",
             }}
           >
-            
+            <p style={{ marginBottom: "16px", color: "#4a5568", fontWeight: "600" }}>
+              Already subscribed? Activate your premium access:
+            </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Button
-                onClick={handleRefresh}
-                disabled={isRefreshing}
+                onClick={handleForceActivate}
+                disabled={isForceActivating}
                 style={{
-                  background: "#667eea",
+                  background: "#e53e3e",
                   color: "white",
-                  padding: "10px 24px",
+                  padding: "12px 32px",
                   borderRadius: "8px",
-                  fontSize: "14px",
+                  fontSize: "16px",
                   fontWeight: "600",
                   border: "none",
-                  cursor: isRefreshing ? "not-allowed" : "pointer",
-                  opacity: isRefreshing ? 0.6 : 1,
+                  cursor: isForceActivating ? "not-allowed" : "pointer",
+                  opacity: isForceActivating ? 0.6 : 1,
                 }}
               >
-                {isRefreshing ? "Refreshing..." : "Refresh Premium Status"}
-              </Button>
-              <Button
-                onClick={handleManualActivate}
-                disabled={isManualActivating}
-                style={{
-                  background: "#48bb78",
-                  color: "white",
-                  padding: "10px 24px",
-                  borderRadius: "8px",
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  border: "none",
-                  cursor: isManualActivating ? "not-allowed" : "pointer",
-                  opacity: isManualActivating ? 0.6 : 1,
-                }}
-              >
-                {isManualActivating ? "Activating..." : "Manually Activate Premium"}
+                {isForceActivating ? "Activating..." : "🚀 Activate Premium Now"}
               </Button>
             </div>
-            
+            <p style={{ marginTop: "12px", fontSize: "12px", color: "#718096" }}>
+              Click this after completing your subscription payment
+            </p>
           </div>
         )}
       </div>
