@@ -4,8 +4,10 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { LogIn, UserPlus } from "lucide-react"
 import "./globals.css"
 import { Inter } from "next/font/google"
 
@@ -46,19 +48,21 @@ export default function RootLayout({
 
                   <div className="flex items-center gap-2">
                     <SignedOut>
-                      <SignInButton mode="modal">
+                      <Link href="/sign-in">
                         <Button variant="outline" size="sm">
+                          <LogIn className="w-4 h-4 mr-2" />
                           Sign In
                         </Button>
-                      </SignInButton>
-                      <SignUpButton mode="modal">
+                      </Link>
+                      <Link href="/sign-up">
                         <Button
                           size="sm"
                           className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                         >
+                          <UserPlus className="w-4 h-4 mr-2" />
                           Sign Up
                         </Button>
-                      </SignUpButton>
+                      </Link>
                     </SignedOut>
                     <SignedIn>
                       <UserButton afterSignOutUrl="/" />
