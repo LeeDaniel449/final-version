@@ -15,6 +15,7 @@ export default function SubscribePage() {
   const [isActivating, setIsActivating] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isManualActivating, setIsManualActivating] = useState(false)
+  const [isForceActivating, setIsForceActivating] = useState(false)
 
   console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
   console.log("[v0] isLoaded:", isLoaded)
@@ -128,6 +129,39 @@ export default function SubscribePage() {
       console.error("[v0] Error activating premium:", error)
       alert("An error occurred. Please try again.")
       setIsActivating(false)
+    }
+  }
+
+  const handleForceActivate = async () => {
+    if (!user) return
+
+    setIsForceActivating(true)
+    console.log("[v0] Force premium activation requested")
+
+    try {
+      const response = await fetch("/api/force-activate-premium", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: user.id }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        console.log("[v0] Premium force activated successfully")
+        await user.reload()
+        window.location.href = "/"
+      } else {
+        console.error("[v0] Failed to force activate premium:", data)
+        alert(`Failed to activate premium: ${data.error || "Unknown error"}`)
+        setIsForceActivating(false)
+      }
+    } catch (error) {
+      console.error("[v0] Error during force activation:", error)
+      alert("An error occurred. Please try again.")
+      setIsForceActivating(false)
     }
   }
 
@@ -315,7 +349,7 @@ export default function SubscribePage() {
             }}
           >
             <p style={{ marginBottom: "12px", color: "#4a5568", fontSize: "14px" }}>
-              Just subscribed? Click below to refresh your premium status.
+              Just subscribed? Click below to activate your premium access.
             </p>
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
               <Button
@@ -336,21 +370,21 @@ export default function SubscribePage() {
                 {isRefreshing ? "Refreshing..." : "Refresh Premium Status"}
               </Button>
               <Button
-                onClick={handleManualActivate}
-                disabled={isManualActivating}
+                onClick={handleForceActivate}
+                disabled={isForceActivating}
                 style={{
-                  background: "#48bb78",
+                  background: "#e53e3e",
                   color: "white",
                   padding: "10px 24px",
                   borderRadius: "8px",
                   fontSize: "14px",
                   fontWeight: "600",
                   border: "none",
-                  cursor: isManualActivating ? "not-allowed" : "pointer",
-                  opacity: isManualActivating ? 0.6 : 1,
+                  cursor: isForceActivating ? "not-allowed" : "pointer",
+                  opacity: isForceActivating ? 0.6 : 1,
                 }}
               >
-                {isManualActivating ? "Activating..." : "Manually Activate Premium"}
+                {isForceActivating ? "Activating..." : "Activate Premium (After Payment)"}
               </Button>
             </div>
             <div
@@ -362,12 +396,10 @@ export default function SubscribePage() {
                 borderRadius: "8px",
               }}
             >
-              <p style={{ color: "#856404", fontSize: "13px", fontWeight: "600", marginBottom: "4px" }}>
-                ⚠️ Important: Manual Activation
-              </p>
+              <p style={{ color: "#856404", fontSize: "13px", fontWeight: "600", marginBottom: "4px" }}>⚠️ Important</p>
               <p style={{ color: "#856404", fontSize: "12px" }}>
-                Only use "Manually Activate Premium" if you have already completed payment through the subscription form
-                above. This button should only be used if the automatic webhook activation failed.
+                Only click "Activate Premium" if you have already completed payment through the subscription form above.
+                This is a temporary workaround while the automatic webhook is being configured.
               </p>
             </div>
           </div>
