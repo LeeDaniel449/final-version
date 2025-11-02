@@ -27,7 +27,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   console.log("[v0] ========== PREMIUM GATE COMPONENT RENDERING ==========")
 
   const { user, isLoaded } = useUser()
-  const { userMemberships, isLoaded: orgsLoaded } = useOrganizationList({
+  const { userMemberships } = useOrganizationList({
     userMemberships: {
       infinite: true,
     },
@@ -39,11 +39,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
-    console.log("[v0] isLoaded:", isLoaded, "orgsLoaded:", orgsLoaded)
+    const orgsLoading = userMemberships?.isLoading ?? true
+    console.log("[v0] isLoaded:", isLoaded, "orgsLoading:", orgsLoading)
     console.log("[v0] user exists:", !!user)
     console.log("[v0] user id:", user?.id)
 
-    if (!isLoaded || !orgsLoaded) {
+    if (!isLoaded || orgsLoading) {
       console.log("[v0] Still loading, waiting for data")
       return
     }
@@ -107,7 +108,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     setHasPremium(shouldHavePremium)
     setCheckComplete(true)
-  }, [isLoaded, orgsLoaded, user, userMemberships])
+  }, [isLoaded, user, userMemberships])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
