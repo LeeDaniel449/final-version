@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { PricingTable } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function SubscribePage() {
   const { user, isLoaded } = useUser()
@@ -171,10 +172,58 @@ export default function SubscribePage() {
           alignItems: "center",
           justifyContent: "center",
           background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          padding: "24px",
         }}
       >
-        <div style={{ textAlign: "center", color: "white" }}>
-          <p style={{ fontSize: "18px" }}>Please sign in to subscribe</p>
+        <div
+          style={{
+            maxWidth: "500px",
+            width: "100%",
+            background: "white",
+            borderRadius: "16px",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+            padding: "48px 32px",
+            textAlign: "center",
+          }}
+        >
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "16px", color: "#1a202c" }}>
+            Sign In Required
+          </h1>
+          <p style={{ fontSize: "18px", color: "#4a5568", marginBottom: "32px" }}>
+            Please sign in to view subscription options and access premium features.
+          </p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/sign-in">
+              <Button
+                style={{
+                  background: "#667eea",
+                  color: "white",
+                  padding: "12px 32px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Sign In
+              </Button>
+            </Link>
+            <Link href="/sign-up">
+              <Button
+                variant="outline"
+                style={{
+                  padding: "12px 32px",
+                  borderRadius: "8px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                }}
+              >
+                Create Account
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     )
