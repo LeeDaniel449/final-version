@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Lock, Sparkles } from "lucide-react"
 import Link from "next/link"
+import { useEffect } from "react"
 
 interface PremiumGateProps {
   children: React.ReactNode
@@ -14,6 +15,18 @@ interface PremiumGateProps {
 
 export function PremiumGate({ children }: PremiumGateProps) {
   const { isLoaded, user } = useUser()
+
+  useEffect(() => {
+    if (!isLoaded || !user) return
+
+    const interval = setInterval(async () => {
+      // Reload user data to get latest metadata
+      await user.reload()
+      console.log("[v0] User data reloaded, premium status:", user.publicMetadata?.premium)
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [isLoaded, user])
 
   // Show loading state while Clerk is loading
   if (!isLoaded) {
@@ -48,6 +61,8 @@ export function PremiumGate({ children }: PremiumGateProps) {
 
   // Check if user has premium in publicMetadata
   const hasPremium = user.publicMetadata?.premium === true
+
+  console.log("[v0] PremiumGate check:", { userId: user.id, hasPremium, metadata: user.publicMetadata })
 
   // If user has premium, show the content
   if (hasPremium) {
