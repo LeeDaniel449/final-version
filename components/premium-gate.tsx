@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useUser } from "@clerk/nextjs"
+import { useUser, useOrganizationList } from "@clerk/nextjs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -27,19 +27,24 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   console.log("[v0] ========== PREMIUM GATE COMPONENT RENDERING ==========")
 
   const { user, isLoaded } = useUser()
+  const { userMemberships } = useOrganizationList({
+    userMemberships: {
+      infinite: true,
+    },
+  })
   const pathname = usePathname()
 
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
-  const [isCheckingStripe, setIsCheckingStripe] = useState(false)
 
   useEffect(() => {
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
-    console.log("[v0] isLoaded:", isLoaded)
+    const orgsLoading = userMemberships?.isLoading ?? true
+    console.log("[v0] isLoaded:", isLoaded, "orgsLoading:", orgsLoading)
     console.log("[v0] user exists:", !!user)
     console.log("[v0] user id:", user?.id)
 
-    if (!isLoaded) {
+    if (!isLoaded || orgsLoading) {
       console.log("[v0] Still loading, waiting for data")
       return
     }
@@ -57,6 +62,23 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     console.log("[v0] publicMetadata:", JSON.stringify(publicMeta))
     console.log("[v0] unsafeMetadata:", JSON.stringify(unsafeMeta))
 
+    const orgCount = userMemberships?.data?.length || 0
+    const hasOrganization = orgCount > 0
+
+    console.log("[v0] Organization membership count:", orgCount)
+    console.log("[v0] Has organization:", hasOrganization)
+
+    if (hasOrganization && userMemberships?.data) {
+      console.log(
+        "[v0] Organizations:",
+        userMemberships.data.map((m: any) => ({
+          name: m.organization.name,
+          role: m.role,
+        })),
+      )
+    }
+
+    // Check for premium flags in metadata
     const hasPremiumInPublic = publicMeta.premium === true
     const hasPremiumInUnsafe = (unsafeMeta as any).premium === true
     const hasActiveSubInPublic =
@@ -75,6 +97,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     console.log("  - freeTrialActive in unsafeMetadata:", hasFreeTrialInUnsafe)
 
     const hasMetadataPremium =
+      hasOrganization ||
       hasPremiumInPublic ||
       hasPremiumInUnsafe ||
       hasActiveSubInPublic ||
@@ -83,43 +106,33 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       hasFreeTrialInUnsafe
 
     if (hasMetadataPremium) {
-      console.log("[v0] FINAL DECISION: shouldHavePremium = true (from metadata)")
+      console.log("[v0] User has premium via metadata/organization")
       setHasPremium(true)
       setCheckComplete(true)
-      console.log("[v0] ========== PREMIUM CHECK USEEFFECT END ==========")
-      return
-    }
-
-    if (!isCheckingStripe) {
-      console.log("[v0] No premium in metadata, checking Stripe subscriptions...")
-      setIsCheckingStripe(true)
-
-      fetch("/api/check-stripe-subscription")
+    } else {
+      console.log("[v0] No metadata premium found, checking Stripe subscription...")
+      fetch("/api/check-subscription")
         .then((res) => res.json())
         .then((data) => {
           console.log("[v0] Stripe subscription check result:", data)
           if (data.hasSubscription) {
-            console.log("[v0] Active Stripe subscription found, granting premium access")
+            console.log("[v0] User has active Stripe subscription")
             setHasPremium(true)
-            // Reload user to get updated metadata
-            user.reload()
           } else {
             console.log("[v0] No active Stripe subscription found")
             setHasPremium(false)
           }
           setCheckComplete(true)
-          setIsCheckingStripe(false)
         })
         .catch((error) => {
           console.error("[v0] Error checking Stripe subscription:", error)
           setHasPremium(false)
           setCheckComplete(true)
-          setIsCheckingStripe(false)
         })
     }
 
     console.log("[v0] ========== PREMIUM CHECK USEEFFECT END ==========")
-  }, [isLoaded, user, isCheckingStripe])
+  }, [isLoaded, user, userMemberships])
 
   // Public routes that don't require premium
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
