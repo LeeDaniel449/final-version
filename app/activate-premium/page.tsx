@@ -4,7 +4,7 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CheckCircle, XCircle, Loader2 } from "lucide-react"
+import { CheckCircle, XCircle, Loader2, ExternalLink } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
@@ -24,7 +24,7 @@ export default function ActivatePremiumPage() {
     setResult(null)
 
     try {
-      const response = await fetch("/api/activate-my-premium", {
+      const response = await fetch("/api/test-webhook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: user.id }),
@@ -33,7 +33,7 @@ export default function ActivatePremiumPage() {
       const data = await response.json()
 
       if (response.ok) {
-        setResult({ success: true, message: data.message })
+        setResult({ success: true, message: "Premium activated successfully!" })
         // Reload user data and redirect after 2 seconds
         setTimeout(async () => {
           await user?.reload()
@@ -74,13 +74,61 @@ export default function ActivatePremiumPage() {
   }
 
   const hasPremium = user.publicMetadata?.premium === true
+  const webhookUrl = typeof window !== "undefined" ? `${window.location.origin}/api/webhooks/clerk` : ""
 
   return (
-    <div className="container max-w-2xl mx-auto py-8 px-4">
+    <div className="container max-w-3xl mx-auto py-8 px-4 space-y-6">
+      <Card className="border-blue-200 bg-blue-50/50">
+        <CardHeader>
+          <CardTitle className="text-blue-900">Clerk Webhook Configuration</CardTitle>
+          <CardDescription className="text-blue-700">
+            Configure your Clerk webhook to automatically activate premium when users subscribe
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm">
+          <div className="space-y-2">
+            <p className="font-medium text-blue-900">Steps to configure:</p>
+            <ol className="list-decimal list-inside space-y-2 text-blue-800">
+              <li>
+                Go to your{" "}
+                <a
+                  href="https://dashboard.clerk.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline inline-flex items-center gap-1"
+                >
+                  Clerk Dashboard
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>Navigate to Webhooks section</li>
+              <li>Click "Add Endpoint"</li>
+              <li>
+                Enter this URL: <code className="bg-blue-100 px-2 py-1 rounded text-xs font-mono">{webhookUrl}</code>
+              </li>
+              <li>
+                Subscribe to the event: <code className="bg-blue-100 px-2 py-1 rounded">subscription.updated</code>
+              </li>
+              <li>Save the webhook and copy the signing secret</li>
+              <li>
+                Add the signing secret to your environment variables as{" "}
+                <code className="bg-blue-100 px-2 py-1 rounded">CLERK_WEBHOOK_SECRET</code>
+              </li>
+            </ol>
+          </div>
+          <Alert className="bg-blue-100 border-blue-300">
+            <AlertDescription className="text-blue-900">
+              Once configured, premium will be automatically activated when subscription.updated events are received
+              with status "active" or "trialing"
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
-          <CardTitle>Activate Premium Access</CardTitle>
-          <CardDescription>Grant premium access to your account</CardDescription>
+          <CardTitle>Manual Premium Activation</CardTitle>
+          <CardDescription>Activate premium manually if the webhook is not yet configured</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="p-4 bg-muted rounded-lg space-y-3">
