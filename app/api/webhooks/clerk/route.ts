@@ -24,80 +24,6 @@ export async function POST(req: Request) {
     const bodyText = await req.text()
     console.log("[v0] Request body received, length:", bodyText.length)
 
-    const url = new URL(req.url)
-    const isClientTriggered = url.searchParams.get("client") === "true"
-
-    if (isClientTriggered) {
-      console.log("[v0] 🔓 Client-triggered webhook call detected - bypassing signature verification")
-
-      let payload: any
-      try {
-        payload = JSON.parse(bodyText)
-      } catch (err) {
-        console.error("[v0] ❌ Error parsing JSON:", err)
-        return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
-      }
-
-      const userId = payload.userId
-      if (!userId) {
-        console.error("[v0] ❌ No userId provided in client-triggered call")
-        return new Response(JSON.stringify({ error: "userId is required" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
-      }
-
-      console.log("[v0] 🚀 Processing client-triggered premium activation for user:", userId)
-
-      try {
-        console.log("[v0] Getting Clerk client...")
-        const client = await clerkClient()
-        console.log("[v0] Clerk client obtained successfully")
-
-        console.log("[v0] Updating user metadata for user:", userId)
-        const result = await client.users.updateUserMetadata(userId, {
-          publicMetadata: {
-            premium: true,
-            subscriptionStatus: "active",
-            premiumActivatedAt: new Date().toISOString(),
-            autoActivated: true,
-          },
-        })
-
-        console.log("[v0] ✅ User metadata updated successfully")
-        console.log("[v0] Updated user ID:", result.id)
-        console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
-        console.log("[v0] ========== CLIENT-TRIGGERED WEBHOOK PROCESSING COMPLETE ==========")
-
-        return new Response(JSON.stringify({ success: true, userId, metadata: result.publicMetadata }), {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        })
-      } catch (error) {
-        console.error("[v0] ❌ Error activating premium:", error)
-        console.error("[v0] Error type:", typeof error)
-        console.error("[v0] Error name:", error instanceof Error ? error.name : "Unknown")
-        console.error("[v0] Error message:", error instanceof Error ? error.message : String(error))
-        console.error("[v0] Error stack:", error instanceof Error ? error.stack : "No stack")
-
-        return new Response(
-          JSON.stringify({
-            success: false,
-            error: "Error activating premium",
-            details: error instanceof Error ? error.message : String(error),
-            errorType: error instanceof Error ? error.name : typeof error,
-          }),
-          {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          },
-        )
-      }
-    }
-
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
     const CLERK_SECRET = process.env.CLERK_SECRET_KEY
 
@@ -175,105 +101,137 @@ export async function POST(req: Request) {
     console.log("[v0] Event type:", eventType)
     console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
 
-    let userId: string | null = null
+    if (eventType === "organizationMembership.created") {
+      const userId = evt.data.public_user_data?.user_id
+      const orgId = evt.data.organization?.id
+      const orgName = evt.data.organization?.name
 
-    if (
-      eventType === "subscription.created" ||
-      eventType === "subscription.active" ||
-      eventType === "subscription.updated"
-    ) {
-      userId = evt.data.userId || evt.data.user_id
-      const subscriptionStatus = evt.data.status
+      console.log("[v0] 🎉 User joined organization!")
+      console.log("[v0] User ID:", userId)
+      console.log("[v0] Organization ID:", orgId)
+      console.log("[v0] Organization Name:", orgName)
 
-      console.log("[v0] Extracted user ID from subscription event:", userId)
-      console.log("[v0] Subscription status:", subscriptionStatus)
+      if (!userId) {
+        console.error("[v0] ❌ No user ID found in organizationMembership.created event")
+        return new Response(JSON.stringify({ error: "No user ID found" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
 
-      // Only set premium if subscription status is active or trialing
-      if (subscriptionStatus !== "active" && subscriptionStatus !== "trialing") {
-        console.log("[v0] ⚠️ Subscription status is not active/trialing, skipping premium activation")
+      console.log("[v0] 🚀 Activating premium for user:", userId)
+
+      try {
+        const client = await clerkClient()
+        console.log("[v0] ✅ Clerk client initialized")
+
+        const result = await client.users.updateUserMetadata(userId, {
+          publicMetadata: {
+            premium: true,
+            premiumActivatedAt: new Date().toISOString(),
+            organizationId: orgId,
+            organizationName: orgName,
+          },
+        })
+
+        console.log("[v0] ✅ Premium activated successfully!")
+        console.log("[v0] User ID:", result.id)
+        console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
+        console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
+
         return new Response(
           JSON.stringify({
-            message: "Subscription not active",
-            status: subscriptionStatus,
+            success: true,
+            userId,
+            message: "Premium activated",
+            metadata: result.publicMetadata,
           }),
           {
             status: 200,
             headers: { "Content-Type": "application/json" },
           },
         )
+      } catch (error) {
+        console.error("[v0] ❌ Error activating premium:", error)
+        console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
+        return new Response(
+          JSON.stringify({
+            error: "Error activating premium",
+            details: error instanceof Error ? error.message : String(error),
+          }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
       }
-    } else if (eventType === "organizationMembership.created") {
-      userId = evt.data.public_user_data?.user_id
-      console.log("[v0] Extracted user ID from organizationMembership.created:", userId)
-    } else if (eventType === "user.updated") {
-      userId = evt.data.id
-      console.log("[v0] Extracted user ID from user.updated:", userId)
+    } else if (eventType === "organizationMembership.deleted") {
+      const userId = evt.data.public_user_data?.user_id
+
+      console.log("[v0] 👋 User left organization")
+      console.log("[v0] User ID:", userId)
+
+      if (!userId) {
+        console.error("[v0] ❌ No user ID found in organizationMembership.deleted event")
+        return new Response(JSON.stringify({ error: "No user ID found" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+
+      console.log("[v0] 🚀 Deactivating premium for user:", userId)
+
+      try {
+        const client = await clerkClient()
+        console.log("[v0] ✅ Clerk client initialized")
+
+        const result = await client.users.updateUserMetadata(userId, {
+          publicMetadata: {
+            premium: false,
+            premiumDeactivatedAt: new Date().toISOString(),
+          },
+        })
+
+        console.log("[v0] ✅ Premium deactivated successfully!")
+        console.log("[v0] User ID:", result.id)
+        console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
+        console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            userId,
+            message: "Premium deactivated",
+            metadata: result.publicMetadata,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
+      } catch (error) {
+        console.error("[v0] ❌ Error deactivating premium:", error)
+        console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
+        return new Response(
+          JSON.stringify({
+            error: "Error deactivating premium",
+            details: error instanceof Error ? error.message : String(error),
+          }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
+      }
     } else {
       console.log("[v0] ⚠️ Unhandled event type:", eventType)
-      return new Response(JSON.stringify({ message: "Event type not handled" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      })
-    }
-
-    if (!userId) {
-      console.log("[v0] ❌ No user ID found for event type:", eventType)
-      return new Response(JSON.stringify({ message: "No user ID found" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      })
-    }
-
-    console.log("[v0] 🚀 Processing premium activation for user:", userId)
-
-    try {
-      console.log("[v0] Initializing Clerk client...")
-      const client = await clerkClient()
-      console.log("[v0] ✅ Clerk client initialized successfully")
-
-      let subscriptionStatus = "active"
-      if (eventType === "subscription.created") {
-        subscriptionStatus = "created"
-      } else if (eventType === "subscription.active") {
-        subscriptionStatus = "active"
-      } else if (eventType === "subscription.updated") {
-        subscriptionStatus = evt.data.status || "active"
-      }
-
-      console.log("[v0] Updating user metadata...")
-      console.log("[v0] Setting premium to: true")
-      console.log("[v0] Setting subscriptionStatus to:", subscriptionStatus)
-
-      const result = await client.users.updateUserMetadata(userId, {
-        publicMetadata: {
-          premium: true,
-          subscriptionStatus,
-          premiumActivatedAt: new Date().toISOString(),
-          subscriptionId: evt.data.id || null,
-        },
-      })
-
-      console.log("[v0] ✅ User metadata updated successfully")
-      console.log("[v0] Updated user ID:", result.id)
-      console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
-      console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
-
-      return new Response(JSON.stringify({ success: true, userId, metadata: result.publicMetadata }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      })
-    } catch (error) {
-      console.error("[v0] ❌ Error activating premium:", error)
-      console.error("[v0] Error name:", error instanceof Error ? error.name : "Unknown")
-      console.error("[v0] Error message:", error instanceof Error ? error.message : String(error))
-      console.error("[v0] Error stack:", error instanceof Error ? error.stack : "No stack trace")
       return new Response(
         JSON.stringify({
-          error: "Error activating premium",
-          details: error instanceof Error ? error.message : String(error),
+          message: "Event type not handled",
+          eventType,
         }),
         {
-          status: 500,
+          status: 200,
           headers: { "Content-Type": "application/json" },
         },
       )
