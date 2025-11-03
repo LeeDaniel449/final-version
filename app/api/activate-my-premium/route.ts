@@ -1,32 +1,37 @@
-import { auth, clerkClient } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
+import { clerkClient } from "@clerk/nextjs/server"
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  console.log("[v0] ========== SIMPLE PREMIUM ACTIVATION ==========")
+
   try {
-    // Get the authenticated user
-    const { userId } = await auth()
+    const body = await request.json()
+    const { userId } = body
 
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized - please sign in" }, { status: 401 })
+      console.error("[v0] ❌ No userId provided in request")
+      return NextResponse.json({ error: "userId is required" }, { status: 400 })
     }
 
-    console.log("[v0] Setting premium for user:", userId)
+    console.log("[v0] Activating premium for user:", userId)
 
-    // Update the user's metadata to grant premium
     const client = await clerkClient()
-    await client.users.updateUserMetadata(userId, {
+    const result = await client.users.updateUserMetadata(userId, {
       publicMetadata: {
         premium: true,
+        subscriptionStatus: "active",
         premiumActivatedAt: new Date().toISOString(),
+        manuallyActivated: true,
       },
     })
 
-    console.log("[v0] Successfully set premium for user:", userId)
+    console.log("[v0] ✅ Premium activated successfully")
+    console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
 
     return NextResponse.json({
       success: true,
       message: "Premium activated successfully",
-      userId,
+      metadata: result.publicMetadata,
     })
   } catch (error) {
     console.error("[v0] Error activating premium:", error)

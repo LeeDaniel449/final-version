@@ -183,8 +183,25 @@ export async function POST(req: Request) {
       eventType === "subscription.updated"
     ) {
       userId = evt.data.userId || evt.data.user_id
+      const subscriptionStatus = evt.data.status
+
       console.log("[v0] Extracted user ID from subscription event:", userId)
-      console.log("[v0] Subscription status:", evt.data.status)
+      console.log("[v0] Subscription status:", subscriptionStatus)
+
+      // Only set premium if subscription status is active or trialing
+      if (subscriptionStatus !== "active" && subscriptionStatus !== "trialing") {
+        console.log("[v0] ⚠️ Subscription status is not active/trialing, skipping premium activation")
+        return new Response(
+          JSON.stringify({
+            message: "Subscription not active",
+            status: subscriptionStatus,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
+      }
     } else if (eventType === "organizationMembership.created") {
       userId = evt.data.public_user_data?.user_id
       console.log("[v0] Extracted user ID from organizationMembership.created:", userId)
@@ -224,7 +241,9 @@ export async function POST(req: Request) {
       }
 
       console.log("[v0] Updating user metadata...")
+      console.log("[v0] Setting premium to: true")
       console.log("[v0] Setting subscriptionStatus to:", subscriptionStatus)
+
       const result = await client.users.updateUserMetadata(userId, {
         publicMetadata: {
           premium: true,

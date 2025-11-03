@@ -15,12 +15,19 @@ export default function ActivatePremiumPage() {
   const [result, setResult] = useState<{ success: boolean; message: string } | null>(null)
 
   const activatePremium = async () => {
+    if (!user?.id) {
+      setResult({ success: false, message: "User ID not available" })
+      return
+    }
+
     setLoading(true)
     setResult(null)
 
     try {
       const response = await fetch("/api/activate-my-premium", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
       })
 
       const data = await response.json()
