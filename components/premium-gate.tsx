@@ -52,49 +52,16 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const publicMeta = user.publicMetadata || {}
-    const unsafeMeta = user.unsafeMetadata || {}
+    const hasPremiumAccess = user.publicMetadata?.premium === true
 
-    console.log("[v0] publicMetadata:", JSON.stringify(publicMeta))
-    console.log("[v0] unsafeMetadata:", JSON.stringify(unsafeMeta))
+    console.log("[v0] Premium check:", {
+      userId: user.id,
+      premium: user.publicMetadata?.premium,
+      hasPremiumAccess,
+    })
 
-    const hasPremiumInPublic = publicMeta.premium === true
-    const hasPremiumInUnsafe = (unsafeMeta as any).premium === true
-    const hasActiveSubInPublic =
-      publicMeta.subscriptionStatus === "active" || publicMeta.subscriptionStatus === "created"
-    const hasActiveSubInUnsafe =
-      (unsafeMeta as any).subscriptionStatus === "active" || (unsafeMeta as any).subscriptionStatus === "created"
-    const hasFreeTrialInPublic = publicMeta.freeTrialActive === true
-    const hasFreeTrialInUnsafe = (unsafeMeta as any).freeTrialActive === true
-
-    console.log("[v0] Premium indicators:")
-    console.log("  - premium in publicMetadata:", hasPremiumInPublic)
-    console.log("  - premium in unsafeMetadata:", hasPremiumInUnsafe)
-    console.log("  - subscriptionStatus active in publicMetadata:", hasActiveSubInPublic)
-    console.log("  - subscriptionStatus active in unsafeMetadata:", hasActiveSubInUnsafe)
-    console.log("  - freeTrialActive in publicMetadata:", hasFreeTrialInPublic)
-    console.log("  - freeTrialActive in unsafeMetadata:", hasFreeTrialInUnsafe)
-
-    const shouldHavePremium =
-      hasPremiumInPublic ||
-      hasPremiumInUnsafe ||
-      hasActiveSubInPublic ||
-      hasActiveSubInUnsafe ||
-      hasFreeTrialInPublic ||
-      hasFreeTrialInUnsafe
-
-    console.log("[v0] FINAL DECISION: shouldHavePremium =", shouldHavePremium)
-    console.log("[v0] ========== PREMIUM CHECK USEEFFECT END ==========")
-
-    setHasPremium(shouldHavePremium)
+    setHasPremium(hasPremiumAccess)
     setCheckComplete(true)
-
-    const interval = setInterval(async () => {
-      await user.reload()
-      console.log("[v0] User data reloaded, checking premium status again")
-    }, 3000)
-
-    return () => clearInterval(interval)
   }, [isLoaded, user])
 
   console.log("[v0] Render decision:")
