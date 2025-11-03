@@ -24,16 +24,18 @@ const LockIcon = () => (
 )
 
 export function PremiumGate({ children }: { children: React.ReactNode }) {
-  console.log("[v0] ========== PREMIUM GATE COMPONENT RENDERING ==========")
-
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
 
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
+  // Public routes that don't require premium
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
+  const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
+
   useEffect(() => {
-    console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
+    console.log("[v0] ========== PREMIUM GATE COMPONENT RENDERING ==========")
     console.log("[v0] isLoaded:", isLoaded)
     console.log("[v0] user exists:", !!user)
     console.log("[v0] user id:", user?.id)
@@ -94,10 +96,6 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     return () => clearInterval(interval)
   }, [isLoaded, user])
-
-  // Public routes that don't require premium
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
-  const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
   console.log("[v0] Render decision:")
   console.log("  - hasPremium:", hasPremium)
