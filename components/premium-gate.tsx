@@ -30,23 +30,15 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
-  // Public routes that don't require premium
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
   useEffect(() => {
-    console.log("[v0] ========== PREMIUM GATE COMPONENT RENDERING ==========")
-    console.log("[v0] isLoaded:", isLoaded)
-    console.log("[v0] user exists:", !!user)
-    console.log("[v0] user id:", user?.id)
-
     if (!isLoaded) {
-      console.log("[v0] Still loading, waiting for data")
       return
     }
 
     if (!user) {
-      console.log("[v0] No user - granting access")
       setHasPremium(true)
       setCheckComplete(true)
       return
@@ -54,34 +46,18 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     const hasPremiumAccess = user.publicMetadata?.premium === true
 
-    console.log("[v0] Premium check:", {
-      userId: user.id,
-      premium: user.publicMetadata?.premium,
-      hasPremiumAccess,
-    })
-
     setHasPremium(hasPremiumAccess)
     setCheckComplete(true)
   }, [isLoaded, user])
 
-  console.log("[v0] Render decision:")
-  console.log("  - hasPremium:", hasPremium)
-  console.log("  - checkComplete:", checkComplete)
-  console.log("  - isPublicRoute:", isPublicRoute)
-  console.log("  - pathname:", pathname)
-  console.log("  - will show overlay:", checkComplete && !hasPremium && !isPublicRoute)
-
   if (!checkComplete) {
-    console.log("[v0] Still checking premium status, showing loading")
     return <>{children}</>
   }
 
   if (hasPremium || isPublicRoute) {
-    console.log("[v0] Showing children without overlay")
     return <>{children}</>
   }
 
-  console.log("[v0] Showing overlay - user needs premium")
   return (
     <div className="relative">
       {/* Blurred content */}
@@ -100,12 +76,20 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
             Get premium access to unlock all features including AI-powered financial advice, portfolio optimization, and
             personalized learning paths.
           </p>
-          <Link
-            href="/subscribe"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            View Plans
-          </Link>
+          <div className="flex flex-col gap-3">
+            <Link
+              href="/subscribe"
+              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              View Plans
+            </Link>
+            <Link
+              href="/activate-premium"
+              className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              Already Subscribed? Activate Now
+            </Link>
+          </div>
         </div>
       </div>
     </div>
