@@ -1,186 +1,94 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
-import { useUser, useOrganizationList } from "@clerk/nextjs"
+
+import { useUser } from "@clerk/nextjs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Lock, Sparkles } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 
-const LockIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="48"
-    height="48"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-)
+interface PremiumGateProps {
+  children: React.ReactNode
+}
 
-export function PremiumGate({ children }: { children: React.ReactNode }) {
-  console.log("[v0] ========== PREMIUM GATE COMPONENT RENDERING ==========")
+export function PremiumGate({ children }: PremiumGateProps) {
+  const { isLoaded, user } = useUser()
 
-  const { user, isLoaded } = useUser()
-  const { userMemberships } = useOrganizationList({
-    userMemberships: {
-      infinite: true,
-    },
-  })
-  const pathname = usePathname()
+  // Show loading state while Clerk is loading
+  if (!isLoaded) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue" />
+      </div>
+    )
+  }
 
-  const [hasPremium, setHasPremium] = useState(false)
-  const [checkComplete, setCheckComplete] = useState(false)
+  // If no user, show sign-in prompt
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px] p-4">
+        <Card className="max-w-md w-full">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lock className="h-5 w-5" />
+              Sign In Required
+            </CardTitle>
+            <CardDescription>Please sign in to access this feature</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/sign-in">
+              <Button className="w-full">Sign In</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
-  useEffect(() => {
-    console.log("[v0] ========== PREMIUM CHECK USEEFFECT START ==========")
-    const orgsLoading = userMemberships?.isLoading ?? true
-    console.log("[v0] isLoaded:", isLoaded, "orgsLoading:", orgsLoading)
-    console.log("[v0] user exists:", !!user)
-    console.log("[v0] user id:", user?.id)
+  // Check if user has premium in publicMetadata
+  const hasPremium = user.publicMetadata?.premium === true
 
-    if (!isLoaded || orgsLoading) {
-      console.log("[v0] Still loading, waiting for data")
-      return
-    }
-
-    if (!user) {
-      console.log("[v0] No user - granting access")
-      setHasPremium(true)
-      setCheckComplete(true)
-      return
-    }
-
-    const publicMeta = user.publicMetadata || {}
-    const unsafeMeta = user.unsafeMetadata || {}
-
-    console.log("[v0] publicMetadata:", JSON.stringify(publicMeta))
-    console.log("[v0] unsafeMetadata:", JSON.stringify(unsafeMeta))
-
-    const orgCount = userMemberships?.data?.length || 0
-    const hasOrganization = orgCount > 0
-
-    console.log("[v0] Organization membership count:", orgCount)
-    console.log("[v0] Has organization:", hasOrganization)
-
-    if (hasOrganization && userMemberships?.data) {
-      console.log(
-        "[v0] Organizations:",
-        userMemberships.data.map((m: any) => ({
-          name: m.organization.name,
-          role: m.role,
-        })),
-      )
-    }
-
-    // Check for premium flags in metadata
-    const hasPremiumInPublic = publicMeta.premium === true
-    const hasPremiumInUnsafe = (unsafeMeta as any).premium === true
-    const hasActiveSubInPublic =
-      publicMeta.subscriptionStatus === "active" || publicMeta.subscriptionStatus === "created"
-    const hasActiveSubInUnsafe =
-      (unsafeMeta as any).subscriptionStatus === "active" || (unsafeMeta as any).subscriptionStatus === "created"
-    const hasFreeTrialInPublic = publicMeta.freeTrialActive === true
-    const hasFreeTrialInUnsafe = (unsafeMeta as any).freeTrialActive === true
-
-    console.log("[v0] Premium indicators:")
-    console.log("  - premium in publicMetadata:", hasPremiumInPublic)
-    console.log("  - premium in unsafeMetadata:", hasPremiumInUnsafe)
-    console.log("  - subscriptionStatus active in publicMetadata:", hasActiveSubInPublic)
-    console.log("  - subscriptionStatus active in unsafeMetadata:", hasActiveSubInUnsafe)
-    console.log("  - freeTrialActive in publicMetadata:", hasFreeTrialInPublic)
-    console.log("  - freeTrialActive in unsafeMetadata:", hasFreeTrialInUnsafe)
-
-    const hasMetadataPremium =
-      hasOrganization ||
-      hasPremiumInPublic ||
-      hasPremiumInUnsafe ||
-      hasActiveSubInPublic ||
-      hasActiveSubInUnsafe ||
-      hasFreeTrialInPublic ||
-      hasFreeTrialInUnsafe
-
-    if (hasMetadataPremium) {
-      console.log("[v0] User has premium via metadata/organization")
-      setHasPremium(true)
-      setCheckComplete(true)
-    } else {
-      console.log("[v0] No metadata premium found, checking Stripe subscription...")
-      fetch("/api/check-subscription")
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("[v0] Stripe subscription check result:", data)
-          if (data.hasSubscription) {
-            console.log("[v0] User has active Stripe subscription")
-            setHasPremium(true)
-          } else {
-            console.log("[v0] No active Stripe subscription found")
-            setHasPremium(false)
-          }
-          setCheckComplete(true)
-        })
-        .catch((error) => {
-          console.error("[v0] Error checking Stripe subscription:", error)
-          setHasPremium(false)
-          setCheckComplete(true)
-        })
-    }
-
-    console.log("[v0] ========== PREMIUM CHECK USEEFFECT END ==========")
-  }, [isLoaded, user, userMemberships])
-
-  // Public routes that don't require premium
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in"]
-  const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
-
-  console.log("[v0] Render decision:")
-  console.log("  - hasPremium:", hasPremium)
-  console.log("  - checkComplete:", checkComplete)
-  console.log("  - isPublicRoute:", isPublicRoute)
-  console.log("  - pathname:", pathname)
-  console.log("  - will show overlay:", checkComplete && !hasPremium && !isPublicRoute)
-
-  if (!checkComplete) {
-    console.log("[v0] Still checking premium status, showing loading")
+  // If user has premium, show the content
+  if (hasPremium) {
     return <>{children}</>
   }
 
-  if (hasPremium || isPublicRoute) {
-    console.log("[v0] Showing children without overlay")
-    return <>{children}</>
-  }
-
-  console.log("[v0] Showing overlay - user needs premium")
+  // Show premium upgrade overlay
   return (
-    <div className="relative">
+    <div className="relative min-h-[400px]">
       {/* Blurred content */}
-      <div className="pointer-events-none blur-sm select-none">{children}</div>
+      <div className="pointer-events-none select-none blur-sm opacity-50">{children}</div>
 
       {/* Overlay */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-        <div className="mx-4 max-w-lg rounded-lg border bg-card p-8 text-center shadow-lg">
-          <div className="mb-4 flex justify-center">
-            <div className="rounded-full bg-primary/10 p-4">
-              <LockIcon />
+      <div className="absolute inset-0 flex items-center justify-center p-4">
+        <Card className="max-w-md w-full shadow-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-yellow-500" />
+              Premium Feature
+            </CardTitle>
+            <CardDescription>
+              Upgrade to premium to unlock this feature and get access to all premium content
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Premium includes:</p>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Unlimited access to all features</li>
+                <li>• Advanced portfolio analytics</li>
+                <li>• AI-powered financial advisor</li>
+                <li>• Priority support</li>
+              </ul>
             </div>
-          </div>
-          <h2 className="mb-2 text-2xl font-bold">Subscribe to Unlock</h2>
-          <p className="mb-6 text-muted-foreground">
-            Get premium access to unlock all features including AI-powered financial advice, portfolio optimization, and
-            personalized learning paths.
-          </p>
-          <Link
-            href="/subscribe"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            View Plans
-          </Link>
-        </div>
+            <Link href="/subscribe">
+              <Button className="w-full bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90">
+                Upgrade to Premium
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
