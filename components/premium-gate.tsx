@@ -27,7 +27,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
 
-  const [hasPremium, setHasPremium] = useState(false)
+  const [hasAccess, setHasAccess] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium"]
@@ -38,13 +38,16 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
     
-    // Corrected logic: Check if user exists, then check publicMetadata.
-    // If user doesn't exist, set hasPremium to false.
     if (user) {
-      const hasPremiumAccess = user.publicMetadata?.premium === true
-      setHasPremium(hasPremiumAccess)
+        // --- ✨ THE CORE LOGIC CHANGE IS HERE ✨ ---
+        // Check if the user has a full premium membership OR is currently on a trial.
+        const isPremium = user.publicMetadata?.premium === true
+        const isTrial = user.publicMetadata?.trial === true 
+        
+        setHasAccess(isPremium || isTrial)
     } else {
-        setHasPremium(false)
+        // Logged out users do not have access (unless it's a public route)
+        setHasAccess(false)
     }
 
     setCheckComplete(true)
@@ -55,12 +58,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 
-  // 2. Check complete, and user has access (Premium OR Public Route)
-  if (hasPremium || isPublicRoute) {
+  // 2. Check complete, and user has access (Premium/Trial OR Public Route)
+  if (hasAccess || isPublicRoute) {
     return <>{children}</>
   }
 
-  // 3. User is authenticated (or unauthenticated) AND does not have premium AND is on a private route -> Show the gate
+  // 3. User is authenticated (or unauthenticated) AND does not have access AND is on a private route -> Show the gate
   return (
     <div className="relative">
       {/* Blurred content */}
@@ -92,9 +95,9 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
             >
               Already Subscribed? Activate Now
             </Link>
-          </div>
         </div>
       </div>
     </div>
+  </div>
   )
 }
