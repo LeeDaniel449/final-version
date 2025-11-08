@@ -4,19 +4,16 @@ import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 
 export default function CheckPremiumPage() {
   const { user, isLoaded } = useUser()
   const router = useRouter()
-  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleRefresh = async () => {
-    setIsRefreshing(true)
     if (user) {
       await user.reload()
+      window.location.reload()
     }
-    window.location.reload()
   }
 
   if (!isLoaded) {
@@ -83,29 +80,33 @@ export default function CheckPremiumPage() {
             </div>
           </div>
 
+          <div className="space-y-2">
+            <h3 className="font-semibold text-lg">Unsafe Metadata</h3>
+            <div className="bg-muted p-4 rounded-lg">
+              <pre className="text-xs overflow-auto">{JSON.stringify(user.unsafeMetadata, null, 2)}</pre>
+            </div>
+          </div>
+
           <div className="flex gap-4">
-            <Button onClick={handleRefresh} disabled={isRefreshing} className="flex-1">
-              {isRefreshing ? "Refreshing..." : "Refresh User Data"}
+            <Button onClick={handleRefresh} className="flex-1">
+              Refresh User Data
             </Button>
-            <Button onClick={() => router.push("/activate-premium")} variant="outline" className="flex-1">
-              Manual Activation
+            <Button onClick={() => router.push("/")} variant="outline" className="flex-1">
+              Go to Home
             </Button>
           </div>
 
           <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg space-y-2 text-sm">
-            <h4 className="font-semibold">Webhook Troubleshooting:</h4>
-            <p className="text-xs">If Clerk shows successful deliveries but premium is still not active:</p>
-            <ol className="list-decimal list-inside space-y-1 ml-2 text-xs">
-              <li>Click "Refresh User Data" above to reload from Clerk</li>
-              <li>
-                Check webhook URL is:{" "}
-                <code className="bg-muted px-1">https://wealthlinkapp.com/api/webhooks/clerk</code>
-              </li>
-              <li>
-                Verify event type is: <code className="bg-muted px-1">subscription.updated</code>
-              </li>
-              <li>Ensure CLERK_WEBHOOK_SECRET environment variable is set correctly</li>
-              <li>Use "Manual Activation" button to activate immediately</li>
+            <h4 className="font-semibold">Webhook Status:</h4>
+            <p>
+              If Clerk dashboard shows successful webhook deliveries but premium is not active, the webhook may be
+              processing events but the metadata hasn't updated yet.
+            </p>
+            <p className="font-semibold">Try these steps:</p>
+            <ol className="list-decimal list-inside space-y-1 ml-2">
+              <li>Click "Refresh User Data" above</li>
+              <li>If still not active, go to /activate-premium to manually activate</li>
+              <li>Check that the webhook event type in Clerk is "subscription.updated"</li>
             </ol>
           </div>
         </CardContent>
