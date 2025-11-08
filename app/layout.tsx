@@ -13,11 +13,10 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-
-if (!CLERK_PUBLISHABLE_KEY) {
-  console.error("[v0] Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable")
-}
+const CLERK_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  "pk_test_YWJsZS1oYWRkb2NrLTIwLmNsZXJrLmFjY291bnRzLmRldiQ"
 
 export default function RootLayout({
   children,
