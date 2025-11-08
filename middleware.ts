@@ -14,7 +14,6 @@ const isPublicRoute = createRouteMatcher([
 ])
 
 export default clerkMiddleware(async (auth, request) => {
-  // Allow public routes to pass through without authentication
   if (isPublicRoute(request)) {
     return
   }

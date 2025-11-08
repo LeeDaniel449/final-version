@@ -40,7 +40,7 @@ export default function WebhookTestPage() {
       <div className="max-w-4xl mx-auto space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl">Clerk Webhook Diagnostics</CardTitle>
+            <CardTitle className="text-3xl">Webhook Diagnostics</CardTitle>
             <CardDescription>Test your webhook endpoint connectivity and troubleshoot issues</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -51,29 +51,8 @@ export default function WebhookTestPage() {
                 https://wealthlinkapp.com/api/webhooks/clerk
               </div>
               <p className="text-sm text-muted-foreground">
-                Use this exact URL in your Clerk Production Dashboard → Webhooks
+                Use this exact URL in your Production Dashboard → Webhooks
               </p>
-            </div>
-
-            {/* Environment Variables Check */}
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold">Environment Variables</h3>
-              <div className="grid gap-2">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-500" />
-                  <span className="text-sm">CLERK_WEBHOOK_SECRET</span>
-                  <Badge variant="outline" className="ml-auto">
-                    Configured
-                  </Badge>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-500" />
-                  <span className="text-sm">CLERK_SECRET_KEY</span>
-                  <Badge variant="outline" className="ml-auto">
-                    Configured
-                  </Badge>
-                </div>
-              </div>
             </div>
 
             {/* Test Endpoint Button */}
@@ -136,9 +115,9 @@ export default function WebhookTestPage() {
                 <div className="flex items-start gap-2">
                   <AlertCircle className="h-4 w-4 mt-0.5 text-blue-500 flex-shrink-0" />
                   <div>
-                    <p className="font-medium">1. Verify Clerk Dashboard Configuration</p>
+                    <p className="font-medium">1. Verify Dashboard Configuration</p>
                     <p className="text-muted-foreground">
-                      Go to Clerk Production Dashboard → Webhooks and ensure the endpoint URL is exactly:
+                      Go to Production Dashboard → Webhooks and ensure the endpoint URL is exactly:
                       <br />
                       <code className="bg-slate-100 px-1 py-0.5 rounded">
                         https://wealthlinkapp.com/api/webhooks/clerk
@@ -151,7 +130,7 @@ export default function WebhookTestPage() {
                   <div>
                     <p className="font-medium">2. Subscribe to subscription.updated Event</p>
                     <p className="text-muted-foreground">
-                      In Clerk webhook settings, ensure "subscription.updated" is checked in the events list
+                      In webhook settings, ensure "subscription.updated" is checked in the events list
                     </p>
                   </div>
                 </div>
@@ -160,26 +139,26 @@ export default function WebhookTestPage() {
                   <div>
                     <p className="font-medium">3. Copy Webhook Signing Secret</p>
                     <p className="text-muted-foreground">
-                      Copy the signing secret from Clerk and verify it matches your CLERK_WEBHOOK_SECRET environment
-                      variable in Vercel
+                      Copy the signing secret from your dashboard and verify it matches your WEBHOOK_SECRET environment
+                      variable in your deployment platform
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <AlertCircle className="h-4 w-4 mt-0.5 text-blue-500 flex-shrink-0" />
                   <div>
-                    <p className="font-medium">4. Send Test Event from Clerk</p>
+                    <p className="font-medium">4. Send Test Event</p>
                     <p className="text-muted-foreground">
-                      Use Clerk's webhook dashboard to send a test event and check the response status (should be 200)
+                      Use your dashboard to send a test event and check the response status (should be 200)
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
                   <AlertCircle className="h-4 w-4 mt-0.5 text-blue-500 flex-shrink-0" />
                   <div>
-                    <p className="font-medium">5. Check Vercel Function Logs</p>
+                    <p className="font-medium">5. Check Function Logs</p>
                     <p className="text-muted-foreground">
-                      Go to your Vercel project → Functions → Check logs for the /api/webhooks/clerk endpoint to see
+                      Go to your project → Functions → Check logs for the /api/webhooks/clerk endpoint to see
                       server-side output
                     </p>
                   </div>

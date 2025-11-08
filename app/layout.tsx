@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/s
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
 import "./globals.css"
-import { Inter } from "next/font/google"
+import { Inter } from "next/font"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,8 +13,11 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_YXJ0aXN0aWMtZGVlci0xNS5jbGVyay5hY2NvdW50cy5kZXYk"
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+if (!CLERK_PUBLISHABLE_KEY) {
+  console.error("[v0] Missing NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable")
+}
 
 export default function RootLayout({
   children,
