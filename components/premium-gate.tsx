@@ -27,7 +27,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
   const pathname = usePathname()
 
-  const [hasPremium, setHasPremium] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
   const isDevelopment = process.env.NODE_ENV === "development"
@@ -40,15 +40,15 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     if (isDevelopment) {
       console.log("[v0] PremiumGate: Development mode - granting access")
-      setHasPremium(true)
+      setShowOverlay(false)
       setCheckComplete(true)
       return
     }
 
     const timeout = setTimeout(() => {
       if (!isLoaded && !checkComplete) {
-        console.log("[v0] PremiumGate: Clerk load timeout, treating as no user")
-        setHasPremium(false)
+        console.log("[v0] PremiumGate: Clerk load timeout, treating as no user (allowing access)")
+        setShowOverlay(false)
         setCheckComplete(true)
       }
     }, 5000)
@@ -61,8 +61,8 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     clearTimeout(timeout)
 
     if (!user) {
-      console.log("[v0] PremiumGate: No user, setting premium to FALSE")
-      setHasPremium(false)
+      console.log("[v0] PremiumGate: No user signed in - allowing access")
+      setShowOverlay(false)
       setCheckComplete(true)
       return
     }
@@ -74,7 +74,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       metadata: user.publicMetadata,
     })
 
-    setHasPremium(hasPremiumAccess)
+    setShowOverlay(!hasPremiumAccess)
     setCheckComplete(true)
 
     return () => clearTimeout(timeout)
@@ -85,12 +85,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 
-  if (hasPremium || isPublicRoute) {
-    console.log("[v0] PremiumGate: Access granted", { hasPremium, isPublicRoute, pathname })
+  if (isPublicRoute || !showOverlay) {
+    console.log("[v0] PremiumGate: Access granted", { isPublicRoute, showOverlay, pathname })
     return <>{children}</>
   }
 
-  console.log("[v0] PremiumGate: Showing overlay", { hasPremium, isPublicRoute, pathname })
+  console.log("[v0] PremiumGate: Showing overlay for signed-in user without premium", { pathname })
 
   return (
     <div className="relative">
