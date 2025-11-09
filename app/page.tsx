@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useUser } from "@clerk/nextjs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -34,6 +33,12 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useUser } from "@clerk/nextjs"
+
+function useSafeClerkUser() {
+  const clerkUser = useUser()
+  return clerkUser
+}
 
 export default function HomePage() {
   const { isSignedIn, user, isLoaded } = useUser()

@@ -2,7 +2,6 @@
 
 import React from "react"
 import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from "lucide-react"
-import { useUser, useClerk } from "@clerk/nextjs"
 import { UserButton } from "@/components/user-button"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -19,6 +18,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { userDataManager } from "@/lib/user-data"
+import { useUser, useClerk } from "@clerk/nextjs"
 
 /*
   Helpers ────────────────────────────────────────────────────────────────────
@@ -155,9 +155,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex items-center gap-3 px-2 py-2">
-              <div className="hidden md:block">
-                <UserButton />
-              </div>
+              <div className="hidden md:block">{isSignedIn && <UserButton />}</div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{displayName}</span>
                 <span className="truncate text-xs">{displayEmail}</span>
