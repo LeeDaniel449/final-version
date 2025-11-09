@@ -30,13 +30,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
-  const isDevelopment =
-    process.env.NODE_ENV === "development" ||
-    process.env.NEXT_PUBLIC_DEV_MODE === "true" ||
-    (typeof window !== "undefined" && window.location.hostname === "localhost")
+  const isDevelopment = process.env.NODE_ENV === "development"
 
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/"]
-  const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium"]
+  const isPublicRoute = publicRoutes.some((route) => pathname === route)
 
   useEffect(() => {
     console.log("[v0] PremiumGate check:", { isLoaded, hasUser: !!user, pathname, isDevelopment })
