@@ -24,8 +24,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
-      <html lang="en" className={inter.variable}>
+    <ClerkProvider
+      publishableKey={CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        elements: {
+          rootBox: "clerk-root",
+        },
+      }}
+      telemetry={false}
+    >
+      <html lang="en" className={inter.variable} suppressHydrationWarning>
         <body className="font-sans">
           <SidebarProvider>
             <Suspense fallback={<div>Loading...</div>}>

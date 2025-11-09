@@ -30,7 +30,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
-  const isDevelopment = process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_DEV_MODE === "true"
+  const isDevelopment =
+    process.env.NODE_ENV === "development" ||
+    process.env.NEXT_PUBLIC_DEV_MODE === "true" ||
+    (typeof window !== "undefined" && window.location.hostname === "localhost")
 
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
@@ -45,10 +48,20 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
 
+    const timeout = setTimeout(() => {
+      if (!isLoaded && !checkComplete) {
+        console.log("[v0] PremiumGate: Clerk load timeout, treating as no user")
+        setHasPremium(false)
+        setCheckComplete(true)
+      }
+    }, 5000)
+
     if (!isLoaded) {
       console.log("[v0] PremiumGate: Clerk not loaded yet")
-      return
+      return () => clearTimeout(timeout)
     }
+
+    clearTimeout(timeout)
 
     if (!user) {
       console.log("[v0] PremiumGate: No user, setting premium to FALSE")
@@ -66,7 +79,9 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     setHasPremium(hasPremiumAccess)
     setCheckComplete(true)
-  }, [isLoaded, user, pathname, isDevelopment])
+
+    return () => clearTimeout(timeout)
+  }, [isLoaded, user, pathname, isDevelopment, checkComplete])
 
   if (!checkComplete) {
     console.log("[v0] PremiumGate: Check not complete, showing content")
