@@ -1,7 +1,20 @@
-export default function middleware() {
-  // Allow all requests to pass through in preview
-  return
-}
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/webhooks/clerk",
+  "/api/test-webhook",
+  "/webhook-test",
+  "/activate-premium",
+])
+
+export default clerkMiddleware(async (auth, request) => {
+  if (!isPublicRoute(request)) {
+    await auth.protect()
+  }
+})
 
 export const config = {
   matcher: [
