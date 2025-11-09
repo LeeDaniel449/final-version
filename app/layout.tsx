@@ -14,9 +14,7 @@ const inter = Inter({
 })
 
 const CLERK_PUBLISHABLE_KEY =
-  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) ||
-  (typeof process !== "undefined" && process.env?.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) ||
-  "pk_test_ZW5hYmxlZC1hcGUtNzUuY2xlcmsuYWNjb3VudHMuZGV2JA"
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_cHJlY2lzZS1wb255LTIzLmNsZXJrLmFjY291bnRzLmRldiQ"
 
 export default function RootLayout({
   children,
@@ -24,11 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY}
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/subscribe"
-    >
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <html lang="en" className={inter.variable}>
         <body className="font-sans">
           <SidebarProvider>
