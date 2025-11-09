@@ -14,7 +14,9 @@ const inter = Inter({
 })
 
 const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_Y2xlcmsuaW5zcGlyZWQuc2hhcmstNDIuY2xlcmsuYWNjb3VudHMuZGV2JA"
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  "pk_test_ZXhwZXJ0LW1hZ3BpZS00OC5jbGVyay5hY2NvdW50cy5kZXYk"
 
 export default function RootLayout({
   children,
