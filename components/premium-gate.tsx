@@ -30,11 +30,20 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
+  const isDevelopment = process.env.NODE_ENV === "development" || process.env.NEXT_PUBLIC_DEV_MODE === "true"
+
   const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
   useEffect(() => {
-    console.log("[v0] PremiumGate check:", { isLoaded, hasUser: !!user, pathname })
+    console.log("[v0] PremiumGate check:", { isLoaded, hasUser: !!user, pathname, isDevelopment })
+
+    if (isDevelopment) {
+      console.log("[v0] PremiumGate: Development mode - granting access")
+      setHasPremium(true)
+      setCheckComplete(true)
+      return
+    }
 
     if (!isLoaded) {
       console.log("[v0] PremiumGate: Clerk not loaded yet")
@@ -57,7 +66,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     setHasPremium(hasPremiumAccess)
     setCheckComplete(true)
-  }, [isLoaded, user, pathname])
+  }, [isLoaded, user, pathname, isDevelopment])
 
   if (!checkComplete) {
     console.log("[v0] PremiumGate: Check not complete, showing content")
