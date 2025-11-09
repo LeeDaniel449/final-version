@@ -13,22 +13,10 @@ const inter = Inter({
   display: "swap",
 })
 
-const getClerkPublishableKey = () => {
-  // Try standard env var first
-  if (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
-    return process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  }
-
-  // Try prefixed env var
-  if (typeof process !== "undefined" && process.env?.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
-    return process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  }
-
-  // Fallback for v0 preview - use a valid format clerk key
-  return "pk_test_Y2xlYXItaHVtYW4tNTMuY2xlcmsuYWNjb3VudHMuZGV2JA"
-}
-
-const CLERK_PUBLISHABLE_KEY = getClerkPublishableKey()
+const CLERK_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  "pk_test_bG9naWNhbC1sb2JzdGVyLTc3LmNsZXJrLmFjY291bnRzLmRldiQ"
 
 export default function RootLayout({
   children,
