@@ -13,12 +13,7 @@ const inter = Inter({
   display: "swap",
 })
 
-const CLERK_PUBLISHABLE_KEY =
-  (
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-    process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-    ""
-  ).trim() || "pk_test_Y2xlcmsuaW5jbHVkZWQucGVuZ3Vpbi03MS5sY2wuZGV2JA"
+const CLERK_PUBLISHABLE_KEY = "pk_test_Y2xlcmsuaW5jbHVkZWQucGVuZ3Vpbi03MS5sY2wuZGV2JA"
 
 export default function RootLayout({
   children,
