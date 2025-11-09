@@ -30,33 +30,46 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
   const [hasPremium, setHasPremium] = useState(false)
   const [checkComplete, setCheckComplete] = useState(false)
 
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium"]
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/"]
   const isPublicRoute = publicRoutes.some((route) => pathname?.startsWith(route))
 
   useEffect(() => {
+    console.log("[v0] PremiumGate check:", { isLoaded, hasUser: !!user, pathname })
+
     if (!isLoaded) {
+      console.log("[v0] PremiumGate: Clerk not loaded yet")
       return
     }
 
     if (!user) {
-      setHasPremium(true)
+      console.log("[v0] PremiumGate: No user, setting premium to FALSE")
+      setHasPremium(false)
       setCheckComplete(true)
       return
     }
 
     const hasPremiumAccess = user.publicMetadata?.premium === true
+    console.log("[v0] PremiumGate: User premium status:", {
+      userId: user.id,
+      premium: hasPremiumAccess,
+      metadata: user.publicMetadata,
+    })
 
     setHasPremium(hasPremiumAccess)
     setCheckComplete(true)
-  }, [isLoaded, user])
+  }, [isLoaded, user, pathname])
 
   if (!checkComplete) {
+    console.log("[v0] PremiumGate: Check not complete, showing content")
     return <>{children}</>
   }
 
   if (hasPremium || isPublicRoute) {
+    console.log("[v0] PremiumGate: Access granted", { hasPremium, isPublicRoute, pathname })
     return <>{children}</>
   }
+
+  console.log("[v0] PremiumGate: Showing overlay", { hasPremium, isPublicRoute, pathname })
 
   return (
     <div className="relative">
