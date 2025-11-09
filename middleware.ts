@@ -1,20 +1,32 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+export default function middleware(request: Request) {
+  // Skip Clerk middleware if no publishable key is available
+  const hasClerkKey =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-  "/api/webhooks/clerk",
-  "/api/test-webhook",
-  "/webhook-test",
-  "/activate-premium",
-])
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect()
+  if (!hasClerkKey) {
+    // Allow all requests through if Clerk is not configured
+    return
   }
-})
+
+  // Use Clerk middleware if key is available
+  const { clerkMiddleware, createRouteMatcher } = require("@clerk/nextjs/server")
+
+  const isPublicRoute = createRouteMatcher([
+    "/",
+    "/sign-in(.*)",
+    "/sign-up(.*)",
+    "/api/webhooks/clerk",
+    "/api/test-webhook",
+    "/webhook-test",
+    "/activate-premium",
+  ])
+
+  return clerkMiddleware(async (auth: any, req: any) => {
+    if (!isPublicRoute(req)) {
+      await auth.protect()
+    }
+  })(request)
+}
 
 export const config = {
   matcher: [
