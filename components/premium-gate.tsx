@@ -68,11 +68,13 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     }
 
     const hasPremiumAccess = user.publicMetadata?.premium === true
-    console.log("[v0] PremiumGate: User premium status:", {
-      userId: user.id,
-      premium: hasPremiumAccess,
-      metadata: user.publicMetadata,
-    })
+    console.log("[v0] ========== PREMIUM STATUS CHECK ==========")
+    console.log("[v0] User ID:", user.id)
+    console.log("[v0] publicMetadata:", JSON.stringify(user.publicMetadata))
+    console.log("[v0] premium value:", user.publicMetadata?.premium)
+    console.log("[v0] hasPremiumAccess:", hasPremiumAccess)
+    console.log("[v0] Will show overlay:", !hasPremiumAccess)
+    console.log("[v0] ==========================================")
 
     setShowOverlay(!hasPremiumAccess)
     setCheckComplete(true)
@@ -110,6 +112,14 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
             Get premium access to unlock all features including AI-powered financial advice, portfolio optimization, and
             personalized learning paths.
           </p>
+          {user && (
+            <div className="mb-4 rounded bg-muted p-3 text-left text-xs">
+              <p className="font-semibold mb-1">Debug Info:</p>
+              <p>User ID: {user.id}</p>
+              <p>Metadata: {JSON.stringify(user.publicMetadata)}</p>
+              <p>Premium Status: {user.publicMetadata?.premium ? "✅ Active" : "❌ Not Active"}</p>
+            </div>
+          )}
           <div className="flex flex-col gap-3">
             <Link
               href="/subscribe"
