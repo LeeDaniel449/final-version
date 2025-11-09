@@ -101,18 +101,18 @@ export async function POST(req: Request) {
     console.log("[v0] Event type:", eventType)
     console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
 
-    if (eventType === "subscription.updated") {
+    if (eventType === "subscription.updated" || eventType === "subscription.created") {
       const userId = evt.data.user_id
       const subscriptionStatus = evt.data.status
       const subscriptionId = evt.data.id
 
-      console.log("[v0] 🎉 Subscription updated!")
+      console.log("[v0] 🎉 Subscription event:", eventType)
       console.log("[v0] User ID:", userId)
       console.log("[v0] Subscription ID:", subscriptionId)
       console.log("[v0] Subscription Status:", subscriptionStatus)
 
       if (!userId) {
-        console.error("[v0] ❌ No user ID found in subscription.updated event")
+        console.error("[v0] ❌ No user ID found in subscription event")
         return new Response(JSON.stringify({ error: "No user ID found" }), {
           status: 400,
           headers: { "Content-Type": "application/json" },
