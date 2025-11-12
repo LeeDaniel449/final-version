@@ -80,7 +80,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     setCheckComplete(true)
 
     return () => clearTimeout(timeout)
-  }, [isLoaded, user, pathname, isDevelopment, checkComplete])
+  }, [isLoaded, user, user?.publicMetadata, pathname, isDevelopment, checkComplete])
 
   if (!checkComplete) {
     console.log("[v0] PremiumGate: Check not complete, showing content")
