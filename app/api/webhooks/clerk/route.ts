@@ -99,55 +99,45 @@ export async function POST(req: Request) {
 
     const eventType = evt.type
     console.log("[v0] Event type:", eventType)
-    console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
-    console.log("[v0] Full event data structure:", JSON.stringify(evt.data, null, 2))
+    console.log("[v0] Full event structure:", JSON.stringify(evt, null, 2))
 
-    if (eventType === "subscription.updated" || eventType === "subscription.created") {
-      const userId =
-        evt.data.user_id ||
-        evt.data.userId ||
-        evt.data.object?.user_id ||
-        evt.data.object?.customer_id ||
-        evt.data.metadata?.user_id ||
-        evt.data.metadata?.userId ||
-        evt.data.metadata?.clerk_user_id
+    const userId =
+      evt.data?.user_id ||
+      evt.data?.userId ||
+      evt.data?.id || // For user.* events, the id IS the user ID
+      evt.data?.object?.user_id ||
+      evt.data?.object?.userId ||
+      evt.data?.object?.id ||
+      evt.data?.object?.customer_id ||
+      evt.data?.metadata?.user_id ||
+      evt.data?.metadata?.userId ||
+      evt.data?.metadata?.clerk_user_id ||
+      evt.data?.public_user_data?.user_id
 
-      const subscriptionStatus = evt.data.status || evt.data.object?.status
-      const subscriptionId = evt.data.id || evt.data.object?.id
+    console.log("[v0] Extracted User ID:", userId)
+    console.log("[v0] All checked locations:", {
+      "evt.data.user_id": evt.data?.user_id,
+      "evt.data.userId": evt.data?.userId,
+      "evt.data.id": evt.data?.id,
+      "evt.data.object.user_id": evt.data?.object?.user_id,
+      "evt.data.object.id": evt.data?.object?.id,
+      "evt.data.metadata.clerk_user_id": evt.data?.metadata?.clerk_user_id,
+      "evt.data.public_user_data.user_id": evt.data?.public_user_data?.user_id,
+    })
 
-      console.log("[v0] 🎉 Subscription event:", eventType)
-      console.log("[v0] Extracted User ID:", userId)
-      console.log("[v0] Subscription ID:", subscriptionId)
-      console.log("[v0] Subscription Status:", subscriptionStatus)
-      console.log("[v0] Checked locations for user ID:", {
-        "evt.data.user_id": evt.data.user_id,
-        "evt.data.userId": evt.data.userId,
-        "evt.data.object?.user_id": evt.data.object?.user_id,
-        "evt.data.object?.customer_id": evt.data.object?.customer_id,
-        "evt.data.metadata?.user_id": evt.data.metadata?.user_id,
-        "evt.data.metadata?.userId": evt.data.metadata?.userId,
-        "evt.data.metadata?.clerk_user_id": evt.data.metadata?.clerk_user_id,
-      })
-
+    if (
+      eventType === "subscription.updated" ||
+      eventType === "subscription.created" ||
+      eventType.includes("subscription")
+    ) {
       if (!userId) {
-        console.error("[v0] ❌ No user ID found in subscription event")
-        console.error("[v0] Full payload for debugging:", JSON.stringify(evt, null, 2))
+        console.error("[v0] ❌ No user ID found in event")
+        console.error("[v0] Please include user_id in the event data or metadata")
         return new Response(
           JSON.stringify({
             error: "No user ID found",
-            debug: {
-              eventType,
-              dataKeys: Object.keys(evt.data || {}),
-              searchedLocations: [
-                "evt.data.user_id",
-                "evt.data.userId",
-                "evt.data.object?.user_id",
-                "evt.data.object?.customer_id",
-                "evt.data.metadata?.user_id",
-                "evt.data.metadata?.userId",
-                "evt.data.metadata?.clerk_user_id",
-              ],
-            },
+            hint: "Include user_id in evt.data or evt.data.metadata.clerk_user_id",
+            receivedData: evt.data,
           }),
           {
             status: 400,
@@ -156,9 +146,15 @@ export async function POST(req: Request) {
         )
       }
 
-      const shouldActivatePremium = subscriptionStatus === "active" || subscriptionStatus === "trialing"
+      const subscriptionStatus = evt.data?.status || evt.data?.object?.status || "active"
+      const subscriptionId = evt.data?.id || evt.data?.object?.id || "manual"
 
-      console.log("[v0] Should activate premium:", shouldActivatePremium)
+      console.log("[v0] 🎉 Subscription event:", eventType)
+      console.log("[v0] User ID:", userId)
+      console.log("[v0] Subscription ID:", subscriptionId)
+      console.log("[v0] Subscription Status:", subscriptionStatus)
+
+      const shouldActivatePremium = subscriptionStatus === "active" || subscriptionStatus === "trialing"
 
       if (shouldActivatePremium) {
         console.log("[v0] 🚀 Activating premium for user:", userId)
