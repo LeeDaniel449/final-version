@@ -212,34 +212,72 @@ export async function POST(req: Request) {
     if (eventType === "user.created" || eventType === "user.updated") {
       console.log("[v0] User event received:", eventType)
       console.log("[v0] User ID from event:", userId)
+      console.log("[v0] User metadata:", JSON.stringify(evt.data?.public_metadata || evt.data?.publicMetadata))
 
       if (userId) {
-        try {
-          const client = await clerkClient()
+        // Check if the user has a premium indicator in their metadata
+        const userMetadata = evt.data?.public_metadata || evt.data?.publicMetadata || {}
+        const hasPremiumIndicator =
+          userMetadata.premium === true ||
+          userMetadata.isPremium === true ||
+          userMetadata.subscriptionStatus === "active" ||
+          userMetadata.subscriptionStatus === "trialing"
 
-          const result = await client.users.updateUserMetadata(userId, {
-            publicMetadata: {
-              premium: true, // Auto-grant premium
-              premiumActivatedAt: new Date().toISOString(),
-              autoGranted: true,
-            },
-          })
+        console.log("[v0] Premium indicator found:", hasPremiumIndicator)
 
-          console.log("[v0] ✅ Auto-granted premium to user:", userId)
+        if (hasPremiumIndicator) {
+          try {
+            const client = await clerkClient()
 
+            const result = await client.users.updateUserMetadata(userId, {
+              publicMetadata: {
+                premium: true,
+                premiumActivatedAt: new Date().toISOString(),
+                activatedVia: eventType,
+              },
+            })
+
+            console.log("[v0] ✅ Premium activated for user:", userId)
+
+            return new Response(
+              JSON.stringify({
+                success: true,
+                userId,
+                message: "Premium activated",
+                metadata: result.publicMetadata,
+              }),
+              {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+              },
+            )
+          } catch (error) {
+            console.error("[v0] ❌ Error activating premium:", error)
+            return new Response(
+              JSON.stringify({
+                error: "Error activating premium",
+                userId,
+                details: error instanceof Error ? error.message : String(error),
+              }),
+              {
+                status: 500,
+                headers: { "Content-Type": "application/json" },
+              },
+            )
+          }
+        } else {
+          console.log("[v0] ℹ️ No premium indicator found in user metadata - not granting premium")
           return new Response(
             JSON.stringify({
               success: true,
               userId,
-              message: "Premium auto-granted",
+              message: "User event processed, no premium activation",
             }),
             {
               status: 200,
               headers: { "Content-Type": "application/json" },
             },
           )
-        } catch (error) {
-          console.error("[v0] ❌ Error auto-granting premium:", error)
         }
       }
     }
