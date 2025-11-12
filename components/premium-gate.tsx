@@ -32,7 +32,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   const isDevelopment = process.env.NODE_ENV === "development"
 
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium"]
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/test-webhook", "/test-activate"]
   const isPublicRoute = publicRoutes.some((route) => pathname === route)
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     console.log("[v0] publicMetadata:", JSON.stringify(user.publicMetadata))
     console.log("[v0] premium value:", user.publicMetadata?.premium)
     console.log("[v0] hasPremiumAccess:", hasPremiumAccess)
-    console.log("[v0] Will show overlay:", !hasPremiumAccess)
+    console.log("[v0] Will show overlay:", !hasPremiumAccess && !isPublicRoute)
     console.log("[v0] ==========================================")
 
     setShowOverlay(!hasPremiumAccess)
@@ -107,10 +107,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
               <LockIcon />
             </div>
           </div>
-          <h2 className="mb-2 text-2xl font-bold">Subscribe to Unlock</h2>
+          <h2 className="mb-2 text-2xl font-bold">Premium Access Required</h2>
           <p className="mb-6 text-muted-foreground">
-            Get premium access to unlock all features including AI-powered financial advice, portfolio optimization, and
-            personalized learning paths.
+            Unlock all features including AI-powered financial advice, portfolio optimization, and personalized learning
+            paths.
           </p>
           {user && (
             <div className="mb-4 rounded bg-muted p-3 text-left text-xs">
@@ -128,10 +128,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
               View Plans
             </Link>
             <Link
-              href="/activate-premium"
+              href="/test-activate"
               className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              Already Subscribed? Activate Now
+              Activate Premium Manually
             </Link>
           </div>
         </div>
