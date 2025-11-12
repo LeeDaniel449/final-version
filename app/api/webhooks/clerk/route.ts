@@ -105,24 +105,44 @@ export async function POST(req: Request) {
       evt.data?.id || // For user.* events, id is the user ID
       evt.data?.user_id ||
       evt.data?.userId ||
-      evt.data?.object?.id ||
-      evt.data?.object?.user_id ||
+      evt.data?.object?.customer_id || // For Stripe-style events
+      evt.data?.object?.metadata?.clerk_user_id || // For metadata
+      evt.data?.object?.metadata?.userId ||
       evt.data?.metadata?.clerk_user_id ||
       evt.data?.metadata?.user_id ||
+      evt.data?.metadata?.userId ||
+      evt.data?.customer_id ||
       evt.data?.public_user_data?.user_id
 
-    console.log("[v0] Extracted User ID:", userId)
+    console.log("[v0] All checked paths for user ID:")
+    console.log("[v0]   - evt.data.id:", evt.data?.id)
+    console.log("[v0]   - evt.data.user_id:", evt.data?.user_id)
+    console.log("[v0]   - evt.data.userId:", evt.data?.userId)
+    console.log("[v0]   - evt.data.metadata:", evt.data?.metadata)
+    console.log("[v0]   - evt.data.object:", evt.data?.object ? "present" : "missing")
+    console.log("[v0] Final extracted User ID:", userId)
 
     if (eventType === "subscription.updated" || eventType === "subscription.created") {
+      console.log("[v0] 🔔 Subscription event detected!")
+
       if (!userId) {
         console.error("[v0] ❌ No user ID found in subscription event")
-        console.error("[v0] Event data structure:", JSON.stringify(evt.data, null, 2))
+        console.error("[v0] Full event structure:", JSON.stringify(evt, null, 2))
+        console.error("[v0] IMPORTANT: For subscription events, include clerk_user_id in metadata")
+
         return new Response(
           JSON.stringify({
             error: "No user ID found",
-            hint: "For custom subscription events, include user_id in evt.data",
+            hint: "Include user_id or metadata.clerk_user_id in the event payload",
             receivedEventType: eventType,
-            receivedData: evt.data,
+            checkedPaths: [
+              "evt.data.id",
+              "evt.data.user_id",
+              "evt.data.userId",
+              "evt.data.metadata.clerk_user_id",
+              "evt.data.object.metadata.clerk_user_id",
+            ],
+            receivedDataKeys: Object.keys(evt.data || {}),
           }),
           {
             status: 400,
@@ -131,14 +151,15 @@ export async function POST(req: Request) {
         )
       }
 
-      const subscriptionStatus = evt.data?.status || "active"
-      const shouldActivatePremium = subscriptionStatus === "active" || subscriptionStatus === "trialing"
+      const subscriptionStatus = evt.data?.status || evt.data?.object?.status || "active"
+      const shouldActivatePremium =
+        subscriptionStatus === "active" || subscriptionStatus === "trialing" || subscriptionStatus === "paid"
 
       console.log("[v0] Processing subscription event:", {
         eventType,
         userId,
         status: subscriptionStatus,
-        willActivate: shouldActivatePremium,
+        willActivatePremium: shouldActivatePremium,
       })
 
       try {
@@ -149,12 +170,14 @@ export async function POST(req: Request) {
             premium: shouldActivatePremium,
             premiumUpdatedAt: new Date().toISOString(),
             subscriptionStatus: subscriptionStatus,
+            lastWebhookEvent: eventType,
           },
         })
 
         console.log("[v0] ✅ Premium status updated successfully!")
         console.log("[v0] User ID:", result.id)
         console.log("[v0] Premium:", shouldActivatePremium)
+        console.log("[v0] Updated metadata:", JSON.stringify(result.publicMetadata, null, 2))
         console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
 
         return new Response(
@@ -163,6 +186,7 @@ export async function POST(req: Request) {
             userId,
             premium: shouldActivatePremium,
             message: shouldActivatePremium ? "Premium activated" : "Premium deactivated",
+            metadata: result.publicMetadata,
           }),
           {
             status: 200,
@@ -174,6 +198,7 @@ export async function POST(req: Request) {
         return new Response(
           JSON.stringify({
             error: "Error updating premium status",
+            userId,
             details: error instanceof Error ? error.message : String(error),
           }),
           {
