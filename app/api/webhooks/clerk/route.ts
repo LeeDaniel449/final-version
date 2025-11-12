@@ -100,23 +100,60 @@ export async function POST(req: Request) {
     const eventType = evt.type
     console.log("[v0] Event type:", eventType)
     console.log("[v0] Event data keys:", Object.keys(evt.data || {}))
+    console.log("[v0] Full event data structure:", JSON.stringify(evt.data, null, 2))
 
     if (eventType === "subscription.updated" || eventType === "subscription.created") {
-      const userId = evt.data.user_id
-      const subscriptionStatus = evt.data.status
-      const subscriptionId = evt.data.id
+      const userId =
+        evt.data.user_id ||
+        evt.data.userId ||
+        evt.data.object?.user_id ||
+        evt.data.object?.customer_id ||
+        evt.data.metadata?.user_id ||
+        evt.data.metadata?.userId ||
+        evt.data.metadata?.clerk_user_id
+
+      const subscriptionStatus = evt.data.status || evt.data.object?.status
+      const subscriptionId = evt.data.id || evt.data.object?.id
 
       console.log("[v0] 🎉 Subscription event:", eventType)
-      console.log("[v0] User ID:", userId)
+      console.log("[v0] Extracted User ID:", userId)
       console.log("[v0] Subscription ID:", subscriptionId)
       console.log("[v0] Subscription Status:", subscriptionStatus)
+      console.log("[v0] Checked locations for user ID:", {
+        "evt.data.user_id": evt.data.user_id,
+        "evt.data.userId": evt.data.userId,
+        "evt.data.object?.user_id": evt.data.object?.user_id,
+        "evt.data.object?.customer_id": evt.data.object?.customer_id,
+        "evt.data.metadata?.user_id": evt.data.metadata?.user_id,
+        "evt.data.metadata?.userId": evt.data.metadata?.userId,
+        "evt.data.metadata?.clerk_user_id": evt.data.metadata?.clerk_user_id,
+      })
 
       if (!userId) {
         console.error("[v0] ❌ No user ID found in subscription event")
-        return new Response(JSON.stringify({ error: "No user ID found" }), {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        })
+        console.error("[v0] Full payload for debugging:", JSON.stringify(evt, null, 2))
+        return new Response(
+          JSON.stringify({
+            error: "No user ID found",
+            debug: {
+              eventType,
+              dataKeys: Object.keys(evt.data || {}),
+              searchedLocations: [
+                "evt.data.user_id",
+                "evt.data.userId",
+                "evt.data.object?.user_id",
+                "evt.data.object?.customer_id",
+                "evt.data.metadata?.user_id",
+                "evt.data.metadata?.userId",
+                "evt.data.metadata?.clerk_user_id",
+              ],
+            },
+          }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
       }
 
       const shouldActivatePremium = subscriptionStatus === "active" || subscriptionStatus === "trialing"
@@ -181,6 +218,7 @@ export async function POST(req: Request) {
             publicMetadata: {
               premium: false,
               premiumDeactivatedAt: new Date().toISOString(),
+              subscriptionId: subscriptionId,
               subscriptionStatus: subscriptionStatus,
             },
           })
