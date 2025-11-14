@@ -101,48 +101,119 @@ export async function POST(req: Request) {
     console.log("[v0] Event type:", eventType)
     console.log("[v0] Full event data:", JSON.stringify(evt.data, null, 2))
 
-    const userId =
-      evt.data?.id || // For user.* events, id is the user ID
-      evt.data?.user_id ||
-      evt.data?.userId ||
-      evt.data?.object?.customer_id || // For Stripe-style events
-      evt.data?.object?.metadata?.clerk_user_id || // For metadata
-      evt.data?.object?.metadata?.userId ||
-      evt.data?.metadata?.clerk_user_id ||
-      evt.data?.metadata?.user_id ||
-      evt.data?.metadata?.userId ||
-      evt.data?.customer_id ||
-      evt.data?.public_user_data?.user_id
+    if (eventType === "user.created" || eventType === "user.updated") {
+      const userId = evt.data?.id
 
-    console.log("[v0] All checked paths for user ID:")
-    console.log("[v0]   - evt.data.id:", evt.data?.id)
-    console.log("[v0]   - evt.data.user_id:", evt.data?.user_id)
-    console.log("[v0]   - evt.data.userId:", evt.data?.userId)
-    console.log("[v0]   - evt.data.metadata:", evt.data?.metadata)
-    console.log("[v0]   - evt.data.object:", evt.data?.object ? "present" : "missing")
-    console.log("[v0] Final extracted User ID:", userId)
+      console.log("[v0] 👤 User event received:", eventType)
+      console.log("[v0] User ID:", userId)
+
+      if (!userId) {
+        console.error("[v0] ❌ No user ID found in user event")
+        return new Response(JSON.stringify({ error: "No user ID found" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        })
+      }
+
+      // Check if user already has premium in their metadata
+      const userMetadata = evt.data?.public_metadata || evt.data?.publicMetadata || {}
+      const currentPremiumStatus = userMetadata.premium === true
+
+      console.log("[v0] Current user metadata:", JSON.stringify(userMetadata))
+      console.log("[v0] Current premium status:", currentPremiumStatus)
+
+      // Check if user has premium indicator in their metadata
+      const hasPremiumIndicator =
+        userMetadata.premium === true ||
+        userMetadata.isPremium === true ||
+        userMetadata.subscriptionStatus === "active" ||
+        userMetadata.subscriptionStatus === "trialing"
+
+      console.log("[v0] Premium indicator found in metadata:", hasPremiumIndicator)
+
+      if (hasPremiumIndicator) {
+        try {
+          const client = await clerkClient()
+
+          const result = await client.users.updateUserMetadata(userId, {
+            publicMetadata: {
+              ...userMetadata,
+              premium: true,
+              premiumActivatedAt: userMetadata.premiumActivatedAt || new Date().toISOString(),
+              lastWebhookEvent: eventType,
+              lastWebhookTimestamp: new Date().toISOString(),
+            },
+          })
+
+          console.log("[v0] ✅ Premium status synced successfully!")
+          console.log("[v0] User ID:", result.id)
+          console.log("[v0] Premium: true")
+          console.log("[v0] Updated metadata:", JSON.stringify(result.publicMetadata, null, 2))
+          console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
+
+          return new Response(
+            JSON.stringify({
+              success: true,
+              userId,
+              premium: true,
+              message: "Premium status synced",
+              metadata: result.publicMetadata,
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            },
+          )
+        } catch (error) {
+          console.error("[v0] ❌ Error syncing premium status:", error)
+          return new Response(
+            JSON.stringify({
+              error: "Error syncing premium status",
+              userId,
+              details: error instanceof Error ? error.message : String(error),
+            }),
+            {
+              status: 500,
+              headers: { "Content-Type": "application/json" },
+            },
+          )
+        }
+      } else {
+        console.log("[v0] ℹ️ No premium indicator in user metadata")
+        return new Response(
+          JSON.stringify({
+            success: true,
+            userId,
+            message: "User event processed, no premium indicator found",
+            premium: currentPremiumStatus,
+          }),
+          {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          },
+        )
+      }
+    }
 
     if (eventType === "subscription.updated" || eventType === "subscription.created") {
       console.log("[v0] 🔔 Subscription event detected!")
 
+      const userId =
+        evt.data?.user_id ||
+        evt.data?.userId ||
+        evt.data?.object?.customer_id ||
+        evt.data?.object?.metadata?.clerk_user_id ||
+        evt.data?.metadata?.clerk_user_id ||
+        evt.data?.metadata?.user_id
+
+      console.log("[v0] Extracted User ID:", userId)
+
       if (!userId) {
         console.error("[v0] ❌ No user ID found in subscription event")
-        console.error("[v0] Full event structure:", JSON.stringify(evt, null, 2))
-        console.error("[v0] IMPORTANT: For subscription events, include clerk_user_id in metadata")
-
         return new Response(
           JSON.stringify({
             error: "No user ID found",
             hint: "Include user_id or metadata.clerk_user_id in the event payload",
-            receivedEventType: eventType,
-            checkedPaths: [
-              "evt.data.id",
-              "evt.data.user_id",
-              "evt.data.userId",
-              "evt.data.metadata.clerk_user_id",
-              "evt.data.object.metadata.clerk_user_id",
-            ],
-            receivedDataKeys: Object.keys(evt.data || {}),
           }),
           {
             status: 400,
@@ -155,12 +226,8 @@ export async function POST(req: Request) {
       const shouldActivatePremium =
         subscriptionStatus === "active" || subscriptionStatus === "trialing" || subscriptionStatus === "paid"
 
-      console.log("[v0] Processing subscription event:", {
-        eventType,
-        userId,
-        status: subscriptionStatus,
-        willActivatePremium: shouldActivatePremium,
-      })
+      console.log("[v0] Subscription status:", subscriptionStatus)
+      console.log("[v0] Will activate premium:", shouldActivatePremium)
 
       try {
         const client = await clerkClient()
@@ -175,10 +242,7 @@ export async function POST(req: Request) {
         })
 
         console.log("[v0] ✅ Premium status updated successfully!")
-        console.log("[v0] User ID:", result.id)
-        console.log("[v0] Premium:", shouldActivatePremium)
         console.log("[v0] Updated metadata:", JSON.stringify(result.publicMetadata, null, 2))
-        console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
 
         return new Response(
           JSON.stringify({
@@ -186,7 +250,6 @@ export async function POST(req: Request) {
             userId,
             premium: shouldActivatePremium,
             message: shouldActivatePremium ? "Premium activated" : "Premium deactivated",
-            metadata: result.publicMetadata,
           }),
           {
             status: 200,
@@ -198,7 +261,6 @@ export async function POST(req: Request) {
         return new Response(
           JSON.stringify({
             error: "Error updating premium status",
-            userId,
             details: error instanceof Error ? error.message : String(error),
           }),
           {
@@ -209,98 +271,21 @@ export async function POST(req: Request) {
       }
     }
 
-    if (eventType === "user.created" || eventType === "user.updated") {
-      console.log("[v0] User event received:", eventType)
-      console.log("[v0] User ID from event:", userId)
-      console.log("[v0] User metadata:", JSON.stringify(evt.data?.public_metadata || evt.data?.publicMetadata))
-
-      if (userId) {
-        // Check if the user has a premium indicator in their metadata
-        const userMetadata = evt.data?.public_metadata || evt.data?.publicMetadata || {}
-        const hasPremiumIndicator =
-          userMetadata.premium === true ||
-          userMetadata.isPremium === true ||
-          userMetadata.subscriptionStatus === "active" ||
-          userMetadata.subscriptionStatus === "trialing"
-
-        console.log("[v0] Premium indicator found:", hasPremiumIndicator)
-
-        if (hasPremiumIndicator) {
-          try {
-            const client = await clerkClient()
-
-            const result = await client.users.updateUserMetadata(userId, {
-              publicMetadata: {
-                premium: true,
-                premiumActivatedAt: new Date().toISOString(),
-                activatedVia: eventType,
-              },
-            })
-
-            console.log("[v0] ✅ Premium activated for user:", userId)
-
-            return new Response(
-              JSON.stringify({
-                success: true,
-                userId,
-                message: "Premium activated",
-                metadata: result.publicMetadata,
-              }),
-              {
-                status: 200,
-                headers: { "Content-Type": "application/json" },
-              },
-            )
-          } catch (error) {
-            console.error("[v0] ❌ Error activating premium:", error)
-            return new Response(
-              JSON.stringify({
-                error: "Error activating premium",
-                userId,
-                details: error instanceof Error ? error.message : String(error),
-              }),
-              {
-                status: 500,
-                headers: { "Content-Type": "application/json" },
-              },
-            )
-          }
-        } else {
-          console.log("[v0] ℹ️ No premium indicator found in user metadata - not granting premium")
-          return new Response(
-            JSON.stringify({
-              success: true,
-              userId,
-              message: "User event processed, no premium activation",
-            }),
-            {
-              status: 200,
-              headers: { "Content-Type": "application/json" },
-            },
-          )
-        }
-      }
-    }
-
     if (eventType === "organizationMembership.deleted") {
       const userId = evt.data.public_user_data?.user_id
 
-      console.log("[v0] 👋 User left organization")
-      console.log("[v0] User ID:", userId)
+      console.log("[v0] 👋 User left organization, User ID:", userId)
 
       if (!userId) {
-        console.error("[v0] ❌ No user ID found in organizationMembership.deleted event")
+        console.error("[v0] ❌ No user ID found")
         return new Response(JSON.stringify({ error: "No user ID found" }), {
           status: 400,
           headers: { "Content-Type": "application/json" },
         })
       }
 
-      console.log("[v0] 🚀 Deactivating premium for user:", userId)
-
       try {
         const client = await clerkClient()
-        console.log("[v0] ✅ Clerk client initialized")
 
         const result = await client.users.updateUserMetadata(userId, {
           publicMetadata: {
@@ -310,16 +295,12 @@ export async function POST(req: Request) {
         })
 
         console.log("[v0] ✅ Premium deactivated successfully!")
-        console.log("[v0] User ID:", result.id)
-        console.log("[v0] New publicMetadata:", JSON.stringify(result.publicMetadata))
-        console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
 
         return new Response(
           JSON.stringify({
             success: true,
             userId,
             message: "Premium deactivated",
-            metadata: result.publicMetadata,
           }),
           {
             status: 200,
@@ -328,7 +309,6 @@ export async function POST(req: Request) {
         )
       } catch (error) {
         console.error("[v0] ❌ Error deactivating premium:", error)
-        console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
         return new Response(
           JSON.stringify({
             error: "Error deactivating premium",
@@ -340,23 +320,21 @@ export async function POST(req: Request) {
           },
         )
       }
-    } else {
-      console.log("[v0] ⚠️ Unhandled event type:", eventType)
-      return new Response(
-        JSON.stringify({
-          message: "Event type not handled",
-          eventType,
-        }),
-        {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        },
-      )
     }
+
+    console.log("[v0] ⚠️ Unhandled event type:", eventType)
+    return new Response(
+      JSON.stringify({
+        message: "Event type not handled",
+        eventType,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      },
+    )
   } catch (error) {
     console.error("[v0] ❌ Unexpected error in webhook handler:", error)
-    console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
-    console.error("[v0] Error stack:", error instanceof Error ? error.stack : "No stack trace")
     return new Response(
       JSON.stringify({
         error: "Internal server error",
