@@ -115,14 +115,12 @@ export async function POST(req: Request) {
         })
       }
 
-      // Check if user already has premium in their metadata
       const userMetadata = evt.data?.public_metadata || evt.data?.publicMetadata || {}
       const currentPremiumStatus = userMetadata.premium === true
 
       console.log("[v0] Current user metadata:", JSON.stringify(userMetadata))
       console.log("[v0] Current premium status:", currentPremiumStatus)
 
-      // Check if user has premium indicator in their metadata
       const hasPremiumIndicator =
         userMetadata.premium === true ||
         userMetadata.isPremium === true ||
@@ -201,19 +199,35 @@ export async function POST(req: Request) {
       const userId =
         evt.data?.user_id ||
         evt.data?.userId ||
+        evt.data?.id ||
         evt.data?.object?.customer_id ||
         evt.data?.object?.metadata?.clerk_user_id ||
         evt.data?.metadata?.clerk_user_id ||
         evt.data?.metadata?.user_id
 
       console.log("[v0] Extracted User ID:", userId)
+      console.log("[v0] Checked paths:", {
+        "evt.data.user_id": evt.data?.user_id,
+        "evt.data.userId": evt.data?.userId,
+        "evt.data.id": evt.data?.id,
+        "evt.data.object.customer_id": evt.data?.object?.customer_id,
+        "evt.data.metadata.clerk_user_id": evt.data?.metadata?.clerk_user_id,
+      })
 
       if (!userId) {
         console.error("[v0] ❌ No user ID found in subscription event")
+        console.error("[v0] Full event data:", JSON.stringify(evt.data, null, 2))
         return new Response(
           JSON.stringify({
             error: "No user ID found",
-            hint: "Include user_id or metadata.clerk_user_id in the event payload",
+            hint: "Include user_id, userId, or metadata.clerk_user_id in the event payload",
+            checkedPaths: [
+              "evt.data.user_id",
+              "evt.data.userId",
+              "evt.data.id",
+              "evt.data.object.customer_id",
+              "evt.data.metadata.clerk_user_id",
+            ],
           }),
           {
             status: 400,
@@ -232,7 +246,7 @@ export async function POST(req: Request) {
       try {
         const client = await clerkClient()
 
-        const result = await client.users.updateUserMetadata(userId, {
+        await client.users.updateUserMetadata(userId, {
           publicMetadata: {
             premium: shouldActivatePremium,
             premiumUpdatedAt: new Date().toISOString(),
@@ -241,8 +255,8 @@ export async function POST(req: Request) {
           },
         })
 
-        console.log("[v0] ✅ Premium status updated successfully!")
-        console.log("[v0] Updated metadata:", JSON.stringify(result.publicMetadata, null, 2))
+        console.log("[v0] ✅ Premium status updated from subscription event!")
+        console.log("[v0] ========== WEBHOOK PROCESSING COMPLETE ==========")
 
         return new Response(
           JSON.stringify({

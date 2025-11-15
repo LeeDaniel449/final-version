@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname } from 'next/navigation'
 import { useUser } from "@clerk/nextjs"
 
 const LockIcon = () => (
@@ -32,7 +32,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
   const isDevelopment = process.env.NODE_ENV === "development"
 
-  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/test-webhook", "/test-activate"]
+  const publicRoutes = ["/subscribe", "/sign-up", "/sign-in", "/activate-premium", "/activate", "/test-webhook", "/test-activate"]
   const isPublicRoute = publicRoutes.some((route) => pathname === route)
 
   useEffect(() => {
@@ -128,10 +128,10 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
               View Plans
             </Link>
             <Link
-              href="/test-activate"
+              href="/activate"
               className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              Activate Premium Manually
+              Activate Premium Now
             </Link>
           </div>
         </div>
