@@ -195,42 +195,49 @@ export async function POST(req: Request) {
 
     if (eventType === "subscription.updated" || eventType === "subscription.created") {
       console.log("[v0] 🔔 Subscription event detected!")
+      console.log("[v0] Full subscription event payload:", JSON.stringify(evt, null, 2))
 
       const userId =
         evt.data?.user_id ||
         evt.data?.userId ||
         evt.data?.id ||
+        evt.data?.object?.user_id ||
+        evt.data?.object?.userId ||
         evt.data?.object?.customer_id ||
         evt.data?.object?.metadata?.clerk_user_id ||
+        evt.data?.object?.metadata?.user_id ||
         evt.data?.metadata?.clerk_user_id ||
-        evt.data?.metadata?.user_id
+        evt.data?.metadata?.user_id ||
+        evt.data?.metadata?.userId
 
       console.log("[v0] Extracted User ID:", userId)
-      console.log("[v0] Checked paths:", {
+      console.log("[v0] All checked paths for user ID:", {
         "evt.data.user_id": evt.data?.user_id,
         "evt.data.userId": evt.data?.userId,
         "evt.data.id": evt.data?.id,
+        "evt.data.object.user_id": evt.data?.object?.user_id,
         "evt.data.object.customer_id": evt.data?.object?.customer_id,
+        "evt.data.object.metadata.clerk_user_id": evt.data?.object?.metadata?.clerk_user_id,
         "evt.data.metadata.clerk_user_id": evt.data?.metadata?.clerk_user_id,
       })
 
       if (!userId) {
-        console.error("[v0] ❌ No user ID found in subscription event")
-        console.error("[v0] Full event data:", JSON.stringify(evt.data, null, 2))
+        console.warn("[v0] ⚠️ No user ID found in subscription event - event accepted but no action taken")
+        console.warn("[v0] To activate premium from subscription events, include one of these in the payload:")
+        console.warn("[v0] - evt.data.user_id")
+        console.warn("[v0] - evt.data.metadata.clerk_user_id")
+        console.warn("[v0] - evt.data.object.metadata.clerk_user_id")
+        
         return new Response(
           JSON.stringify({
-            error: "No user ID found",
-            hint: "Include user_id, userId, or metadata.clerk_user_id in the event payload",
-            checkedPaths: [
-              "evt.data.user_id",
-              "evt.data.userId",
-              "evt.data.id",
-              "evt.data.object.customer_id",
-              "evt.data.metadata.clerk_user_id",
-            ],
+            success: true,
+            message: "Subscription event received but no user_id found",
+            hint: "Include user_id or metadata.clerk_user_id in the payload to activate premium",
+            eventType,
+            timestamp: new Date().toISOString(),
           }),
           {
-            status: 400,
+            status: 200,
             headers: { "Content-Type": "application/json" },
           },
         )
