@@ -4,7 +4,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation'
-import { useUser } from "@clerk/nextjs"
+import { useUser, useAuth } from "@clerk/nextjs"
 
 const LockIcon = () => (
   <svg
@@ -25,6 +25,7 @@ const LockIcon = () => (
 
 export function PremiumGate({ children }: { children: React.ReactNode }) {
   const { user, isLoaded } = useUser()
+  const { has } = useAuth()
   const pathname = usePathname()
 
   const [showOverlay, setShowOverlay] = useState(false)
@@ -67,11 +68,14 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const hasPremiumAccess = user.publicMetadata?.premium === true
+    const hasPremiumPlan = has?.({ plan: 'premium' })
+    const hasPremiumMetadata = user.publicMetadata?.premium === true
+    const hasPremiumAccess = hasPremiumPlan || hasPremiumMetadata
+    
     console.log("[v0] ========== PREMIUM STATUS CHECK ==========")
     console.log("[v0] User ID:", user.id)
-    console.log("[v0] publicMetadata:", JSON.stringify(user.publicMetadata))
-    console.log("[v0] premium value:", user.publicMetadata?.premium)
+    console.log("[v0] has({ plan: 'premium' }):", hasPremiumPlan)
+    console.log("[v0] publicMetadata.premium:", hasPremiumMetadata)
     console.log("[v0] hasPremiumAccess:", hasPremiumAccess)
     console.log("[v0] Will show overlay:", !hasPremiumAccess && !isPublicRoute)
     console.log("[v0] ==========================================")
@@ -80,7 +84,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
     setCheckComplete(true)
 
     return () => clearTimeout(timeout)
-  }, [isLoaded, user, user?.publicMetadata, pathname, isDevelopment, checkComplete])
+  }, [isLoaded, user, user?.publicMetadata, has, pathname, isDevelopment, checkComplete])
 
   if (!checkComplete) {
     console.log("[v0] PremiumGate: Check not complete, showing content")
