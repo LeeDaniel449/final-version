@@ -68,13 +68,13 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const hasPremiumPlan = has?.({ plan: 'premium' })
+    const hasUnlocksAllFeature = has?.({ feature: 'unlocks_all' })
     const hasPremiumMetadata = user.publicMetadata?.premium === true
-    const hasPremiumAccess = hasPremiumPlan || hasPremiumMetadata
+    const hasPremiumAccess = hasUnlocksAllFeature || hasPremiumMetadata
     
     console.log("[v0] ========== PREMIUM STATUS CHECK ==========")
     console.log("[v0] User ID:", user.id)
-    console.log("[v0] has({ plan: 'premium' }):", hasPremiumPlan)
+    console.log("[v0] has({ feature: 'unlocks_all' }):", hasUnlocksAllFeature)
     console.log("[v0] publicMetadata.premium:", hasPremiumMetadata)
     console.log("[v0] hasPremiumAccess:", hasPremiumAccess)
     console.log("[v0] Will show overlay:", !hasPremiumAccess && !isPublicRoute)

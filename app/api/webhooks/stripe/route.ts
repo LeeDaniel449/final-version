@@ -103,7 +103,7 @@ export async function POST(req: Request) {
         const result = await client.users.updateUserMetadata(clerkUserId, {
           publicMetadata: {
             premium: shouldActivatePremium,
-            plan: shouldActivatePremium ? 'premium' : null,
+            feature: shouldActivatePremium ? 'unlocks_all' : null,
             premiumUpdatedAt: new Date().toISOString(),
             subscriptionId: subscriptionId,
             subscriptionStatus: subscriptionStatus,
@@ -179,7 +179,7 @@ export async function POST(req: Request) {
           const result = await client.users.updateUserMetadata(clerkUserId, {
             publicMetadata: {
               premium: true,
-              plan: 'premium',
+              feature: 'unlocks_all',
               premiumActivatedAt: new Date().toISOString(),
               subscriptionId: subscriptionId,
               subscriptionStatus: subscription.status,

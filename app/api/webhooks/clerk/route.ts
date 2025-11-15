@@ -146,7 +146,7 @@ export async function POST(req: Request) {
           publicMetadata: {
             ...userMetadata,
             premium: true,
-            plan: 'premium',
+            feature: 'unlocks_all',
             premiumActivatedAt: userMetadata.premiumActivatedAt || new Date().toISOString(),
             lastWebhookSync: new Date().toISOString(),
           },
