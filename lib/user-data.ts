@@ -634,22 +634,40 @@ class UserDataManager {
 
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
+      // Priority 1: Clerk user ID
       const clerkUserId = (window as any).__clerk_user_id
       if (clerkUserId) {
         userId = clerkUserId
+        console.log("[v0] Using Clerk user ID:", userId)
       } else {
-        // Fallback to wealthwise current user for when Clerk doesn't load
-        const currentUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER) || 
-                           sessionStorage.getItem('wealthwise_session_user')
-        if (currentUser) {
-          userId = currentUser
-          console.log("[v0] Using fallback user ID from wealthwise:", userId)
+        // Priority 2: Check both localStorage AND sessionStorage for authenticated user
+        const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
+        const sessionUser = sessionStorage.getItem('wealthwise_session_user')
+        const authenticated = localStorage.getItem("wealthwise_authenticated") === "true" ||
+                             sessionStorage.getItem("wealthwise_session_in") === "true"
+        
+        userId = localUser || sessionUser
+        
+        if (userId && authenticated) {
+          console.log("[v0] Using fallback authenticated user ID:", userId)
+        } else {
+          // Priority 3: Check if there's only one registered user - use that
+          const registeredUsers = this.getRegisteredUsers()
+          const userKeys = Object.keys(registeredUsers)
+          
+          if (userKeys.length === 1) {
+            userId = userKeys[0]
+            console.log("[v0] Using single registered user ID:", userId)
+            // Set as current user for consistency
+            this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
+            this.setStorageItem('wealthwise_session_user', userId, true)
+          }
         }
       }
     }
 
     if (!userId) {
-      console.log("[v0] No user ID available for storage key:", baseKey)
+      console.warn("[v0] No user ID available - data will not sync across devices")
       return `${baseKey}_anonymous`
     }
 
@@ -673,6 +691,32 @@ class UserDataManager {
   private getClerkUserId(): string | null {
     if (typeof window === "undefined") return null
     return (window as any).__clerk_user_id || null
+  }
+
+  syncUserIdAcrossBrowserContexts(): void {
+    if (typeof window === "undefined") return
+
+    try {
+      // Get user ID from any available source
+      const clerkUserId = (window as any).__clerk_user_id
+      const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
+      const sessionUser = sessionStorage.getItem('wealthwise_session_user')
+      
+      const userId = clerkUserId || localUser || sessionUser
+      
+      if (userId) {
+        // Sync to both storages for consistency
+        if (!localUser) {
+          this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
+        }
+        if (!sessionUser) {
+          this.setStorageItem('wealthwise_session_user', userId, true)
+        }
+        console.log("[v0] User ID synced across contexts:", userId)
+      }
+    } catch (error) {
+      console.error("[v0] Error syncing user ID:", error)
+    }
   }
 
   /* ---------- CATEGORY HELPERS ---------- */

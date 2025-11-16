@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
+import { userDataManager } from "@/lib/user-data"
 
 const CLERK_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
@@ -25,6 +26,8 @@ export function ClientLayout({
       process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? "Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" :
       "fallback"
     )
+    
+    userDataManager.syncUserIdAcrossBrowserContexts()
   }, [])
 
   useEffect(() => {
