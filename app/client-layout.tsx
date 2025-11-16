@@ -29,6 +29,12 @@ function ClerkUserIdSync() {
     if (isLoaded && user?.id) {
       console.log("[v0] Clerk loaded successfully - setting user ID:", user.id)
       userDataManager.setClerkUserId(user.id)
+      
+      // Also set this as the current user in storage to ensure consistency
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('wealthwise_current_user', user.primaryEmailAddress?.emailAddress || user.id)
+        sessionStorage.setItem('wealthwise_session_user', user.primaryEmailAddress?.emailAddress || user.id)
+      }
     } else if (isLoaded && !user) {
       console.log("[v0] Clerk loaded but no user signed in")
       userDataManager.setClerkUserId(null)

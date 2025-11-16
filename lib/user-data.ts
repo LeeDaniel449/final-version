@@ -255,7 +255,7 @@ class UserDataManager {
           }
         }
       } else {
-        // Save current data before signing out (unless explicit sign out)
+        // Save current user data before signing out (unless explicit sign out)
         if (!isExplicitSignOut) {
           this.saveCurrentUserData()
         }
@@ -634,13 +634,11 @@ class UserDataManager {
 
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
-      // Priority 1: Clerk user ID
       const clerkUserId = (window as any).__clerk_user_id
       if (clerkUserId) {
         userId = clerkUserId
         console.log("[v0] Using Clerk user ID:", userId)
       } else {
-        // Priority 2: Check both localStorage AND sessionStorage for authenticated user
         const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
         const sessionUser = sessionStorage.getItem('wealthwise_session_user')
         const authenticated = localStorage.getItem("wealthwise_authenticated") === "true" ||
@@ -650,29 +648,33 @@ class UserDataManager {
         
         if (userId && authenticated) {
           console.log("[v0] Using fallback authenticated user ID:", userId)
+          if (!localUser && userId) {
+            this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
+          }
+          if (!sessionUser && userId) {
+            this.setStorageItem('wealthwise_session_user', userId, true)
+          }
         } else {
-          // Priority 3: Check if there's only one registered user - use that
           const registeredUsers = this.getRegisteredUsers()
           const userKeys = Object.keys(registeredUsers)
           
           if (userKeys.length === 1) {
             userId = userKeys[0]
-            console.log("[v0] Using single registered user ID:", userId)
-            // Set as current user for consistency
+            console.log("[v0] Auto-selecting single registered user:", userId)
             this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
             this.setStorageItem('wealthwise_session_user', userId, true)
+            this.setStorageItem("wealthwise_authenticated", "true")
           }
         }
       }
     }
 
     if (!userId) {
-      console.warn("[v0] No user ID available - data will not sync across devices")
+      console.warn("[v0] No user ID available - data will not persist across devices. Please sign in.")
       return `${baseKey}_anonymous`
     }
 
     const storageKey = `${baseKey}_${userId}`
-    console.log("[v0] Using storage key:", storageKey)
     return storageKey
   }
 
@@ -719,24 +721,19 @@ class UserDataManager {
     }
   }
 
-  /* ---------- CATEGORY HELPERS ---------- */
-  private getDefaultBudgetCategories(): BudgetCategory[] {
-    return []
-  }
-
   /* ---------- CATEGORY CRUD ---------- */
   getBudgetCategories(): BudgetCategory[] {
     if (typeof window === "undefined") return []
 
     try {
-      const userId = this.getClerkUserId()
-
-      if (!userId) {
-        console.log("[v0] No Clerk user ID - returning empty categories")
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
+      
+      // Check if we got an anonymous key - if so, return empty
+      if (storageKey.endsWith('_anonymous')) {
+        console.log("[v0] No authenticated user - returning empty categories")
         return []
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
       console.log("[v0] Loading categories from:", storageKey)
       const stored = localStorage.getItem(storageKey)
 
@@ -745,7 +742,6 @@ class UserDataManager {
         console.log("[v0] Loaded categories:", parsed.length, "items")
 
         if (parsed.length > 0) {
-          // Validate that each category has the required properties
           const validCategories = parsed.every(
             (cat) =>
               cat.hasOwnProperty("budgetAmount") &&
@@ -773,16 +769,15 @@ class UserDataManager {
   saveBudgetCategories(categories: BudgetCategory[]): void {
     if (typeof window === "undefined") return
     try {
-      const userId = this.getClerkUserId()
-
-      if (!userId) {
-        console.error("[v0] Cannot save categories - no Clerk user ID")
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
+      
+      if (storageKey.endsWith('_anonymous')) {
+        console.error("[v0] Cannot save categories - no authenticated user")
         return
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
       localStorage.setItem(storageKey, JSON.stringify(categories))
-      console.log("[v0] Budget categories saved for user:", userId, "- count:", categories.length)
+      console.log("[v0] Budget categories saved - count:", categories.length)
     } catch (err) {
       console.error("Error saving budget categories:", err)
     }
@@ -832,14 +827,13 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const userId = this.getClerkUserId()
-
-      if (!userId) {
-        console.log("[v0] No Clerk user ID - returning empty entries")
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+      
+      if (storageKey.endsWith('_anonymous')) {
+        console.log("[v0] No authenticated user - returning empty entries")
         return []
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
       console.log("[v0] Loading entries from:", storageKey)
       const stored = localStorage.getItem(storageKey)
       const entries = stored ? JSON.parse(stored) : []
@@ -854,26 +848,25 @@ class UserDataManager {
   saveBudgetEntries(entries: BudgetEntry[]): void {
     if (typeof window === "undefined") return
     try {
-      const userId = this.getClerkUserId()
-
-      if (!userId) {
-        console.error("[v0] Cannot save entries - no Clerk user ID")
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+      
+      if (storageKey.endsWith('_anonymous')) {
+        console.error("[v0] Cannot save entries - no authenticated user")
         return
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
       localStorage.setItem(storageKey, JSON.stringify(entries))
-      console.log("[v0] Budget entries saved for user:", userId, "- count:", entries.length)
+      console.log("[v0] Budget entries saved - count:", entries.length)
     } catch (err) {
       console.error("Error saving budget entries:", err)
     }
   }
 
   addBudgetEntry(entry: Omit<BudgetEntry, "id">): void {
-    const userId = this.getClerkUserId()
-
-    if (!userId) {
-      console.error("[v0] Cannot add budget entry - no Clerk user ID. User must sign in.")
+    const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
+    
+    if (storageKey.endsWith('_anonymous')) {
+      console.error("[v0] Cannot add budget entry - user not authenticated. Please sign in.")
       return
     }
 
@@ -1263,7 +1256,7 @@ class UserDataManager {
 
       // Update current lesson
       moduleProgress.currentLesson = lessonIndex
-      moduleProgress.lastAccessed = new Date().toISOString()
+      modulemoduleProgress.lastAccessed = new Date().toISOString()
 
       // Update completed lessons
       if (completed && !moduleProgress.completedLessons.includes(lessonIndex)) {
