@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Suspense, useEffect } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { ClerkProvider, useUser } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -13,8 +13,17 @@ const CLERK_PUBLISHABLE_KEY =
   process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
   "pk_test_ZW5hYmxlZC1lYWdsZS0yNy5jbGVyay5hY2NvdW50cy5kZXYk"
 
+function isIOSSafari() {
+  if (typeof window === 'undefined') return false
+  const ua = window.navigator.userAgent
+  const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
+  const webkit = !!ua.match(/WebKit/i)
+  return iOS && webkit && !ua.match(/CriOS/i)
+}
+
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
+  const [hasPromptedRefresh, setHasPromptedRefresh] = useState(false)
 
   useEffect(() => {
     if (isLoaded && user?.id) {
@@ -26,6 +35,20 @@ function ClerkUserIdSync() {
     }
   }, [isLoaded, user])
 
+  useEffect(() => {
+    if (isIOSSafari() && !hasPromptedRefresh) {
+      const timeout = setTimeout(() => {
+        if (!isLoaded) {
+          console.log("[v0] Clerk not loaded on iOS Safari - refreshing page")
+          setHasPromptedRefresh(true)
+          window.location.reload()
+        }
+      }, 3000)
+
+      return () => clearTimeout(timeout)
+    }
+  }, [isLoaded, hasPromptedRefresh])
+
   return null
 }
 
@@ -35,13 +58,8 @@ export function ClientLayout({
   children: React.ReactNode
 }) {
   useEffect(() => {
+    console.log("[v0] Device is iOS Safari:", isIOSSafari())
     console.log("[v0] Clerk publishable key available:", !!CLERK_PUBLISHABLE_KEY)
-    console.log("[v0] Environment:", process.env.NODE_ENV)
-    console.log("[v0] Using key from:", 
-      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" :
-      process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? "Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" :
-      "fallback"
-    )
     
     userDataManager.syncUserIdAcrossBrowserContexts()
   }, [])
@@ -80,6 +98,8 @@ export function ClientLayout({
         },
       }}
       telemetry={false}
+      afterSignInUrl="/"
+      afterSignUpUrl="/"
     >
       <ClerkUserIdSync />
       <SidebarProvider>
