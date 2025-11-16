@@ -2,38 +2,42 @@ import { createClient } from "@/lib/supabase/server"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-async function ensureTableExists(supabase: any) {
+async function ensureTableExists(supabase: any): Promise<boolean> {
   try {
-    // Check if table exists
+    // Try to query the table
     const { error: checkError } = await supabase
       .from("user_data")
       .select("id")
       .limit(1)
     
-    // If table exists, return true
-    if (!checkError || checkError.code !== "PGRST204") {
+    // Table exists
+    if (!checkError || !checkError.message?.includes("Could not find the table")) {
+      console.log("[v0] Table user_data exists")
       return true
     }
     
-    // Table doesn't exist, create it automatically
-    console.log("[v0] Creating user_data table automatically...")
+    // Table doesn't exist - create it
+    console.log("[v0] Creating user_data table...")
     
-    const createTableSQL = `
-      CREATE TABLE IF NOT EXISTS user_data (
-        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-        clerk_user_id text UNIQUE NOT NULL,
-        email text,
-        data jsonb DEFAULT '{}'::jsonb,
-        created_at timestamptz DEFAULT now(),
-        updated_at timestamptz DEFAULT now()
-      );
-      
-      CREATE INDEX IF NOT EXISTS idx_user_data_clerk_user_id ON user_data(clerk_user_id);
-      CREATE INDEX IF NOT EXISTS idx_user_data_email ON user_data(email);
-    `
-    
-    const { error: createError } = await supabase.rpc('exec_sql', { 
-      sql: createTableSQL 
+    // Use raw SQL to create table
+    const { error: createError } = await supabase.rpc('exec_raw_sql', {
+      sql: `
+        CREATE TABLE IF NOT EXISTS user_data (
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          clerk_user_id TEXT UNIQUE NOT NULL,
+          email TEXT,
+          data JSONB DEFAULT '{}'::jsonb,
+          created_at TIMESTAMPTZ DEFAULT NOW(),
+          updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
+        
+        CREATE INDEX IF NOT EXISTS idx_user_data_clerk_user_id ON user_data(clerk_user_id);
+        
+        ALTER TABLE user_data ENABLE ROW LEVEL SECURITY;
+        
+        DROP POLICY IF EXISTS "Allow all operations" ON user_data;
+        CREATE POLICY "Allow all operations" ON user_data FOR ALL USING (true) WITH CHECK (true);
+      `
     })
     
     if (createError) {
@@ -41,7 +45,7 @@ async function ensureTableExists(supabase: any) {
       return false
     }
     
-    console.log("[v0] Table created successfully")
+    console.log("[v0] Table created successfully!")
     return true
   } catch (error) {
     console.error("[v0] Error in ensureTableExists:", error)
@@ -75,6 +79,12 @@ export async function GET(request: Request) {
     }
 
     const supabase = await createClient()
+    
+    const tableExists = await ensureTableExists(supabase)
+    if (!tableExists) {
+      console.log("[v0] Table creation failed, returning empty data")
+      return NextResponse.json({ data: {}, tableNotFound: true })
+    }
 
     const { data, error } = await supabase
       .from("user_data")
@@ -83,16 +93,21 @@ export async function GET(request: Request) {
       .single()
 
     if (error) {
-      // Table doesn't exist or no data found
-      if (error.code === "PGRST116" || error.code === "42P01" || error.message.includes("Could not find the table")) {
-        return NextResponse.json({ data: {}, tableNotFound: true })
+      // No data found for this user yet
+      if (error.code === "PGRST116") {
+        console.log("[v0] No data found for user, returning empty")
+        return NextResponse.json({ data: {} })
       }
-      return NextResponse.json({ data: {} })
+      
+      console.error("[v0] Database error:", error.message)
+      return NextResponse.json({ data: {}, error: error.message })
     }
 
+    console.log("[v0] Successfully loaded data from database")
     return NextResponse.json({ data: data?.data || {} })
-  } catch (error) {
-    return NextResponse.json({ data: {}, tableNotFound: true })
+  } catch (error: any) {
+    console.error("[v0] GET error:", error)
+    return NextResponse.json({ data: {}, error: error.message })
   }
 }
 
@@ -124,6 +139,12 @@ export async function POST(request: Request) {
     }
 
     const supabase = await createClient()
+    
+    const tableExists = await ensureTableExists(supabase)
+    if (!tableExists) {
+      console.log("[v0] Table creation failed, cannot save data")
+      return NextResponse.json({ success: false, tableNotFound: true })
+    }
 
     const { error } = await supabase
       .from("user_data")
@@ -137,15 +158,14 @@ export async function POST(request: Request) {
       })
 
     if (error) {
-      // Table doesn't exist - return success but indicate no table
-      if (error.code === "42P01" || error.message.includes("Could not find the table")) {
-        return NextResponse.json({ success: true, tableNotFound: true })
-      }
-      return NextResponse.json({ success: false })
+      console.error("[v0] Save error:", error.message)
+      return NextResponse.json({ success: false, error: error.message })
     }
 
+    console.log("[v0] Successfully saved data to database")
     return NextResponse.json({ success: true })
-  } catch (error) {
-    return NextResponse.json({ success: true, tableNotFound: true })
+  } catch (error: any) {
+    console.error("[v0] POST error:", error)
+    return NextResponse.json({ success: false, error: error.message })
   }
 }

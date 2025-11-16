@@ -50,6 +50,7 @@ function ClerkUserIdSync() {
       const fallbackUserId = localUser || sessionUser
       
       if (fallbackUserId && authenticated && !user?.id) {
+        console.log("[v0] Setting fallback user ID and loading database:", fallbackUserId)
         userDataManager.setClerkUserId(fallbackUserId)
       }
     }

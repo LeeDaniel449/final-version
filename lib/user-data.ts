@@ -235,7 +235,7 @@ class UserDataManager {
     return this.isUserSignedUp()
   }
 
-  private databaseSyncEnabled = false // Disable by default until table is confirmed to exist
+  private databaseSyncEnabled = true // Enable database sync by default
 
   private async syncToDatabase(userId: string): Promise<void> {
     if (typeof window === "undefined" || !this.databaseSyncEnabled) return
@@ -259,23 +259,20 @@ class UserDataManager {
           "Content-Type": "application/json",
           "x-user-id": userId
         },
-        body: JSON.JSON.stringify({ data, userId }),
+        body: JSON.stringify({ data, userId }), // Fixed JSON.JSON typo
       })
 
       if (!response.ok) {
         const result = await response.json()
         if (result.tableNotFound) {
-          console.log("[v0] Database table not found - disabling database sync")
-          this.databaseSyncEnabled = false
+          console.log("[v0] Database table not ready - will retry later")
           return
         }
-        const errorText = await response.text()
-        console.error("[v0] Failed to sync to database:", errorText)
+        console.error("[v0] Failed to sync to database:", result)
       } else {
         const result = await response.json()
         if (result.tableNotFound) {
-          console.log("[v0] Database table not found - using localStorage only")
-          this.databaseSyncEnabled = false
+          console.log("[v0] Database table not ready - using localStorage only")
         } else {
           console.log("[v0] Successfully synced data to database")
         }
@@ -300,20 +297,17 @@ class UserDataManager {
       if (!response.ok) {
         const result = await response.json()
         if (result.tableNotFound) {
-          console.log("[v0] Database table not found - disabling database sync")
-          this.databaseSyncEnabled = false
+          console.log("[v0] Database table not ready - using localStorage only")
           return
         }
-        const errorText = await response.text()
-        console.error("[v0] Failed to load from database:", response.status, errorText)
+        console.error("[v0] Failed to load from database:", response.status)
         return
       }
 
       const { data, tableNotFound } = await response.json()
       
       if (tableNotFound) {
-        console.log("[v0] Database table not found - using localStorage only")
-        this.databaseSyncEnabled = false
+        console.log("[v0] Database table not ready - using localStorage only")
         return
       }
       
