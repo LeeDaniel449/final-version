@@ -41,7 +41,7 @@ function ClerkUserIdSync() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     
-    const checkFallbackAuth = async () => {
+    const migrateExistingData = async () => {
       const localUser = localStorage.getItem('wealthwise_current_user')
       const sessionUser = sessionStorage.getItem('wealthwise_session_user')
       const authenticated = localStorage.getItem("wealthwise_authenticated") === "true" ||
@@ -49,13 +49,20 @@ function ClerkUserIdSync() {
       
       const fallbackUserId = localUser || sessionUser
       
-      if (fallbackUserId && authenticated && !user?.id) {
-        console.log("[v0] Loading database with fallback auth:", fallbackUserId)
+      if (fallbackUserId && authenticated) {
+        console.log("[v0] Setting fallback user ID and loading database:", fallbackUserId)
         userDataManager.setClerkUserId(fallbackUserId)
+        
+        // Check if user has existing local data that needs migration
+        const hasLocalData = userDataManager.hasStartedBudgeting()
+        if (hasLocalData) {
+          console.log("[v0] Found existing local data - uploading to database")
+          await userDataManager.migrateLocalDataToDatabase(fallbackUserId)
+        }
       }
     }
     
-    const timeout = setTimeout(checkFallbackAuth, 6000)
+    const timeout = setTimeout(migrateExistingData, 6000)
     return () => clearTimeout(timeout)
   }, [user?.id])
 

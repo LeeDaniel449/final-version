@@ -332,6 +332,65 @@ class UserDataManager {
     }
   }
 
+  async migrateLocalDataToDatabase(userId: string): Promise<void> {
+    if (typeof window === "undefined") return
+
+    try {
+      console.log("[v0] Starting migration of local data to database for user:", userId)
+      
+      // Check if data already exists in database
+      const response = await fetch("/api/user-data", {
+        headers: { "x-user-id": userId }
+      })
+      
+      if (response.ok) {
+        const { data } = await response.json()
+        
+        // If database already has data, don't overwrite
+        if (data && Object.keys(data).length > 0) {
+          console.log("[v0] Database already has data - skipping migration")
+          return
+        }
+      }
+      
+      // Gather all existing local data
+      const localData = {
+        profile: this.getUserProfile(),
+        budgetData: this.getBudgetData(),
+        budgetCategories: this.getBudgetCategories(),
+        budgetEntries: this.getBudgetEntries(),
+        goals: this.getGoals(),
+        learningProgress: this.getLearningProgress(),
+        userProgress: this.getUserProgress(),
+      }
+      
+      // Check if there's any meaningful data to migrate
+      const hasData = localData.budgetCategories.length > 0 || 
+                      localData.budgetEntries.length > 0 || 
+                      localData.goals.length > 0 ||
+                      localData.userProgress.completedModules.length > 0
+      
+      if (!hasData) {
+        console.log("[v0] No local data to migrate")
+        return
+      }
+      
+      console.log("[v0] Migrating local data:", {
+        categories: localData.budgetCategories.length,
+        entries: localData.budgetEntries.length,
+        goals: localData.goals.length,
+        completedModules: localData.userProgress.completedModules.length
+      })
+      
+      // Upload to database
+      await this.syncToDatabase(userId)
+      
+      console.log("[v0] Successfully migrated local data to database")
+    } catch (error) {
+      console.error("[v0] Error migrating local data:", error)
+    }
+  }
+
   setUserSignedIn(signedIn: boolean, isExplicitSignOut = false): void {
     if (typeof window === "undefined") return
 
@@ -355,6 +414,7 @@ class UserDataManager {
         const clerkUserId = (window as any).__clerk_user_id
         if (clerkUserId) {
           this.loadFromDatabase(clerkUserId).catch(console.error)
+          this.migrateLocalDataToDatabase(clerkUserId).catch(console.error) // Added migration call
         }
       } else {
         const clerkUserId = (window as any).__clerk_user_id
@@ -793,6 +853,7 @@ class UserDataManager {
       console.log("[v0] Clerk user ID set:", userId)
       
       this.loadFromDatabase(userId).catch(console.error)
+      this.migrateLocalDataToDatabase(userId).catch(console.error) // Added migration call
     } else {
       const currentUserId = (window as any).__clerk_user_id
       if (currentUserId) {
