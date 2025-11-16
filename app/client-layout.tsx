@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { Suspense, useEffect } from "react"
-import { ClerkProvider } from "@clerk/nextjs"
+import { ClerkProvider, useUser } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
@@ -12,6 +12,22 @@ const CLERK_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
   process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
   "pk_test_ZW5hYmxlZC1lYWdsZS0yNy5jbGVyay5hY2NvdW50cy5kZXYk"
+
+function ClerkUserIdSync() {
+  const { user, isLoaded } = useUser()
+
+  useEffect(() => {
+    if (isLoaded && user?.id) {
+      console.log("[v0] Clerk loaded successfully - setting user ID:", user.id)
+      userDataManager.setClerkUserId(user.id)
+    } else if (isLoaded && !user) {
+      console.log("[v0] Clerk loaded but no user signed in")
+      userDataManager.setClerkUserId(null)
+    }
+  }, [isLoaded, user])
+
+  return null
+}
 
 export function ClientLayout({
   children,
@@ -65,6 +81,7 @@ export function ClientLayout({
       }}
       telemetry={false}
     >
+      <ClerkUserIdSync />
       <SidebarProvider>
         <Suspense fallback={<div>Loading...</div>}>
           <AppSidebar />

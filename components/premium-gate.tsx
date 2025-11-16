@@ -48,11 +48,11 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     const timeout = setTimeout(() => {
       if (!isLoaded && !checkComplete) {
-        console.log("[v0] PremiumGate: Clerk load timeout (2s), treating as no user (allowing access)")
+        console.log("[v0] PremiumGate: Clerk load timeout (5s), treating as no user (allowing access)")
         setShowOverlay(false)
         setCheckComplete(true)
       }
-    }, 2000)
+    }, 5000)
 
     if (!isLoaded) {
       console.log("[v0] PremiumGate: Clerk not loaded yet")
