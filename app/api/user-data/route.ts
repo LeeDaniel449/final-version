@@ -24,14 +24,14 @@ async function ensureTableExists(supabase: any): Promise<boolean> {
       sql: `
         CREATE TABLE IF NOT EXISTS user_data (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          clerk_user_id TEXT UNIQUE NOT NULL,
+          user_id TEXT UNIQUE NOT NULL,
           email TEXT,
           data JSONB DEFAULT '{}'::jsonb,
           created_at TIMESTAMPTZ DEFAULT NOW(),
           updated_at TIMESTAMPTZ DEFAULT NOW()
         );
         
-        CREATE INDEX IF NOT EXISTS idx_user_data_clerk_user_id ON user_data(clerk_user_id);
+        CREATE INDEX IF NOT EXISTS idx_user_data_user_id ON user_data(user_id);
         
         ALTER TABLE user_data ENABLE ROW LEVEL SECURITY;
         
@@ -56,12 +56,10 @@ async function ensureTableExists(supabase: any): Promise<boolean> {
 export async function GET(request: Request) {
   try {
     let userId: string | null = null
-    let userEmail: string | null = null
 
     try {
       const authResult = await auth()
       userId = authResult.userId
-      userEmail = authResult.user?.emailAddresses?.[0]?.emailAddress || null
     } catch (error) {
       // Clerk auth not available
     }
@@ -70,7 +68,6 @@ export async function GET(request: Request) {
       const fallbackUserId = request.headers.get("x-user-id")
       if (fallbackUserId) {
         userId = fallbackUserId
-        userEmail = fallbackUserId
       }
     }
     
@@ -80,16 +77,10 @@ export async function GET(request: Request) {
 
     const supabase = await createClient()
     
-    const tableExists = await ensureTableExists(supabase)
-    if (!tableExists) {
-      console.log("[v0] Table creation failed, returning empty data")
-      return NextResponse.json({ data: {}, tableNotFound: true })
-    }
-
     const { data, error } = await supabase
       .from("user_data")
       .select("data")
-      .eq("clerk_user_id", userId)
+      .eq("user_id", userId)
       .single()
 
     if (error) {
@@ -103,7 +94,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ data: {}, error: error.message })
     }
 
-    console.log("[v0] Successfully loaded data from database")
+    console.log("[v0] Successfully loaded data from database for user:", userId)
     return NextResponse.json({ data: data?.data || {} })
   } catch (error: any) {
     console.error("[v0] GET error:", error)
@@ -114,12 +105,10 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     let userId: string | null = null
-    let userEmail: string | null = null
 
     try {
       const authResult = await auth()
       userId = authResult.userId
-      userEmail = authResult.user?.emailAddresses?.[0]?.emailAddress || null
     } catch (error) {
       // Clerk auth not available
     }
@@ -130,7 +119,6 @@ export async function POST(request: Request) {
       const fallbackUserId = body.userId || request.headers.get("x-user-id")
       if (fallbackUserId) {
         userId = fallbackUserId
-        userEmail = fallbackUserId
       }
     }
     
@@ -140,21 +128,14 @@ export async function POST(request: Request) {
 
     const supabase = await createClient()
     
-    const tableExists = await ensureTableExists(supabase)
-    if (!tableExists) {
-      console.log("[v0] Table creation failed, cannot save data")
-      return NextResponse.json({ success: false, tableNotFound: true })
-    }
-
     const { error } = await supabase
       .from("user_data")
       .upsert({
-        clerk_user_id: userId,
-        email: userEmail,
+        user_id: userId,
         data: body.data || {},
         updated_at: new Date().toISOString(),
       }, {
-        onConflict: "clerk_user_id"
+        onConflict: "user_id"
       })
 
     if (error) {
@@ -162,7 +143,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: error.message })
     }
 
-    console.log("[v0] Successfully saved data to database")
+    console.log("[v0] Successfully saved data to database for user:", userId)
     return NextResponse.json({ success: true })
   } catch (error: any) {
     console.error("[v0] POST error:", error)

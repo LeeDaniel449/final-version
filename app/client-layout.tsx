@@ -24,30 +24,6 @@ function isIOSSafari() {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [hasPromptedRefresh, setHasPromptedRefresh] = useState(false)
-  const [dbInitialized, setDbInitialized] = useState(false)
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || dbInitialized) return
-    
-    const initDatabase = async () => {
-      try {
-        console.log("[v0] Initializing database...")
-        const response = await fetch('/api/init-database', { method: 'POST' })
-        const result = await response.json()
-        
-        if (result.success) {
-          console.log("[v0] Database initialized successfully")
-          setDbInitialized(true)
-        } else {
-          console.log("[v0] Database initialization skipped:", result.error || 'unknown')
-        }
-      } catch (error) {
-        console.log("[v0] Database init error (will use localStorage):", error)
-      }
-    }
-    
-    initDatabase()
-  }, [dbInitialized])
 
   useEffect(() => {
     if (isLoaded && user?.id) {
@@ -63,7 +39,7 @@ function ClerkUserIdSync() {
   }, [isLoaded, user])
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !dbInitialized) return
+    if (typeof window === 'undefined') return
     
     const checkFallbackAuth = async () => {
       const localUser = localStorage.getItem('wealthwise_current_user')
@@ -74,14 +50,14 @@ function ClerkUserIdSync() {
       const fallbackUserId = localUser || sessionUser
       
       if (fallbackUserId && authenticated && !user?.id) {
-        console.log("[v0] Setting fallback user ID and loading database:", fallbackUserId)
+        console.log("[v0] Loading database with fallback auth:", fallbackUserId)
         userDataManager.setClerkUserId(fallbackUserId)
       }
     }
     
     const timeout = setTimeout(checkFallbackAuth, 6000)
     return () => clearTimeout(timeout)
-  }, [user?.id, dbInitialized])
+  }, [user?.id])
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {
