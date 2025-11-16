@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut, RefreshCw } from 'lucide-react'
+import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from 'lucide-react'
 import { UserButton } from "@/components/user-button"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -109,7 +109,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       icon: Target,
     },
     { title: "AI Advisor", url: "/ai-advisor", icon: Bot },
-    { title: "Sync Data", url: "/sync-data", icon: RefreshCw },
   ]
 
   const navSecondary = [
