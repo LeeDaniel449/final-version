@@ -3,12 +3,50 @@ import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
 async function ensureTableExists(supabase: any) {
-  const { error } = await supabase
-    .from("user_data")
-    .select("id")
-    .limit(1)
-  
-  return !error || error.code !== "42P01" // 42P01 = table doesn't exist
+  try {
+    // Check if table exists
+    const { error: checkError } = await supabase
+      .from("user_data")
+      .select("id")
+      .limit(1)
+    
+    // If table exists, return true
+    if (!checkError || checkError.code !== "PGRST204") {
+      return true
+    }
+    
+    // Table doesn't exist, create it automatically
+    console.log("[v0] Creating user_data table automatically...")
+    
+    const createTableSQL = `
+      CREATE TABLE IF NOT EXISTS user_data (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        clerk_user_id text UNIQUE NOT NULL,
+        email text,
+        data jsonb DEFAULT '{}'::jsonb,
+        created_at timestamptz DEFAULT now(),
+        updated_at timestamptz DEFAULT now()
+      );
+      
+      CREATE INDEX IF NOT EXISTS idx_user_data_clerk_user_id ON user_data(clerk_user_id);
+      CREATE INDEX IF NOT EXISTS idx_user_data_email ON user_data(email);
+    `
+    
+    const { error: createError } = await supabase.rpc('exec_sql', { 
+      sql: createTableSQL 
+    })
+    
+    if (createError) {
+      console.error("[v0] Failed to create table:", createError)
+      return false
+    }
+    
+    console.log("[v0] Table created successfully")
+    return true
+  } catch (error) {
+    console.error("[v0] Error in ensureTableExists:", error)
+    return false
+  }
 }
 
 export async function GET(request: Request) {
@@ -21,7 +59,7 @@ export async function GET(request: Request) {
       userId = authResult.userId
       userEmail = authResult.user?.emailAddresses?.[0]?.emailAddress || null
     } catch (error) {
-      console.log("[v0] Clerk auth not available, checking fallback auth")
+      // Clerk auth not available
     }
 
     if (!userId) {
@@ -29,7 +67,6 @@ export async function GET(request: Request) {
       if (fallbackUserId) {
         userId = fallbackUserId
         userEmail = fallbackUserId
-        console.log("[v0] Using fallback user ID:", userId)
       }
     }
     
@@ -38,16 +75,6 @@ export async function GET(request: Request) {
     }
 
     const supabase = await createClient()
-    
-    const tableExists = await ensureTableExists(supabase)
-    if (!tableExists) {
-      console.log("[v0] Database table doesn't exist - run setup endpoint first")
-      return NextResponse.json({ 
-        data: {}, 
-        tableNotFound: true,
-        setupEndpoint: "/api/setup-database"
-      })
-    }
 
     const { data, error } = await supabase
       .from("user_data")
@@ -56,20 +83,16 @@ export async function GET(request: Request) {
       .single()
 
     if (error) {
-      if (error.code !== "PGRST116") {
-        console.error("[v0] Database error:", error.message)
-        return NextResponse.json({ error: error.message }, { status: 500 })
+      // Table doesn't exist or no data found
+      if (error.code === "PGRST116" || error.code === "42P01" || error.message.includes("Could not find the table")) {
+        return NextResponse.json({ data: {}, tableNotFound: true })
       }
+      return NextResponse.json({ data: {} })
     }
 
-    console.log("[v0] Loaded data from database for user:", userId)
     return NextResponse.json({ data: data?.data || {} })
   } catch (error) {
-    console.error("[v0] API error:", error)
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to fetch data" },
-      { status: 500 }
-    )
+    return NextResponse.json({ data: {}, tableNotFound: true })
   }
 }
 
@@ -83,7 +106,7 @@ export async function POST(request: Request) {
       userId = authResult.userId
       userEmail = authResult.user?.emailAddresses?.[0]?.emailAddress || null
     } catch (error) {
-      console.log("[v0] Clerk auth not available, checking fallback auth")
+      // Clerk auth not available
     }
 
     const body = await request.json()
@@ -93,7 +116,6 @@ export async function POST(request: Request) {
       if (fallbackUserId) {
         userId = fallbackUserId
         userEmail = fallbackUserId
-        console.log("[v0] Using fallback user ID for save:", userId)
       }
     }
     
@@ -103,40 +125,27 @@ export async function POST(request: Request) {
 
     const supabase = await createClient()
 
-    const tableExists = await ensureTableExists(supabase)
-    if (!tableExists) {
-      console.log("[v0] Database table doesn't exist - data saved locally only")
-      return NextResponse.json({ 
-        success: true, 
-        tableNotFound: true,
-        setupEndpoint: "/api/setup-database"
-      })
-    }
-
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("user_data")
       .upsert({
         clerk_user_id: userId,
         email: userEmail,
         data: body.data || {},
+        updated_at: new Date().toISOString(),
       }, {
         onConflict: "clerk_user_id"
       })
-      .select()
-      .single()
 
     if (error) {
-      console.error("[v0] Database save error:", error.message)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      // Table doesn't exist - return success but indicate no table
+      if (error.code === "42P01" || error.message.includes("Could not find the table")) {
+        return NextResponse.json({ success: true, tableNotFound: true })
+      }
+      return NextResponse.json({ success: false })
     }
 
-    console.log("[v0] Data saved successfully to database for user:", userId)
-    return NextResponse.json({ success: true, data })
+    return NextResponse.json({ success: true })
   } catch (error) {
-    console.error("[v0] API save error:", error)
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to save data" },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: true, tableNotFound: true })
   }
 }

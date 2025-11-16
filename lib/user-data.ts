@@ -235,7 +235,7 @@ class UserDataManager {
     return this.isUserSignedUp()
   }
 
-  private databaseSyncEnabled = true
+  private databaseSyncEnabled = false // Disable by default until table is confirmed to exist
 
   private async syncToDatabase(userId: string): Promise<void> {
     if (typeof window === "undefined" || !this.databaseSyncEnabled) return

@@ -3,7 +3,7 @@
 import { DialogDescription } from "@/components/ui/dialog"
 
 import { useState, useCallback, useEffect, useMemo, useRef } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,11 +11,12 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import { Calculator, TrendingUp, AlertTriangle, Lightbulb, DollarSign, BarChart3, Target, Zap, Brain, CreditCard, LogIn, PieChartIcon, UserPlus, Bell, Plus, Wallet, Banknote, Home, Car, Coffee, Gamepad2, Heart, Phone, Plane, RotateCcw, Snowflake, TrendingDown, Trash2 } from 'lucide-react'
+import { Calculator, TrendingUp, AlertTriangle, Lightbulb, DollarSign, BarChart3, Target, Zap, Brain, CreditCard, LogIn, PieChartIcon, UserPlus, Bell, Plus, Wallet, Banknote, Home, Car, Coffee, Gamepad2, Heart, Phone, Plane, RotateCcw, Snowflake, TrendingDown, Trash2, Edit2, Calendar, PlusCircle } from 'lucide-react'
 import { userDataManager } from "@/lib/user-data"
+import type { BudgetCategory, BudgetEntry } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
@@ -23,7 +24,10 @@ import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from 'lucide-react' // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { SyncPromptBanner } from "@/components/sync-prompt-banner"
+import { format } from "date-fns"
+import debounce from "lodash/debounce"
+import { useRouter } from 'next/navigation'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface BudgetCategory {
   name: string
@@ -256,6 +260,7 @@ const CustomPieChart = ({ data }: { data: any[] }) => {
 
 const BudgetDashboardContent = () => {
   const { user, isLoaded: isClerkLoaded } = useUser()
+  const router = useRouter()
 
   const [isUserSignedUp, setIsUserSignedUp] = useState(false)
   const [hasStartedBudgeting, setHasStartedBudgeting] = useState(false)
@@ -355,7 +360,7 @@ const BudgetDashboardContent = () => {
         const savedDebts = localStorage.getItem(storageKey)
         if (savedDebts) {
           try {
-            const parsedDebts = JSON.parse(savedDebts)
+            const parsedDebts = JSON.JSON.parse(savedDebts)
             console.log("[v0] Loaded debts from fallback storage:", parsedDebts)
             setDebts(parsedDebts)
           } catch (error) {

@@ -24,24 +24,19 @@ function isIOSSafari() {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [hasPromptedRefresh, setHasPromptedRefresh] = useState(false)
-  const [hasLoadedFromDB, setHasLoadedFromDB] = useState(false)
 
   useEffect(() => {
-    if (isLoaded && user?.id && !hasLoadedFromDB) {
-      console.log("[v0] Clerk loaded successfully - setting user ID:", user.id)
+    if (isLoaded && user?.id) {
       userDataManager.setClerkUserId(user.id)
       
       if (typeof window !== 'undefined') {
         localStorage.setItem('wealthwise_current_user', user.primaryEmailAddress?.emailAddress || user.id)
         sessionStorage.setItem('wealthwise_session_user', user.primaryEmailAddress?.emailAddress || user.id)
       }
-      
-      setHasLoadedFromDB(true)
     } else if (isLoaded && !user) {
-      console.log("[v0] Clerk loaded but no user signed in")
       userDataManager.setClerkUserId(null)
     }
-  }, [isLoaded, user, hasLoadedFromDB])
+  }, [isLoaded, user])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -54,22 +49,19 @@ function ClerkUserIdSync() {
       
       const fallbackUserId = localUser || sessionUser
       
-      if (fallbackUserId && authenticated && !user?.id && !hasLoadedFromDB) {
-        console.log("[v0] Using fallback authentication - loading from database for:", fallbackUserId)
+      if (fallbackUserId && authenticated && !user?.id) {
         userDataManager.setClerkUserId(fallbackUserId)
-        setHasLoadedFromDB(true)
       }
     }
     
     const timeout = setTimeout(checkFallbackAuth, 6000)
     return () => clearTimeout(timeout)
-  }, [user?.id, hasLoadedFromDB])
+  }, [user?.id])
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {
       const timeout = setTimeout(() => {
         if (!isLoaded) {
-          console.log("[v0] Clerk not loaded on iOS Safari - refreshing page")
           setHasPromptedRefresh(true)
           window.location.reload()
         }
@@ -78,20 +70,6 @@ function ClerkUserIdSync() {
       return () => clearTimeout(timeout)
     }
   }, [isLoaded, hasPromptedRefresh])
-
-  useEffect(() => {
-    const userId = user?.id || localStorage.getItem('wealthwise_current_user') || 
-                   sessionStorage.getItem('wealthwise_session_user')
-    
-    if (!userId) return
-
-    const syncInterval = setInterval(() => {
-      console.log("[v0] Auto-syncing to database...")
-      userDataManager.setClerkUserId(userId)
-    }, 30000)
-
-    return () => clearInterval(syncInterval)
-  }, [user?.id])
 
   return null
 }
@@ -102,9 +80,6 @@ export function ClientLayout({
   children: React.ReactNode
 }) {
   useEffect(() => {
-    console.log("[v0] Device is iOS Safari:", isIOSSafari())
-    console.log("[v0] Clerk publishable key available:", !!CLERK_PUBLISHABLE_KEY)
-    
     userDataManager.syncUserIdAcrossBrowserContexts()
   }, [])
 
