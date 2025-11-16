@@ -1584,7 +1584,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <Brain className="w-5 h-5" />
                   AI Insights (Preview)
-                </CardTitle>
+                </Title>
                 <CardDescription className="text-gray-400">Get personalized financial recommendations</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1744,7 +1744,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <PieChartIcon className="w-5 h-5" />
                   Budget Categories (Preview)
-                </CardTitle>
+                </Title>
                 <CardDescription className="text-gray-400">Track spending across different categories</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1769,7 +1769,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <Brain className="w-5 h-5" />
                   AI Insights (Preview)
-                </CardTitle>
+                </Title>
                 <CardDescription className="text-gray-400">Get personalized financial recommendations</CardDescription>
               </CardHeader>
               <CardContent>
@@ -2168,7 +2168,7 @@ const BudgetDashboardContent = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-green-900">Income Overview</h3>
-                  <p className="text-green-700 text-sm">Track your income and budget allocation</p>
+                  <p className="text-green-700 text-sm">Track your income sources and see how much is available for budgeting</p>
                 </div>
               </div>
               <div className="text-right">
