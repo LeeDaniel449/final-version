@@ -31,7 +31,6 @@ function ClerkUserIdSync() {
       console.log("[v0] Clerk loaded successfully - setting user ID:", user.id)
       userDataManager.setClerkUserId(user.id)
       
-      // Also set this as the current user in storage to ensure consistency
       if (typeof window !== 'undefined') {
         localStorage.setItem('wealthwise_current_user', user.primaryEmailAddress?.emailAddress || user.id)
         sessionStorage.setItem('wealthwise_session_user', user.primaryEmailAddress?.emailAddress || user.id)
@@ -43,6 +42,28 @@ function ClerkUserIdSync() {
       userDataManager.setClerkUserId(null)
     }
   }, [isLoaded, user, hasLoadedFromDB])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const checkFallbackAuth = async () => {
+      const localUser = localStorage.getItem('wealthwise_current_user')
+      const sessionUser = sessionStorage.getItem('wealthwise_session_user')
+      const authenticated = localStorage.getItem("wealthwise_authenticated") === "true" ||
+                           sessionStorage.getItem("wealthwise_session_in") === "true"
+      
+      const fallbackUserId = localUser || sessionUser
+      
+      if (fallbackUserId && authenticated && !user?.id && !hasLoadedFromDB) {
+        console.log("[v0] Using fallback authentication - loading from database for:", fallbackUserId)
+        userDataManager.setClerkUserId(fallbackUserId)
+        setHasLoadedFromDB(true)
+      }
+    }
+    
+    const timeout = setTimeout(checkFallbackAuth, 6000)
+    return () => clearTimeout(timeout)
+  }, [user?.id, hasLoadedFromDB])
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {
@@ -59,12 +80,15 @@ function ClerkUserIdSync() {
   }, [isLoaded, hasPromptedRefresh])
 
   useEffect(() => {
-    if (!user?.id) return
+    const userId = user?.id || localStorage.getItem('wealthwise_current_user') || 
+                   sessionStorage.getItem('wealthwise_session_user')
+    
+    if (!userId) return
 
     const syncInterval = setInterval(() => {
       console.log("[v0] Auto-syncing to database...")
-      userDataManager.setClerkUserId(user.id) // This triggers syncToDatabase
-    }, 30000) // Sync every 30 seconds
+      userDataManager.setClerkUserId(userId)
+    }, 30000)
 
     return () => clearInterval(syncInterval)
   }, [user?.id])
