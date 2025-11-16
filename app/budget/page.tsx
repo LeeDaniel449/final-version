@@ -360,7 +360,7 @@ const BudgetDashboardContent = () => {
         const savedDebts = localStorage.getItem(storageKey)
         if (savedDebts) {
           try {
-            const parsedDebts = JSON.JSON.parse(savedDebts)
+            const parsedDebts = JSON.parse(savedDebts) // Fixed JSON.JSON.parse typo
             console.log("[v0] Loaded debts from fallback storage:", parsedDebts)
             setDebts(parsedDebts)
           } catch (error) {

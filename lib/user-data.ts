@@ -126,7 +126,7 @@ class UserDataManager {
     username: "",
     password: "",
     age: "",
-    experience: "",
+    experience: "beginner",
     goals: [],
     income: "",
     expenses: "",
@@ -955,8 +955,13 @@ class UserDataManager {
       console.log("[v0] Budget categories saved - count:", categories.length)
       
       const clerkUserId = (window as any).__clerk_user_id
-      if (clerkUserId) {
-        this.syncToDatabase(clerkUserId).catch(console.error)
+      const fallbackUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER) || 
+                          sessionStorage.getItem('wealthwise_session_user')
+      const userId = clerkUserId || fallbackUser
+      
+      if (userId) {
+        console.log("[v0] Triggering database sync for user:", userId)
+        this.syncToDatabase(userId).catch(console.error)
       }
     } catch (err) {
       console.error("Error saving budget categories:", err)
@@ -1039,8 +1044,13 @@ class UserDataManager {
       console.log("[v0] Budget entries saved - count:", entries.length)
       
       const clerkUserId = (window as any).__clerk_user_id
-      if (clerkUserId) {
-        this.syncToDatabase(clerkUserId).catch(console.error)
+      const fallbackUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER) || 
+                          sessionStorage.getItem('wealthwise_session_user')
+      const userId = clerkUserId || fallbackUser
+      
+      if (userId) {
+        console.log("[v0] Triggering database sync for user:", userId)
+        this.syncToDatabase(userId).catch(console.error)
       }
     } catch (err) {
       console.error("Error saving budget entries:", err)
