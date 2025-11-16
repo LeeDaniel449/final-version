@@ -14,34 +14,17 @@ export default function SubscribePage() {
   const router = useRouter()
   const [isAutoActivating, setIsAutoActivating] = useState(false)
 
-  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG ==========")
-  console.log("[v0] isLoaded:", isLoaded)
-  console.log("[v0] orgsLoaded:", orgsLoaded)
-  console.log("[v0] user exists:", !!user)
-  if (user) {
-    console.log("[v0] user id:", user.id)
-    console.log("[v0] publicMetadata:", user.publicMetadata)
-  }
-  console.log("[v0] userMemberships:", userMemberships)
-  console.log("[v0] userMemberships.data:", userMemberships?.data)
-  console.log("[v0] userMemberships.data.length:", userMemberships?.data?.length)
-
   const hasPremiumMetadata =
     user?.publicMetadata?.premium === true ||
     user?.publicMetadata?.subscriptionStatus === "active" ||
     user?.publicMetadata?.freeTrialActive === true
 
-  const hasOrgMembership = userMemberships && userMemberships.data && userMemberships.data.length > 0
-
-  console.log("[v0] hasPremiumMetadata:", hasPremiumMetadata)
-  console.log("[v0] hasOrgMembership:", hasOrgMembership)
-  console.log("[v0] ========== SUBSCRIBE PAGE DEBUG END ==========")
+  const hasOrgMembership = userMemberships?.data && userMemberships.data.length > 0
 
   useEffect(() => {
     if (!isLoaded || !orgsLoaded || !user || isAutoActivating) return
 
     if (hasOrgMembership && !hasPremiumMetadata) {
-      console.log("[v0] 🚀 Subscription detected! Auto-activating premium...")
       setIsAutoActivating(true)
 
       fetch("/api/webhooks/clerk?client=true", {
@@ -52,20 +35,18 @@ export default function SubscribePage() {
         .then(async (response) => {
           const data = await response.json()
           if (response.ok) {
-            console.log("[v0] ✅ Premium auto-activated successfully")
             await user.reload()
             setTimeout(() => {
               window.location.href = "/"
             }, 1000)
           } else {
-            console.error("[v0] ❌ Auto-activation failed:", data)
             setIsAutoActivating(false)
           }
         })
-        .catch((error) => {
-          console.error("[v0] ❌ Error during auto-activation:", error)
+        .catch(() => {
           setIsAutoActivating(false)
         })
+    }
   }, [isLoaded, orgsLoaded, user, hasOrgMembership, hasPremiumMetadata, isAutoActivating])
 
   if (!isLoaded || !orgsLoaded) {
