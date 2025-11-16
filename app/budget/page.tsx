@@ -1785,7 +1785,7 @@ const BudgetDashboardContent = () => {
         </div>
       </div>
     )
-  }
+  } // Added missing closing brace for if statement
 
   // Main dashboard - show when user has data or has started budgeting
   return (
