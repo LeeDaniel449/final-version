@@ -634,16 +634,23 @@ class UserDataManager {
 
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
-      // Try to get userId from Clerk if available
       const clerkUserId = (window as any).__clerk_user_id
       if (clerkUserId) {
         userId = clerkUserId
+      } else {
+        // Fallback to wealthwise current user for when Clerk doesn't load
+        const currentUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER) || 
+                           sessionStorage.getItem('wealthwise_session_user')
+        if (currentUser) {
+          userId = currentUser
+          console.log("[v0] Using fallback user ID from wealthwise:", userId)
+        }
       }
     }
 
     if (!userId) {
       console.log("[v0] No user ID available for storage key:", baseKey)
-      return `${baseKey}_NO_USER` // Use a special key that will never match real data
+      return `${baseKey}_anonymous`
     }
 
     const storageKey = `${baseKey}_${userId}`

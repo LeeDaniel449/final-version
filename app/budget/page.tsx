@@ -14,42 +14,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import {
-  Calculator,
-  TrendingUp,
-  AlertTriangle,
-  Lightbulb,
-  DollarSign,
-  BarChart3,
-  Target,
-  Zap,
-  Brain,
-  CreditCard,
-  LogIn,
-  PieChartIcon,
-  UserPlus,
-  Bell,
-  Plus,
-  Wallet,
-  Banknote,
-  Home,
-  Car,
-  Coffee,
-  Gamepad2,
-  Heart,
-  Phone,
-  Plane,
-  RotateCcw,
-  Snowflake,
-  TrendingDown,
-  Trash2,
-} from "lucide-react"
+import { Calculator, TrendingUp, AlertTriangle, Lightbulb, DollarSign, BarChart3, Target, Zap, Brain, CreditCard, LogIn, PieChartIcon, UserPlus, Bell, Plus, Wallet, Banknote, Home, Car, Coffee, Gamepad2, Heart, Phone, Plane, RotateCcw, Snowflake, TrendingDown, Trash2 } from 'lucide-react'
 import { userDataManager } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
 import React from "react" // Added import for React.useMemo
-import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
+import { ShoppingCart } from 'lucide-react' // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
@@ -357,10 +328,11 @@ const BudgetDashboardContent = () => {
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [editAmount, setEditAmount] = useState("")
 
-  // CHANGE: Add debt persistence to localStorage
+  // CHANGE: Use userDataManager for consistent storage instead of direct localStorage
   useEffect(() => {
     if (isClerkLoaded && user) {
-      // Use isClerkLoaded to ensure user object is stable
+      // Clerk is loaded - use Clerk user ID
+      userDataManager.setClerkUserId(user.id)
       const storageKey = `wealthwise_debts_${user.id}`
       const savedDebts = localStorage.getItem(storageKey)
       if (savedDebts) {
@@ -372,25 +344,55 @@ const BudgetDashboardContent = () => {
           console.error("[v0] Error loading debts:", error)
         }
       }
+    } else if (isClerkLoaded && !user) {
+      // Clerk loaded but no user - try fallback to wealthwise auth
+      const currentUser = localStorage.getItem('wealthwise_current_user') || 
+                         sessionStorage.getItem('wealthwise_session_user')
+      if (currentUser) {
+        console.log("[v0] Using fallback authentication for debts")
+        const storageKey = `wealthwise_debts_${currentUser}`
+        const savedDebts = localStorage.getItem(storageKey)
+        if (savedDebts) {
+          try {
+            const parsedDebts = JSON.parse(savedDebts)
+            console.log("[v0] Loaded debts from fallback storage:", parsedDebts)
+            setDebts(parsedDebts)
+          } catch (error) {
+            console.error("[v0] Error loading debts from fallback:", error)
+          }
+        }
+      }
     }
-  }, [isClerkLoaded, user]) // Depend on isClerkLoaded and user
+  }, [isClerkLoaded, user])
 
-  // CHANGE: Save debts to localStorage whenever they change
+  // CHANGE: Save with fallback support
   useEffect(() => {
+    let storageKey: string | null = null
+    
     if (isClerkLoaded && user) {
-      // Use isClerkLoaded to ensure user object is stable
-      const storageKey = `wealthwise_debts_${user.id}`
+      // Clerk user available
+      storageKey = `wealthwise_debts_${user.id}`
+    } else if (isClerkLoaded && !user) {
+      // Try fallback authentication
+      const currentUser = localStorage.getItem('wealthwise_current_user') || 
+                         sessionStorage.getItem('wealthwise_session_user')
+      if (currentUser) {
+        storageKey = `wealthwise_debts_${currentUser}`
+      }
+    }
+
+    if (storageKey) {
       if (debts.length > 0) {
-        // Only save if there are debts to save
         localStorage.setItem(storageKey, JSON.stringify(debts))
         console.log("[v0] Saved debts to localStorage:", debts)
       } else {
-        // If debts become empty, remove the item from localStorage
         localStorage.removeItem(storageKey)
         console.log("[v0] Cleared debts from localStorage as the list is empty")
       }
+    } else {
+      console.log("[v0] No storage key available - debts not saved")
     }
-  }, [debts, isClerkLoaded, user]) // Depend on isClerkLoaded and user
+  }, [debts, isClerkLoaded, user])
 
   const addNotification = (title: string, message: string, type: "info" | "warning" | "success" = "info") => {
     const newNotification = {
@@ -2843,7 +2845,8 @@ const BudgetDashboardContent = () => {
                             </Badge>
                           )}
                           <span className="font-medium text-gray-900">
-                            {/* Added null check for transaction.amount */}${(transaction.amount || 0).toLocaleString()}
+                            {/* Added null check for transaction.amount */}
+                            ${(transaction.amount || 0).toLocaleString()}
                           </span>
                         </div>
                       </div>
@@ -3233,9 +3236,15 @@ const BudgetDashboardContent = () => {
                           console.log("[v0] Clearing all debts")
                           setDebts([])
                           if (isClerkLoaded && user) {
-                            // Use isClerkLoaded
                             const storageKey = `wealthwise_debts_${user.id}`
                             localStorage.removeItem(storageKey)
+                          } else {
+                            const currentUser = localStorage.getItem('wealthwise_current_user') || 
+                                               sessionStorage.getItem('wealthwise_session_user')
+                            if (currentUser) {
+                              const storageKey = `wealthwise_debts_${currentUser}`
+                              localStorage.removeItem(storageKey)
+                            }
                           }
                         }}
                       >
