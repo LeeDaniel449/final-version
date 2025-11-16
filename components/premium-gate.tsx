@@ -116,28 +116,12 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
             Unlock all features including AI-powered financial advice, portfolio optimization, and personalized learning
             paths.
           </p>
-          {user && (
-            <div className="mb-4 rounded bg-muted p-3 text-left text-xs">
-              <p className="font-semibold mb-1">Debug Info:</p>
-              <p>User ID: {user.id}</p>
-              <p>Metadata: {JSON.stringify(user.publicMetadata)}</p>
-              <p>Premium Status: {user.publicMetadata?.premium ? "✅ Active" : "❌ Not Active"}</p>
-            </div>
-          )}
-          <div className="flex flex-col gap-3">
-            <Link
-              href="/subscribe"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              View Plans
-            </Link>
-            <Link
-              href="/activate"
-              className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-8 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              Activate Premium Now
-            </Link>
-          </div>
+          <Link
+            href="/subscribe"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            View Plans
+          </Link>
         </div>
       </div>
     </div>
