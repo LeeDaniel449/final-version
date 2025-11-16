@@ -23,6 +23,7 @@ import React from "react" // Added import for React.useMemo
 import { ShoppingCart } from 'lucide-react' // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { SyncPromptBanner } from "@/components/sync-prompt-banner"
 
 interface BudgetCategory {
   name: string
