@@ -18,6 +18,16 @@ export function ClientLayout({
   children: React.ReactNode
 }) {
   useEffect(() => {
+    console.log("[v0] Clerk publishable key available:", !!CLERK_PUBLISHABLE_KEY)
+    console.log("[v0] Environment:", process.env.NODE_ENV)
+    console.log("[v0] Using key from:", 
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" :
+      process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? "Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" :
+      "fallback"
+    )
+  }, [])
+
+  useEffect(() => {
     const originalError = console.error
     console.error = (...args: any[]) => {
       const message = String(args[0])
