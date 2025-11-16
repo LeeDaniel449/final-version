@@ -352,7 +352,7 @@ const BudgetDashboardContent = () => {
       }
     } else if (isClerkLoaded && !user) {
       // Clerk loaded but no user - try fallback to wealthwise auth
-      const currentUser = localStorage.getItem('wealthwise_current_user') || 
+      const currentUser = localStorage.getItem('wealthwise_current_user') ||
                          sessionStorage.getItem('wealthwise_session_user')
       if (currentUser) {
         console.log("[v0] Using fallback authentication for debts")
@@ -374,13 +374,13 @@ const BudgetDashboardContent = () => {
   // CHANGE: Save with fallback support
   useEffect(() => {
     let storageKey: string | null = null
-    
+
     if (isClerkLoaded && user) {
       // Clerk user available
       storageKey = `wealthwise_debts_${user.id}`
     } else if (isClerkLoaded && !user) {
       // Try fallback authentication
-      const currentUser = localStorage.getItem('wealthwise_current_user') || 
+      const currentUser = localStorage.getItem('wealthwise_current_user') ||
                          sessionStorage.getItem('wealthwise_session_user')
       if (currentUser) {
         storageKey = `wealthwise_debts_${currentUser}`
@@ -450,17 +450,13 @@ const BudgetDashboardContent = () => {
   }, [user, isClerkLoaded])
 
   const loadUserData = useCallback(() => {
-    if (!isClerkLoaded) {
-      console.log("[v0] Waiting for Clerk to load...")
-      return
-    }
-
     if (isLoadingData) return
 
     setIsLoadingData(true)
 
-    const signedUp = !!user
-    console.log("[v0] Loading user data, Clerk user:", user?.id)
+    // Check if user is signed up using fallback auth system
+    const signedUp = userDataManager.isUserSignedUp()
+    console.log("[v0] Loading user data, user signed up:", signedUp)
 
     if (signedUp) {
       const categories = userDataManager.getBudgetCategories()
@@ -474,20 +470,20 @@ const BudgetDashboardContent = () => {
       setUserBudgetEntries(entries)
       setIsDataLoaded(true)
     } else {
-      console.log("[v0] User not signed in via Clerk - showing zero data")
+      console.log("[v0] User not signed in - showing zero data")
       setHasStartedBudgeting(false)
       setUserBudgetCategories([])
       setUserBudgetEntries([])
       setIsDataLoaded(true)
     }
     setIsLoadingData(false)
-  }, [isClerkLoaded, user, isLoadingData])
+  }, [isLoadingData])
 
   useEffect(() => {
-    if (isInitialized.current || isDataLoaded || isLoadingData || !isClerkLoaded) return
+    if (isInitialized.current || isDataLoaded || isLoadingData) return
     isInitialized.current = true
 
-    const isAuthenticated = !!user
+    const isAuthenticated = userDataManager.isUserSignedUp()
     setIsUserSignedUp(isAuthenticated)
 
     if (isAuthenticated) {
@@ -495,7 +491,7 @@ const BudgetDashboardContent = () => {
     } else {
       setIsDataLoaded(true)
     }
-  }, [loadUserData, isDataLoaded, isLoadingData, isClerkLoaded, user]) // Added loadUserData, isDataLoaded, isLoadingData, and isUserSignedUp to dependencies
+  }, [loadUserData, isDataLoaded, isLoadingData]) // Added loadUserData, isDataLoaded, isLoadingData, and isUserSignedUp to dependencies
 
   useEffect(() => {
     calculateIncomeData()
@@ -1152,7 +1148,7 @@ const BudgetDashboardContent = () => {
 
   const getAIInsights = () => {
     // Return empty insights for non-authenticated users
-    if (!user || userBudgetEntries.length === 0) return []
+    if (!isUserSignedUp || userBudgetEntries.length === 0) return []
 
     const insights = []
 
@@ -2809,7 +2805,7 @@ const BudgetDashboardContent = () => {
                   <div className="text-center py-8">
                     <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">No Transactions Yet</h3>
-                    <p className="text-gray-600 mb-4">Start adding expenses to track your spending patterns.</p>
+                    <p className="text-sm text-gray-600 mb-4">Start adding expenses to track your spending patterns.</p>
                     <Button
                       onClick={() => {
                         const category = prompt("Category:")
@@ -3050,7 +3046,7 @@ const BudgetDashboardContent = () => {
                         <CardTitle className="text-lg flex items-center gap-2">
                           <TrendingDown className="h-5 w-5" />
                           Debt Avalanche
-                        </CardTitle>
+                        </Title>
                         <CardDescription>Pay highest interest first</CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -3245,7 +3241,7 @@ const BudgetDashboardContent = () => {
                             const storageKey = `wealthwise_debts_${user.id}`
                             localStorage.removeItem(storageKey)
                           } else {
-                            const currentUser = localStorage.getItem('wealthwise_current_user') || 
+                            const currentUser = localStorage.getItem('wealthwise_current_user') ||
                                                sessionStorage.getItem('wealthwise_session_user')
                             if (currentUser) {
                               const storageKey = `wealthwise_debts_${currentUser}`
