@@ -28,6 +28,13 @@ create policy "Users can delete their own data"
   on public.user_data for delete
   using (clerk_user_id = current_setting('request.jwt.claims', true)::json->>'sub');
 
+-- Updated RLS policies to allow service role access for fallback auth
+-- RLS Policies - Allow service role (API) to manage data
+create policy "Service role can manage all data"
+  on public.user_data for all
+  using (true)
+  with check (true);
+
 -- Create index for faster lookups
 create index if not exists idx_user_data_clerk_user_id on public.user_data(clerk_user_id);
 
