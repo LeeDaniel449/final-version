@@ -81,21 +81,18 @@ export async function GET(request: Request) {
       .from("user_data")
       .select("data")
       .eq("user_id", userId)
-      .single()
+      .maybeSingle()
 
     if (error) {
-      // No data found for this user yet
-      if (error.code === "PGRST116") {
-        console.log("[v0] No data found for user, returning empty")
-        return NextResponse.json({ data: {} })
-      }
-      
       console.error("[v0] Database error:", error.message)
       return NextResponse.json({ data: {}, error: error.message })
     }
 
-    console.log("[v0] Successfully loaded data from database for user:", userId)
-    return NextResponse.json({ data: data?.data || {} })
+    if (!data) {
+      return NextResponse.json({ data: {} })
+    }
+
+    return NextResponse.json({ data: data.data || {} })
   } catch (error: any) {
     console.error("[v0] GET error:", error)
     return NextResponse.json({ data: {}, error: error.message })
