@@ -48,11 +48,11 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
 
     const timeout = setTimeout(() => {
       if (!isLoaded && !checkComplete) {
-        console.log("[v0] PremiumGate: Clerk load timeout, treating as no user (allowing access)")
+        console.log("[v0] PremiumGate: Clerk load timeout (2s), treating as no user (allowing access)")
         setShowOverlay(false)
         setCheckComplete(true)
       }
-    }, 5000)
+    }, 2000)
 
     if (!isLoaded) {
       console.log("[v0] PremiumGate: Clerk not loaded yet")
@@ -68,7 +68,7 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const hasUnlocksAllFeature = has?.({ feature: 'unlocks_all' })
+    const hasUnlocksAllFeature = has?.({ feature: 'unlocks_all' }) || false
     const hasPremiumMetadata = user.publicMetadata?.premium === true
     const hasPremiumAccess = hasUnlocksAllFeature || hasPremiumMetadata
     
