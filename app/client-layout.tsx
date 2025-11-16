@@ -24,9 +24,10 @@ function isIOSSafari() {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [hasPromptedRefresh, setHasPromptedRefresh] = useState(false)
+  const [hasLoadedFromDB, setHasLoadedFromDB] = useState(false)
 
   useEffect(() => {
-    if (isLoaded && user?.id) {
+    if (isLoaded && user?.id && !hasLoadedFromDB) {
       console.log("[v0] Clerk loaded successfully - setting user ID:", user.id)
       userDataManager.setClerkUserId(user.id)
       
@@ -35,11 +36,13 @@ function ClerkUserIdSync() {
         localStorage.setItem('wealthwise_current_user', user.primaryEmailAddress?.emailAddress || user.id)
         sessionStorage.setItem('wealthwise_session_user', user.primaryEmailAddress?.emailAddress || user.id)
       }
+      
+      setHasLoadedFromDB(true)
     } else if (isLoaded && !user) {
       console.log("[v0] Clerk loaded but no user signed in")
       userDataManager.setClerkUserId(null)
     }
-  }, [isLoaded, user])
+  }, [isLoaded, user, hasLoadedFromDB])
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {
@@ -54,6 +57,17 @@ function ClerkUserIdSync() {
       return () => clearTimeout(timeout)
     }
   }, [isLoaded, hasPromptedRefresh])
+
+  useEffect(() => {
+    if (!user?.id) return
+
+    const syncInterval = setInterval(() => {
+      console.log("[v0] Auto-syncing to database...")
+      userDataManager.setClerkUserId(user.id) // This triggers syncToDatabase
+    }, 30000) // Sync every 30 seconds
+
+    return () => clearInterval(syncInterval)
+  }, [user?.id])
 
   return null
 }

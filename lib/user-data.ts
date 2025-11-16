@@ -235,6 +235,68 @@ class UserDataManager {
     return this.isUserSignedUp()
   }
 
+  private async syncToDatabase(userId: string): Promise<void> {
+    if (typeof window === "undefined") return
+
+    try {
+      const data = {
+        profile: this.getUserProfile(),
+        budgetData: this.getBudgetData(),
+        budgetCategories: this.getBudgetCategories(),
+        budgetEntries: this.getBudgetEntries(),
+        goals: this.getGoals(),
+        learningProgress: this.getLearningProgress(),
+        userProgress: this.getUserProgress(),
+      }
+
+      const response = await fetch("/api/user-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+      })
+
+      if (!response.ok) {
+        console.error("[v0] Failed to sync to database:", await response.text())
+      } else {
+        console.log("[v0] Successfully synced data to database")
+      }
+    } catch (error) {
+      console.error("[v0] Error syncing to database:", error)
+    }
+  }
+
+  private async loadFromDatabase(userId: string): Promise<void> {
+    if (typeof window === "undefined") return
+
+    try {
+      const response = await fetch("/api/user-data")
+      
+      if (!response.ok) {
+        console.error("[v0] Failed to load from database")
+        return
+      }
+
+      const { data } = await response.json()
+      
+      if (data && Object.keys(data).length > 0) {
+        console.log("[v0] Loading data from database")
+        
+        // Load each data type from database
+        if (data.profile) this.saveUserProfile(data.profile)
+        if (data.budgetData) this.saveBudgetData(data.budgetData)
+        if (data.budgetCategories) this.saveBudgetCategories(data.budgetCategories)
+        if (data.budgetEntries) this.saveBudgetEntries(data.budgetEntries)
+        if (data.goals) this.saveGoals(data.goals)
+        if (data.learningProgress) this.saveLearningProgress(data.learningProgress)
+        if (data.userProgress) this.saveUserProgress(data.userProgress)
+        
+        console.log("[v0] Successfully loaded data from database")
+      }
+    } catch (error) {
+      console.error("[v0] Error loading from database:", error)
+    }
+  }
+
   setUserSignedIn(signedIn: boolean, isExplicitSignOut = false): void {
     if (typeof window === "undefined") return
 
@@ -254,7 +316,17 @@ class UserDataManager {
             console.log("User data loaded after sign in")
           }
         }
+
+        const clerkUserId = (window as any).__clerk_user_id
+        if (clerkUserId) {
+          this.loadFromDatabase(clerkUserId).catch(console.error)
+        }
       } else {
+        const clerkUserId = (window as any).__clerk_user_id
+        if (clerkUserId && !isExplicitSignOut) {
+          this.syncToDatabase(clerkUserId).catch(console.error)
+        }
+
         // Save current user data before signing out (unless explicit sign out)
         if (!isExplicitSignOut) {
           this.saveCurrentUserData()
@@ -684,7 +756,14 @@ class UserDataManager {
     if (userId) {
       ;(window as any).__clerk_user_id = userId
       console.log("[v0] Clerk user ID set:", userId)
+      
+      this.loadFromDatabase(userId).catch(console.error)
     } else {
+      const currentUserId = (window as any).__clerk_user_id
+      if (currentUserId) {
+        this.syncToDatabase(currentUserId).catch(console.error)
+      }
+      
       delete (window as any).__clerk_user_id
       console.log("[v0] Clerk user ID cleared")
     }
@@ -778,6 +857,11 @@ class UserDataManager {
 
       localStorage.setItem(storageKey, JSON.stringify(categories))
       console.log("[v0] Budget categories saved - count:", categories.length)
+      
+      const clerkUserId = (window as any).__clerk_user_id
+      if (clerkUserId) {
+        this.syncToDatabase(clerkUserId).catch(console.error)
+      }
     } catch (err) {
       console.error("Error saving budget categories:", err)
     }
@@ -857,6 +941,11 @@ class UserDataManager {
 
       localStorage.setItem(storageKey, JSON.stringify(entries))
       console.log("[v0] Budget entries saved - count:", entries.length)
+      
+      const clerkUserId = (window as any).__clerk_user_id
+      if (clerkUserId) {
+        this.syncToDatabase(clerkUserId).catch(console.error)
+      }
     } catch (err) {
       console.error("Error saving budget entries:", err)
     }
@@ -1031,6 +1120,10 @@ class UserDataManager {
         }
       }
 
+      if (userId) {
+        this.syncToDatabase(userId).catch(console.error)
+      }
+
       // Dispatch event to notify other components
       if (typeof window !== "undefined") {
         window.dispatchEvent(new CustomEvent("progressUpdated", { detail: updated }))
@@ -1074,6 +1167,8 @@ class UserDataManager {
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
       localStorage.setItem(storageKey, JSON.stringify(goals))
+      
+      this.syncToDatabase(userId).catch(console.error)
     } catch (error) {
       console.error("Error saving goals:", error)
     }
@@ -1166,6 +1261,8 @@ class UserDataManager {
       const updatedProgress = { ...currentProgress, ...progress }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.LEARNING_PROGRESS, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedProgress))
+      
+      this.syncToDatabase(userId).catch(console.error)
     } catch (error) {
       console.error("Error saving learning progress:", error)
     }
@@ -1256,7 +1353,7 @@ class UserDataManager {
 
       // Update current lesson
       moduleProgress.currentLesson = lessonIndex
-      modulemoduleProgress.lastAccessed = new Date().toISOString()
+      moduleProgress.lastAccessed = new Date().toISOString()
 
       // Update completed lessons
       if (completed && !moduleProgress.completedLessons.includes(lessonIndex)) {
