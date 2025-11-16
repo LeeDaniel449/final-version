@@ -239,6 +239,8 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
+      console.log("[v0] Syncing to database for user:", userId)
+      
       const data = {
         profile: this.getUserProfile(),
         budgetData: this.getBudgetData(),
@@ -251,12 +253,16 @@ class UserDataManager {
 
       const response = await fetch("/api/user-data", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data }),
+        headers: { 
+          "Content-Type": "application/json",
+          "x-user-id": userId
+        },
+        body: JSON.stringify({ data, userId }),
       })
 
       if (!response.ok) {
-        console.error("[v0] Failed to sync to database:", await response.text())
+        const errorText = await response.text()
+        console.error("[v0] Failed to sync to database:", errorText)
       } else {
         console.log("[v0] Successfully synced data to database")
       }
@@ -269,10 +275,17 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const response = await fetch("/api/user-data")
+      console.log("[v0] Loading from database for user:", userId)
+      
+      const response = await fetch("/api/user-data", {
+        headers: {
+          "x-user-id": userId
+        }
+      })
       
       if (!response.ok) {
-        console.error("[v0] Failed to load from database")
+        const errorText = await response.text()
+        console.error("[v0] Failed to load from database:", response.status, errorText)
         return
       }
 
@@ -291,6 +304,8 @@ class UserDataManager {
         if (data.userProgress) this.saveUserProgress(data.userProgress)
         
         console.log("[v0] Successfully loaded data from database")
+      } else {
+        console.log("[v0] No data found in database")
       }
     } catch (error) {
       console.error("[v0] Error loading from database:", error)
