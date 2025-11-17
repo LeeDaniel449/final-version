@@ -61,20 +61,21 @@ export async function GET(request: Request) {
     
     const { data, error } = await supabase
       .from("user_data")
-      .select("data")
+      .select("data, updated_at")
       .eq("user_id", userId)
-      .maybeSingle()
+      .order('updated_at', { ascending: false })
+      .limit(1)
 
     if (error) {
       console.error("[v0] Database error:", error.message)
       return NextResponse.json({ data: {}, error: error.message })
     }
 
-    if (!data) {
+    if (!data || data.length === 0) {
       return NextResponse.json({ data: {} })
     }
 
-    return NextResponse.json({ data: data.data || {} })
+    return NextResponse.json({ data: data[0].data || {} })
   } catch (error: any) {
     console.error("[v0] Database error:", error)
     return NextResponse.json({ data: {}, error: error.message })
@@ -117,19 +118,27 @@ export async function POST(request: Request) {
       .from("user_data")
       .select("id")
       .eq("user_id", userId)
-      .maybeSingle()
+      .order('created_at', { ascending: false })
 
     let error
-    if (existingData) {
-      // Update existing record
+    if (existingData && existingData.length > 0) {
       const result = await supabase
         .from("user_data")
         .update({
           data: body.data || {},
           updated_at: new Date().toISOString(),
         })
-        .eq("user_id", userId)
+        .eq("id", existingData[0].id)
       error = result.error
+
+      if (existingData.length > 1) {
+        const duplicateIds = existingData.slice(1).map(row => row.id)
+        await supabase
+          .from("user_data")
+          .delete()
+          .in("id", duplicateIds)
+        console.log(`[v0] Deleted ${duplicateIds.length} duplicate rows for user: ${userId}`)
+      }
     } else {
       // Insert new record
       const result = await supabase
