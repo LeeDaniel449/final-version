@@ -6,16 +6,27 @@ function createAdminClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-  if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Missing Supabase credentials')
+  if (!supabaseUrl) {
+    console.error('[v0] Missing NEXT_PUBLIC_SUPABASE_URL')
+    throw new Error('Missing Supabase URL')
+  }
+  
+  if (!supabaseServiceKey) {
+    console.error('[v0] Missing SUPABASE_SERVICE_ROLE_KEY')
+    throw new Error('Missing Supabase service role key')
   }
 
-  return createClient(supabaseUrl, supabaseServiceKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
-    }
-  })
+  try {
+    return createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
+  } catch (error) {
+    console.error('[v0] Failed to create Supabase client:', error)
+    throw error
+  }
 }
 
 export async function GET(request: Request) {
@@ -40,7 +51,13 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const supabase = createAdminClient()
+    let supabase
+    try {
+      supabase = createAdminClient()
+    } catch (error: any) {
+      console.error('[v0] Database error:', error.message)
+      return NextResponse.json({ data: {}, error: 'Database connection failed' })
+    }
     
     const { data, error } = await supabase
       .from("user_data")
@@ -54,13 +71,12 @@ export async function GET(request: Request) {
     }
 
     if (!data) {
-      console.log("[v0] No data found in database")
       return NextResponse.json({ data: {} })
     }
 
     return NextResponse.json({ data: data.data || {} })
   } catch (error: any) {
-    console.error("[v0] GET error:", error)
+    console.error("[v0] Database error:", error)
     return NextResponse.json({ data: {}, error: error.message })
   }
 }
@@ -89,7 +105,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const supabase = createAdminClient()
+    let supabase
+    try {
+      supabase = createAdminClient()
+    } catch (error: any) {
+      console.error('[v0] Database error:', error.message)
+      return NextResponse.json({ success: false, error: 'Database connection failed' })
+    }
     
     const { data: existingData } = await supabase
       .from("user_data")
@@ -128,7 +150,7 @@ export async function POST(request: Request) {
     console.log("[v0] Successfully saved data to database for user:", userId)
     return NextResponse.json({ success: true })
   } catch (error: any) {
-    console.error("[v0] POST error:", error)
+    console.error("[v0] Save error:", error)
     return NextResponse.json({ success: false, error: error.message })
   }
 }
