@@ -1,56 +1,21 @@
-import { createClient } from "@/lib/supabase/server"
+import { createClient } from '@supabase/supabase-js'
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-async function ensureTableExists(supabase: any): Promise<boolean> {
-  try {
-    // Try to query the table
-    const { error: checkError } = await supabase
-      .from("user_data")
-      .select("id")
-      .limit(1)
-    
-    // Table exists
-    if (!checkError || !checkError.message?.includes("Could not find the table")) {
-      console.log("[v0] Table user_data exists")
-      return true
-    }
-    
-    // Table doesn't exist - create it
-    console.log("[v0] Creating user_data table...")
-    
-    // Use raw SQL to create table
-    const { error: createError } = await supabase.rpc('exec_raw_sql', {
-      sql: `
-        CREATE TABLE IF NOT EXISTS user_data (
-          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-          user_id TEXT UNIQUE NOT NULL,
-          email TEXT,
-          data JSONB DEFAULT '{}'::jsonb,
-          created_at TIMESTAMPTZ DEFAULT NOW(),
-          updated_at TIMESTAMPTZ DEFAULT NOW()
-        );
-        
-        CREATE INDEX IF NOT EXISTS idx_user_data_user_id ON user_data(user_id);
-        
-        ALTER TABLE user_data ENABLE ROW LEVEL SECURITY;
-        
-        DROP POLICY IF EXISTS "Allow all operations" ON user_data;
-        CREATE POLICY "Allow all operations" ON user_data FOR ALL USING (true) WITH CHECK (true);
-      `
-    })
-    
-    if (createError) {
-      console.error("[v0] Failed to create table:", createError)
-      return false
-    }
-    
-    console.log("[v0] Table created successfully!")
-    return true
-  } catch (error) {
-    console.error("[v0] Error in ensureTableExists:", error)
-    return false
+function createAdminClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !supabaseServiceKey) {
+    throw new Error('Missing Supabase credentials')
   }
+
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  })
 }
 
 export async function GET(request: Request) {
@@ -75,7 +40,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     
     const { data, error } = await supabase
       .from("user_data")
@@ -89,6 +54,7 @@ export async function GET(request: Request) {
     }
 
     if (!data) {
+      console.log("[v0] No data found in database")
       return NextResponse.json({ data: {} })
     }
 
@@ -123,7 +89,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const supabase = await createClient()
+    const supabase = createAdminClient()
     
     const { data: existingData } = await supabase
       .from("user_data")
