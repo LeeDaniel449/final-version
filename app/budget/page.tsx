@@ -1888,7 +1888,7 @@ const BudgetDashboardContent = () => {
                         }
 
                         const extractAmount = (message: string) => {
-                          const match = message.match(/\$[\d,]+/)
+                          const match = message.match(/\$\d[\d,]*/)
                           return match ? match[0] : null
                         }
 
