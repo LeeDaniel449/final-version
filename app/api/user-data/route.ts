@@ -125,15 +125,34 @@ export async function POST(request: Request) {
 
     const supabase = await createClient()
     
-    const { error } = await supabase
+    const { data: existingData } = await supabase
       .from("user_data")
-      .upsert({
-        user_id: userId,
-        data: body.data || {},
-        updated_at: new Date().toISOString(),
-      }, {
-        onConflict: "user_id"
-      })
+      .select("id")
+      .eq("user_id", userId)
+      .maybeSingle()
+
+    let error
+    if (existingData) {
+      // Update existing record
+      const result = await supabase
+        .from("user_data")
+        .update({
+          data: body.data || {},
+          updated_at: new Date().toISOString(),
+        })
+        .eq("user_id", userId)
+      error = result.error
+    } else {
+      // Insert new record
+      const result = await supabase
+        .from("user_data")
+        .insert({
+          user_id: userId,
+          data: body.data || {},
+          updated_at: new Date().toISOString(),
+        })
+      error = result.error
+    }
 
     if (error) {
       console.error("[v0] Save error:", error.message)
