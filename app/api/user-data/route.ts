@@ -2,12 +2,32 @@ import { createClient } from '@supabase/supabase-js'
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
+function getSupabaseUrl(): string | null {
+  // Try the standard public URL first
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    return process.env.NEXT_PUBLIC_SUPABASE_URL
+  }
+  
+  // Try to extract from POSTGRES_URL
+  const postgresUrl = process.env.POSTGRES_URL
+  if (postgresUrl) {
+    // POSTGRES_URL format: postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres
+    // Supabase URL format: https://[project-ref].supabase.co
+    const match = postgresUrl.match(/postgres\.([^:]+)/)
+    if (match) {
+      return `https://${match[1]}.supabase.co`
+    }
+  }
+  
+  return null
+}
+
 function createAdminClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseUrl = getSupabaseUrl()
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!supabaseUrl) {
-    console.error('[v0] Missing NEXT_PUBLIC_SUPABASE_URL')
+    console.error('[v0] Missing Supabase URL - checked NEXT_PUBLIC_SUPABASE_URL and POSTGRES_URL')
     throw new Error('Missing Supabase URL')
   }
   
