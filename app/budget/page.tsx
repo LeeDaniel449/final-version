@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { Calculator, TrendingUp, AlertTriangle, Lightbulb, DollarSign, BarChart3, Target, Zap, Brain, CreditCard, LogIn, PieChartIcon, UserPlus, Bell, Plus, Wallet, Banknote, Home, Car, Coffee, Gamepad2, Heart, Phone, Plane, RotateCcw, Snowflake, TrendingDown, Trash2, Edit2, Calendar, PlusCircle } from 'lucide-react'
@@ -1559,7 +1559,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <PieChartIcon className="w-5 h-5" />
                   Budget Categories (Preview)
-                </CardTitle>
+                </Title>
                 <CardDescription className="text-gray-400">Track spending across different categories</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1785,7 +1785,7 @@ const BudgetDashboardContent = () => {
         </div>
       </div>
     )
-  } // Added missing closing brace for if statement
+  }
 
   // Main dashboard - show when user has data or has started budgeting
   return (
