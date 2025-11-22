@@ -14,32 +14,46 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import Link from "next/link"
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import { Calculator, TrendingUp, AlertTriangle, Lightbulb, DollarSign, BarChart3, Target, Zap, Brain, CreditCard, LogIn, PieChartIcon, UserPlus, Bell, Plus, Wallet, Banknote, Home, Car, Coffee, Gamepad2, Heart, Phone, Plane, RotateCcw, Snowflake, TrendingDown, Trash2, Edit2, Calendar, PlusCircle } from 'lucide-react'
+import {
+  Calculator,
+  TrendingUp,
+  AlertTriangle,
+  Lightbulb,
+  DollarSign,
+  BarChart3,
+  Target,
+  Zap,
+  Brain,
+  CreditCard,
+  LogIn,
+  PieChartIcon,
+  UserPlus,
+  Bell,
+  Plus,
+  Wallet,
+  Banknote,
+  Home,
+  Car,
+  Coffee,
+  Gamepad2,
+  Heart,
+  Phone,
+  Plane,
+  RotateCcw,
+  Snowflake,
+  TrendingDown,
+  Trash2,
+} from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
-import type { BudgetCategory, BudgetEntry } from "@/lib/user-data"
+import type { BudgetCategory, BudgetEntry } from "@/lib/user-data" // Imported BudgetCategory and BudgetEntry types
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
 import React from "react" // Added import for React.useMemo
-import { ShoppingCart } from 'lucide-react' // Imported ShoppingCart
+import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { format } from "date-fns"
-import debounce from "lodash/debounce"
-import { useRouter } from 'next/navigation'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
-interface BudgetCategory {
-  name: string
-  key: string
-  budgeted: number
-  spent: number
-  spendingLimit: number
-  icon: any
-  trend: "up" | "down" | "stable"
-  trendPercent: number
-  color: string
-}
+import { useRouter } from "next/navigation"
 
 interface Transaction {
   id: string
@@ -76,15 +90,6 @@ interface MonthlyData {
 interface CategoryTrendData {
   month: string
   [key: string]: string | number
-}
-
-interface BudgetEntry {
-  id: string
-  amount: number
-  category: string
-  description: string
-  date: string
-  type: "income" | "expense"
 }
 
 interface UserBudgetCategory {
@@ -352,8 +357,8 @@ const BudgetDashboardContent = () => {
       }
     } else if (isClerkLoaded && !user) {
       // Clerk loaded but no user - try fallback to wealthwise auth
-      const currentUser = localStorage.getItem('wealthwise_current_user') ||
-                         sessionStorage.getItem('wealthwise_session_user')
+      const currentUser =
+        localStorage.getItem("wealthwise_current_user") || sessionStorage.getItem("wealthwise_session_user")
       if (currentUser) {
         console.log("[v0] Using fallback authentication for debts")
         const storageKey = `wealthwise_debts_${currentUser}`
@@ -380,8 +385,8 @@ const BudgetDashboardContent = () => {
       storageKey = `wealthwise_debts_${user.id}`
     } else if (isClerkLoaded && !user) {
       // Try fallback authentication
-      const currentUser = localStorage.getItem('wealthwise_current_user') ||
-                         sessionStorage.getItem('wealthwise_session_user')
+      const currentUser =
+        localStorage.getItem("wealthwise_current_user") || sessionStorage.getItem("wealthwise_session_user")
       if (currentUser) {
         storageKey = `wealthwise_debts_${currentUser}`
       }
@@ -1559,7 +1564,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <PieChartIcon className="w-5 h-5" />
                   Budget Categories (Preview)
-                </Title>
+                </CardTitle>
                 <CardDescription className="text-gray-400">Track spending across different categories</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1584,7 +1589,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <Brain className="w-5 h-5" />
                   AI Insights (Preview)
-                </Title>
+                </CardTitle>
                 <CardDescription className="text-gray-400">Get personalized financial recommendations</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1744,7 +1749,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <PieChartIcon className="w-5 h-5" />
                   Budget Categories (Preview)
-                </Title>
+                </CardTitle>
                 <CardDescription className="text-gray-400">Track spending across different categories</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1769,7 +1774,7 @@ const BudgetDashboardContent = () => {
                 <CardTitle className="text-gray-500 flex items-center gap-2">
                   <Brain className="w-5 h-5" />
                   AI Insights (Preview)
-                </Title>
+                </CardTitle>
                 <CardDescription className="text-gray-400">Get personalized financial recommendations</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1888,7 +1893,7 @@ const BudgetDashboardContent = () => {
                         }
 
                         const extractAmount = (message: string) => {
-                          const match = message.match(/\$\d[\d,]*/)
+                          const match = message.match(/\$\d+(?:,\d+)*/)
                           return match ? match[0] : null
                         }
 
@@ -2168,7 +2173,9 @@ const BudgetDashboardContent = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-green-900">Income Overview</h3>
-                  <p className="text-green-700 text-sm">Track your income sources and see how much is available for budgeting</p>
+                  <p className="text-green-700 text-sm">
+                    Track your income sources and see how much is available for budgeting
+                  </p>
                 </div>
               </div>
               <div className="text-right">
@@ -2847,8 +2854,7 @@ const BudgetDashboardContent = () => {
                             </Badge>
                           )}
                           <span className="font-medium text-gray-900">
-                            {/* Added null check for transaction.amount */}
-                            ${(transaction.amount || 0).toLocaleString()}
+                            {/* Added null check for transaction.amount */}${(transaction.amount || 0).toLocaleString()}
                           </span>
                         </div>
                       </div>
@@ -3046,7 +3052,7 @@ const BudgetDashboardContent = () => {
                         <CardTitle className="text-lg flex items-center gap-2">
                           <TrendingDown className="h-5 w-5" />
                           Debt Avalanche
-                        </Title>
+                        </CardTitle>
                         <CardDescription>Pay highest interest first</CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -3241,8 +3247,9 @@ const BudgetDashboardContent = () => {
                             const storageKey = `wealthwise_debts_${user.id}`
                             localStorage.removeItem(storageKey)
                           } else {
-                            const currentUser = localStorage.getItem('wealthwise_current_user') ||
-                                               sessionStorage.getItem('wealthwise_session_user')
+                            const currentUser =
+                              localStorage.getItem("wealthwise_current_user") ||
+                              sessionStorage.getItem("wealthwise_session_user")
                             if (currentUser) {
                               const storageKey = `wealthwise_debts_${currentUser}`
                               localStorage.removeItem(storageKey)
