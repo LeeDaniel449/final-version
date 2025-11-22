@@ -845,7 +845,7 @@ class UserDataManager {
       const clerkUserId = (window as any).__clerk_user_id
       if (clerkUserId) {
         userId = clerkUserId
-        console.log("[v0] Using Clerk user ID:", userId)
+        console.log("[v0] Using Clerk user ID for storage:", userId)
       } else {
         const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
         const sessionUser = sessionStorage.getItem("wealthwise_session_user")
@@ -856,7 +856,7 @@ class UserDataManager {
         userId = localUser || sessionUser
 
         if (userId && authenticated) {
-          console.log("[v0] Using fallback authenticated user ID:", userId)
+          console.log("[v0] Using fallback user ID for storage:", userId)
           if (!localUser && userId) {
             this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
           }

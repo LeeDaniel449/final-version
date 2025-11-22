@@ -27,11 +27,15 @@ function ClerkUserIdSync() {
 
   useEffect(() => {
     if (isLoaded && user?.id) {
+      console.log("[v0] Setting Clerk user ID for data isolation:", user.id)
       userDataManager.setClerkUserId(user.id)
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("wealthwise_current_user", user.primaryEmailAddress?.emailAddress || user.id)
-        sessionStorage.setItem("wealthwise_session_user", user.primaryEmailAddress?.emailAddress || user.id)
+        localStorage.setItem("wealthwise_current_user", user.id)
+        sessionStorage.setItem("wealthwise_session_user", user.id)
+        if (user.primaryEmailAddress?.emailAddress) {
+          localStorage.setItem("wealthwise_user_email", user.primaryEmailAddress.emailAddress)
+        }
       }
     } else if (isLoaded && !user) {
       userDataManager.setClerkUserId(null)
@@ -42,39 +46,48 @@ function ClerkUserIdSync() {
     if (typeof window === "undefined") return
 
     const initializeDatabaseSync = async () => {
-      // Check for authenticated user
-      const localUser = localStorage.getItem("wealthwise_current_user")
-      const sessionUser = sessionStorage.getItem("wealthwise_session_user")
-      const authenticated =
-        localStorage.getItem("wealthwise_authenticated") === "true" ||
-        sessionStorage.getItem("wealthwise_session_in") === "true"
+      if (isLoaded) {
+        const clerkUserId = user?.id
 
-      const fallbackUserId = localUser || sessionUser
+        if (clerkUserId) {
+          console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
 
-      if (fallbackUserId && authenticated) {
-        console.log("[v0] Initializing database sync for user:", fallbackUserId)
-        userDataManager.setClerkUserId(fallbackUserId)
+          console.log("[v0] Loading data from database...")
+          await userDataManager.loadFromDatabase(clerkUserId)
 
-        // Load data from database first (this will merge with localStorage if needed)
-        console.log("[v0] Loading data from database...")
-        await userDataManager.loadFromDatabase(fallbackUserId)
+          const hasLocalData = userDataManager.hasStartedBudgeting()
+          if (hasLocalData) {
+            console.log("[v0] Syncing local data to database...")
+            await userDataManager.syncToDatabase(clerkUserId)
+          }
+        } else {
+          const localUser = localStorage.getItem("wealthwise_current_user")
+          const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+          const authenticated =
+            localStorage.getItem("wealthwise_authenticated") === "true" ||
+            sessionStorage.getItem("wealthwise_session_in") === "true"
 
-        // Check if user has local-only data that needs to be uploaded
-        const hasLocalData = userDataManager.hasStartedBudgeting()
-        if (hasLocalData) {
-          console.log("[v0] Syncing local data to database...")
-          await userDataManager.syncToDatabase(fallbackUserId)
+          const fallbackUserId = localUser || sessionUser
+
+          if (fallbackUserId && authenticated) {
+            console.log("[v0] Using fallback user ID (Clerk not available):", fallbackUserId)
+            userDataManager.setClerkUserId(fallbackUserId)
+            await userDataManager.loadFromDatabase(fallbackUserId)
+          } else {
+            console.log("[v0] No authenticated user found - skipping database sync")
+          }
         }
-      } else {
-        console.log("[v0] No authenticated user found - skipping database sync")
       }
     }
 
-    // Run immediately instead of after delay
-    initializeDatabaseSync().catch((error) => {
-      console.error("[v0] Failed to initialize database sync:", error)
-    })
-  }, []) // Run once on mount
+    const timer = setTimeout(() => {
+      initializeDatabaseSync().catch((error) => {
+        console.error("[v0] Failed to initialize database sync:", error)
+      })
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [isLoaded, user])
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {
