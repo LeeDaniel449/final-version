@@ -23,77 +23,80 @@ function isIOSSafari() {
 
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
-  const [hasPromptedRefresh, setHasPromptedRefresh] = useState(false)
   const [syncAttempted, setSyncAttempted] = useState(false)
 
   useEffect(() => {
-    if (isLoaded && user?.id) {
-      console.log("[v0] Setting Clerk user ID for data isolation:", user.id)
+    if (user?.id) {
+      console.log("[v0] Clerk user authenticated:", user.id)
       userDataManager.setClerkUserId(user.id)
 
       if (typeof window !== "undefined") {
         localStorage.setItem("wealthwise_current_user", user.id)
         sessionStorage.setItem("wealthwise_session_user", user.id)
-        console.log("[v0] Stored Clerk user ID:", user.id)
+        console.log("[v0] Stored Clerk user ID in storage:", user.id)
       }
     } else if (isLoaded && !user) {
+      console.log("[v0] Clerk loaded but no user signed in")
       userDataManager.setClerkUserId(null)
     }
-  }, [isLoaded, user])
+  }, [user, isLoaded])
 
   useEffect(() => {
     if (typeof window === "undefined" || syncAttempted) return
 
     const initializeDatabaseSync = async () => {
-      if (!isLoaded) {
-        console.log("[v0] Waiting for Clerk to load...")
-        return
-      }
-
+      // Check if user is available (don't wait for isLoaded)
       const clerkUserId = user?.id
 
       if (!clerkUserId) {
-        console.log("[v0] No Clerk user found - database sync disabled")
+        // Wait a bit longer for Clerk to potentially load
+        if (!isLoaded) {
+          console.log("[v0] Clerk still loading, waiting...")
+          return
+        }
+        console.log("[v0] No Clerk user - database sync disabled")
         setSyncAttempted(true)
         return
       }
 
-      console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
+      console.log("[v0] Starting database sync for user:", clerkUserId)
+      setSyncAttempted(true)
 
       try {
+        // Load data from database
         console.log("[v0] Loading data from database...")
-        await userDataManager.loadFromDatabase(clerkUserId)
+        const dbData = await userDataManager.loadFromDatabase(clerkUserId)
 
+        if (dbData && Object.keys(dbData).length > 0) {
+          console.log("[v0] Database data loaded, updating localStorage...")
+          // Force a page refresh to load the data
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new Event("storage"))
+          }
+        }
+
+        // Check for local data to sync
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
-          console.log("[v0] Syncing local data to database...")
+          console.log("[v0] Local data found, syncing to database...")
           await userDataManager.syncToDatabase(clerkUserId)
         }
       } catch (error) {
-        console.error("[v0] Failed to initialize database sync:", error)
+        console.error("[v0] Database sync error:", error)
       }
-      setSyncAttempted(true)
     }
 
-    const timer = setTimeout(() => {
-      initializeDatabaseSync()
-    }, 2000)
+    // Try immediately, then retry after delays
+    initializeDatabaseSync()
 
-    return () => clearTimeout(timer)
+    const timer1 = setTimeout(initializeDatabaseSync, 1000)
+    const timer2 = setTimeout(initializeDatabaseSync, 3000)
+
+    return () => {
+      clearTimeout(timer1)
+      clearTimeout(timer2)
+    }
   }, [user, isLoaded, syncAttempted])
-
-  useEffect(() => {
-    if (isIOSSafari() && !hasPromptedRefresh) {
-      const timeout = setTimeout(() => {
-        if (!isLoaded) {
-          setHasPromptedRefresh(true)
-          window.location.reload()
-        }
-      }, 3000)
-
-      return () => clearTimeout(timeout)
-    }
-  }, [isLoaded, hasPromptedRefresh])
 
   return null
 }
