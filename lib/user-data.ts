@@ -240,11 +240,20 @@ class UserDataManager {
 
   private databaseSyncEnabled = true // Enable database sync by default
 
-  private async syncToDatabase(userId: string): Promise<void> {
-    if (typeof window === "undefined" || !this.databaseSyncEnabled) return
+  private async syncToDatabase(userId?: string): Promise<void> {
+    if (!this.databaseSyncEnabled) {
+      console.log("[v0] Database sync is disabled")
+      return
+    }
 
     try {
-      console.log("[v0] Syncing to database for user:", userId)
+      const resolvedUserId = userId || this.getResolvedUserId()
+      if (!resolvedUserId) {
+        console.warn("[v0] Cannot sync to database: No user ID available")
+        return
+      }
+
+      console.log("[v0] Syncing to database for user:", resolvedUserId)
 
       const data = {
         profile: this.getUserProfile(),
@@ -260,9 +269,9 @@ class UserDataManager {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-user-id": userId,
+          "x-user-id": resolvedUserId,
         },
-        body: JSON.stringify({ data, userId }), // Fixed JSON.JSON typo
+        body: JSON.stringify({ data, userId: resolvedUserId }), // Fixed JSON.JSON typo
       })
 
       if (!response.ok) {
@@ -285,15 +294,24 @@ class UserDataManager {
     }
   }
 
-  private async loadFromDatabase(userId: string): Promise<void> {
-    if (typeof window === "undefined" || !this.databaseSyncEnabled) return
+  private async loadFromDatabase(userId?: string): Promise<void> {
+    if (!this.databaseSyncEnabled) {
+      console.log("[v0] Database sync is disabled")
+      return
+    }
 
     try {
-      console.log("[v0] Loading from database for user:", userId)
+      const resolvedUserId = userId || this.getResolvedUserId()
+      if (!resolvedUserId) {
+        console.warn("[v0] Cannot load from database: No user ID available")
+        return
+      }
 
-      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}`, {
+      console.log("[v0] Loading from database for user:", resolvedUserId)
+
+      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(resolvedUserId)}`, {
         headers: {
-          "x-user-id": userId,
+          "x-user-id": resolvedUserId,
         },
       })
 
@@ -310,32 +328,35 @@ class UserDataManager {
 
         // Load each data type from database
         if (result.data.profile) {
-          localStorage.setItem(`${this.STORAGE_PREFIX}profile_${userId}`, JSON.stringify(result.data.profile))
+          localStorage.setItem(`${this.STORAGE_PREFIX}profile_${resolvedUserId}`, JSON.stringify(result.data.profile))
         }
         if (result.data.budgetData) {
-          localStorage.setItem(`${this.STORAGE_PREFIX}budget_${userId}`, JSON.stringify(result.data.budgetData))
+          localStorage.setItem(`${this.STORAGE_PREFIX}budget_${resolvedUserId}`, JSON.stringify(result.data.budgetData))
         }
         if (result.data.budgetCategories) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}categories_${userId}`,
+            `${this.STORAGE_PREFIX}categories_${resolvedUserId}`,
             JSON.stringify(result.data.budgetCategories),
           )
         }
         if (result.data.budgetEntries) {
-          localStorage.setItem(`${this.STORAGE_PREFIX}entries_${userId}`, JSON.stringify(result.data.budgetEntries))
+          localStorage.setItem(
+            `${this.STORAGE_PREFIX}entries_${resolvedUserId}`,
+            JSON.stringify(result.data.budgetEntries),
+          )
         }
         if (result.data.goals) {
-          localStorage.setItem(`${this.STORAGE_PREFIX}goals_${userId}`, JSON.stringify(result.data.goals))
+          localStorage.setItem(`${this.STORAGE_PREFIX}goals_${resolvedUserId}`, JSON.stringify(result.data.goals))
         }
         if (result.data.learningProgress) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}learning_progress_${userId}`,
+            `${this.STORAGE_PREFIX}learning_progress_${resolvedUserId}`,
             JSON.stringify(result.data.learningProgress),
           )
         }
         if (result.data.userProgress) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}user_progress_${userId}`,
+            `${this.STORAGE_PREFIX}user_progress_${resolvedUserId}`,
             JSON.stringify(result.data.userProgress),
           )
         }
@@ -917,6 +938,31 @@ class UserDataManager {
     }
   }
 
+  private getResolvedUserId(): string | null {
+    if (typeof window === "undefined") return null
+
+    // Try Clerk user ID first
+    const clerkUserId = (window as any).__clerk_user_id
+    if (clerkUserId) {
+      return clerkUserId
+    }
+
+    // Try localStorage/sessionStorage
+    const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
+    const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+    const authenticated =
+      localStorage.getItem("wealthwise_authenticated") === "true" ||
+      sessionStorage.getItem("wealthwise_session_in") === "true"
+
+    const fallbackUserId = localUser || sessionUser
+
+    if (fallbackUserId && authenticated) {
+      return fallbackUserId
+    }
+
+    return null
+  }
+
   /* ---------- CATEGORY CRUD ---------- */
   getBudgetCategories(): BudgetCategory[] {
     if (typeof window === "undefined") return []
@@ -1475,7 +1521,7 @@ class UserDataManager {
 
       // Update current lesson
       moduleProgress.currentLesson = lessonIndex
-      moduleProgress.lastAccessed = new Date().toISOString()
+      moduleProgress.lastAccessed = new Date().toISOString() // Fixed typo here: modulemoduleProgress to moduleProgress
 
       // Update completed lessons
       if (completed && !moduleProgress.completedLessons.includes(lessonIndex)) {

@@ -65,6 +65,8 @@ function ClerkUserIdSync() {
           console.log("[v0] Syncing local data to database...")
           await userDataManager.syncToDatabase(fallbackUserId)
         }
+      } else {
+        console.log("[v0] No authenticated user found - skipping database sync")
       }
     }
 
