@@ -87,7 +87,7 @@ function ClerkUserIdSync() {
   return null
 }
 
-function ClientLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <ClerkUserIdSync />
@@ -107,5 +107,3 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
     </ClerkProvider>
   )
 }
-
-export default ClientLayout
