@@ -8,12 +8,9 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
+const CLERK_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
 
-if (!CLERK_PUBLISHABLE_KEY) {
-  console.error("[v0] No Clerk publishable key found in environment variables")
-}
+console.log("[v0] Clerk key check:", CLERK_KEY ? "Key found" : "No key found")
 
 function isIOSSafari() {
   if (typeof window === "undefined") return false
@@ -83,33 +80,8 @@ function ClerkUserIdSync() {
 }
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  if (!CLERK_PUBLISHABLE_KEY) {
-    return (
-      <div className="flex h-screen items-center justify-center p-4">
-        <div className="max-w-md rounded-lg border border-red-300 bg-red-50 p-6 text-center">
-          <h2 className="mb-2 text-lg font-semibold text-red-900">Clerk Configuration Required</h2>
-          <p className="mb-4 text-sm text-red-700">
-            The Clerk publishable key is missing. Please add NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY to your environment
-            variables.
-          </p>
-          <p className="text-xs text-red-600">
-            Get your key at:{" "}
-            <a
-              href="https://dashboard.clerk.com/last-active?path=api-keys"
-              className="underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Clerk Dashboard
-            </a>
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={CLERK_KEY}>
       <ClerkUserIdSync />
       <SidebarProvider>
         <AppSidebar />
