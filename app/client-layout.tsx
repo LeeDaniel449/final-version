@@ -24,6 +24,7 @@ function isIOSSafari() {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [hasPromptedRefresh, setHasPromptedRefresh] = useState(false)
+  const [syncAttempted, setSyncAttempted] = useState(false)
 
   useEffect(() => {
     if (isLoaded && user?.id) {
@@ -43,51 +44,56 @@ function ClerkUserIdSync() {
   }, [isLoaded, user])
 
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined" || syncAttempted) return
 
     const initializeDatabaseSync = async () => {
-      if (isLoaded) {
-        const clerkUserId = user?.id
+      const clerkUserId = user?.id
+      const localUser = localStorage.getItem("wealthwise_current_user")
+      const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+      const authenticated =
+        localStorage.getItem("wealthwise_authenticated") === "true" ||
+        sessionStorage.getItem("wealthwise_session_in") === "true"
 
-        if (clerkUserId) {
-          console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
+      const fallbackUserId = localUser || sessionUser
 
+      let effectiveUserId: string | null = null
+
+      if (clerkUserId) {
+        console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
+        effectiveUserId = clerkUserId
+      } else if (fallbackUserId && authenticated) {
+        console.log("[v0] Using fallback user ID for database sync:", fallbackUserId)
+        effectiveUserId = fallbackUserId
+        userDataManager.setClerkUserId(fallbackUserId)
+      } else {
+        console.log("[v0] No authenticated user found - skipping database sync")
+        setSyncAttempted(true)
+        return
+      }
+
+      if (effectiveUserId) {
+        try {
           console.log("[v0] Loading data from database...")
-          await userDataManager.loadFromDatabase(clerkUserId)
+          await userDataManager.loadFromDatabase(effectiveUserId)
 
           const hasLocalData = userDataManager.hasStartedBudgeting()
           if (hasLocalData) {
             console.log("[v0] Syncing local data to database...")
-            await userDataManager.syncToDatabase(clerkUserId)
+            await userDataManager.syncToDatabase(effectiveUserId)
           }
-        } else {
-          const localUser = localStorage.getItem("wealthwise_current_user")
-          const sessionUser = sessionStorage.getItem("wealthwise_session_user")
-          const authenticated =
-            localStorage.getItem("wealthwise_authenticated") === "true" ||
-            sessionStorage.getItem("wealthwise_session_in") === "true"
-
-          const fallbackUserId = localUser || sessionUser
-
-          if (fallbackUserId && authenticated) {
-            console.log("[v0] Using fallback user ID (Clerk not available):", fallbackUserId)
-            userDataManager.setClerkUserId(fallbackUserId)
-            await userDataManager.loadFromDatabase(fallbackUserId)
-          } else {
-            console.log("[v0] No authenticated user found - skipping database sync")
-          }
+        } catch (error) {
+          console.error("[v0] Failed to initialize database sync:", error)
         }
+        setSyncAttempted(true)
       }
     }
 
     const timer = setTimeout(() => {
-      initializeDatabaseSync().catch((error) => {
-        console.error("[v0] Failed to initialize database sync:", error)
-      })
-    }, 500)
+      initializeDatabaseSync()
+    }, 100)
 
     return () => clearTimeout(timer)
-  }, [isLoaded, user])
+  }, [user, syncAttempted])
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {
