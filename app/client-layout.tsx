@@ -8,17 +8,6 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
 
-const CLERK_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
-
-function isIOSSafari() {
-  if (typeof window === "undefined") return false
-  const ua = window.navigator.userAgent
-  const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
-  const webkit = !!ua.match(/WebKit/i)
-  return iOS && webkit && !ua.match(/CriOS/i)
-}
-
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
@@ -83,6 +72,42 @@ function ClerkUserIdSync() {
   return null
 }
 
+function ClerkErrorBoundary({ children }: { children: React.ReactNode }) {
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      if (event.message?.includes("Clerk") || event.message?.includes("failed_to_load_clerk_js_timeout")) {
+        console.error("[v0] Clerk loading error caught:", event.message)
+        setHasError(true)
+        event.preventDefault()
+      }
+    }
+
+    window.addEventListener("error", handleError)
+    return () => window.removeEventListener("error", handleError)
+  }, [])
+
+  if (hasError) {
+    console.log("[v0] Clerk failed to load, rendering app without authentication")
+    return (
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+          </header>
+          <main className="flex-1 p-4 md:p-6">
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
+    )
+  }
+
+  return <>{children}</>
+}
+
 export default function ClientLayout({
   children,
   clerkPublishableKey,
@@ -122,21 +147,23 @@ export default function ClientLayout({
   }
 
   return (
-    <ClerkProvider publishableKey={clerkPublishableKey}>
-      <ClerkUserIdSync />
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
-          </header>
-          <main className="flex-1 p-4 md:p-6">
-            <Suspense fallback={<div>Loading...</div>}>
-              <PremiumGate>{children}</PremiumGate>
-            </Suspense>
-          </main>
-        </SidebarInset>
-      </SidebarProvider>
-    </ClerkProvider>
+    <ClerkErrorBoundary>
+      <ClerkProvider publishableKey={clerkPublishableKey}>
+        <ClerkUserIdSync />
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+              <SidebarTrigger className="-ml-1" />
+            </header>
+            <main className="flex-1 p-4 md:p-6">
+              <Suspense fallback={<div>Loading...</div>}>
+                <PremiumGate>{children}</PremiumGate>
+              </Suspense>
+            </main>
+          </SidebarInset>
+        </SidebarProvider>
+      </ClerkProvider>
+    </ClerkErrorBoundary>
   )
 }
