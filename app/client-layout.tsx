@@ -14,7 +14,7 @@ const CLERK_PUBLISHABLE_KEY =
   "pk_test_ZW5hYmxlZC1lYWdsZS0yNy5jbGVyay5hY2NvdW50cy5kZXYk"
 
 function isIOSSafari() {
-  if (typeof window === 'undefined') return false
+  if (typeof window === "undefined") return false
   const ua = window.navigator.userAgent
   const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
   const webkit = !!ua.match(/WebKit/i)
@@ -28,10 +28,10 @@ function ClerkUserIdSync() {
   useEffect(() => {
     if (isLoaded && user?.id) {
       userDataManager.setClerkUserId(user.id)
-      
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('wealthwise_current_user', user.primaryEmailAddress?.emailAddress || user.id)
-        sessionStorage.setItem('wealthwise_session_user', user.primaryEmailAddress?.emailAddress || user.id)
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("wealthwise_current_user", user.primaryEmailAddress?.emailAddress || user.id)
+        sessionStorage.setItem("wealthwise_session_user", user.primaryEmailAddress?.emailAddress || user.id)
       }
     } else if (isLoaded && !user) {
       userDataManager.setClerkUserId(null)
@@ -39,32 +39,40 @@ function ClerkUserIdSync() {
   }, [isLoaded, user])
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    
-    const migrateExistingData = async () => {
-      const localUser = localStorage.getItem('wealthwise_current_user')
-      const sessionUser = sessionStorage.getItem('wealthwise_session_user')
-      const authenticated = localStorage.getItem("wealthwise_authenticated") === "true" ||
-                           sessionStorage.getItem("wealthwise_session_in") === "true"
-      
+    if (typeof window === "undefined") return
+
+    const initializeDatabaseSync = async () => {
+      // Check for authenticated user
+      const localUser = localStorage.getItem("wealthwise_current_user")
+      const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+      const authenticated =
+        localStorage.getItem("wealthwise_authenticated") === "true" ||
+        sessionStorage.getItem("wealthwise_session_in") === "true"
+
       const fallbackUserId = localUser || sessionUser
-      
+
       if (fallbackUserId && authenticated) {
-        console.log("[v0] Setting fallback user ID and loading database:", fallbackUserId)
+        console.log("[v0] Initializing database sync for user:", fallbackUserId)
         userDataManager.setClerkUserId(fallbackUserId)
-        
-        // Check if user has existing local data that needs migration
+
+        // Load data from database first (this will merge with localStorage if needed)
+        console.log("[v0] Loading data from database...")
+        await userDataManager.loadFromDatabase(fallbackUserId)
+
+        // Check if user has local-only data that needs to be uploaded
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
-          console.log("[v0] Found existing local data - uploading to database")
-          await userDataManager.migrateLocalDataToDatabase(fallbackUserId)
+          console.log("[v0] Syncing local data to database...")
+          await userDataManager.syncToDatabase(fallbackUserId)
         }
       }
     }
-    
-    const timeout = setTimeout(migrateExistingData, 6000)
-    return () => clearTimeout(timeout)
-  }, [user?.id])
+
+    // Run immediately instead of after delay
+    initializeDatabaseSync().catch((error) => {
+      console.error("[v0] Failed to initialize database sync:", error)
+    })
+  }, []) // Run once on mount
 
   useEffect(() => {
     if (isIOSSafari() && !hasPromptedRefresh) {

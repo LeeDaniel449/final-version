@@ -119,6 +119,9 @@ class UserDataManager {
     SIGNED_UP: "wealthwise_signed_up",
   }
 
+  // Added a prefix for user-specific storage keys to avoid conflicts
+  private readonly STORAGE_PREFIX = "wealthwise_user_data_"
+
   private defaultProfile: UserProfile = {
     firstName: "",
     lastName: "",
@@ -242,7 +245,7 @@ class UserDataManager {
 
     try {
       console.log("[v0] Syncing to database for user:", userId)
-      
+
       const data = {
         profile: this.getUserProfile(),
         budgetData: this.getBudgetData(),
@@ -255,9 +258,9 @@ class UserDataManager {
 
       const response = await fetch("/api/user-data", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          "x-user-id": userId
+          "x-user-id": userId,
         },
         body: JSON.stringify({ data, userId }), // Fixed JSON.JSON typo
       })
@@ -287,45 +290,61 @@ class UserDataManager {
 
     try {
       console.log("[v0] Loading from database for user:", userId)
-      
-      const response = await fetch("/api/user-data", {
+
+      const response = await fetch(`/api/user-data?userId=${encodeURIComponent(userId)}`, {
         headers: {
-          "x-user-id": userId
-        }
+          "x-user-id": userId,
+        },
       })
-      
+
       if (!response.ok) {
         const result = await response.json()
-        if (result.tableNotFound) {
-          console.log("[v0] Database table not ready - using localStorage only")
-          return
-        }
-        console.error("[v0] Failed to load from database:", response.status)
+        console.error("[v0] Failed to load from database:", result)
         return
       }
 
-      const { data, tableNotFound } = await response.json()
-      
-      if (tableNotFound) {
-        console.log("[v0] Database table not ready - using localStorage only")
-        return
-      }
-      
-      if (data && Object.keys(data).length > 0) {
-        console.log("[v0] Loading data from database")
-        
+      const result = await response.json()
+
+      if (result.data && Object.keys(result.data).length > 0) {
+        console.log("[v0] Database data found, loading...")
+
         // Load each data type from database
-        if (data.profile) this.saveUserProfile(data.profile)
-        if (data.budgetData) this.saveBudgetData(data.budgetData)
-        if (data.budgetCategories) this.saveBudgetCategories(data.budgetCategories)
-        if (data.budgetEntries) this.saveBudgetEntries(data.budgetEntries)
-        if (data.goals) this.saveGoals(data.goals)
-        if (data.learningProgress) this.saveLearningProgress(data.learningProgress)
-        if (data.userProgress) this.saveUserProgress(data.userProgress)
-        
+        if (result.data.profile) {
+          localStorage.setItem(`${this.STORAGE_PREFIX}profile_${userId}`, JSON.stringify(result.data.profile))
+        }
+        if (result.data.budgetData) {
+          localStorage.setItem(`${this.STORAGE_PREFIX}budget_${userId}`, JSON.stringify(result.data.budgetData))
+        }
+        if (result.data.budgetCategories) {
+          localStorage.setItem(
+            `${this.STORAGE_PREFIX}categories_${userId}`,
+            JSON.stringify(result.data.budgetCategories),
+          )
+        }
+        if (result.data.budgetEntries) {
+          localStorage.setItem(`${this.STORAGE_PREFIX}entries_${userId}`, JSON.stringify(result.data.budgetEntries))
+        }
+        if (result.data.goals) {
+          localStorage.setItem(`${this.STORAGE_PREFIX}goals_${userId}`, JSON.stringify(result.data.goals))
+        }
+        if (result.data.learningProgress) {
+          localStorage.setItem(
+            `${this.STORAGE_PREFIX}learning_progress_${userId}`,
+            JSON.stringify(result.data.learningProgress),
+          )
+        }
+        if (result.data.userProgress) {
+          localStorage.setItem(
+            `${this.STORAGE_PREFIX}user_progress_${userId}`,
+            JSON.stringify(result.data.userProgress),
+          )
+        }
+
         console.log("[v0] Successfully loaded data from database")
+
+        window.dispatchEvent(new Event("storage"))
       } else {
-        console.log("[v0] No data found in database")
+        console.log("[v0] No database data found - using localStorage only")
       }
     } catch (error) {
       console.error("[v0] Error loading from database:", error)
@@ -337,22 +356,22 @@ class UserDataManager {
 
     try {
       console.log("[v0] Starting migration of local data to database for user:", userId)
-      
+
       // Check if data already exists in database
       const response = await fetch("/api/user-data", {
-        headers: { "x-user-id": userId }
+        headers: { "x-user-id": userId },
       })
-      
+
       if (response.ok) {
         const { data } = await response.json()
-        
+
         // If database already has data, don't overwrite
         if (data && Object.keys(data).length > 0) {
           console.log("[v0] Database already has data - skipping migration")
           return
         }
       }
-      
+
       // Gather all existing local data
       const localData = {
         profile: this.getUserProfile(),
@@ -363,28 +382,29 @@ class UserDataManager {
         learningProgress: this.getLearningProgress(),
         userProgress: this.getUserProgress(),
       }
-      
+
       // Check if there's any meaningful data to migrate
-      const hasData = localData.budgetCategories.length > 0 || 
-                      localData.budgetEntries.length > 0 || 
-                      localData.goals.length > 0 ||
-                      localData.userProgress.completedModules.length > 0
-      
+      const hasData =
+        localData.budgetCategories.length > 0 ||
+        localData.budgetEntries.length > 0 ||
+        localData.goals.length > 0 ||
+        localData.userProgress.completedModules.length > 0
+
       if (!hasData) {
         console.log("[v0] No local data to migrate")
         return
       }
-      
+
       console.log("[v0] Migrating local data:", {
         categories: localData.budgetCategories.length,
         entries: localData.budgetEntries.length,
         goals: localData.goals.length,
-        completedModules: localData.userProgress.completedModules.length
+        completedModules: localData.userProgress.completedModules.length,
       })
-      
+
       // Upload to database
       await this.syncToDatabase(userId)
-      
+
       console.log("[v0] Successfully migrated local data to database")
     } catch (error) {
       console.error("[v0] Error migrating local data:", error)
@@ -807,29 +827,30 @@ class UserDataManager {
         console.log("[v0] Using Clerk user ID:", userId)
       } else {
         const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
-        const sessionUser = sessionStorage.getItem('wealthwise_session_user')
-        const authenticated = localStorage.getItem("wealthwise_authenticated") === "true" ||
-                             sessionStorage.getItem("wealthwise_session_in") === "true"
-        
+        const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+        const authenticated =
+          localStorage.getItem("wealthwise_authenticated") === "true" ||
+          sessionStorage.getItem("wealthwise_session_in") === "true"
+
         userId = localUser || sessionUser
-        
+
         if (userId && authenticated) {
           console.log("[v0] Using fallback authenticated user ID:", userId)
           if (!localUser && userId) {
             this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
           }
           if (!sessionUser && userId) {
-            this.setStorageItem('wealthwise_session_user', userId, true)
+            this.setStorageItem("wealthwise_session_user", userId, true)
           }
         } else {
           const registeredUsers = this.getRegisteredUsers()
           const userKeys = Object.keys(registeredUsers)
-          
+
           if (userKeys.length === 1) {
             userId = userKeys[0]
             console.log("[v0] Auto-selecting single registered user:", userId)
             this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
-            this.setStorageItem('wealthwise_session_user', userId, true)
+            this.setStorageItem("wealthwise_session_user", userId, true)
             this.setStorageItem("wealthwise_authenticated", "true")
           }
         }
@@ -851,7 +872,7 @@ class UserDataManager {
     if (userId) {
       ;(window as any).__clerk_user_id = userId
       console.log("[v0] Clerk user ID set:", userId)
-      
+
       this.loadFromDatabase(userId).catch(console.error)
       this.migrateLocalDataToDatabase(userId).catch(console.error) // Added migration call
     } else {
@@ -859,7 +880,7 @@ class UserDataManager {
       if (currentUserId) {
         this.syncToDatabase(currentUserId).catch(console.error)
       }
-      
+
       delete (window as any).__clerk_user_id
       console.log("[v0] Clerk user ID cleared")
     }
@@ -877,17 +898,17 @@ class UserDataManager {
       // Get user ID from any available source
       const clerkUserId = (window as any).__clerk_user_id
       const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
-      const sessionUser = sessionStorage.getItem('wealthwise_session_user')
-      
+      const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+
       const userId = clerkUserId || localUser || sessionUser
-      
+
       if (userId) {
         // Sync to both storages for consistency
         if (!localUser) {
           this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
         }
         if (!sessionUser) {
-          this.setStorageItem('wealthwise_session_user', userId, true)
+          this.setStorageItem("wealthwise_session_user", userId, true)
         }
         console.log("[v0] User ID synced across contexts:", userId)
       }
@@ -901,10 +922,11 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
-      
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+
       // Check if we got an anonymous key - if so, return empty
-      if (storageKey.endsWith('_anonymous')) {
+      if (storageKey.endsWith("_anonymous")) {
         console.log("[v0] No authenticated user - returning empty categories")
         return []
       }
@@ -944,21 +966,17 @@ class UserDataManager {
   saveBudgetCategories(categories: BudgetCategory[]): void {
     if (typeof window === "undefined") return
     try {
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories")
-      
-      if (storageKey.endsWith('_anonymous')) {
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+
+      if (storageKey.endsWith("_anonymous")) {
         console.error("[v0] Cannot save categories - no authenticated user")
         return
       }
 
       localStorage.setItem(storageKey, JSON.stringify(categories))
       console.log("[v0] Budget categories saved - count:", categories.length)
-      
-      const clerkUserId = (window as any).__clerk_user_id
-      const fallbackUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER) || 
-                          sessionStorage.getItem('wealthwise_session_user')
-      const userId = clerkUserId || fallbackUser
-      
+
       if (userId) {
         console.log("[v0] Triggering database sync for user:", userId)
         this.syncToDatabase(userId).catch(console.error)
@@ -1012,9 +1030,10 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
-      
-      if (storageKey.endsWith('_anonymous')) {
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+
+      if (storageKey.endsWith("_anonymous")) {
         console.log("[v0] No authenticated user - returning empty entries")
         return []
       }
@@ -1033,21 +1052,17 @@ class UserDataManager {
   saveBudgetEntries(entries: BudgetEntry[]): void {
     if (typeof window === "undefined") return
     try {
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
-      
-      if (storageKey.endsWith('_anonymous')) {
+      const userId = this.getClerkUserId()
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+
+      if (storageKey.endsWith("_anonymous")) {
         console.error("[v0] Cannot save entries - no authenticated user")
         return
       }
 
       localStorage.setItem(storageKey, JSON.stringify(entries))
       console.log("[v0] Budget entries saved - count:", entries.length)
-      
-      const clerkUserId = (window as any).__clerk_user_id
-      const fallbackUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER) || 
-                          sessionStorage.getItem('wealthwise_session_user')
-      const userId = clerkUserId || fallbackUser
-      
+
       if (userId) {
         console.log("[v0] Triggering database sync for user:", userId)
         this.syncToDatabase(userId).catch(console.error)
@@ -1058,9 +1073,10 @@ class UserDataManager {
   }
 
   addBudgetEntry(entry: Omit<BudgetEntry, "id">): void {
-    const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries")
-    
-    if (storageKey.endsWith('_anonymous')) {
+    const userId = this.getClerkUserId()
+    const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+
+    if (storageKey.endsWith("_anonymous")) {
       console.error("[v0] Cannot add budget entry - user not authenticated. Please sign in.")
       return
     }
@@ -1273,7 +1289,7 @@ class UserDataManager {
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
       localStorage.setItem(storageKey, JSON.stringify(goals))
-      
+
       this.syncToDatabase(userId).catch(console.error)
     } catch (error) {
       console.error("Error saving goals:", error)
@@ -1367,7 +1383,7 @@ class UserDataManager {
       const updatedProgress = { ...currentProgress, ...progress }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.LEARNING_PROGRESS, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedProgress))
-      
+
       this.syncToDatabase(userId).catch(console.error)
     } catch (error) {
       console.error("Error saving learning progress:", error)
