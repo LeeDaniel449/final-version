@@ -9,9 +9,11 @@ import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
 
 const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-  process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-  "pk_test_ZW5hYmxlZC1lYWdsZS0yNy5jbGVyay5hY2NvdW50cy5kZXYk"
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
+
+if (!CLERK_PUBLISHABLE_KEY) {
+  console.error("[v0] No Clerk publishable key found in environment variables")
+}
 
 function isIOSSafari() {
   if (typeof window === "undefined") return false
@@ -32,7 +34,6 @@ function ClerkUserIdSync() {
 
       if (typeof window !== "undefined") {
         localStorage.setItem("wealthwise_clerk_user_id", user.id)
-        console.log("[v0] Clerk user ID stored:", user.id)
       }
     } else if (isLoaded && !user) {
       console.log("[v0] Clerk loaded - no user signed in")
@@ -40,8 +41,6 @@ function ClerkUserIdSync() {
       if (typeof window !== "undefined") {
         localStorage.removeItem("wealthwise_clerk_user_id")
       }
-    } else if (!isLoaded) {
-      console.log("[v0] Waiting for Clerk to load...")
     }
   }, [user, isLoaded])
 
@@ -60,20 +59,16 @@ function ClerkUserIdSync() {
       setSyncInitialized(true)
 
       try {
-        console.log("[v0] Loading data from database for user:", clerkUserId)
         const dbData = await userDataManager.loadFromDatabase(clerkUserId)
 
         if (dbData && Object.keys(dbData).length > 0) {
-          console.log("[v0] Database data found - loaded successfully")
+          console.log("[v0] Database data loaded successfully")
           window.dispatchEvent(new Event("storage"))
         } else {
-          console.log("[v0] No database data found - checking for local data to migrate")
-
           const hasLocalData = userDataManager.hasStartedBudgeting()
           if (hasLocalData) {
             console.log("[v0] Migrating local data to database...")
             await userDataManager.syncToDatabase(clerkUserId)
-            console.log("[v0] Local data migrated successfully")
           }
         }
       } catch (error) {
