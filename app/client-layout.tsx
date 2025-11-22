@@ -23,153 +23,86 @@ function isIOSSafari() {
 
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
-  const [syncAttempted, setSyncAttempted] = useState(false)
+  const [syncInitialized, setSyncInitialized] = useState(false)
 
   useEffect(() => {
     if (user?.id) {
-      console.log("[v0] Clerk user authenticated:", user.id)
+      console.log("[v0] Clerk user authenticated with ID:", user.id)
       userDataManager.setClerkUserId(user.id)
 
       if (typeof window !== "undefined") {
-        localStorage.setItem("wealthwise_current_user", user.id)
-        sessionStorage.setItem("wealthwise_session_user", user.id)
-        console.log("[v0] Stored Clerk user ID in storage:", user.id)
+        localStorage.setItem("wealthwise_clerk_user_id", user.id)
+        console.log("[v0] Clerk user ID stored:", user.id)
       }
     } else if (isLoaded && !user) {
-      console.log("[v0] Clerk loaded but no user signed in")
+      console.log("[v0] Clerk loaded - no user signed in")
       userDataManager.setClerkUserId(null)
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("wealthwise_clerk_user_id")
+      }
+    } else if (!isLoaded) {
+      console.log("[v0] Waiting for Clerk to load...")
     }
   }, [user, isLoaded])
 
   useEffect(() => {
-    if (typeof window === "undefined" || syncAttempted) return
+    if (syncInitialized || !user?.id) return
 
-    const initializeDatabaseSync = async () => {
-      let userId = user?.id
+    const syncWithDatabase = async () => {
+      const clerkUserId = user.id
 
-      if (!userId && typeof window !== "undefined") {
-        // Check for fallback authentication
-        const sessionUser = sessionStorage.getItem("wealthwise_session_user")
-        const authenticated = sessionStorage.getItem("wealthwise_session_in") === "true"
-
-        if (sessionUser && authenticated) {
-          userId = sessionUser
-          console.log("[v0] Using fallback user ID from sessionStorage:", userId)
-        }
-      }
-
-      if (!userId) {
-        // Wait a bit longer for Clerk to potentially load
-        if (!isLoaded) {
-          console.log("[v0] Clerk still loading, waiting...")
-          return
-        }
-        console.log("[v0] No user authenticated - database sync disabled")
-        setSyncAttempted(true)
+      if (!clerkUserId.startsWith("user_")) {
+        console.error("[v0] Invalid Clerk user ID format:", clerkUserId)
         return
       }
 
-      console.log("[v0] Starting database sync for user:", userId)
-      setSyncAttempted(true)
+      console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
+      setSyncInitialized(true)
 
       try {
-        // Load data from database
-        console.log("[v0] Loading data from database...")
-        const dbData = await userDataManager.loadFromDatabase(userId)
+        console.log("[v0] Loading data from database for user:", clerkUserId)
+        const dbData = await userDataManager.loadFromDatabase(clerkUserId)
 
         if (dbData && Object.keys(dbData).length > 0) {
-          console.log("[v0] Database data loaded, updating localStorage...")
-          // Force a page refresh to load the data
-          if (typeof window !== "undefined") {
-            window.dispatchEvent(new Event("storage"))
-          }
-        }
+          console.log("[v0] Database data found - loaded successfully")
+          window.dispatchEvent(new Event("storage"))
+        } else {
+          console.log("[v0] No database data found - checking for local data to migrate")
 
-        // Check for local data to sync
-        const hasLocalData = userDataManager.hasStartedBudgeting()
-        if (hasLocalData) {
-          console.log("[v0] Local data found, syncing to database...")
-          await userDataManager.syncToDatabase(userId)
+          const hasLocalData = userDataManager.hasStartedBudgeting()
+          if (hasLocalData) {
+            console.log("[v0] Migrating local data to database...")
+            await userDataManager.syncToDatabase(clerkUserId)
+            console.log("[v0] Local data migrated successfully")
+          }
         }
       } catch (error) {
         console.error("[v0] Database sync error:", error)
       }
     }
 
-    // Try immediately, then retry after delays
-    initializeDatabaseSync()
-
-    const timer1 = setTimeout(initializeDatabaseSync, 1000)
-    const timer2 = setTimeout(initializeDatabaseSync, 3000)
-
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-    }
-  }, [user, isLoaded, syncAttempted])
+    syncWithDatabase()
+  }, [user?.id, syncInitialized])
 
   return null
 }
 
-export function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  useEffect(() => {
-    userDataManager.syncUserIdAcrossBrowserContexts()
-  }, [])
-
-  useEffect(() => {
-    const originalError = console.error
-    console.error = (...args: any[]) => {
-      const message = String(args[0])
-      if (message.includes("ClerkJS:") || message.includes("Clerk") || message.includes("clerk")) {
-        return
-      }
-      originalError.apply(console, args)
-    }
-
-    const handleRejection = (event: PromiseRejectionEvent) => {
-      const message = String(event.reason?.message || event.reason || "")
-      if (message.includes("ClerkJS:") || message.includes("Clerk") || message.includes("clerk")) {
-        event.preventDefault()
-      }
-    }
-
-    window.addEventListener("unhandledrejection", handleRejection)
-
-    return () => {
-      console.error = originalError
-      window.removeEventListener("unhandledrejection", handleRejection)
-    }
-  }, [])
-
+function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY}
-      appearance={{
-        elements: {
-          rootBox: "clerk-root",
-        },
-      }}
-      telemetry={false}
-      afterSignInUrl="/"
-      afterSignUpUrl="/"
-    >
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <ClerkUserIdSync />
       <SidebarProvider>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AppSidebar />
-          <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b bg-white px-4 sticky top-0 z-10">
-              <SidebarTrigger className="-ml-1" />
-            </header>
-            <main className="flex-1 overflow-auto">
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+          </header>
+          <main className="flex-1 p-4 md:p-6">
+            <Suspense fallback={<div>Loading...</div>}>
               <PremiumGate>{children}</PremiumGate>
-            </main>
-          </SidebarInset>
-        </Suspense>
+            </Suspense>
+          </main>
+        </SidebarInset>
       </SidebarProvider>
     </ClerkProvider>
   )
