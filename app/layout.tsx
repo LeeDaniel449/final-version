@@ -18,7 +18,7 @@ export default function RootLayout({
     process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
     process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
     process.env.CLERK_PUBLISHABLE_KEY ||
-    "pk_test_ZW5hYmxlZC1lYWdsZS0yNy5jbGVyay5hY2NvdW50cy5kZXYk" // Fallback key
+    ""
 
   console.log("[v0] Server-side Clerk key check:", {
     hasNextPublic: !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
