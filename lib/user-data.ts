@@ -842,14 +842,12 @@ class UserDataManager {
 
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
-      // CHANGE Only use Clerk user ID, never fallback to email
-      const clerkUserId = (window as any).__clerk_user_id
-      if (clerkUserId) {
-        userId = clerkUserId
-        console.log("[v0] Using Clerk user ID for storage:", userId)
+      userId = this.getResolvedUserId() || undefined
+
+      if (userId) {
+        console.log("[v0] Using resolved user ID for storage:", userId)
       } else {
-        // CHANGE No fallback - if no Clerk ID, use guest mode
-        console.log("[v0] No Clerk user ID - using guest mode")
+        console.log("[v0] No user ID found - using guest mode")
         userId = "guest"
       }
     }

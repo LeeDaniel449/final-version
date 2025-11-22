@@ -45,27 +45,37 @@ function ClerkUserIdSync() {
     if (typeof window === "undefined" || syncAttempted) return
 
     const initializeDatabaseSync = async () => {
-      // Check if user is available (don't wait for isLoaded)
-      const clerkUserId = user?.id
+      let userId = user?.id
 
-      if (!clerkUserId) {
+      if (!userId && typeof window !== "undefined") {
+        // Check for fallback authentication
+        const sessionUser = sessionStorage.getItem("wealthwise_session_user")
+        const authenticated = sessionStorage.getItem("wealthwise_session_in") === "true"
+
+        if (sessionUser && authenticated) {
+          userId = sessionUser
+          console.log("[v0] Using fallback user ID from sessionStorage:", userId)
+        }
+      }
+
+      if (!userId) {
         // Wait a bit longer for Clerk to potentially load
         if (!isLoaded) {
           console.log("[v0] Clerk still loading, waiting...")
           return
         }
-        console.log("[v0] No Clerk user - database sync disabled")
+        console.log("[v0] No user authenticated - database sync disabled")
         setSyncAttempted(true)
         return
       }
 
-      console.log("[v0] Starting database sync for user:", clerkUserId)
+      console.log("[v0] Starting database sync for user:", userId)
       setSyncAttempted(true)
 
       try {
         // Load data from database
         console.log("[v0] Loading data from database...")
-        const dbData = await userDataManager.loadFromDatabase(clerkUserId)
+        const dbData = await userDataManager.loadFromDatabase(userId)
 
         if (dbData && Object.keys(dbData).length > 0) {
           console.log("[v0] Database data loaded, updating localStorage...")
@@ -79,7 +89,7 @@ function ClerkUserIdSync() {
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
           console.log("[v0] Local data found, syncing to database...")
-          await userDataManager.syncToDatabase(clerkUserId)
+          await userDataManager.syncToDatabase(userId)
         }
       } catch (error) {
         console.error("[v0] Database sync error:", error)
