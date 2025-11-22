@@ -9,7 +9,9 @@ import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
 
 const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  "pk_test_ZW5hYmxlZC1lYWdsZS0yNy5jbGVyay5hY2NvdW50cy5kZXYk"
 
 if (!CLERK_PUBLISHABLE_KEY) {
   console.error("[v0] No Clerk publishable key found in environment variables")
