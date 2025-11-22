@@ -271,7 +271,7 @@ class UserDataManager {
           "Content-Type": "application/json",
           "x-user-id": resolvedUserId,
         },
-        body: JSON.stringify({ data, userId: resolvedUserId }), // Fixed JSON.JSON typo
+        body: JSON.JSON.stringify({ data, userId: resolvedUserId }), // Fixed JSON.JSON typo
       })
 
       if (!response.ok) {
@@ -294,17 +294,17 @@ class UserDataManager {
     }
   }
 
-  private async loadFromDatabase(userId?: string): Promise<void> {
+  private async loadFromDatabase(userId?: string): Promise<any> {
     if (!this.databaseSyncEnabled) {
       console.log("[v0] Database sync is disabled")
-      return
+      return null
     }
 
     try {
       const resolvedUserId = userId || this.getResolvedUserId()
       if (!resolvedUserId) {
         console.warn("[v0] Cannot load from database: No user ID available")
-        return
+        return null
       }
 
       console.log("[v0] Loading from database for user:", resolvedUserId)
@@ -318,7 +318,7 @@ class UserDataManager {
       if (!response.ok) {
         const result = await response.json()
         console.error("[v0] Failed to load from database:", result)
-        return
+        return null
       }
 
       const result = await response.json()
@@ -326,7 +326,6 @@ class UserDataManager {
       if (result.data && Object.keys(result.data).length > 0) {
         console.log("[v0] Database data found, loading...")
 
-        // Load each data type from database
         if (result.data.profile) {
           localStorage.setItem(`${this.STORAGE_PREFIX}profile_${resolvedUserId}`, JSON.stringify(result.data.profile))
         }
@@ -362,13 +361,14 @@ class UserDataManager {
         }
 
         console.log("[v0] Successfully loaded data from database")
-
-        window.dispatchEvent(new Event("storage"))
+        return result.data
       } else {
-        console.log("[v0] No database data found - using localStorage only")
+        console.log("[v0] No data in database for this user")
+        return null
       }
     } catch (error) {
       console.error("[v0] Error loading from database:", error)
+      return null
     }
   }
 
@@ -864,16 +864,17 @@ class UserDataManager {
       ;(window as any).__clerk_user_id = userId
       console.log("[v0] Clerk user ID set:", userId)
 
-      if (userId.startsWith("user_")) {
-        console.log("[v0] Valid Clerk ID detected - initializing sync")
-        this.loadFromDatabase(userId).catch(console.error)
-        this.migrateLocalDataToDatabase(userId).catch(console.error)
-      } else {
-        console.warn("[v0] Invalid Clerk user ID format:", userId)
-      }
+      // if (userId.startsWith("user_")) {
+      //   console.log("[v0] Valid Clerk ID detected - initializing sync")
+      //   this.loadFromDatabase(userId).catch(console.error)
+      //   this.migrateLocalDataToDatabase(userId).catch(console.error)
+      // } else {
+      //   console.warn("[v0] Invalid Clerk user ID format:", userId)
+      // }
     } else {
       const currentUserId = (window as any).__clerk_user_id
       if (currentUserId && currentUserId.startsWith("user_")) {
+        console.log("[v0] User signing out, syncing data one last time")
         this.syncToDatabase(currentUserId).catch(console.error)
       }
 

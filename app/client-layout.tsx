@@ -21,7 +21,7 @@ function isIOSSafari() {
 
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
-  const [syncInitialized, setSyncInitialized] = useState(false)
+  const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
 
   useEffect(() => {
     if (user?.id) {
@@ -41,9 +41,10 @@ function ClerkUserIdSync() {
   }, [user, isLoaded])
 
   useEffect(() => {
-    if (syncInitialized || !user?.id) return
-
     const syncWithDatabase = async () => {
+      // Only sync if user changed or first time
+      if (!user?.id || user.id === lastSyncedUserId) return
+
       const clerkUserId = user.id
 
       if (!clerkUserId.startsWith("user_")) {
@@ -52,28 +53,32 @@ function ClerkUserIdSync() {
       }
 
       console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
-      setSyncInitialized(true)
+      setLastSyncedUserId(clerkUserId)
 
       try {
-        const dbData = await userDataManager.loadFromDatabase(clerkUserId)
+        // Load data from database
+        await userDataManager.loadFromDatabase(clerkUserId)
+        console.log("[v0] Database data loaded, refreshing UI")
 
-        if (dbData && Object.keys(dbData).length > 0) {
-          console.log("[v0] Database data loaded successfully")
-          window.dispatchEvent(new Event("storage"))
-        } else {
-          const hasLocalData = userDataManager.hasStartedBudgeting()
-          if (hasLocalData) {
-            console.log("[v0] Migrating local data to database...")
-            await userDataManager.syncToDatabase(clerkUserId)
-          }
+        // Force all components to reload with new data
+        window.dispatchEvent(new Event("storage"))
+        window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: clerkUserId } }))
+
+        // Check if we need to migrate local data
+        const hasLocalData = userDataManager.hasStartedBudgeting()
+        if (hasLocalData) {
+          console.log("[v0] Migrating local data to database...")
+          await userDataManager.migrateLocalDataToDatabase(clerkUserId)
         }
       } catch (error) {
         console.error("[v0] Database sync error:", error)
       }
     }
 
-    syncWithDatabase()
-  }, [user?.id, syncInitialized])
+    if (isLoaded && user?.id) {
+      syncWithDatabase()
+    }
+  }, [user?.id, isLoaded, lastSyncedUserId])
 
   return null
 }
