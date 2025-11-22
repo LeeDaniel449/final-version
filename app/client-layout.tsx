@@ -11,12 +11,6 @@ import { userDataManager } from "@/lib/user-data"
 const CLERK_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
 
-console.log("[v0] Clerk key check:", CLERK_KEY ? `Key found (${CLERK_KEY.substring(0, 15)}...)` : "No key found")
-console.log("[v0] Available env check:", {
-  standard: !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  wealthlink: !!process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-})
-
 function isIOSSafari() {
   if (typeof window === "undefined") return false
   const ua = window.navigator.userAgent
@@ -84,8 +78,19 @@ function ClerkUserIdSync() {
   return null
 }
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  if (!CLERK_KEY) {
+export default function ClientLayout({
+  children,
+  clerkPublishableKey,
+}: {
+  children: React.ReactNode
+  clerkPublishableKey: string
+}) {
+  console.log(
+    "[v0] Clerk key received from server:",
+    clerkPublishableKey ? `Key found (${clerkPublishableKey.substring(0, 15)}...)` : "No key found",
+  )
+
+  if (!clerkPublishableKey) {
     return (
       <div className="flex items-center justify-center min-h-screen p-4">
         <div className="max-w-md text-center space-y-4">
@@ -112,7 +117,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }
 
   return (
-    <ClerkProvider publishableKey={CLERK_KEY}>
+    <ClerkProvider publishableKey={clerkPublishableKey}>
       <ClerkUserIdSync />
       <SidebarProvider>
         <AppSidebar />

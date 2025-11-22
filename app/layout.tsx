@@ -14,10 +14,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const clerkPublishableKey =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
+
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="font-sans">
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout clerkPublishableKey={clerkPublishableKey}>{children}</ClientLayout>
       </body>
     </html>
   )
