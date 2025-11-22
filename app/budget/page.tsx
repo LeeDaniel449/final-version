@@ -45,7 +45,7 @@ import {
   Trash2,
 } from "lucide-react"
 import { userDataManager } from "@/lib/user-data"
-import type { BudgetCategory, BudgetEntry } from "@/lib/user-data" // Imported BudgetCategory and BudgetEntry types
+import type { BudgetCategory, BudgetEntry } from "@/lib/user-data"
 import { TutorialProvider, useTutorial } from "@/components/tutorial/tutorial-provider"
 import { useUser } from "@clerk/nextjs"
 import { AreaChart, Area } from "recharts"
@@ -54,6 +54,9 @@ import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useRouter } from "next/navigation"
+
+// Removed redeclared interface BudgetCategory
+// Removed redeclared interface BudgetEntry
 
 interface Transaction {
   id: string
@@ -92,6 +95,7 @@ interface CategoryTrendData {
   [key: string]: string | number
 }
 
+// Renamed to UserBudgetCategory to avoid conflict with the imported type
 interface UserBudgetCategory {
   id: string
   name: string
@@ -1893,7 +1897,7 @@ const BudgetDashboardContent = () => {
                         }
 
                         const extractAmount = (message: string) => {
-                          const match = message.match(/\$\d+(?:,\d+)*/)
+                          const match = message.match(/\$\d+[,\d]*/)
                           return match ? match[0] : null
                         }
 
