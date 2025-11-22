@@ -842,49 +842,19 @@ class UserDataManager {
 
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
+      // CHANGE Only use Clerk user ID, never fallback to email
       const clerkUserId = (window as any).__clerk_user_id
       if (clerkUserId) {
         userId = clerkUserId
         console.log("[v0] Using Clerk user ID for storage:", userId)
       } else {
-        const localUser = localStorage.getItem(this.STORAGE_KEYS.CURRENT_USER)
-        const sessionUser = sessionStorage.getItem("wealthwise_session_user")
-        const authenticated =
-          localStorage.getItem("wealthwise_authenticated") === "true" ||
-          sessionStorage.getItem("wealthwise_session_in") === "true"
-
-        userId = localUser || sessionUser
-
-        if (userId && authenticated) {
-          console.log("[v0] Using fallback user ID for storage:", userId)
-          if (!localUser && userId) {
-            this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
-          }
-          if (!sessionUser && userId) {
-            this.setStorageItem("wealthwise_session_user", userId, true)
-          }
-        } else {
-          const registeredUsers = this.getRegisteredUsers()
-          const userKeys = Object.keys(registeredUsers)
-
-          if (userKeys.length === 1) {
-            userId = userKeys[0]
-            console.log("[v0] Auto-selecting single registered user:", userId)
-            this.setStorageItem(this.STORAGE_KEYS.CURRENT_USER, userId)
-            this.setStorageItem("wealthwise_session_user", userId, true)
-            this.setStorageItem("wealthwise_authenticated", "true")
-          }
-        }
+        // CHANGE No fallback - if no Clerk ID, use guest mode
+        console.log("[v0] No Clerk user ID - using guest mode")
+        userId = "guest"
       }
     }
 
-    if (!userId) {
-      console.warn("[v0] No user ID available - data will not persist across devices. Please sign in.")
-      return `${baseKey}_anonymous`
-    }
-
-    const storageKey = `${baseKey}_${userId}`
-    return storageKey
+    return `${baseKey}_${userId || "guest"}`
   }
 
   setClerkUserId(userId: string | null): void {
@@ -894,11 +864,14 @@ class UserDataManager {
       ;(window as any).__clerk_user_id = userId
       console.log("[v0] Clerk user ID set:", userId)
 
-      this.loadFromDatabase(userId).catch(console.error)
-      this.migrateLocalDataToDatabase(userId).catch(console.error) // Added migration call
+      // CHANGE Only sync if we have a real Clerk ID (not email)
+      if (userId.startsWith("user_")) {
+        this.loadFromDatabase(userId).catch(console.error)
+        this.migrateLocalDataToDatabase(userId).catch(console.error)
+      }
     } else {
       const currentUserId = (window as any).__clerk_user_id
-      if (currentUserId) {
+      if (currentUserId && currentUserId.startsWith("user_")) {
         this.syncToDatabase(currentUserId).catch(console.error)
       }
 
