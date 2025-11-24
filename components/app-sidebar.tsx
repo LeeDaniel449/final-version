@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from 'lucide-react'
+import { Home, BookOpen, Calculator, Target, Bot, LifeBuoy, Send, LogOut } from "lucide-react"
 import { UserButton } from "@/components/user-button"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -41,8 +41,13 @@ function getDisplayEmail(profile: any, isSignedIn: boolean) {
   Component ──────────────────────────────────────────────────────────────────
 */
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
-  const { isSignedIn, user, isLoaded } = useUser()
-  const { signOut } = useClerk()
+  const clerkUser = useUser()
+  const clerk = useClerk()
+  const isSignedIn = clerkUser.isSignedIn || false
+  const user: any = clerkUser.user
+  const isLoaded = clerkUser.isLoaded || false
+  const signOut: any = clerk.signOut
+
   const [userProfile, setUserProfile] = React.useState(userDataManager.getUserProfile())
 
   /* ----------------------------------------------------------------------- */
@@ -79,13 +84,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     if (user?.firstName) return user.firstName
     if (user?.username) return user.username
     if (userProfile?.firstName) return userProfile.firstName
-    return user?.emailAddresses[0]?.emailAddress?.split("@")[0] || "Guest"
+    return user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Guest"
   }, [isSignedIn, user, userProfile, isLoaded])
 
   const displayEmail = React.useMemo(() => {
     if (!isLoaded) return "..."
     if (!isSignedIn) return "Not signed in"
-    return user?.emailAddresses[0]?.emailAddress || userProfile?.email || "No email"
+    return user?.emailAddresses?.[0]?.emailAddress || userProfile?.email || "No email"
   }, [isSignedIn, user, userProfile, isLoaded])
 
   /* ----------------------------------------------------------------------- */
@@ -160,7 +165,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 <span className="truncate font-semibold">{displayName}</span>
                 <span className="truncate text-xs">{displayEmail}</span>
               </div>
-              {isSignedIn && (
+              {isSignedIn && signOut && (
                 <Button
                   variant="ghost"
                   size="icon"
