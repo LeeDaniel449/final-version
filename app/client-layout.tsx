@@ -24,86 +24,126 @@ function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
+  const [hasAttemptedSync, setHasAttemptedSync] = useState(false)
 
   useEffect(() => {
-    if (user?.id) {
-      console.log("[v0] Clerk user authenticated with ID:", user.id)
-      userDataManager.setClerkUserId(user.id)
+    if (isLoaded) {
+      if (user?.id) {
+        console.log("[v0] ✓ Clerk user authenticated:", user.id)
+        console.log("[v0] ✓ User email:", user.primaryEmailAddress?.emailAddress)
+        userDataManager.setClerkUserId(user.id)
 
-      if (typeof window !== "undefined") {
-        localStorage.setItem("wealthwise_clerk_user_id", user.id)
-        localStorage.setItem("wealthwise_authenticated", "true")
-      }
-    } else if (isLoaded && !user) {
-      console.log("[v0] Clerk loaded - no user signed in")
-      userDataManager.setClerkUserId(null)
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("wealthwise_clerk_user_id")
+        if (typeof window !== "undefined") {
+          localStorage.setItem("wealthwise_clerk_user_id", user.id)
+          localStorage.setItem("wealthwise_authenticated", "true")
+        }
+      } else {
+        console.log("[v0] ✗ Clerk loaded but no user signed in")
+        userDataManager.setClerkUserId(null)
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("wealthwise_clerk_user_id")
+          localStorage.removeItem("wealthwise_authenticated")
+        }
       }
     }
   }, [user, isLoaded])
 
   useEffect(() => {
     const syncWithDatabase = async () => {
-      // Only sync if user changed or first time
-      if (!user?.id || user.id === lastSyncedUserId) return
+      if (!isLoaded) {
+        console.log("[v0] Waiting for Clerk to load...")
+        return
+      }
+
+      if (!user?.id) {
+        console.log("[v0] No authenticated user - skipping sync")
+        return
+      }
+
+      // Prevent duplicate syncs for same user
+      if (user.id === lastSyncedUserId && hasAttemptedSync) {
+        console.log("[v0] Already synced for this user")
+        return
+      }
 
       const clerkUserId = user.id
 
       if (!clerkUserId.startsWith("user_")) {
-        console.error("[v0] Invalid Clerk user ID format:", clerkUserId)
+        console.error("[v0] ✗ Invalid Clerk user ID format:", clerkUserId)
         return
       }
 
       console.log("[v0] ========================================")
       console.log("[v0] STARTING DATABASE SYNC")
       console.log("[v0] User ID:", clerkUserId)
+      console.log("[v0] Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(clerkUserId)
+      setHasAttemptedSync(true)
 
       try {
-        // Load data from database first
+        // Step 1: Load data from database
         console.log("[v0] Step 1: Loading data from database...")
         const dbData = await userDataManager.loadFromDatabase(clerkUserId)
 
         if (dbData && Object.keys(dbData).length > 0) {
-          console.log("[v0] Database data loaded - found data:", Object.keys(dbData))
+          console.log("[v0] ✓ Database data loaded:", {
+            categories: dbData.budgetCategories?.length || 0,
+            entries: dbData.budgetEntries?.length || 0,
+            goals: dbData.goals?.length || 0,
+          })
         } else {
           console.log("[v0] No existing data in database for this user")
         }
 
-        // Force all components to reload with database data
+        // Step 2: Force UI refresh
         console.log("[v0] Step 2: Triggering UI refresh...")
-        window.dispatchEvent(new Event("storage"))
-        window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: clerkUserId } }))
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new Event("storage"))
+          window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: clerkUserId } }))
+        }
 
-        // Check if we need to migrate local data
+        // Step 3: Check for local data to migrate
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
           console.log("[v0] Step 3: Found local data, migrating to database...")
           await userDataManager.migrateLocalDataToDatabase(clerkUserId)
-          console.log("[v0] Local data migration complete")
+          console.log("[v0] ✓ Local data migration complete")
         } else {
           console.log("[v0] Step 3: No local data to migrate")
         }
 
-        // Refresh UI one more time after migration
+        // Step 4: Final UI refresh
         console.log("[v0] Step 4: Final UI refresh...")
-        window.dispatchEvent(new Event("storage"))
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new Event("storage"))
+        }
 
         console.log("[v0] ========================================")
-        console.log("[v0] DATABASE SYNC COMPLETE")
+        console.log("[v0] ✓ DATABASE SYNC COMPLETE")
         console.log("[v0] ========================================")
       } catch (error) {
-        console.error("[v0] Database sync error:", error)
+        console.error("[v0] ✗ Database sync error:", error)
       }
     }
 
-    if (isLoaded && user?.id) {
-      syncWithDatabase()
+    syncWithDatabase()
+  }, [user?.id, isLoaded, lastSyncedUserId, hasAttemptedSync])
+
+  useEffect(() => {
+    if (!user?.id) return
+
+    const handleStorageChange = () => {
+      console.log("[v0] Data changed - syncing to database...")
+      userDataManager.syncToDatabase(user.id)
     }
-  }, [user?.id, isLoaded, lastSyncedUserId])
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("storage", handleStorageChange)
+      return () => window.removeEventListener("storage", handleStorageChange)
+    }
+  }, [user?.id])
 
   return null
 }
