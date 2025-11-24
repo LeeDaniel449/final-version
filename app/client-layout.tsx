@@ -11,6 +11,16 @@ import { EnvDiagnostic } from "@/components/env-diagnostic"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 
+function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
+  if (!hasClerk) {
+    // When no Clerk, render AppSidebar without Clerk hooks being called
+    return <AppSidebar disableClerk />
+  }
+
+  // When Clerk exists, AppSidebar will be inside ClerkProvider
+  return <AppSidebar />
+}
+
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
@@ -118,7 +128,7 @@ function ClerkErrorBoundary({ children }: { children: React.ReactNode }) {
     console.log("[v0] Clerk failed to load, rendering app without authentication")
     return (
       <SidebarProvider>
-        <AppSidebar />
+        <SafeSidebar hasClerk={false} />
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
@@ -151,7 +161,7 @@ export default function ClientLayout({
       <>
         <EnvDiagnostic />
         <SidebarProvider>
-          <AppSidebar />
+          <SafeSidebar hasClerk={false} />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
               <SidebarTrigger className="-ml-1" />
@@ -204,7 +214,7 @@ export default function ClientLayout({
       <ClerkProvider publishableKey={clerkPublishableKey}>
         <ClerkUserIdSync />
         <SidebarProvider>
-          <AppSidebar />
+          <SafeSidebar hasClerk={true} />
           <SidebarInset>
             <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
               <SidebarTrigger className="-ml-1" />

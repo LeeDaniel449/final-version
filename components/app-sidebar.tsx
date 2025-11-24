@@ -40,23 +40,35 @@ function getDisplayEmail(profile: any, isSignedIn: boolean) {
 /*
   Component ──────────────────────────────────────────────────────────────────
 */
-export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  disableClerk,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { disableClerk?: boolean }) {
   const clerkUser = useUser()
   const clerk = useClerk()
-  const isSignedIn = clerkUser.isSignedIn || false
-  const user: any = clerkUser.user
-  const isLoaded = clerkUser.isLoaded || false
-  const signOut: any = clerk.signOut
+  let user: any = { isSignedIn: false, isLoaded: true, user: null }
+  let signOut: any = null
 
-  const [userProfile, setUserProfile] = React.useState(userDataManager.getUserProfile())
+  if (!disableClerk) {
+    user = clerkUser
+    signOut = clerk.signOut
+  } else {
+    console.warn("[v0] Clerk hooks not available, using guest mode")
+  }
+
+  const isSignedIn = user.isSignedIn || false
+  const userProfile = userDataManager.getUserProfile()
+  const isLoaded = user.isLoaded || false
+
+  const [profile, setProfile] = React.useState(userProfile)
 
   /* ----------------------------------------------------------------------- */
   /*  Sync with auth-state changes                                           */
   /* ----------------------------------------------------------------------- */
   React.useEffect(() => {
     function refreshProfile() {
-      const profile = userDataManager.getUserProfile()
-      setUserProfile((prev) => (JSON.stringify(prev) !== JSON.stringify(profile) ? profile : prev))
+      const currentProfile = userDataManager.getUserProfile()
+      setProfile((prev) => (JSON.stringify(prev) !== JSON.stringify(currentProfile) ? currentProfile : prev))
     }
 
     const handleUserDataUpdated = () => {
@@ -80,18 +92,18 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const displayName = React.useMemo(() => {
     if (!isLoaded) return "Loading..."
     if (!isSignedIn) return "Guest"
-    if (user?.firstName && user?.lastName) return `${user.firstName} ${user.lastName}`
-    if (user?.firstName) return user.firstName
-    if (user?.username) return user.username
-    if (userProfile?.firstName) return userProfile.firstName
-    return user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Guest"
-  }, [isSignedIn, user, userProfile, isLoaded])
+    if (user.user?.firstName && user.user?.lastName) return `${user.user.firstName} ${user.user.lastName}`
+    if (user.user?.firstName) return user.user.firstName
+    if (user.user?.username) return user.user.username
+    if (profile?.firstName) return profile.firstName
+    return user.user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Guest"
+  }, [isSignedIn, profile, isLoaded])
 
   const displayEmail = React.useMemo(() => {
     if (!isLoaded) return "..."
     if (!isSignedIn) return "Not signed in"
-    return user?.emailAddresses?.[0]?.emailAddress || userProfile?.email || "No email"
-  }, [isSignedIn, user, userProfile, isLoaded])
+    return user.user?.emailAddresses?.[0]?.emailAddress || profile?.email || "No email"
+  }, [isSignedIn, profile, isLoaded])
 
   /* ----------------------------------------------------------------------- */
   /*  Sidebar navigation data                                                */
@@ -160,12 +172,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <div className="flex items-center gap-3 px-2 py-2">
-              <div className="hidden md:block">{isSignedIn && <UserButton />}</div>
+              <div className="hidden md:block">{isSignedIn && !disableClerk && <UserButton />}</div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{displayName}</span>
                 <span className="truncate text-xs">{displayEmail}</span>
               </div>
-              {isSignedIn && signOut && (
+              {isSignedIn && signOut && !disableClerk && (
                 <Button
                   variant="ghost"
                   size="icon"
