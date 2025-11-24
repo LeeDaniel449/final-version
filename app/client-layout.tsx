@@ -10,7 +10,6 @@ import { userDataManager } from "@/lib/user-data"
 import { EnvDiagnostic } from "@/components/env-diagnostic"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
-import { getAuthenticatedUser } from "@/app/actions/auth"
 
 function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
   if (!hasClerk) {
@@ -25,118 +24,75 @@ function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
-  const [serverCheckComplete, setServerCheckComplete] = useState(false)
 
   useEffect(() => {
-    const checkServerAuth = async () => {
-      try {
-        const serverUser = await getAuthenticatedUser()
-        console.log("[v0] Server-side auth check:", serverUser)
-
-        if (serverUser.authenticated && serverUser.userId) {
-          console.log("[v0] ========================================")
-          console.log("[v0] SERVER DETECTED AUTHENTICATED USER")
-          console.log("[v0] User ID:", serverUser.userId)
-          console.log("[v0] Email:", serverUser.email)
-          console.log("[v0] ========================================")
-
-          if (serverUser.userId !== lastSyncedUserId) {
-            setLastSyncedUserId(serverUser.userId)
-            userDataManager.setClerkUserId(serverUser.userId)
-            await performDatabaseSync(serverUser.userId)
-          }
-        }
-      } catch (error) {
-        console.error("[v0] Server auth check error:", error)
-      } finally {
-        setServerCheckComplete(true)
-      }
-    }
-
-    checkServerAuth()
-    const interval = setInterval(checkServerAuth, 5000)
-
-    return () => clearInterval(interval)
-  }, [lastSyncedUserId])
-
-  useEffect(() => {
-    if (!serverCheckComplete) {
-      console.log("[v0] Waiting for server auth check...")
-      return
-    }
-
     const performSync = async () => {
       if (!isLoaded) {
-        console.log("[v0] Waiting for Clerk client to load...")
+        console.log("[v0] Clerk loading...")
         return
       }
 
       if (!user?.id) {
-        console.log("[v0] No client-side authenticated user detected")
-        if (!lastSyncedUserId) {
+        console.log("[v0] Clerk loaded - no user signed in")
+        if (lastSyncedUserId) {
+          console.log("[v0] User signed out - clearing sync")
           userDataManager.setClerkUserId(null)
+          setLastSyncedUserId(null)
         }
         return
       }
 
+      // User is signed in
       if (user.id === lastSyncedUserId) {
-        return
+        return // Already synced this user
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] CLIENT DETECTED AUTHENTICATED USER")
+      console.log("[v0] USER SIGNED IN - STARTING SYNC")
       console.log("[v0] User ID:", user.id)
       console.log("[v0] Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
       userDataManager.setClerkUserId(user.id)
+
       await performDatabaseSync(user.id)
     }
 
     performSync()
-  }, [user?.id, isLoaded, lastSyncedUserId, serverCheckComplete])
+  }, [user?.id, isLoaded, lastSyncedUserId])
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      console.log("[v0] ========================================")
-      console.log("[v0] STARTING DATABASE SYNC")
-      console.log("[v0] User ID:", userId)
-      console.log("[v0] ========================================")
-
       console.log("[v0] Step 1: Loading data from database...")
       const dbData = await userDataManager.loadFromDatabase(userId)
 
       if (dbData && Object.keys(dbData).length > 0) {
-        console.log("[v0] ✓ Database data loaded successfully")
-        console.log("[v0] Categories:", dbData.budgetCategories?.length || 0)
-        console.log("[v0] Entries:", dbData.budgetEntries?.length || 0)
-        console.log("[v0] Goals:", dbData.goals?.length || 0)
+        console.log("[v0] ✓ Database data loaded")
+        console.log("[v0]   Categories:", dbData.budgetCategories?.length || 0)
+        console.log("[v0]   Entries:", dbData.budgetEntries?.length || 0)
+        console.log("[v0]   Goals:", dbData.goals?.length || 0)
       } else {
-        console.log("[v0] No existing data in database - will create on first save")
+        console.log("[v0] No data in database yet")
       }
 
-      console.log("[v0] Step 2: Triggering UI refresh...")
+      console.log("[v0] Step 2: Refreshing UI...")
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
-        setTimeout(() => {
-          window.dispatchEvent(new Event("storage"))
-        }, 100)
+        setTimeout(() => window.dispatchEvent(new Event("storage")), 100)
       }
 
       console.log("[v0] Step 3: Checking for local data to migrate...")
       const hasLocalData = userDataManager.hasStartedBudgeting()
       if (hasLocalData) {
-        console.log("[v0] Local data found - migrating to database...")
+        console.log("[v0] Migrating local data to database...")
         await userDataManager.migrateLocalDataToDatabase(userId)
         console.log("[v0] ✓ Migration complete")
-      } else {
-        console.log("[v0] No local data to migrate")
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] ✓ SYNC COMPLETE - DATA READY")
+      console.log("[v0] ✓ SYNC COMPLETE - Your data is synced across devices!")
       console.log("[v0] ========================================")
     } catch (error) {
       console.error("[v0] ✗ Sync error:", error)
@@ -147,7 +103,7 @@ function ClerkUserIdSync() {
     if (!lastSyncedUserId) return
 
     const handleDataChange = () => {
-      console.log("[v0] Local data changed - syncing to database...")
+      console.log("[v0] Data changed - auto-syncing to database...")
       userDataManager.syncToDatabase(lastSyncedUserId)
     }
 

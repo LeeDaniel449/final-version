@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-import { NextResponse } from "next/server"
 
 // Get Clerk keys from environment, checking multiple possible variable names
 const getClerkPublishableKey = () => {
@@ -30,23 +29,10 @@ const isPublicRoute = createRouteMatcher([
 const clerkPublishableKey = getClerkPublishableKey()
 const clerkSecretKey = getClerkSecretKey()
 
-let middlewareFunction = (request) => {
-  return NextResponse.next()
-}
-
-if (clerkPublishableKey && clerkSecretKey) {
-  console.log("[v0] Clerk keys found in middleware - using Clerk authentication")
-  middlewareFunction = clerkMiddleware((auth, request) => {
-    // Protect all routes except public ones
-    if (!isPublicRoute(request)) {
-      // You can add protection logic here if needed
-    }
-  })
-} else {
-  console.log("[v0] Clerk keys not found in middleware - bypassing Clerk middleware")
-}
-
-export default middlewareFunction
+export default clerkMiddleware((auth, request) => {
+  // Allow all routes - authentication handled client-side
+  // This ensures clerkMiddleware runs but doesn't block any routes
+})
 
 export const config = {
   matcher: [
