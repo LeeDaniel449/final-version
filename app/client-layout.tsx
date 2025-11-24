@@ -27,6 +27,20 @@ function ClerkUserIdSync() {
   const [hasAttemptedSync, setHasAttemptedSync] = useState(false)
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const lastSignin = localStorage.getItem("wealthwise_last_signin")
+      const storedUserId = localStorage.getItem("wealthwise_clerk_user_id")
+
+      console.log("[v0] Session check on mount:", {
+        lastSignin: lastSignin ? new Date(Number.parseInt(lastSignin)).toISOString() : "never",
+        storedUserId: storedUserId || "none",
+        clerkLoaded: isLoaded,
+        clerkUser: user?.id || "none",
+      })
+    }
+  }, [])
+
+  useEffect(() => {
     console.log("[v0] Clerk state changed:", {
       isLoaded,
       hasUser: !!user,
@@ -45,16 +59,32 @@ function ClerkUserIdSync() {
         if (typeof window !== "undefined") {
           localStorage.setItem("wealthwise_clerk_user_id", user.id)
           localStorage.setItem("wealthwise_authenticated", "true")
+          localStorage.setItem("wealthwise_last_auth_check", Date.now().toString())
           window.dispatchEvent(new CustomEvent("clerk-auth-changed", { detail: { userId: user.id } }))
         }
       } else {
         console.log("[v0] ✗ Clerk loaded but no user signed in")
-        console.log("[v0] ✗ If you just signed in, try refreshing the page")
-        userDataManager.setClerkUserId(null)
+
         if (typeof window !== "undefined") {
+          const storedUserId = localStorage.getItem("wealthwise_clerk_user_id")
+          const lastSignin = localStorage.getItem("wealthwise_last_signin")
+
+          if (storedUserId && lastSignin) {
+            const timeSinceSignin = Date.now() - Number.parseInt(lastSignin)
+            const hoursAgo = timeSinceSignin / (1000 * 60 * 60)
+
+            console.log("[v0] ⚠️ Session mismatch detected:", {
+              storedUser: storedUserId,
+              hoursAgo: hoursAgo.toFixed(1),
+              suggestion: "User may need to sign in again",
+            })
+          }
+
           localStorage.removeItem("wealthwise_clerk_user_id")
           localStorage.removeItem("wealthwise_authenticated")
         }
+
+        userDataManager.setClerkUserId(null)
       }
     }
   }, [user, isLoaded])
