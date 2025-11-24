@@ -12,7 +12,9 @@ export default function SignInPage() {
   useEffect(() => {
     if (isLoaded && isSignedIn) {
       console.log("[v0] User already signed in on sign-in page, redirecting to home")
-      router.replace("/")
+      setTimeout(() => {
+        router.replace("/")
+      }, 500)
     }
   }, [isLoaded, isSignedIn, router])
 
@@ -22,19 +24,18 @@ export default function SignInPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Redirecting to home...</p>
+          <p className="text-gray-600">Loading your data...</p>
         </div>
       </div>
     )
   }
-  // </CHANGE>
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-blue/10 to-brand-purple/10 p-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-brand-blue mb-2">Welcome Back</h1>
-          <p className="text-gray-600">Sign in to continue your financial journey</p>
+          <p className="text-gray-600">Sign in to sync your progress across devices</p>
         </div>
         <SignIn
           appearance={{

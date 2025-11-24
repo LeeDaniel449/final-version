@@ -19,6 +19,7 @@ function ClerkUserIdSync() {
 
       if (typeof window !== "undefined") {
         localStorage.setItem("wealthwise_clerk_user_id", user.id)
+        localStorage.setItem("wealthwise_authenticated", "true")
       }
     } else if (isLoaded && !user) {
       console.log("[v0] Clerk loaded - no user signed in")
@@ -45,20 +46,25 @@ function ClerkUserIdSync() {
       setLastSyncedUserId(clerkUserId)
 
       try {
-        // Load data from database
+        // Load data from database first
+        console.log("[v0] Loading data from database for user:", clerkUserId)
         await userDataManager.loadFromDatabase(clerkUserId)
-        console.log("[v0] Database data loaded, refreshing UI")
+        console.log("[v0] Database data loaded successfully")
 
-        // Force all components to reload with new data
+        // Force all components to reload with database data
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: clerkUserId } }))
 
         // Check if we need to migrate local data
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
-          console.log("[v0] Migrating local data to database...")
+          console.log("[v0] Found local data, migrating to database...")
           await userDataManager.migrateLocalDataToDatabase(clerkUserId)
+          console.log("[v0] Local data migration complete")
         }
+
+        // Refresh UI one more time after migration
+        window.dispatchEvent(new Event("storage"))
       } catch (error) {
         console.error("[v0] Database sync error:", error)
       }
