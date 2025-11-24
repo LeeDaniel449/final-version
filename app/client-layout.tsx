@@ -54,7 +54,7 @@ function ClerkUserIdSync() {
     }
 
     checkServerAuth()
-    const interval = setInterval(checkServerAuth, 30000)
+    const interval = setInterval(checkServerAuth, 5000)
 
     return () => clearInterval(interval)
   }, [lastSyncedUserId])
@@ -99,7 +99,12 @@ function ClerkUserIdSync() {
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      console.log("[v0] Loading data from database...")
+      console.log("[v0] ========================================")
+      console.log("[v0] STARTING DATABASE SYNC")
+      console.log("[v0] User ID:", userId)
+      console.log("[v0] ========================================")
+
+      console.log("[v0] Step 1: Loading data from database...")
       const dbData = await userDataManager.loadFromDatabase(userId)
 
       if (dbData && Object.keys(dbData).length > 0) {
@@ -108,9 +113,10 @@ function ClerkUserIdSync() {
         console.log("[v0] Entries:", dbData.budgetEntries?.length || 0)
         console.log("[v0] Goals:", dbData.goals?.length || 0)
       } else {
-        console.log("[v0] No existing data in database")
+        console.log("[v0] No existing data in database - will create on first save")
       }
 
+      console.log("[v0] Step 2: Triggering UI refresh...")
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
@@ -119,11 +125,14 @@ function ClerkUserIdSync() {
         }, 100)
       }
 
+      console.log("[v0] Step 3: Checking for local data to migrate...")
       const hasLocalData = userDataManager.hasStartedBudgeting()
       if (hasLocalData) {
-        console.log("[v0] Migrating local data to database...")
+        console.log("[v0] Local data found - migrating to database...")
         await userDataManager.migrateLocalDataToDatabase(userId)
         console.log("[v0] ✓ Migration complete")
+      } else {
+        console.log("[v0] No local data to migrate")
       }
 
       console.log("[v0] ========================================")

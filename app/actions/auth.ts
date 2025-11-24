@@ -1,24 +1,25 @@
 "use server"
 
-import { currentUser } from "@clerk/nextjs/server"
+import { auth } from "@clerk/nextjs/server"
 
 export async function getAuthenticatedUser() {
   try {
-    const user = await currentUser()
-    if (!user) {
+    const { userId } = await auth()
+
+    if (!userId) {
       return { userId: null, email: null, authenticated: false }
     }
+
+    // Get user details
+    const { currentUser } = await import("@clerk/nextjs/server")
+    const user = await currentUser()
+
     return {
-      userId: user.id,
-      email: user.primaryEmailAddress?.emailAddress || null,
+      userId: userId,
+      email: user?.primaryEmailAddress?.emailAddress || null,
       authenticated: true,
     }
   } catch (error: any) {
-    // This is expected when middleware is not configured
-    if (error?.message?.includes("clerkMiddleware")) {
-      // Middleware not configured - return unauthenticated state
-      return { userId: null, email: null, authenticated: false }
-    }
     console.error("[Server] Error getting authenticated user:", error)
     return { userId: null, email: null, authenticated: false }
   }
