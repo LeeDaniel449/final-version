@@ -7,6 +7,9 @@ import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/s
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
+import { EnvDiagnostic } from "@/components/env-diagnostic"
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
@@ -128,27 +131,54 @@ export default function ClientLayout({
 
   if (!clerkPublishableKey) {
     return (
-      <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="max-w-md text-center space-y-4">
-          <h2 className="text-2xl font-bold">Clerk Configuration Required</h2>
-          <p className="text-muted-foreground">
-            The Clerk publishable key is missing. Please add{" "}
-            <code className="bg-muted px-2 py-1 rounded">NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code> to your environment
-            variables.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Get your key from the{" "}
-            <a
-              href="https://dashboard.clerk.com/last-active?path=api-keys"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary underline"
-            >
-              Clerk Dashboard
-            </a>
-          </p>
-        </div>
-      </div>
+      <>
+        <EnvDiagnostic />
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+              <SidebarTrigger className="-ml-1" />
+            </header>
+            <main className="flex-1 p-4 md:p-6">
+              <div className="max-w-2xl mx-auto space-y-4">
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Production Configuration Required</AlertTitle>
+                  <AlertDescription className="space-y-2">
+                    <p>
+                      Your app is missing required environment variables in production. To enable cross-device data
+                      sync:
+                    </p>
+                    <ol className="list-decimal list-inside space-y-1 text-sm">
+                      <li>Go to your Vercel project settings</li>
+                      <li>Navigate to Environment Variables</li>
+                      <li>Add the following variables:</li>
+                    </ol>
+                    <div className="bg-muted p-3 rounded-md font-mono text-xs space-y-1 mt-2">
+                      <div>NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = your_clerk_key</div>
+                      <div>CLERK_SECRET_KEY = your_clerk_secret</div>
+                      <div>NEXT_PUBLIC_SUPABASE_URL = your_supabase_url</div>
+                      <div>SUPABASE_SERVICE_ROLE_KEY = your_supabase_key</div>
+                    </div>
+                    <p className="text-sm mt-2">
+                      Get your Clerk keys from{" "}
+                      <a
+                        href="https://dashboard.clerk.com/last-active?path=api-keys"
+                        className="underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Clerk Dashboard
+                      </a>
+                    </p>
+                  </AlertDescription>
+                </Alert>
+                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+              </div>
+            </main>
+          </SidebarInset>
+        </SidebarProvider>
+      </>
     )
   }
 
