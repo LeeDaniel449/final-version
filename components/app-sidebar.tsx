@@ -22,6 +22,7 @@ import { useUser, useClerk } from "@clerk/nextjs"
 
 function ClerkUserInfo({ onSignOut }: { onSignOut?: () => void }) {
   const { user, isSignedIn, isLoaded } = useUser()
+  const clerk = useClerk()
   const userProfile = userDataManager.getUserProfile()
 
   const displayName = React.useMemo(() => {
@@ -47,14 +48,14 @@ function ClerkUserInfo({ onSignOut }: { onSignOut?: () => void }) {
         <span className="truncate font-semibold">{displayName}</span>
         <span className="truncate text-xs">{displayEmail}</span>
       </div>
-      {isSignedIn && onSignOut && (
+      {isSignedIn && (
         <Button
           variant="ghost"
           size="icon"
           className="md:hidden min-h-[48px] min-w-[48px] touch-manipulation"
           onClick={() => {
             console.log("[v0] Mobile sign out button clicked")
-            onSignOut()
+            clerk.signOut()
           }}
           aria-label="Sign out"
         >
@@ -80,7 +81,6 @@ export function AppSidebar({
   disableClerk,
   ...props
 }: React.ComponentProps<typeof Sidebar> & { disableClerk?: boolean }) {
-  const clerk = useClerk()
   const navMain = [
     { title: "Home", url: "/", icon: Home },
     { title: "Learning Hub", url: "/learning", icon: BookOpen },
@@ -125,9 +125,7 @@ export function AppSidebar({
 
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            {disableClerk ? <GuestUserInfo /> : <ClerkUserInfo onSignOut={clerk.signOut} />}
-          </SidebarMenuItem>
+          <SidebarMenuItem>{disableClerk ? <GuestUserInfo /> : <ClerkUserInfo />}</SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
