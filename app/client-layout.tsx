@@ -27,6 +27,15 @@ function ClerkUserIdSync() {
   const [hasAttemptedSync, setHasAttemptedSync] = useState(false)
 
   useEffect(() => {
+    console.log("[v0] Clerk state changed:", {
+      isLoaded,
+      hasUser: !!user,
+      userId: user?.id,
+      email: user?.primaryEmailAddress?.emailAddress,
+    })
+  }, [user, isLoaded])
+
+  useEffect(() => {
     if (isLoaded) {
       if (user?.id) {
         console.log("[v0] ✓ Clerk user authenticated:", user.id)
@@ -36,9 +45,11 @@ function ClerkUserIdSync() {
         if (typeof window !== "undefined") {
           localStorage.setItem("wealthwise_clerk_user_id", user.id)
           localStorage.setItem("wealthwise_authenticated", "true")
+          window.dispatchEvent(new CustomEvent("clerk-auth-changed", { detail: { userId: user.id } }))
         }
       } else {
         console.log("[v0] ✗ Clerk loaded but no user signed in")
+        console.log("[v0] ✗ If you just signed in, try refreshing the page")
         userDataManager.setClerkUserId(null)
         if (typeof window !== "undefined") {
           localStorage.removeItem("wealthwise_clerk_user_id")
@@ -83,7 +94,6 @@ function ClerkUserIdSync() {
       setHasAttemptedSync(true)
 
       try {
-        // Step 1: Load data from database
         console.log("[v0] Step 1: Loading data from database...")
         const dbData = await userDataManager.loadFromDatabase(clerkUserId)
 
@@ -97,14 +107,15 @@ function ClerkUserIdSync() {
           console.log("[v0] No existing data in database for this user")
         }
 
-        // Step 2: Force UI refresh
         console.log("[v0] Step 2: Triggering UI refresh...")
         if (typeof window !== "undefined") {
           window.dispatchEvent(new Event("storage"))
           window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: clerkUserId } }))
+          setTimeout(() => {
+            window.dispatchEvent(new Event("storage"))
+          }, 100)
         }
 
-        // Step 3: Check for local data to migrate
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
           console.log("[v0] Step 3: Found local data, migrating to database...")
@@ -114,7 +125,6 @@ function ClerkUserIdSync() {
           console.log("[v0] Step 3: No local data to migrate")
         }
 
-        // Step 4: Final UI refresh
         console.log("[v0] Step 4: Final UI refresh...")
         if (typeof window !== "undefined") {
           window.dispatchEvent(new Event("storage"))

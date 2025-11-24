@@ -1,0 +1,40 @@
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
+
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/api/webhooks(.*)",
+  "/budget",
+  "/goals",
+  "/learning",
+  "/portfolio",
+  "/mismatch-detector",
+  "/portfolio-optimizer",
+  "/portfolio-implementation",
+  "/sync-test",
+])
+
+export default clerkMiddleware(
+  (auth, request) => {
+    // This middleware only maintains Clerk session, doesn't block access
+    return NextResponse.next()
+  },
+  {
+    publishableKey:
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+      process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+      process.env.CLERK_PUBLISHABLE_KEY,
+    secretKey: process.env.CLERK_SECRET_KEY || process.env.Wealthlink_CLERK_SECRET_KEY,
+  },
+)
+
+export const config = {
+  matcher: [
+    // Skip Next.js internals and all static files
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
+}
