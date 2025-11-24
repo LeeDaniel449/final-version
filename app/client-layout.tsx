@@ -45,29 +45,46 @@ function ClerkUserIdSync() {
         return
       }
 
-      console.log("[v0] Initializing database sync for Clerk user:", clerkUserId)
+      console.log("[v0] ========================================")
+      console.log("[v0] STARTING DATABASE SYNC")
+      console.log("[v0] User ID:", clerkUserId)
+      console.log("[v0] ========================================")
+
       setLastSyncedUserId(clerkUserId)
 
       try {
         // Load data from database first
-        console.log("[v0] Loading data from database for user:", clerkUserId)
-        await userDataManager.loadFromDatabase(clerkUserId)
-        console.log("[v0] Database data loaded successfully")
+        console.log("[v0] Step 1: Loading data from database...")
+        const dbData = await userDataManager.loadFromDatabase(clerkUserId)
+
+        if (dbData && Object.keys(dbData).length > 0) {
+          console.log("[v0] Database data loaded - found data:", Object.keys(dbData))
+        } else {
+          console.log("[v0] No existing data in database for this user")
+        }
 
         // Force all components to reload with database data
+        console.log("[v0] Step 2: Triggering UI refresh...")
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: clerkUserId } }))
 
         // Check if we need to migrate local data
         const hasLocalData = userDataManager.hasStartedBudgeting()
         if (hasLocalData) {
-          console.log("[v0] Found local data, migrating to database...")
+          console.log("[v0] Step 3: Found local data, migrating to database...")
           await userDataManager.migrateLocalDataToDatabase(clerkUserId)
           console.log("[v0] Local data migration complete")
+        } else {
+          console.log("[v0] Step 3: No local data to migrate")
         }
 
         // Refresh UI one more time after migration
+        console.log("[v0] Step 4: Final UI refresh...")
         window.dispatchEvent(new Event("storage"))
+
+        console.log("[v0] ========================================")
+        console.log("[v0] DATABASE SYNC COMPLETE")
+        console.log("[v0] ========================================")
       } catch (error) {
         console.error("[v0] Database sync error:", error)
       }
