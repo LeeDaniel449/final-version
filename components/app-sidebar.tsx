@@ -20,111 +20,72 @@ import {
 import { userDataManager } from "@/lib/user-data"
 import { useUser, useClerk } from "@clerk/nextjs"
 
-/*
-  Helpers ────────────────────────────────────────────────────────────────────
-*/
-function getDisplayName(profile: any, isSignedIn: boolean) {
-  if (!isSignedIn) return "Guest"
-  if (profile.username) return profile.username
-  if (profile.firstName && profile.lastName) return `${profile.firstName} ${profile.lastName}`
-  if (profile.firstName) return profile.firstName
-  if (profile.email) return profile.email.split("@")[0]
-  return "Guest"
-}
-
-function getDisplayEmail(profile: any, isSignedIn: boolean) {
-  if (!isSignedIn) return "Not signed in"
-  return profile.email || "No email"
-}
-
-/*
-  Component ──────────────────────────────────────────────────────────────────
-*/
-export function AppSidebar({
-  disableClerk,
-  ...props
-}: React.ComponentProps<typeof Sidebar> & { disableClerk?: boolean }) {
-  const clerkUser = useUser()
-  const clerk = useClerk()
-  let user: any = { isSignedIn: false, isLoaded: true, user: null }
-  let signOut: any = null
-
-  if (!disableClerk) {
-    user = clerkUser
-    signOut = clerk.signOut
-  } else {
-    console.warn("[v0] Clerk hooks not available, using guest mode")
-  }
-
-  const isSignedIn = user.isSignedIn || false
+function ClerkUserInfo({ onSignOut }: { onSignOut?: () => void }) {
+  const { user, isSignedIn, isLoaded } = useUser()
   const userProfile = userDataManager.getUserProfile()
-  const isLoaded = user.isLoaded || false
 
-  const [profile, setProfile] = React.useState(userProfile)
-
-  /* ----------------------------------------------------------------------- */
-  /*  Sync with auth-state changes                                           */
-  /* ----------------------------------------------------------------------- */
-  React.useEffect(() => {
-    function refreshProfile() {
-      const currentProfile = userDataManager.getUserProfile()
-      setProfile((prev) => (JSON.stringify(prev) !== JSON.stringify(currentProfile) ? currentProfile : prev))
-    }
-
-    const handleUserDataUpdated = () => {
-      console.log("[v0] Sidebar: User data updated event")
-      refreshProfile()
-    }
-
-    window.addEventListener("userDataUpdated", handleUserDataUpdated)
-
-    // Initial load
-    refreshProfile()
-
-    return () => {
-      window.removeEventListener("userDataUpdated", handleUserDataUpdated)
-    }
-  }, [])
-
-  /* ----------------------------------------------------------------------- */
-  /*  Derived display values                                                 */
-  /* ----------------------------------------------------------------------- */
   const displayName = React.useMemo(() => {
     if (!isLoaded) return "Loading..."
     if (!isSignedIn) return "Guest"
-    if (user.user?.firstName && user.user?.lastName) return `${user.user.firstName} ${user.user.lastName}`
-    if (user.user?.firstName) return user.user.firstName
-    if (user.user?.username) return user.user.username
-    if (profile?.firstName) return profile.firstName
-    return user.user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Guest"
-  }, [isSignedIn, profile, isLoaded])
+    if (user?.firstName && user?.lastName) return `${user.firstName} ${user.lastName}`
+    if (user?.firstName) return user.firstName
+    if (user?.username) return user.username
+    if (userProfile?.firstName) return userProfile.firstName
+    return user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Guest"
+  }, [isSignedIn, userProfile, isLoaded, user])
 
   const displayEmail = React.useMemo(() => {
     if (!isLoaded) return "..."
     if (!isSignedIn) return "Not signed in"
-    return user.user?.emailAddresses?.[0]?.emailAddress || profile?.email || "No email"
-  }, [isSignedIn, profile, isLoaded])
+    return user?.emailAddresses?.[0]?.emailAddress || userProfile?.email || "No email"
+  }, [isSignedIn, userProfile, isLoaded, user])
 
-  /* ----------------------------------------------------------------------- */
-  /*  Sidebar navigation data                                                */
-  /* ----------------------------------------------------------------------- */
+  return (
+    <div className="flex items-center gap-3 px-2 py-2">
+      <div className="hidden md:block">{isSignedIn && <UserButton />}</div>
+      <div className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-semibold">{displayName}</span>
+        <span className="truncate text-xs">{displayEmail}</span>
+      </div>
+      {isSignedIn && onSignOut && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden min-h-[48px] min-w-[48px] touch-manipulation"
+          onClick={() => {
+            console.log("[v0] Mobile sign out button clicked")
+            onSignOut()
+          }}
+          aria-label="Sign out"
+        >
+          <LogOut className="h-5 w-5" />
+        </Button>
+      )}
+    </div>
+  )
+}
+
+function GuestUserInfo() {
+  return (
+    <div className="flex items-center gap-3 px-2 py-2">
+      <div className="grid flex-1 text-left text-sm leading-tight">
+        <span className="truncate font-semibold">Guest</span>
+        <span className="truncate text-xs">Not signed in</span>
+      </div>
+    </div>
+  )
+}
+
+export function AppSidebar({
+  disableClerk,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { disableClerk?: boolean }) {
+  const clerk = useClerk()
   const navMain = [
     { title: "Home", url: "/", icon: Home },
-    {
-      title: "Learning Hub",
-      url: "/learning",
-      icon: BookOpen,
-    },
-    {
-      title: "Budget Tracker",
-      url: "/budget",
-      icon: Calculator,
-    },
-    {
-      title: "Goals & Planning",
-      url: "/goals",
-      icon: Target,
-    },
+    { title: "Learning Hub", url: "/learning", icon: BookOpen },
+    { title: "Budget Tracker", url: "/budget", icon: Calculator },
+    { title: "Goals & Planning", url: "/goals", icon: Target },
     { title: "AI Advisor", url: "/ai-advisor", icon: Bot },
   ]
 
@@ -133,12 +94,8 @@ export function AppSidebar({
     { title: "Feedback", url: "#", icon: Send },
   ]
 
-  /* ----------------------------------------------------------------------- */
-  /*  Render                                                                 */
-  /* ----------------------------------------------------------------------- */
   return (
     <Sidebar variant="inset" {...props}>
-      {/* ── Brand ─────────────────────────────────────────────────────── */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -161,37 +118,15 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* ── Main navigation ────────────────────────────────────────────── */}
       <SidebarContent>
         <NavMain items={navMain} />
         <NavSecondary items={navSecondary} className="mt-auto" />
       </SidebarContent>
 
-      {/* ── User footer ────────────────────────────────────────────────── */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center gap-3 px-2 py-2">
-              <div className="hidden md:block">{isSignedIn && !disableClerk && <UserButton />}</div>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{displayName}</span>
-                <span className="truncate text-xs">{displayEmail}</span>
-              </div>
-              {isSignedIn && signOut && !disableClerk && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="md:hidden min-h-[48px] min-w-[48px] touch-manipulation"
-                  onClick={() => {
-                    console.log("[v0] Mobile sign out button clicked")
-                    signOut()
-                  }}
-                  aria-label="Sign out"
-                >
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              )}
-            </div>
+            {disableClerk ? <GuestUserInfo /> : <ClerkUserInfo onSignOut={clerk.signOut} />}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
