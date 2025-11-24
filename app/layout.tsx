@@ -9,21 +9,19 @@ const inter = Inter({
   display: "swap",
 })
 
+export const dynamic = "force-dynamic"
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   const clerkPublishableKey =
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-    process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-    process.env.CLERK_PUBLISHABLE_KEY ||
-    ""
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ""
 
   console.log("[v0] Server-side Clerk key check:", {
     hasNextPublic: !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     hasWealthlink: !!process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    hasClerkPublishable: !!process.env.CLERK_PUBLISHABLE_KEY,
     keyLength: clerkPublishableKey?.length || 0,
   })
 
