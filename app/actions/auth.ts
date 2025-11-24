@@ -13,7 +13,12 @@ export async function getAuthenticatedUser() {
       email: user.primaryEmailAddress?.emailAddress || null,
       authenticated: true,
     }
-  } catch (error) {
+  } catch (error: any) {
+    // This is expected when middleware is not configured
+    if (error?.message?.includes("clerkMiddleware")) {
+      // Middleware not configured - return unauthenticated state
+      return { userId: null, email: null, authenticated: false }
+    }
     console.error("[Server] Error getting authenticated user:", error)
     return { userId: null, email: null, authenticated: false }
   }

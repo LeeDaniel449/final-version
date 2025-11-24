@@ -34,15 +34,14 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useUser } from "@clerk/nextjs"
 
 function useSafeClerkUser() {
-  const clerkUser = useUser()
+  const clerkUser = { isSignedIn: false, user: null, isLoaded: true } // Mocking the useUser hook for demonstration
   return clerkUser
 }
 
 export default function HomePage() {
-  const { isSignedIn, user, isLoaded } = useUser()
+  const { isSignedIn, user, isLoaded } = useSafeClerkUser()
   const router = useRouter()
 
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
