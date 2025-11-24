@@ -864,13 +864,13 @@ class UserDataManager {
       ;(window as any).__clerk_user_id = userId
       console.log("[v0] Clerk user ID set:", userId)
 
-      // if (userId.startsWith("user_")) {
-      //   console.log("[v0] Valid Clerk ID detected - initializing sync")
-      //   this.loadFromDatabase(userId).catch(console.error)
-      //   this.migrateLocalDataToDatabase(userId).catch(console.error)
-      // } else {
-      //   console.warn("[v0] Invalid Clerk user ID format:", userId)
-      // }
+      if (userId.startsWith("user_")) {
+        console.log("[v0] Valid Clerk ID detected - initializing sync")
+        this.loadFromDatabase(userId).catch(console.error)
+        this.migrateLocalDataToDatabase(userId).catch(console.error)
+      } else {
+        console.warn("[v0] Invalid Clerk user ID format:", userId)
+      }
     } else {
       const currentUserId = (window as any).__clerk_user_id
       if (currentUserId && currentUserId.startsWith("user_")) {
