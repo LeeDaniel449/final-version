@@ -253,7 +253,8 @@ class UserDataManager {
         return
       }
 
-      console.log("[v0] Syncing to database for user:", resolvedUserId)
+      console.log("[v0] 🔄 SUPABASE SYNC STARTED")
+      console.log("[v0] Syncing to Supabase database for user:", resolvedUserId)
 
       const data = {
         profile: this.getUserProfile(),
@@ -265,13 +266,20 @@ class UserDataManager {
         userProgress: this.getUserProgress(),
       }
 
+      console.log("[v0] 📊 Data being synced to Supabase:", {
+        categories: data.budgetCategories.length,
+        entries: data.budgetEntries.length,
+        goals: data.goals.length,
+        completedModules: data.userProgress.completedModules.length,
+      })
+
       const response = await fetch("/api/user-data", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-user-id": resolvedUserId,
         },
-        body: JSON.stringify({ data, userId: resolvedUserId }),
+        body: JSON.JSON.stringify({ data, userId: resolvedUserId }),
       })
 
       if (!response.ok) {
@@ -280,17 +288,17 @@ class UserDataManager {
           console.log("[v0] Database table not ready - will retry later")
           return
         }
-        console.error("[v0] Failed to sync to database:", result)
+        console.error("[v0] ❌ Failed to sync to Supabase:", result)
       } else {
         const result = await response.json()
         if (result.tableNotFound) {
           console.log("[v0] Database table not ready - using localStorage only")
         } else {
-          console.log("[v0] Successfully synced data to database")
+          console.log("[v0] ✅ SUPABASE SYNC SUCCESSFUL - Data saved to database")
         }
       }
     } catch (error) {
-      console.error("[v0] Error syncing to database:", error)
+      console.error("[v0] ❌ Error syncing to Supabase:", error)
     }
   }
 
@@ -307,7 +315,8 @@ class UserDataManager {
         return null
       }
 
-      console.log("[v0] Loading from database for user:", resolvedUserId)
+      console.log("[v0] 📥 SUPABASE LOAD STARTED")
+      console.log("[v0] Loading from Supabase database for user:", resolvedUserId)
 
       const response = await fetch(`/api/user-data?userId=${encodeURIComponent(resolvedUserId)}`, {
         headers: {
@@ -317,14 +326,21 @@ class UserDataManager {
 
       if (!response.ok) {
         const result = await response.json()
-        console.error("[v0] Failed to load from database:", result)
+        console.error("[v0] ❌ Failed to load from Supabase:", result)
         return null
       }
 
       const result = await response.json()
 
       if (result.data && Object.keys(result.data).length > 0) {
-        console.log("[v0] Database data found, loading...")
+        console.log("[v0] 📊 Supabase data found! Loading into browser...")
+        console.log("[v0] Data loaded from Supabase:", {
+          hasProfile: !!result.data.profile,
+          categories: result.data.budgetCategories?.length || 0,
+          entries: result.data.budgetEntries?.length || 0,
+          goals: result.data.goals?.length || 0,
+          completedModules: result.data.userProgress?.completedModules?.length || 0,
+        })
 
         if (result.data.profile) {
           localStorage.setItem(`${this.STORAGE_PREFIX}profile_${resolvedUserId}`, JSON.stringify(result.data.profile))
@@ -360,14 +376,20 @@ class UserDataManager {
           )
         }
 
-        console.log("[v0] Successfully loaded data from database")
+        console.log("[v0] ✅ SUPABASE LOAD SUCCESSFUL - Data loaded from database into browser")
+
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("userDataUpdated"))
+          window.dispatchEvent(new CustomEvent("storageChanged"))
+        }
+
         return result.data
       } else {
-        console.log("[v0] No data in database for this user")
+        console.log("[v0] 📭 No data in Supabase database for this user (first time signing in on this device)")
         return null
       }
     } catch (error) {
-      console.error("[v0] Error loading from database:", error)
+      console.error("[v0] ❌ Error loading from Supabase:", error)
       return null
     }
   }
@@ -376,7 +398,8 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      console.log("[v0] Starting migration of local data to database for user:", userId)
+      console.log("[v0] 🔄 MIGRATION CHECK - Checking if local data needs to be migrated to Supabase")
+      console.log("[v0] User ID for migration:", userId)
 
       // Check if data already exists in database
       const response = await fetch("/api/user-data", {
@@ -388,7 +411,7 @@ class UserDataManager {
 
         // If database already has data, don't overwrite
         if (data && Object.keys(data).length > 0) {
-          console.log("[v0] Database already has data - skipping migration")
+          console.log("[v0] ✅ Supabase database already has data - skipping migration to avoid overwriting")
           return
         }
       }
@@ -412,23 +435,22 @@ class UserDataManager {
         localData.userProgress.completedModules.length > 0
 
       if (!hasData) {
-        console.log("[v0] No local data to migrate")
+        console.log("[v0] 📭 No local data to migrate to Supabase")
         return
       }
 
-      console.log("[v0] Migrating local data:", {
-        categories: localData.budgetCategories.length,
-        entries: localData.budgetEntries.length,
-        goals: localData.goals.length,
-        completedModules: localData.userProgress.completedModules.length,
-      })
+      console.log("[v0] 📤 MIGRATING LOCAL DATA TO SUPABASE:")
+      console.log("[v0] - Budget categories:", localData.budgetCategories.length)
+      console.log("[v0] - Budget entries:", localData.budgetEntries.length)
+      console.log("[v0] - Financial goals:", localData.goals.length)
+      console.log("[v0] - Completed modules:", localData.userProgress.completedModules.length)
 
       // Upload to database
       await this.syncToDatabase(userId)
 
-      console.log("[v0] Successfully migrated local data to database")
+      console.log("[v0] ✅ MIGRATION COMPLETE - Local data successfully uploaded to Supabase")
     } catch (error) {
-      console.error("[v0] Error migrating local data:", error)
+      console.error("[v0] ❌ Error migrating local data to Supabase:", error)
     }
   }
 
@@ -862,19 +884,27 @@ class UserDataManager {
 
     if (userId) {
       ;(window as any).__clerk_user_id = userId
-      console.log("[v0] Clerk user ID set:", userId)
+      console.log("[v0] 🔐 Clerk user ID detected:", userId)
 
       if (userId.startsWith("user_")) {
-        console.log("[v0] Valid Clerk ID detected - initializing sync")
-        this.loadFromDatabase(userId).catch(console.error)
-        this.migrateLocalDataToDatabase(userId).catch(console.error)
+        console.log("[v0] ✅ Valid Clerk ID detected - initializing Supabase sync")
+        console.log("[v0] 🔄 Step 1: Loading existing data from Supabase...")
+        this.loadFromDatabase(userId)
+          .then(() => {
+            console.log("[v0] 🔄 Step 2: Checking for local data to migrate...")
+            return this.migrateLocalDataToDatabase(userId)
+          })
+          .then(() => {
+            console.log("[v0] ✅ CROSS-DEVICE SYNC READY - Your data will now sync across all devices")
+          })
+          .catch(console.error)
       } else {
-        console.warn("[v0] Invalid Clerk user ID format:", userId)
+        console.warn("[v0] ⚠️ Invalid Clerk user ID format:", userId)
       }
     } else {
       const currentUserId = (window as any).__clerk_user_id
       if (currentUserId && currentUserId.startsWith("user_")) {
-        console.log("[v0] User signing out, syncing data one last time")
+        console.log("[v0] 👋 User signing out, syncing data to Supabase one last time")
         this.syncToDatabase(currentUserId).catch(console.error)
       }
 
