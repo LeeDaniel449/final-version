@@ -54,6 +54,7 @@ import { ShoppingCart } from "lucide-react" // Imported ShoppingCart
 import { toast } from "@/components/ui/use-toast"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useRouter } from "next/navigation"
+import { SyncStatusBanner } from "@/components/sync-status-banner"
 
 interface Transaction {
   id: string
@@ -1452,8 +1453,10 @@ const BudgetDashboardContent = () => {
   // Now only checks if user is signed in, not if they've started budgeting
   if (!isUserSignedUp) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+          <SyncStatusBanner />
+
           {/* Header */}
           <div className="flex items-center justify-between" data-tutorial="budget-header">
             <div>
@@ -1609,8 +1612,10 @@ const BudgetDashboardContent = () => {
 
   if (!hasStartedBudgeting && userBudgetEntries.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+          <SyncStatusBanner />
+
           {/* Header */}
           <div className="flex items-center justify-between" data-tutorial="budget-header">
             <div>
@@ -1794,8 +1799,10 @@ const BudgetDashboardContent = () => {
 
   // Main dashboard - show when user has data or has started budgeting
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+        <SyncStatusBanner />
+
         {/* Header */}
         <div className="flex items-center justify-between" data-tutorial="budget-header">
           <div>

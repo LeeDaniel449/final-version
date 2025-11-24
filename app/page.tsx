@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { NotificationBell } from "@/components/notification-bell"
+import { SyncStatusBanner } from "@/components/sync-status-banner"
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
 import { learningModules } from "@/lib/learning-data"
 import {
@@ -547,6 +548,9 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Sync Status Banner */}
+        <SyncStatusBanner />
 
         {/* Stats Overview */}
         <div id="stats-overview" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
