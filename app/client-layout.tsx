@@ -10,6 +10,7 @@ import { userDataManager } from "@/lib/user-data"
 import { EnvDiagnostic } from "@/components/env-diagnostic"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
+import { getAuthenticatedUser } from "@/app/actions/auth"
 
 function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
   if (!hasClerk) {
@@ -24,86 +25,128 @@ function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
+  const [serverCheckComplete, setServerCheckComplete] = useState(false)
 
   useEffect(() => {
+    const checkServerAuth = async () => {
+      try {
+        const serverUser = await getAuthenticatedUser()
+        console.log("[v0] Server-side auth check:", serverUser)
+
+        if (serverUser.authenticated && serverUser.userId) {
+          console.log("[v0] ========================================")
+          console.log("[v0] SERVER DETECTED AUTHENTICATED USER")
+          console.log("[v0] User ID:", serverUser.userId)
+          console.log("[v0] Email:", serverUser.email)
+          console.log("[v0] ========================================")
+
+          if (serverUser.userId !== lastSyncedUserId) {
+            setLastSyncedUserId(serverUser.userId)
+            userDataManager.setClerkUserId(serverUser.userId)
+            await performDatabaseSync(serverUser.userId)
+          }
+        }
+      } catch (error) {
+        console.error("[v0] Server auth check error:", error)
+      } finally {
+        setServerCheckComplete(true)
+      }
+    }
+
+    checkServerAuth()
+    const interval = setInterval(checkServerAuth, 30000)
+
+    return () => clearInterval(interval)
+  }, [lastSyncedUserId])
+
+  useEffect(() => {
+    if (!serverCheckComplete) {
+      console.log("[v0] Waiting for server auth check...")
+      return
+    }
+
     const performSync = async () => {
       if (!isLoaded) {
-        console.log("[v0] Waiting for Clerk to load...")
+        console.log("[v0] Waiting for Clerk client to load...")
         return
       }
 
       if (!user?.id) {
-        console.log("[v0] No authenticated user detected")
-        userDataManager.setClerkUserId(null)
+        console.log("[v0] No client-side authenticated user detected")
+        if (!lastSyncedUserId) {
+          userDataManager.setClerkUserId(null)
+        }
         return
       }
 
-      // Skip if already synced for this user
       if (user.id === lastSyncedUserId) {
         return
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] USER AUTHENTICATED - STARTING SYNC")
+      console.log("[v0] CLIENT DETECTED AUTHENTICATED USER")
       console.log("[v0] User ID:", user.id)
       console.log("[v0] Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
       userDataManager.setClerkUserId(user.id)
-
-      try {
-        // Load data from database
-        console.log("[v0] Loading data from database...")
-        const dbData = await userDataManager.loadFromDatabase(user.id)
-
-        if (dbData && Object.keys(dbData).length > 0) {
-          console.log("[v0] ✓ Database data loaded successfully")
-          console.log("[v0] Categories:", dbData.budgetCategories?.length || 0)
-          console.log("[v0] Entries:", dbData.budgetEntries?.length || 0)
-          console.log("[v0] Goals:", dbData.goals?.length || 0)
-        } else {
-          console.log("[v0] No existing data in database")
-        }
-
-        // Force UI refresh
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new Event("storage"))
-          window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId: user.id } }))
-        }
-
-        // Migrate any local data
-        const hasLocalData = userDataManager.hasStartedBudgeting()
-        if (hasLocalData) {
-          console.log("[v0] Migrating local data to database...")
-          await userDataManager.migrateLocalDataToDatabase(user.id)
-          console.log("[v0] ✓ Migration complete")
-        }
-
-        console.log("[v0] ========================================")
-        console.log("[v0] ✓ SYNC COMPLETE - DATA READY")
-        console.log("[v0] ========================================")
-      } catch (error) {
-        console.error("[v0] ✗ Sync error:", error)
-      }
+      await performDatabaseSync(user.id)
     }
 
     performSync()
-  }, [user?.id, isLoaded, lastSyncedUserId])
+  }, [user?.id, isLoaded, lastSyncedUserId, serverCheckComplete])
+
+  const performDatabaseSync = async (userId: string) => {
+    try {
+      console.log("[v0] Loading data from database...")
+      const dbData = await userDataManager.loadFromDatabase(userId)
+
+      if (dbData && Object.keys(dbData).length > 0) {
+        console.log("[v0] ✓ Database data loaded successfully")
+        console.log("[v0] Categories:", dbData.budgetCategories?.length || 0)
+        console.log("[v0] Entries:", dbData.budgetEntries?.length || 0)
+        console.log("[v0] Goals:", dbData.goals?.length || 0)
+      } else {
+        console.log("[v0] No existing data in database")
+      }
+
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("storage"))
+        window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
+        setTimeout(() => {
+          window.dispatchEvent(new Event("storage"))
+        }, 100)
+      }
+
+      const hasLocalData = userDataManager.hasStartedBudgeting()
+      if (hasLocalData) {
+        console.log("[v0] Migrating local data to database...")
+        await userDataManager.migrateLocalDataToDatabase(userId)
+        console.log("[v0] ✓ Migration complete")
+      }
+
+      console.log("[v0] ========================================")
+      console.log("[v0] ✓ SYNC COMPLETE - DATA READY")
+      console.log("[v0] ========================================")
+    } catch (error) {
+      console.error("[v0] ✗ Sync error:", error)
+    }
+  }
 
   useEffect(() => {
-    if (!user?.id) return
+    if (!lastSyncedUserId) return
 
     const handleDataChange = () => {
       console.log("[v0] Local data changed - syncing to database...")
-      userDataManager.syncToDatabase(user.id)
+      userDataManager.syncToDatabase(lastSyncedUserId)
     }
 
     if (typeof window !== "undefined") {
       window.addEventListener("storage", handleDataChange)
       return () => window.removeEventListener("storage", handleDataChange)
     }
-  }, [user?.id])
+  }, [lastSyncedUserId])
 
   return null
 }
