@@ -1,7 +1,5 @@
 "use client"
 
-"use server"
-
 // The app now uses client-side Clerk authentication only via useUser() hook
 export async function getAuthenticatedUser() {
   // Return null to indicate server auth is not available
