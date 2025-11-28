@@ -28,6 +28,35 @@ function ClerkUserIdSync() {
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
 
   useEffect(() => {
+    if (!isLoaded) return
+
+    const checkServerSession = async () => {
+      try {
+        const response = await fetch("/api/auth/session")
+        const data = await response.json()
+
+        if (data.authenticated && data.userId && data.userId !== lastSyncedUserId) {
+          console.log("[v0] ⚡ SERVER SESSION FOUND USER:", data.userId)
+          setLastSyncedUserId(data.userId)
+          setSyncStatus("syncing")
+          userDataManager.setClerkUserId(data.userId)
+          await performDatabaseSync(data.userId)
+        }
+      } catch (error) {
+        console.error("[v0] Server session check error:", error)
+      }
+    }
+
+    // Check immediately
+    checkServerSession()
+
+    // Check every 5 seconds
+    const interval = setInterval(checkServerSession, 5000)
+
+    return () => clearInterval(interval)
+  }, [isLoaded, lastSyncedUserId])
+
+  useEffect(() => {
     if (!isLoaded || !clerk) return
 
     const checkForUser = async () => {
@@ -42,7 +71,7 @@ function ClerkUserIdSync() {
         const detectedUser = clerkUser || sessionUser
 
         if (detectedUser?.id && detectedUser.id !== lastSyncedUserId) {
-          console.log("[v0] ⚡ AGGRESSIVE CHECK FOUND USER:", detectedUser.id)
+          console.log("[v0] ⚡ CLIENT CHECK FOUND USER:", detectedUser.id)
           console.log("[v0] User email:", detectedUser.primaryEmailAddress?.emailAddress)
           setLastSyncedUserId(detectedUser.id)
           setSyncStatus("syncing")
@@ -100,7 +129,6 @@ function ClerkUserIdSync() {
       console.log("[v0] ========================================")
       console.log("[v0] USER SIGNED IN - STARTING SYNC")
       console.log("[v0] User ID:", user.id)
-      console.log("[v0] Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
@@ -115,44 +143,71 @@ function ClerkUserIdSync() {
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      console.log("[v0] Step 1: Loading data from database...")
+      console.log("[v0] ========================================")
+      console.log("[v0] 🔄 STARTING CROSS-DEVICE SYNC")
+      console.log("[v0] User ID:", userId)
+      console.log("[v0] ========================================")
+
+      console.log("[v0] Step 1: Loading data from Supabase database...")
       const dbData = await userDataManager.loadFromDatabase(userId)
 
       if (dbData && Object.keys(dbData).length > 0) {
-        console.log("[v0] ✓ Database data loaded")
-        console.log("[v0]   Categories:", dbData.budgetCategories?.length || 0)
-        console.log("[v0]   Entries:", dbData.budgetEntries?.length || 0)
-        console.log("[v0]   Goals:", dbData.goals?.length || 0)
+        console.log("[v0] ✅ Database data loaded successfully!")
+        console.log("[v0]   📁 Categories:", dbData.budgetCategories?.length || 0)
+        console.log("[v0]   💰 Entries:", dbData.budgetEntries?.length || 0)
+        console.log("[v0]   🎯 Goals:", dbData.goals?.length || 0)
+        console.log("[v0]   📚 Completed modules:", dbData.userProgress?.completedModules?.length || 0)
       } else {
-        console.log("[v0] No data in database yet")
+        console.log("[v0] 📭 No data in database (first time on this device)")
       }
 
-      console.log("[v0] Step 2: Refreshing UI...")
+      console.log("[v0] Step 2: Refreshing all UI components...")
       if (typeof window !== "undefined") {
+        // Fire multiple refresh events to ensure all components update
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
-        setTimeout(() => window.dispatchEvent(new Event("storage")), 100)
-        setTimeout(() => window.dispatchEvent(new Event("storage")), 500)
+        window.dispatchEvent(new CustomEvent("userDataUpdated"))
+        window.dispatchEvent(new CustomEvent("storageChanged"))
+
+        // Delayed refreshes to catch any lazy-loaded components
+        setTimeout(() => {
+          window.dispatchEvent(new Event("storage"))
+          window.dispatchEvent(new CustomEvent("userDataUpdated"))
+        }, 100)
+
+        setTimeout(() => {
+          window.dispatchEvent(new Event("storage"))
+          window.dispatchEvent(new CustomEvent("userDataUpdated"))
+        }, 500)
+
+        setTimeout(() => {
+          window.dispatchEvent(new Event("storage"))
+          window.dispatchEvent(new CustomEvent("userDataUpdated"))
+        }, 1000)
       }
 
       console.log("[v0] Step 3: Checking for local data to migrate...")
       const hasLocalData = userDataManager.hasStartedBudgeting()
       if (hasLocalData) {
-        console.log("[v0] Migrating local data to database...")
+        console.log("[v0] 📤 Found local data - uploading to Supabase...")
         await userDataManager.migrateLocalDataToDatabase(userId)
-        console.log("[v0] ✓ Migration complete")
+        console.log("[v0] ✅ Local data uploaded to cloud")
+      } else {
+        console.log("[v0] No local data to migrate")
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] ✓ SYNC COMPLETE - Your data is synced across devices!")
+      console.log("[v0] ✅ CROSS-DEVICE SYNC COMPLETE!")
+      console.log("[v0] Your data is now synced across all devices")
       console.log("[v0] ========================================")
 
       setSyncStatus("success")
 
       setTimeout(() => setSyncStatus("idle"), 5000)
     } catch (error) {
-      console.error("[v0] ✗ Sync error:", error)
+      console.error("[v0] ❌ Sync error:", error)
       setSyncStatus("error")
+      setTimeout(() => setSyncStatus("idle"), 5000)
     }
   }
 
