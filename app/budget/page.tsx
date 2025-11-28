@@ -269,6 +269,7 @@ const BudgetDashboardContent = () => {
   const router = useRouter()
 
   const [isUserSignedUp, setIsUserSignedUp] = useState(false)
+
   const [hasStartedBudgeting, setHasStartedBudgeting] = useState(false)
   const [debtPayoffStrategy, setDebtPayoffStrategy] = useState("snowball")
   const [whatIfScenario, setWhatIfScenario] = useState<WhatIfScenario>({ category: "food & dining", reduction: 10 })
@@ -340,6 +341,19 @@ const BudgetDashboardContent = () => {
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
   const [editAmount, setEditAmount] = useState("")
 
+  // CHANGE: Check for both legacy sign-up AND Clerk authentication
+  useEffect(() => {
+    if (!isClerkLoaded) return // Wait for Clerk to load
+
+    const legacySignedUp = userDataManager.isUserSignedUp()
+    const clerkSignedIn = !!user
+    const isAuthenticated = legacySignedUp || clerkSignedIn
+
+    console.log("[v0] Auth check - legacy:", legacySignedUp, "clerk:", clerkSignedIn, "final:", isAuthenticated)
+
+    setIsUserSignedUp(isAuthenticated)
+  }, [user, isClerkLoaded])
+
   // CHANGE: Use userDataManager for consistent storage instead of direct localStorage
   useEffect(() => {
     if (isClerkLoaded && user) {
@@ -395,7 +409,7 @@ const BudgetDashboardContent = () => {
 
     if (storageKey) {
       if (debts.length > 0) {
-        localStorage.setItem(storageKey, JSON.stringify(debts))
+        localStorage.setItem(storageKey, JSON.JSON.stringify(debts))
         console.log("[v0] Saved debts to localStorage:", debts)
       } else {
         localStorage.removeItem(storageKey)
@@ -460,9 +474,18 @@ const BudgetDashboardContent = () => {
 
     setIsLoadingData(true)
 
-    // Check if user is signed up using fallback auth system
-    const signedUp = userDataManager.isUserSignedUp()
-    console.log("[v0] Loading user data, user signed up:", signedUp)
+    const legacySignedUp = userDataManager.isUserSignedUp()
+    const clerkSignedIn = !!user
+    const signedUp = legacySignedUp || clerkSignedIn
+    console.log(
+      "[v0] Loading user data, user signed up:",
+      signedUp,
+      "(legacy:",
+      legacySignedUp,
+      ", clerk:",
+      clerkSignedIn,
+      ")",
+    )
 
     if (signedUp) {
       const categories = userDataManager.getBudgetCategories()
@@ -483,13 +506,16 @@ const BudgetDashboardContent = () => {
       setIsDataLoaded(true)
     }
     setIsLoadingData(false)
-  }, [isLoadingData])
+  }, [isLoadingData, user])
 
   useEffect(() => {
+    if (!isClerkLoaded) return // Wait for Clerk to load first
     if (isInitialized.current || isDataLoaded || isLoadingData) return
     isInitialized.current = true
 
-    const isAuthenticated = userDataManager.isUserSignedUp()
+    const legacySignedUp = userDataManager.isUserSignedUp()
+    const clerkSignedIn = !!user
+    const isAuthenticated = legacySignedUp || clerkSignedIn
     setIsUserSignedUp(isAuthenticated)
 
     if (isAuthenticated) {
@@ -497,7 +523,7 @@ const BudgetDashboardContent = () => {
     } else {
       setIsDataLoaded(true)
     }
-  }, [loadUserData, isDataLoaded, isLoadingData]) // Added loadUserData, isDataLoaded, isLoadingData, and isUserSignedUp to dependencies
+  }, [loadUserData, isDataLoaded, isLoadingData, user, isClerkLoaded]) // Added loadUserData, isDataLoaded, isLoadingData, and isUserSignedUp to dependencies
 
   useEffect(() => {
     calculateIncomeData()
