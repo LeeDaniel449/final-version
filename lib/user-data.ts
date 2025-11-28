@@ -240,7 +240,69 @@ class UserDataManager {
 
   private databaseSyncEnabled = true // Enable database sync by default
 
-  async loadFromDatabase(userId?: string): Promise<any> {
+  private async syncToDatabase(userId?: string): Promise<void> {
+    if (!this.databaseSyncEnabled) {
+      console.log("[v0] Database sync is disabled")
+      return
+    }
+
+    try {
+      const resolvedUserId = userId || this.getResolvedUserId()
+      if (!resolvedUserId) {
+        console.warn("[v0] Cannot sync to database: No user ID available")
+        return
+      }
+
+      console.log("[v0] 🔄 SUPABASE SYNC STARTED")
+      console.log("[v0] Syncing to Supabase database for user:", resolvedUserId)
+
+      const data = {
+        profile: this.getUserProfile(),
+        budgetData: this.getBudgetData(),
+        budgetCategories: this.getBudgetCategories(),
+        budgetEntries: this.getBudgetEntries(),
+        goals: this.getGoals(),
+        learningProgress: this.getLearningProgress(),
+        userProgress: this.getUserProgress(),
+      }
+
+      console.log("[v0] 📊 Data being synced to Supabase:", {
+        categories: data.budgetCategories.length,
+        entries: data.budgetEntries.length,
+        goals: data.goals.length,
+        completedModules: data.userProgress.completedModules.length,
+      })
+
+      const response = await fetch("/api/user-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": resolvedUserId,
+        },
+        body: JSON.JSON.stringify({ data, userId: resolvedUserId }),
+      })
+
+      if (!response.ok) {
+        const result = await response.json()
+        if (result.tableNotFound) {
+          console.log("[v0] Database table not ready - will retry later")
+          return
+        }
+        console.error("[v0] ❌ Failed to sync to Supabase:", result)
+      } else {
+        const result = await response.json()
+        if (result.tableNotFound) {
+          console.log("[v0] Database table not ready - using localStorage only")
+        } else {
+          console.log("[v0] ✅ SUPABASE SYNC SUCCESSFUL - Data saved to database")
+        }
+      }
+    } catch (error) {
+      console.error("[v0] ❌ Error syncing to Supabase:", error)
+    }
+  }
+
+  private async loadFromDatabase(userId?: string): Promise<any> {
     if (!this.databaseSyncEnabled) {
       console.log("[v0] Database sync is disabled")
       return null
@@ -260,7 +322,6 @@ class UserDataManager {
         headers: {
           "x-user-id": resolvedUserId,
         },
-        cache: "no-store",
       })
 
       if (!response.ok) {
@@ -304,21 +365,27 @@ class UserDataManager {
         }
         if (result.data.learningProgress) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}learning_${resolvedUserId}`,
+            `${this.STORAGE_PREFIX}learning_progress_${resolvedUserId}`,
             JSON.stringify(result.data.learningProgress),
           )
         }
         if (result.data.userProgress) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}progress_${resolvedUserId}`,
+            `${this.STORAGE_PREFIX}user_progress_${resolvedUserId}`,
             JSON.stringify(result.data.userProgress),
           )
         }
 
-        console.log("[v0] ✅ SUPABASE DATA LOADED INTO BROWSER")
+        console.log("[v0] ✅ SUPABASE LOAD SUCCESSFUL - Data loaded from database into browser")
+
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("userDataUpdated"))
+          window.dispatchEvent(new CustomEvent("storageChanged"))
+        }
+
         return result.data
       } else {
-        console.log("[v0] ℹ️ No data found in Supabase for this user yet")
+        console.log("[v0] 📭 No data in Supabase database for this user (first time signing in on this device)")
         return null
       }
     } catch (error) {
@@ -327,69 +394,7 @@ class UserDataManager {
     }
   }
 
-  async syncToDatabase(userId?: string): Promise<void> {
-    if (!this.databaseSyncEnabled) {
-      console.log("[v0] Database sync is disabled")
-      return
-    }
-
-    try {
-      const resolvedUserId = userId || this.getResolvedUserId()
-      if (!resolvedUserId) {
-        console.warn("[v0] Cannot sync to database: No user ID available")
-        return
-      }
-
-      console.log("[v0] 🔄 SUPABASE SYNC STARTED")
-      console.log("[v0] Syncing to Supabase database for user:", resolvedUserId)
-
-      const data = {
-        profile: this.getUserProfile(),
-        budgetData: this.getBudgetData(),
-        budgetCategories: this.getBudgetCategories(),
-        budgetEntries: this.getBudgetEntries(),
-        goals: this.getGoals(),
-        learningProgress: this.getLearningProgress(),
-        userProgress: this.getUserProgress(),
-      }
-
-      console.log("[v0] 📊 Data being synced to Supabase:", {
-        categories: data.budgetCategories.length,
-        entries: data.budgetEntries.length,
-        goals: data.goals.length,
-        completedModules: data.userProgress.completedModules.length,
-      })
-
-      const response = await fetch("/api/user-data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": resolvedUserId,
-        },
-        body: JSON.stringify({ data, userId: resolvedUserId }),
-      })
-
-      if (!response.ok) {
-        const result = await response.json()
-        if (result.tableNotFound) {
-          console.log("[v0] Database table not ready - will retry later")
-          return
-        }
-        console.error("[v0] ❌ Failed to sync to Supabase:", result)
-      } else {
-        const result = await response.json()
-        if (result.tableNotFound) {
-          console.log("[v0] Database table not ready - using localStorage only")
-        } else {
-          console.log("[v0] ✅ SUPABASE SYNC SUCCESSFUL - Data saved to database")
-        }
-      }
-    } catch (error) {
-      console.error("[v0] ❌ Error syncing to Supabase:", error)
-    }
-  }
-
-  private async migrateLocalDataToDatabase(userId: string): Promise<void> {
+  async migrateLocalDataToDatabase(userId: string): Promise<void> {
     if (typeof window === "undefined") return
 
     try {
