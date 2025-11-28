@@ -19,7 +19,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { NotificationBell } from "@/components/notification-bell"
 import { SyncStatusBanner } from "@/components/sync-status-banner"
 import { SignInPrompt } from "@/components/sign-in-prompt"
-import { AuthStatusDashboard } from "@/components/auth-status-dashboard"
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
 import { learningModules } from "@/lib/learning-data"
 import {
@@ -552,8 +551,6 @@ export default function HomePage() {
 
         {/* Sync Status Banner */}
         <SyncStatusBanner />
-
-        <AuthStatusDashboard />
 
         {!isSignedIn && <SignInPrompt />}
 
