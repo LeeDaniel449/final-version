@@ -1,6 +1,38 @@
-import { clerkMiddleware } from "@clerk/nextjs/server"
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-export default clerkMiddleware()
+export async function middleware(request: NextRequest) {
+  // Try to use Clerk middleware dynamically
+  try {
+    // Check if Clerk keys are available
+    const publishableKey =
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.Wealthlink_NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+    const secretKey = process.env.CLERK_SECRET_KEY || process.env.Wealthlink_CLERK_SECRET_KEY
+
+    if (!publishableKey || !secretKey) {
+      // Keys not available, just pass through
+      return NextResponse.next()
+    }
+
+    // Dynamically import and use Clerk middleware
+    const { clerkMiddleware } = await import("@clerk/nextjs/server")
+
+    // Create a wrapped handler
+    const clerkHandler = clerkMiddleware({
+      publishableKey,
+      secretKey,
+    })
+
+    // Call the Clerk middleware
+    return await clerkHandler(request, {
+      params: Promise.resolve({}),
+    } as any)
+  } catch (error) {
+    // If Clerk fails for any reason, just pass through
+    console.error("[Middleware] Clerk error, passing through:", error)
+    return NextResponse.next()
+  }
+}
 
 export const config = {
   matcher: [
