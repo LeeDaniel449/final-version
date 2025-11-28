@@ -872,6 +872,9 @@ class UserDataManager {
     localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
   }
 
+  // Store the Clerk user ID internally
+  private clerkUserId: string | null = null
+
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
       userId = this.getClerkUserId() || undefined
@@ -888,51 +891,40 @@ class UserDataManager {
   }
 
   setClerkUserId(userId: string | null): void {
-    if (typeof window === "undefined") return
+    console.log(
+      "[v0] 🔑 Setting Clerk user ID:",
+      userId ? `${userId.substring(0, 20)}...` : "null (clearing user data)",
+    )
 
-    if (userId) {
-      ;(window as any).__clerk_user_id = userId
-      console.log("[v0] 🔐 Clerk user ID detected:", userId)
-
-      if (userId.startsWith("user_")) {
-        console.log("[v0] ✅ Valid Clerk ID detected - initializing Supabase sync")
-        console.log("[v0] 🔄 Step 1: Loading existing data from Supabase...")
-        this.loadFromDatabase(userId)
-          .then(() => {
-            console.log("[v0] 🔄 Step 2: Checking for local data to migrate...")
-            return this.migrateLocalDataToDatabase(userId)
-          })
-          .then(() => {
-            console.log("[v0] ✅ CROSS-DEVICE SYNC READY - Your data will now sync across all devices")
-          })
-          .catch(console.error)
-      } else {
-        console.warn("[v0] ⚠️ Invalid Clerk user ID format:", userId)
-      }
+    if (userId && userId.startsWith("user_")) {
+      this.clerkUserId = userId
+      console.log("[v0] 📥 Loading data from Supabase for user:", userId)
+      this.loadFromDatabase(userId).catch((error) => {
+        console.error("[v0] ❌ Failed to load from database:", error)
+      })
+      this.migrateLocalDataToDatabase(userId).catch((error) => {
+        console.error("[v0] ❌ Failed to migrate local data:", error)
+      })
     } else {
-      const currentUserId = (window as any).__clerk_user_id
-      if (currentUserId && currentUserId.startsWith("user_")) {
-        console.log("[v0] 👋 User signing out, syncing data to Supabase one last time")
-        this.syncToDatabase(currentUserId).catch(console.error)
+      console.log("[v0] 🧹 Clearing Clerk user ID and user profile data")
+      this.clerkUserId = null
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
+        console.log("[v0] ✅ User profile cleared from localStorage")
       }
-
-      delete (window as any).__clerk_user_id
-      console.log("[v0] Clerk user ID cleared")
     }
   }
 
   private getClerkUserId(): string | null {
     if (typeof window === "undefined") return null
-    const clerkId = (window as any).__clerk_user_id || null
+    const clerkId = this.clerkUserId || localStorage.getItem("wealthwise_clerk_user_id") || null
 
-    if (!clerkId) {
-      const storedClerkId = localStorage.getItem("wealthwise_clerk_user_id")
-      if (storedClerkId && storedClerkId.startsWith("user_")) {
-        return storedClerkId
-      }
+    if (clerkId && clerkId.startsWith("user_")) {
+      return clerkId
     }
 
-    return clerkId
+    // If no Clerk ID found in internal state or localStorage, it might have been cleared on sign out
+    return null
   }
 
   syncUserIdAcrossBrowserContexts(): void {

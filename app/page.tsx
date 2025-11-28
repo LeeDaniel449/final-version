@@ -19,6 +19,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { NotificationBell } from "@/components/notification-bell"
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
 import { learningModules } from "@/lib/learning-data"
+import { useUser } from "@clerk/nextjs"
 import {
   BookOpen,
   Target,
@@ -34,13 +35,8 @@ import {
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
-function useSafeClerkUser() {
-  const clerkUser = { isSignedIn: false, user: null, isLoaded: true } // Mocking the useUser hook for demonstration
-  return clerkUser
-}
-
 export default function HomePage() {
-  const { isSignedIn, user, isLoaded } = useSafeClerkUser()
+  const { isSignedIn, user, isLoaded } = useUser()
   const router = useRouter()
 
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
