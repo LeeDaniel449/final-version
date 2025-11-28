@@ -25,6 +25,7 @@ function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
+  const [needsReload, setNeedsReload] = useState(false)
 
   useEffect(() => {
     const performSync = async () => {
@@ -90,6 +91,11 @@ function ClerkUserIdSync() {
             window.dispatchEvent(new Event("storage"))
             window.dispatchEvent(new CustomEvent("userDataUpdated"))
           }, 500)
+
+          setTimeout(() => {
+            console.log("[v0] 🔄 Reloading page to display synced data...")
+            setNeedsReload(true)
+          }, 1000)
         }
       } else {
         console.log("[v0] 📭 No existing data in database")
@@ -115,6 +121,12 @@ function ClerkUserIdSync() {
       setTimeout(() => setSyncStatus("idle"), 5000)
     }
   }
+
+  useEffect(() => {
+    if (needsReload && typeof window !== "undefined") {
+      window.location.reload()
+    }
+  }, [needsReload])
 
   useEffect(() => {
     if (!lastSyncedUserId) return

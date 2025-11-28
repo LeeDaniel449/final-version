@@ -108,7 +108,7 @@ interface WhatIfScenario {
   reduction: number
 }
 
-const defaultBudgetCategories: UserBudgetCategory[] = []
+const defaultBudgetCategories: BudgetCategory[] = []
 
 const DEFAULT_CATEGORIES = [
   "Housing",
@@ -1797,7 +1797,7 @@ const BudgetDashboardContent = () => {
     )
   }
 
-  // Main dashboard - show when user has data or has started budgeting
+  // Main dashboard - show when user data or has started budgeting
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
@@ -1948,7 +1948,7 @@ const BudgetDashboardContent = () => {
                                 <p className="text-xs text-gray-600 mt-1 line-clamp-2">{notification.message}</p>
                                 <div className="flex items-center justify-between mt-2">
                                   <p className="text-xs text-gray-400">{getTimeAgo(notification.timestamp)}</p>
-                                  <div className="flex items-center gap-1">
+                                  <div className="flex items-center gap-2">
                                     {notification.type === "warning" && (
                                       <Badge className="bg-red-100 text-red-600 text-xs px-2 py-0.5">
                                         High Priority
