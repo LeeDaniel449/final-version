@@ -28,83 +28,6 @@ function ClerkUserIdSync() {
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
 
   useEffect(() => {
-    if (!isLoaded) return
-
-    const checkServerSession = async () => {
-      try {
-        const response = await fetch("/api/auth/session")
-        const data = await response.json()
-
-        if (data.authenticated && data.userId && data.userId !== lastSyncedUserId) {
-          console.log("[v0] ⚡ SERVER SESSION FOUND USER:", data.userId)
-          setLastSyncedUserId(data.userId)
-          setSyncStatus("syncing")
-          userDataManager.setClerkUserId(data.userId)
-          await performDatabaseSync(data.userId)
-        }
-      } catch (error) {
-        console.error("[v0] Server session check error:", error)
-      }
-    }
-
-    // Check immediately
-    checkServerSession()
-
-    // Check every 5 seconds
-    const interval = setInterval(checkServerSession, 5000)
-
-    return () => clearInterval(interval)
-  }, [isLoaded, lastSyncedUserId])
-
-  useEffect(() => {
-    if (!isLoaded || !clerk) return
-
-    const checkForUser = async () => {
-      try {
-        // Force reload the session
-        await clerk.session?.reload()
-
-        // Check if user exists through multiple methods
-        const clerkUser = clerk.user
-        const sessionUser = clerk.session?.user
-
-        const detectedUser = clerkUser || sessionUser
-
-        if (detectedUser?.id && detectedUser.id !== lastSyncedUserId) {
-          console.log("[v0] ⚡ CLIENT CHECK FOUND USER:", detectedUser.id)
-          console.log("[v0] User email:", detectedUser.primaryEmailAddress?.emailAddress)
-          setLastSyncedUserId(detectedUser.id)
-          setSyncStatus("syncing")
-          userDataManager.setClerkUserId(detectedUser.id)
-          await performDatabaseSync(detectedUser.id)
-        }
-      } catch (error) {
-        console.error("[v0] User check error:", error)
-      }
-    }
-
-    // Check immediately
-    checkForUser()
-
-    // Check every 3 seconds
-    const interval = setInterval(checkForUser, 3000)
-
-    // Check when page becomes visible
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        checkForUser()
-      }
-    }
-
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-
-    return () => {
-      clearInterval(interval)
-      document.removeEventListener("visibilitychange", handleVisibilityChange)
-    }
-  }, [isLoaded, clerk, lastSyncedUserId])
-
-  useEffect(() => {
     const performSync = async () => {
       if (!isLoaded) {
         console.log("[v0] Clerk loading...")
@@ -129,6 +52,7 @@ function ClerkUserIdSync() {
       console.log("[v0] ========================================")
       console.log("[v0] USER SIGNED IN - STARTING SYNC")
       console.log("[v0] User ID:", user.id)
+      console.log("[v0] User Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
@@ -163,13 +87,11 @@ function ClerkUserIdSync() {
 
       console.log("[v0] Step 2: Refreshing all UI components...")
       if (typeof window !== "undefined") {
-        // Fire multiple refresh events to ensure all components update
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
         window.dispatchEvent(new CustomEvent("userDataUpdated"))
         window.dispatchEvent(new CustomEvent("storageChanged"))
 
-        // Delayed refreshes to catch any lazy-loaded components
         setTimeout(() => {
           window.dispatchEvent(new Event("storage"))
           window.dispatchEvent(new CustomEvent("userDataUpdated"))
@@ -184,6 +106,11 @@ function ClerkUserIdSync() {
           window.dispatchEvent(new Event("storage"))
           window.dispatchEvent(new CustomEvent("userDataUpdated"))
         }, 1000)
+
+        setTimeout(() => {
+          console.log("[v0] Reloading page to ensure all components show synced data...")
+          window.location.reload()
+        }, 2000)
       }
 
       console.log("[v0] Step 3: Checking for local data to migrate...")
@@ -221,7 +148,11 @@ function ClerkUserIdSync() {
 
     if (typeof window !== "undefined") {
       window.addEventListener("storage", handleDataChange)
-      return () => window.removeEventListener("storage", handleDataChange)
+      window.addEventListener("userDataUpdated", handleDataChange)
+      return () => {
+        window.removeEventListener("storage", handleDataChange)
+        window.removeEventListener("userDataUpdated", handleDataChange)
+      }
     }
   }, [lastSyncedUserId])
 
