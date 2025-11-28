@@ -279,7 +279,7 @@ class UserDataManager {
           "Content-Type": "application/json",
           "x-user-id": resolvedUserId,
         },
-        body: JSON.JSON.stringify({ data, userId: resolvedUserId }),
+        body: JSON.stringify({ data, userId: resolvedUserId }),
       })
 
       if (!response.ok) {
