@@ -17,29 +17,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { userDataManager } from "@/lib/user-data"
 import { useUser, useClerk } from "@clerk/nextjs"
 
 function ClerkUserInfo({ onSignOut }: { onSignOut?: () => void }) {
   const { user, isSignedIn, isLoaded } = useUser()
   const clerk = useClerk()
-  const userProfile = userDataManager.getUserProfile()
 
   const displayName = React.useMemo(() => {
     if (!isLoaded) return "Loading..."
-    if (!isSignedIn) return "Guest"
+    if (!isSignedIn || !user) return "Guest"
     if (user?.firstName && user?.lastName) return `${user.firstName} ${user.lastName}`
     if (user?.firstName) return user.firstName
     if (user?.username) return user.username
-    if (userProfile?.firstName) return userProfile.firstName
     return user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Guest"
-  }, [isSignedIn, userProfile, isLoaded, user])
+  }, [isSignedIn, isLoaded, user])
 
   const displayEmail = React.useMemo(() => {
     if (!isLoaded) return "..."
-    if (!isSignedIn) return "Not signed in"
-    return user?.emailAddresses?.[0]?.emailAddress || userProfile?.email || "No email"
-  }, [isSignedIn, userProfile, isLoaded, user])
+    if (!isSignedIn || !user) return "Not signed in"
+    return user?.emailAddresses?.[0]?.emailAddress || "No email"
+  }, [isSignedIn, isLoaded, user])
 
   return (
     <div className="flex items-center gap-3 px-2 py-2">
