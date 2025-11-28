@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { Suspense, useEffect, useState } from "react"
-import { ClerkProvider, useUser, useClerk } from "@clerk/nextjs"
+import { ClerkProvider, useUser } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
@@ -23,7 +23,6 @@ function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
 
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
-  const clerk = useClerk()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
 
@@ -50,13 +49,14 @@ function ClerkUserIdSync() {
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] USER SIGNED IN - STARTING SYNC")
+      console.log("[v0] 🎉 USER SIGNED IN - STARTING DATABASE SYNC")
       console.log("[v0] User ID:", user.id)
       console.log("[v0] User Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
       setSyncStatus("syncing")
+
       userDataManager.setClerkUserId(user.id)
 
       await performDatabaseSync(user.id)
@@ -67,70 +67,48 @@ function ClerkUserIdSync() {
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      console.log("[v0] ========================================")
-      console.log("[v0] 🔄 STARTING CROSS-DEVICE SYNC")
-      console.log("[v0] User ID:", userId)
-      console.log("[v0] ========================================")
-
-      console.log("[v0] Step 1: Loading data from Supabase database...")
+      console.log("[v0] 📥 Loading data from Supabase database...")
       const dbData = await userDataManager.loadFromDatabase(userId)
 
       if (dbData && Object.keys(dbData).length > 0) {
-        console.log("[v0] ✅ Database data loaded successfully!")
-        console.log("[v0]   📁 Categories:", dbData.budgetCategories?.length || 0)
-        console.log("[v0]   💰 Entries:", dbData.budgetEntries?.length || 0)
-        console.log("[v0]   🎯 Goals:", dbData.goals?.length || 0)
-        console.log("[v0]   📚 Completed modules:", dbData.userProgress?.completedModules?.length || 0)
+        console.log("[v0] ✅ Database data loaded!")
+        console.log("[v0]   Categories:", dbData.budgetCategories?.length || 0)
+        console.log("[v0]   Entries:", dbData.budgetEntries?.length || 0)
+        console.log("[v0]   Goals:", dbData.goals?.length || 0)
+        console.log("[v0]   Completed modules:", dbData.userProgress?.completedModules?.length || 0)
+
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new Event("storage"))
+          window.dispatchEvent(new CustomEvent("userDataUpdated"))
+
+          setTimeout(() => {
+            window.dispatchEvent(new Event("storage"))
+            window.dispatchEvent(new CustomEvent("userDataUpdated"))
+          }, 100)
+
+          setTimeout(() => {
+            window.dispatchEvent(new Event("storage"))
+            window.dispatchEvent(new CustomEvent("userDataUpdated"))
+          }, 500)
+        }
       } else {
-        console.log("[v0] 📭 No data in database (first time on this device)")
+        console.log("[v0] 📭 No existing data in database")
       }
 
-      console.log("[v0] Step 2: Refreshing all UI components...")
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new Event("storage"))
-        window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
-        window.dispatchEvent(new CustomEvent("userDataUpdated"))
-        window.dispatchEvent(new CustomEvent("storageChanged"))
-
-        setTimeout(() => {
-          window.dispatchEvent(new Event("storage"))
-          window.dispatchEvent(new CustomEvent("userDataUpdated"))
-        }, 100)
-
-        setTimeout(() => {
-          window.dispatchEvent(new Event("storage"))
-          window.dispatchEvent(new CustomEvent("userDataUpdated"))
-        }, 500)
-
-        setTimeout(() => {
-          window.dispatchEvent(new Event("storage"))
-          window.dispatchEvent(new CustomEvent("userDataUpdated"))
-        }, 1000)
-
-        setTimeout(() => {
-          console.log("[v0] Reloading page to ensure all components show synced data...")
-          window.location.reload()
-        }, 2000)
-      }
-
-      console.log("[v0] Step 3: Checking for local data to migrate...")
+      console.log("[v0] 📤 Checking for local data to upload...")
       const hasLocalData = userDataManager.hasStartedBudgeting()
       if (hasLocalData) {
-        console.log("[v0] 📤 Found local data - uploading to Supabase...")
+        console.log("[v0] Found local data - uploading to Supabase...")
         await userDataManager.migrateLocalDataToDatabase(userId)
         console.log("[v0] ✅ Local data uploaded to cloud")
-      } else {
-        console.log("[v0] No local data to migrate")
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] ✅ CROSS-DEVICE SYNC COMPLETE!")
-      console.log("[v0] Your data is now synced across all devices")
+      console.log("[v0] ✅ SYNC COMPLETE!")
       console.log("[v0] ========================================")
 
       setSyncStatus("success")
-
-      setTimeout(() => setSyncStatus("idle"), 5000)
+      setTimeout(() => setSyncStatus("idle"), 3000)
     } catch (error) {
       console.error("[v0] ❌ Sync error:", error)
       setSyncStatus("error")
@@ -147,10 +125,8 @@ function ClerkUserIdSync() {
     }
 
     if (typeof window !== "undefined") {
-      window.addEventListener("storage", handleDataChange)
       window.addEventListener("userDataUpdated", handleDataChange)
       return () => {
-        window.removeEventListener("storage", handleDataChange)
         window.removeEventListener("userDataUpdated", handleDataChange)
       }
     }
@@ -215,40 +191,7 @@ function ClerkErrorBoundary({ children }: { children: React.ReactNode }) {
             <SidebarTrigger className="-ml-1" />
           </header>
           <main className="flex-1 p-4 md:p-6">
-            <div className="max-w-2xl mx-auto space-y-4">
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Production Configuration Required</AlertTitle>
-                <AlertDescription className="space-y-2">
-                  <p>
-                    Your app is missing required environment variables in production. To enable cross-device data sync:
-                  </p>
-                  <ol className="list-decimal list-inside space-y-1 text-sm">
-                    <li>Go to your Vercel project settings</li>
-                    <li>Navigate to Environment Variables</li>
-                    <li>Add the following variables:</li>
-                  </ol>
-                  <div className="bg-muted p-3 rounded-md font-mono text-xs space-y-1 mt-2">
-                    <div>NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = your_clerk_key</div>
-                    <div>CLERK_SECRET_KEY = your_clerk_secret</div>
-                    <div>NEXT_PUBLIC_SUPABASE_URL = your_supabase_url</div>
-                    <div>SUPABASE_SERVICE_ROLE_KEY = your_supabase_key</div>
-                  </div>
-                  <p className="text-sm mt-2">
-                    Get your Clerk keys from{" "}
-                    <a
-                      href="https://dashboard.clerk.com/last-active?path=api-keys"
-                      className="underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Clerk Dashboard
-                    </a>
-                  </p>
-                </AlertDescription>
-              </Alert>
-              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-            </div>
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
           </main>
         </SidebarInset>
       </SidebarProvider>
@@ -281,41 +224,7 @@ export default function ClientLayout({
               <SidebarTrigger className="-ml-1" />
             </header>
             <main className="flex-1 p-4 md:p-6">
-              <div className="max-w-2xl mx-auto space-y-4">
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Production Configuration Required</AlertTitle>
-                  <AlertDescription className="space-y-2">
-                    <p>
-                      Your app is missing required environment variables in production. To enable cross-device data
-                      sync:
-                    </p>
-                    <ol className="list-decimal list-inside space-y-1 text-sm">
-                      <li>Go to your Vercel project settings</li>
-                      <li>Navigate to Environment Variables</li>
-                      <li>Add the following variables:</li>
-                    </ol>
-                    <div className="bg-muted p-3 rounded-md font-mono text-xs space-y-1 mt-2">
-                      <div>NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = your_clerk_key</div>
-                      <div>CLERK_SECRET_KEY = your_clerk_secret</div>
-                      <div>NEXT_PUBLIC_SUPABASE_URL = your_supabase_url</div>
-                      <div>SUPABASE_SERVICE_ROLE_KEY = your_supabase_key</div>
-                    </div>
-                    <p className="text-sm mt-2">
-                      Get your Clerk keys from{" "}
-                      <a
-                        href="https://dashboard.clerk.com/last-active?path=api-keys"
-                        className="underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Clerk Dashboard
-                      </a>
-                    </p>
-                  </AlertDescription>
-                </Alert>
-                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-              </div>
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
             </main>
           </SidebarInset>
         </SidebarProvider>
