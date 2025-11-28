@@ -9,7 +9,8 @@ import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
 import { EnvDiagnostic } from "@/components/env-diagnostic"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
+import { AlertCircle, CheckCircle, Loader2, RefreshCw } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
   if (!hasClerk) {
@@ -26,24 +27,33 @@ function ClerkUserIdSync() {
   const clerk = useClerk()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
+  const [syncAttempts, setSyncAttempts] = useState(0)
 
   useEffect(() => {
     if (!isLoaded || !clerk) return
 
-    const refreshSession = async () => {
+    const checkAndRefreshSession = async () => {
       try {
+        console.log("[v0] Checking Clerk session...")
         await clerk.session?.reload()
-        console.log("[v0] Session refreshed")
+
+        const currentUser = clerk.user
+        if (currentUser?.id && currentUser.id !== lastSyncedUserId) {
+          console.log("[v0] User detected after session reload:", currentUser.id)
+          setLastSyncedUserId(null) // Force re-sync
+        }
       } catch (error) {
-        console.error("[v0] Session refresh failed:", error)
+        console.error("[v0] Session check failed:", error)
       }
     }
 
-    const interval = setInterval(refreshSession, 5 * 60 * 1000)
+    checkAndRefreshSession()
+
+    const interval = setInterval(checkAndRefreshSession, 10000)
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        refreshSession()
+        checkAndRefreshSession()
       }
     }
 
@@ -53,7 +63,7 @@ function ClerkUserIdSync() {
       clearInterval(interval)
       document.removeEventListener("visibilitychange", handleVisibilityChange)
     }
-  }, [isLoaded, clerk])
+  }, [isLoaded, clerk, lastSyncedUserId])
 
   useEffect(() => {
     const performSync = async () => {
@@ -63,17 +73,18 @@ function ClerkUserIdSync() {
       }
 
       if (!user?.id) {
-        console.log("[v0] Clerk loaded - no user signed in")
+        console.log("[v0] Clerk loaded - no user signed in (attempt", syncAttempts + 1, ")")
         if (lastSyncedUserId) {
           console.log("[v0] User signed out - clearing sync")
           userDataManager.setClerkUserId(null)
           setLastSyncedUserId(null)
           setSyncStatus("idle")
         }
+        setSyncAttempts((prev) => prev + 1)
         return
       }
 
-      if (user.id === lastSyncedUserId) {
+      if (user.id === lastSyncedUserId && syncStatus === "success") {
         return
       }
 
@@ -85,13 +96,14 @@ function ClerkUserIdSync() {
 
       setLastSyncedUserId(user.id)
       setSyncStatus("syncing")
-      userDataManager.setClerkUserId(user.id)
+      setSyncAttempts(0)
 
+      userDataManager.setClerkUserId(user.id)
       await performDatabaseSync(user.id)
     }
 
     performSync()
-  }, [user?.id, isLoaded, lastSyncedUserId])
+  }, [user?.id, isLoaded, lastSyncedUserId, syncStatus, syncAttempts])
 
   const performDatabaseSync = async (userId: string) => {
     try {
@@ -107,11 +119,14 @@ function ClerkUserIdSync() {
         console.log("[v0] No data in database yet")
       }
 
-      console.log("[v0] Step 2: Refreshing UI...")
+      console.log("[v0] Step 2: Refreshing UI (multiple times to ensure all components update)...")
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new Event("storage"))
-        window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
-        setTimeout(() => window.dispatchEvent(new Event("storage")), 100)
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            window.dispatchEvent(new Event("storage"))
+            window.dispatchEvent(new CustomEvent("clerk-user-loaded", { detail: { userId } }))
+          }, i * 100)
+        }
       }
 
       console.log("[v0] Step 3: Checking for local data to migrate...")
@@ -132,6 +147,7 @@ function ClerkUserIdSync() {
     } catch (error) {
       console.error("[v0] ✗ Sync error:", error)
       setSyncStatus("error")
+      setTimeout(() => setSyncStatus("idle"), 3000)
     }
   }
 
@@ -149,32 +165,51 @@ function ClerkUserIdSync() {
     }
   }, [lastSyncedUserId])
 
-  if (syncStatus !== "idle" && user) {
+  const handleManualSync = async () => {
+    if (!user?.id) return
+    console.log("[v0] Manual sync triggered")
+    setSyncStatus("syncing")
+    await performDatabaseSync(user.id)
+  }
+
+  if (user) {
     return (
-      <div className="fixed top-4 right-4 z-50">
-        <Alert className="w-auto shadow-lg">
-          {syncStatus === "syncing" && (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <AlertTitle>Syncing data...</AlertTitle>
-              <AlertDescription>Loading your progress from the cloud</AlertDescription>
-            </>
-          )}
-          {syncStatus === "success" && (
-            <>
-              <CheckCircle className="h-4 w-4 text-green-600" />
-              <AlertTitle>Synced!</AlertTitle>
-              <AlertDescription>Your data is up to date across all devices</AlertDescription>
-            </>
-          )}
-          {syncStatus === "error" && (
-            <>
-              <AlertCircle className="h-4 w-4 text-red-600" />
-              <AlertTitle>Sync failed</AlertTitle>
-              <AlertDescription>Please check your connection and try again</AlertDescription>
-            </>
-          )}
-        </Alert>
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {syncStatus !== "idle" && (
+          <Alert className="w-auto shadow-lg">
+            {syncStatus === "syncing" && (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <AlertTitle>Syncing data...</AlertTitle>
+                <AlertDescription>Loading your progress from the cloud</AlertDescription>
+              </>
+            )}
+            {syncStatus === "success" && (
+              <>
+                <CheckCircle className="h-4 w-4 text-green-600" />
+                <AlertTitle>Synced!</AlertTitle>
+                <AlertDescription>Your data is up to date across all devices</AlertDescription>
+              </>
+            )}
+            {syncStatus === "error" && (
+              <>
+                <AlertCircle className="h-4 w-4 text-red-600" />
+                <AlertTitle>Sync failed</AlertTitle>
+                <AlertDescription>Please check your connection and try again</AlertDescription>
+              </>
+            )}
+          </Alert>
+        )}
+        <Button
+          onClick={handleManualSync}
+          disabled={syncStatus === "syncing"}
+          variant="outline"
+          size="sm"
+          className="shadow-lg bg-transparent"
+        >
+          <RefreshCw className={`h-4 w-4 mr-2 ${syncStatus === "syncing" ? "animate-spin" : ""}`} />
+          Sync Now
+        </Button>
       </div>
     )
   }
