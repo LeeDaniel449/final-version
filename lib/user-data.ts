@@ -253,8 +253,8 @@ class UserDataManager {
         return
       }
 
-      console.log("[v0] 🔄 SUPABASE SYNC STARTED")
-      console.log("[v0] Syncing to Supabase database for user:", resolvedUserId)
+      console.log("[v0] 🔄 SUPABASE SYNC STARTED ========================================")
+      console.log("[v0] 📤 Syncing data to Supabase for user:", resolvedUserId)
 
       const data = {
         profile: this.getUserProfile(),
@@ -266,12 +266,14 @@ class UserDataManager {
         userProgress: this.getUserProgress(),
       }
 
-      console.log("[v0] 📊 Data being synced to Supabase:", {
-        categories: data.budgetCategories.length,
-        entries: data.budgetEntries.length,
-        goals: data.goals.length,
-        completedModules: data.userProgress.completedModules.length,
-      })
+      console.log("[v0] 📊 Data package prepared for Supabase:")
+      console.log("[v0]    - Budget Categories:", data.budgetCategories.length)
+      console.log("[v0]    - Budget Entries:", data.budgetEntries.length)
+      console.log("[v0]    - Goals:", data.goals.length)
+      console.log("[v0]    - Completed Modules:", data.userProgress.completedModules.length)
+      console.log("[v0]    - Total Data Size:", JSON.stringify(data).length, "bytes")
+
+      console.log("[v0] 🌐 Sending POST request to /api/user-data...")
 
       const response = await fetch("/api/user-data", {
         method: "POST",
@@ -285,20 +287,26 @@ class UserDataManager {
       if (!response.ok) {
         const result = await response.json()
         if (result.tableNotFound) {
-          console.log("[v0] Database table not ready - will retry later")
+          console.log("[v0] ⚠️ Database table not ready - will retry later")
           return
         }
-        console.error("[v0] ❌ Failed to sync to Supabase:", result)
+        console.error("[v0] ❌ SUPABASE SYNC FAILED:", result)
+        console.error("[v0] ❌ Status:", response.status, response.statusText)
       } else {
         const result = await response.json()
         if (result.tableNotFound) {
-          console.log("[v0] Database table not ready - using localStorage only")
+          console.log("[v0] ⚠️ Database table not ready - using localStorage only")
+        } else if (result.success) {
+          console.log("[v0] ✅ SUPABASE SYNC SUCCESSFUL!")
+          console.log("[v0] ✅ Data successfully saved to cloud database")
+          console.log("[v0] ✅ This data will now sync to all your devices")
+          console.log("[v0] ========================================")
         } else {
-          console.log("[v0] ✅ SUPABASE SYNC SUCCESSFUL - Data saved to database")
+          console.error("[v0] ❌ Unexpected response:", result)
         }
       }
     } catch (error) {
-      console.error("[v0] ❌ Error syncing to Supabase:", error)
+      console.error("[v0] ❌ SUPABASE SYNC ERROR:", error)
     }
   }
 
@@ -1009,19 +1017,20 @@ class UserDataManager {
       const userId = this.getClerkUserId()
 
       if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot save categories - no Clerk user authenticated")
+        console.error("[v0] ❌ Cannot save categories - no Clerk user authenticated")
+        console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
 
       localStorage.setItem(storageKey, JSON.stringify(categories))
-      console.log("[v0] Budget categories saved - count:", categories.length)
+      console.log("[v0] ✅ Budget categories saved to localStorage - count:", categories.length)
 
-      console.log("[v0] Triggering database sync for Clerk user:", userId)
+      console.log("[v0] 🚀 Triggering automatic Supabase sync for user:", userId)
       this.syncToDatabase(userId).catch(console.error)
     } catch (err) {
-      console.error("Error saving budget categories:", err)
+      console.error("[v0] ❌ Error saving budget categories:", err)
     }
   }
 
@@ -1092,18 +1101,19 @@ class UserDataManager {
     try {
       const userId = this.getClerkUserId()
       if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot save entries - no Clerk user authenticated")
+        console.error("[v0] ❌ Cannot save entries - no Clerk user authenticated")
+        console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
 
       localStorage.setItem(storageKey, JSON.stringify(entries))
-      console.log("[v0] Budget entries saved - count:", entries.length)
+      console.log("[v0] ✅ Budget entries saved to localStorage - count:", entries.length)
 
-      console.log("[v0] Triggering database sync for Clerk user:", userId)
+      console.log("[v0] 🚀 Triggering automatic Supabase sync for user:", userId)
       this.syncToDatabase(userId).catch(console.error)
     } catch (err) {
-      console.error("Error saving budget entries:", err)
+      console.error("[v0] ❌ Error saving budget entries:", err)
     }
   }
 
@@ -1337,17 +1347,19 @@ class UserDataManager {
       const userId = this.getClerkUserId()
 
       if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot save goals - no Clerk user authenticated")
+        console.error("[v0] ❌ Cannot save goals - no Clerk user authenticated")
+        console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.GOALS, userId)
       localStorage.setItem(storageKey, JSON.stringify(goals))
 
-      console.log("[v0] Triggering database sync for Clerk user:", userId)
+      console.log("[v0] ✅ Goals saved to localStorage - count:", goals.length)
+      console.log("[v0] 🚀 Triggering automatic Supabase sync for user:", userId)
       this.syncToDatabase(userId).catch(console.error)
     } catch (error) {
-      console.error("Error saving goals:", error)
+      console.error("[v0] ❌ Error saving goals:", error)
     }
   }
 
