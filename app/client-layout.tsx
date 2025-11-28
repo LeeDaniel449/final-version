@@ -2,14 +2,14 @@
 
 import type React from "react"
 import { Suspense, useEffect, useState } from "react"
-import { ClerkProvider, useUser } from "@clerk/nextjs"
+import { ClerkProvider, useUser, useClerk } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { PremiumGate } from "@/components/premium-gate"
 import { userDataManager } from "@/lib/user-data"
 import { EnvDiagnostic } from "@/components/env-diagnostic"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
+import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 
 function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
   if (!hasClerk) {
@@ -23,7 +23,37 @@ function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
 
 function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
+  const clerk = useClerk()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
+  const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
+
+  useEffect(() => {
+    if (!isLoaded || !clerk) return
+
+    const refreshSession = async () => {
+      try {
+        await clerk.session?.reload()
+        console.log("[v0] Session refreshed")
+      } catch (error) {
+        console.error("[v0] Session refresh failed:", error)
+      }
+    }
+
+    const interval = setInterval(refreshSession, 5 * 60 * 1000)
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        refreshSession()
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+
+    return () => {
+      clearInterval(interval)
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+    }
+  }, [isLoaded, clerk])
 
   useEffect(() => {
     const performSync = async () => {
@@ -38,13 +68,13 @@ function ClerkUserIdSync() {
           console.log("[v0] User signed out - clearing sync")
           userDataManager.setClerkUserId(null)
           setLastSyncedUserId(null)
+          setSyncStatus("idle")
         }
         return
       }
 
-      // User is signed in
       if (user.id === lastSyncedUserId) {
-        return // Already synced this user
+        return
       }
 
       console.log("[v0] ========================================")
@@ -54,6 +84,7 @@ function ClerkUserIdSync() {
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
+      setSyncStatus("syncing")
       userDataManager.setClerkUserId(user.id)
 
       await performDatabaseSync(user.id)
@@ -94,8 +125,13 @@ function ClerkUserIdSync() {
       console.log("[v0] ========================================")
       console.log("[v0] ✓ SYNC COMPLETE - Your data is synced across devices!")
       console.log("[v0] ========================================")
+
+      setSyncStatus("success")
+
+      setTimeout(() => setSyncStatus("idle"), 5000)
     } catch (error) {
       console.error("[v0] ✗ Sync error:", error)
+      setSyncStatus("error")
     }
   }
 
@@ -112,6 +148,36 @@ function ClerkUserIdSync() {
       return () => window.removeEventListener("storage", handleDataChange)
     }
   }, [lastSyncedUserId])
+
+  if (syncStatus !== "idle" && user) {
+    return (
+      <div className="fixed top-4 right-4 z-50">
+        <Alert className="w-auto shadow-lg">
+          {syncStatus === "syncing" && (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <AlertTitle>Syncing data...</AlertTitle>
+              <AlertDescription>Loading your progress from the cloud</AlertDescription>
+            </>
+          )}
+          {syncStatus === "success" && (
+            <>
+              <CheckCircle className="h-4 w-4 text-green-600" />
+              <AlertTitle>Synced!</AlertTitle>
+              <AlertDescription>Your data is up to date across all devices</AlertDescription>
+            </>
+          )}
+          {syncStatus === "error" && (
+            <>
+              <AlertCircle className="h-4 w-4 text-red-600" />
+              <AlertTitle>Sync failed</AlertTitle>
+              <AlertDescription>Please check your connection and try again</AlertDescription>
+            </>
+          )}
+        </Alert>
+      </div>
+    )
+  }
 
   return null
 }
@@ -142,7 +208,40 @@ function ClerkErrorBoundary({ children }: { children: React.ReactNode }) {
             <SidebarTrigger className="-ml-1" />
           </header>
           <main className="flex-1 p-4 md:p-6">
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            <div className="max-w-2xl mx-auto space-y-4">
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Production Configuration Required</AlertTitle>
+                <AlertDescription className="space-y-2">
+                  <p>
+                    Your app is missing required environment variables in production. To enable cross-device data sync:
+                  </p>
+                  <ol className="list-decimal list-inside space-y-1 text-sm">
+                    <li>Go to your Vercel project settings</li>
+                    <li>Navigate to Environment Variables</li>
+                    <li>Add the following variables:</li>
+                  </ol>
+                  <div className="bg-muted p-3 rounded-md font-mono text-xs space-y-1 mt-2">
+                    <div>NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = your_clerk_key</div>
+                    <div>CLERK_SECRET_KEY = your_clerk_secret</div>
+                    <div>NEXT_PUBLIC_SUPABASE_URL = your_supabase_url</div>
+                    <div>SUPABASE_SERVICE_ROLE_KEY = your_supabase_key</div>
+                  </div>
+                  <p className="text-sm mt-2">
+                    Get your Clerk keys from{" "}
+                    <a
+                      href="https://dashboard.clerk.com/last-active?path=api-keys"
+                      className="underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Clerk Dashboard
+                    </a>
+                  </p>
+                </AlertDescription>
+              </Alert>
+              <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            </div>
           </main>
         </SidebarInset>
       </SidebarProvider>
