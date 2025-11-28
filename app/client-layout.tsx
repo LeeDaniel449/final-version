@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useState, useCallback } from "react"
 import { ClerkProvider, useUser } from "@clerk/nextjs"
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
@@ -13,11 +13,8 @@ import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 
 function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
   if (!hasClerk) {
-    // When no Clerk, render AppSidebar without Clerk hooks being called
     return <AppSidebar disableClerk />
   }
-
-  // When Clerk exists, AppSidebar will be inside ClerkProvider
   return <AppSidebar />
 }
 
@@ -25,7 +22,29 @@ function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
-  const [needsReload, setNeedsReload] = useState(false)
+
+  const forceUIUpdate = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("storage"))
+      window.dispatchEvent(new CustomEvent("userDataUpdated"))
+      window.dispatchEvent(new CustomEvent("forceRefresh"))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
+    if (persistedUserId && persistedUserId.startsWith("user_")) {
+      console.log("[v0] Found persisted Clerk user ID:", persistedUserId)
+      if (!lastSyncedUserId) {
+        console.log("[v0] Loading data with persisted user ID...")
+        userDataManager.setClerkUserId(persistedUserId)
+        setLastSyncedUserId(persistedUserId)
+        performDatabaseSync(persistedUserId)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const performSync = async () => {
@@ -36,13 +55,27 @@ function ClerkUserIdSync() {
 
       if (!user?.id) {
         console.log("[v0] Clerk loaded - no user signed in")
+        const persistedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
+        if (persistedUserId && persistedUserId.startsWith("user_")) {
+          console.log("[v0] Keeping persisted session for user:", persistedUserId)
+          return
+        }
+
         if (lastSyncedUserId) {
           console.log("[v0] User signed out - clearing sync")
           userDataManager.setClerkUserId(null)
           setLastSyncedUserId(null)
           setSyncStatus("idle")
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("wealthwise_clerk_user_id")
+          }
         }
         return
+      }
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("wealthwise_clerk_user_id", user.id)
+        console.log("[v0] Persisted Clerk user ID to localStorage")
       }
 
       if (user.id === lastSyncedUserId) {
@@ -50,7 +83,7 @@ function ClerkUserIdSync() {
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] 🎉 USER SIGNED IN - STARTING DATABASE SYNC")
+      console.log("[v0] USER SIGNED IN - STARTING DATABASE SYNC")
       console.log("[v0] User ID:", user.id)
       console.log("[v0] User Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
@@ -64,69 +97,49 @@ function ClerkUserIdSync() {
     }
 
     performSync()
-  }, [user?.id, isLoaded, lastSyncedUserId])
+  }, [user?.id, isLoaded, lastSyncedUserId, forceUIUpdate])
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      console.log("[v0] 📥 Loading data from Supabase database...")
+      console.log("[v0] Loading data from Supabase database...")
       const dbData = await userDataManager.loadFromDatabase(userId)
 
       if (dbData && Object.keys(dbData).length > 0) {
-        console.log("[v0] ✅ Database data loaded!")
+        console.log("[v0] Database data loaded!")
         console.log("[v0]   Categories:", dbData.budgetCategories?.length || 0)
         console.log("[v0]   Entries:", dbData.budgetEntries?.length || 0)
         console.log("[v0]   Goals:", dbData.goals?.length || 0)
         console.log("[v0]   Completed modules:", dbData.userProgress?.completedModules?.length || 0)
 
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new Event("storage"))
-          window.dispatchEvent(new CustomEvent("userDataUpdated"))
-
-          setTimeout(() => {
-            window.dispatchEvent(new Event("storage"))
-            window.dispatchEvent(new CustomEvent("userDataUpdated"))
-          }, 100)
-
-          setTimeout(() => {
-            window.dispatchEvent(new Event("storage"))
-            window.dispatchEvent(new CustomEvent("userDataUpdated"))
-          }, 500)
-
-          setTimeout(() => {
-            console.log("[v0] 🔄 Reloading page to display synced data...")
-            setNeedsReload(true)
-          }, 1000)
-        }
+        forceUIUpdate()
+        setTimeout(forceUIUpdate, 100)
+        setTimeout(forceUIUpdate, 300)
+        setTimeout(forceUIUpdate, 500)
+        setTimeout(forceUIUpdate, 1000)
       } else {
-        console.log("[v0] 📭 No existing data in database")
+        console.log("[v0] No existing data in database")
       }
 
-      console.log("[v0] 📤 Checking for local data to upload...")
+      console.log("[v0] Checking for local data to upload...")
       const hasLocalData = userDataManager.hasStartedBudgeting()
       if (hasLocalData) {
         console.log("[v0] Found local data - uploading to Supabase...")
         await userDataManager.migrateLocalDataToDatabase(userId)
-        console.log("[v0] ✅ Local data uploaded to cloud")
+        console.log("[v0] Local data uploaded to cloud")
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] ✅ SYNC COMPLETE!")
+      console.log("[v0] SYNC COMPLETE!")
       console.log("[v0] ========================================")
 
       setSyncStatus("success")
       setTimeout(() => setSyncStatus("idle"), 3000)
     } catch (error) {
-      console.error("[v0] ❌ Sync error:", error)
+      console.error("[v0] Sync error:", error)
       setSyncStatus("error")
       setTimeout(() => setSyncStatus("idle"), 5000)
     }
   }
-
-  useEffect(() => {
-    if (needsReload && typeof window !== "undefined") {
-      window.location.reload()
-    }
-  }, [needsReload])
 
   useEffect(() => {
     if (!lastSyncedUserId) return
