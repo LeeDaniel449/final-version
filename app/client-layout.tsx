@@ -34,6 +34,26 @@ function ClerkUserIdSync() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    const handleSignInSuccess = (event: CustomEvent) => {
+      const { userId } = event.detail
+      console.log("[v0] 🎉 Sign-in event received! User ID:", userId)
+      if (userId && userId.startsWith("user_")) {
+        localStorage.setItem("wealthwise_clerk_user_id", userId)
+        userDataManager.setClerkUserId(userId)
+        setLastSyncedUserId(userId)
+        performDatabaseSync(userId)
+      }
+    }
+
+    window.addEventListener("clerk-signin-success", handleSignInSuccess as EventListener)
+    return () => {
+      window.removeEventListener("clerk-signin-success", handleSignInSuccess as EventListener)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
     const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
     console.log("[v0] 🔍 Checking for persisted user ID on mount...")
     console.log("[v0] Found in localStorage:", persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none")
@@ -52,7 +72,7 @@ function ClerkUserIdSync() {
     } else {
       console.log("[v0] ❌ No persisted user ID found")
     }
-  }, []) // Only run once on mount
+  }, [forceUIUpdate]) // Add forceUIUpdate to dependencies
 
   useEffect(() => {
     const performSync = async () => {
@@ -86,6 +106,8 @@ function ClerkUserIdSync() {
           userDataManager.setClerkUserId(null)
           setLastSyncedUserId(null)
           setSyncStatus("idle")
+        } else {
+          console.log("[v0] User not signed in - showing zero data")
         }
         return
       }
