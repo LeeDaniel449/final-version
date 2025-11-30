@@ -31,11 +31,9 @@ export default function LearningDashboard() {
 
   useEffect(() => {
     if (isClerkLoaded && user) {
-      userDataManager.setClerkUserId(user.id)
       setHasClerkUser(true)
       console.log("[v0] Clerk user loaded for learning page:", user.id)
     } else if (isClerkLoaded && !user) {
-      userDataManager.setClerkUserId(null)
       setHasClerkUser(false)
       console.log("[v0] No Clerk user for learning page")
     }

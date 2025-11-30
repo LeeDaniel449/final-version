@@ -125,10 +125,8 @@ function GoalsPage() {
 
     // Set Clerk user ID
     if (user) {
-      userDataManager.setClerkUserId(user.id)
       console.log("[v0] Clerk user loaded for goals page:", user.id)
     } else {
-      userDataManager.setClerkUserId(null)
       console.log("[v0] No Clerk user for goals page")
     }
 

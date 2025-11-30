@@ -149,16 +149,6 @@ export default function HomePage() {
   }
 
   useEffect(() => {
-    if (isLoaded && user) {
-      userDataManager.setClerkUserId(user.id)
-      console.log("[v0] Clerk user loaded on dashboard:", user.id)
-    } else if (isLoaded && !user) {
-      userDataManager.setClerkUserId(null)
-      console.log("[v0] No Clerk user on dashboard")
-    }
-  }, [user, isLoaded])
-
-  useEffect(() => {
     if (!isLoaded) return
 
     if (!isSignedIn || !user) {
