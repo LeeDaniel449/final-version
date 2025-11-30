@@ -920,13 +920,23 @@ class UserDataManager {
 
   private getClerkUserId(): string | null {
     if (typeof window === "undefined") return null
-    const clerkId = this.clerkUserId || localStorage.getItem("wealthwise_clerk_user_id") || null
+
+    const fromMemory = this.clerkUserId
+    const fromStorage = localStorage.getItem("wealthwise_clerk_user_id")
+    const clerkId = fromMemory || fromStorage || null
+
+    console.log("[v0] 🔍 getClerkUserId check:", {
+      fromMemory: fromMemory ? `${fromMemory.substring(0, 15)}...` : null,
+      fromStorage: fromStorage ? `${fromStorage.substring(0, 15)}...` : null,
+      finalId: clerkId ? `${clerkId.substring(0, 15)}...` : null,
+    })
 
     if (clerkId && clerkId.startsWith("user_")) {
+      console.log("[v0] ✅ Valid Clerk user ID found")
       return clerkId
     }
 
-    // If no Clerk ID found in internal state or localStorage, it might have been cleared on sign out
+    console.log("[v0] ❌ No valid Clerk user ID found")
     return null
   }
 
@@ -967,19 +977,21 @@ class UserDataManager {
     try {
       const userId = this.getClerkUserId()
 
+      console.log("[v0] 📊 getBudgetCategories - userId:", userId ? `${userId.substring(0, 15)}...` : null)
+
       if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] No Clerk user authenticated - returning empty categories")
+        console.log("[v0] ⚠️ No Clerk user authenticated - returning empty categories")
         return []
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
 
-      console.log("[v0] Loading categories from:", storageKey)
+      console.log("[v0] 📂 Loading categories from:", storageKey)
       const stored = localStorage.getItem(storageKey)
 
       if (stored) {
         const parsed: BudgetCategory[] = JSON.parse(stored)
-        console.log("[v0] Loaded categories:", parsed.length, "items")
+        console.log("[v0] ✅ Loaded categories:", parsed.length, "items")
 
         if (parsed.length > 0) {
           const validCategories = parsed.every(
@@ -991,18 +1003,18 @@ class UserDataManager {
           )
           if (validCategories) {
             const filteredCategories = parsed.filter((cat) => cat.budgetAmount > 0 || cat.spentAmount > 0)
-            console.log("[v0] Returning", filteredCategories.length, "categories with data")
+            console.log("[v0] 📤 Returning", filteredCategories.length, "categories with data")
             return filteredCategories
           }
         }
       } else {
-        console.log("[v0] No stored categories found")
+        console.log("[v0] 📭 No stored categories found at key:", storageKey)
       }
     } catch (err) {
-      console.error("Error loading budget categories:", err)
+      console.error("[v0] ❌ Error loading budget categories:", err)
     }
 
-    console.log("[v0] Returning empty categories array")
+    console.log("[v0] 📭 Returning empty categories array")
     return []
   }
 
@@ -1074,19 +1086,22 @@ class UserDataManager {
 
     try {
       const userId = this.getClerkUserId()
+
+      console.log("[v0] 📊 getBudgetEntries - userId:", userId ? `${userId.substring(0, 15)}...` : null)
+
       if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] No Clerk user authenticated - returning empty entries")
+        console.log("[v0] ⚠️ No Clerk user authenticated - returning empty entries")
         return []
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
 
-      console.log("[v0] Loading entries from:", storageKey)
+      console.log("[v0] 📂 Loading entries from:", storageKey)
       const stored = localStorage.getItem(storageKey)
       const entries = stored ? JSON.parse(stored) : []
-      console.log("[v0] Loaded", entries.length, "budget entries")
+      console.log("[v0] ✅ Loaded", entries.length, "budget entries")
       return entries
     } catch (err) {
-      console.error("Error loading budget entries:", err)
+      console.error("[v0] ❌ Error loading budget entries:", err)
       return []
     }
   }

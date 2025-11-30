@@ -35,43 +35,54 @@ function ClerkUserIdSync() {
     if (typeof window === "undefined") return
 
     const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
+    console.log("[v0] 🔍 Checking for persisted user ID on mount...")
+    console.log("[v0] Found in localStorage:", persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none")
+
     if (persistedUserId && persistedUserId.startsWith("user_")) {
-      console.log("[v0] Found persisted Clerk user ID:", persistedUserId)
-      if (!lastSyncedUserId) {
-        console.log("[v0] Loading data with persisted user ID...")
-        userDataManager.setClerkUserId(persistedUserId)
-        setLastSyncedUserId(persistedUserId)
-        performDatabaseSync(persistedUserId)
-      }
+      console.log("[v0] ✅ Found persisted Clerk user ID - setting immediately")
+      // Set the user ID IMMEDIATELY so data functions can use it
+      userDataManager.setClerkUserId(persistedUserId)
+      setLastSyncedUserId(persistedUserId)
+
+      // Force UI update to show the data
+      forceUIUpdate()
+
+      // Then perform database sync in the background
+      performDatabaseSync(persistedUserId)
+    } else {
+      console.log("[v0] ❌ No persisted user ID found")
     }
-  }, [])
+  }, []) // Only run once on mount
 
   useEffect(() => {
     const performSync = async () => {
       if (!isLoaded) {
-        console.log("[v0] Clerk loading...")
+        console.log("[v0] ⏳ Clerk loading...")
         return
       }
 
       const persistedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
 
       if (!user?.id) {
-        console.log("[v0] Clerk loaded - no active session")
+        console.log("[v0] 🔓 Clerk loaded - no active session")
 
         if (persistedUserId && persistedUserId.startsWith("user_")) {
-          console.log("[v0] 🔄 Using persisted session from localStorage:", persistedUserId)
-          console.log("[v0] 📥 Loading data with persisted user ID...")
+          console.log("[v0] 🔄 Using persisted session from localStorage:", `${persistedUserId.substring(0, 15)}...`)
+          console.log("[v0] 📥 User data will load with persisted ID")
 
           if (persistedUserId !== lastSyncedUserId) {
+            console.log("[v0] ⚠️ Persisted ID doesn't match last synced - re-syncing")
             setLastSyncedUserId(persistedUserId)
             userDataManager.setClerkUserId(persistedUserId)
             await performDatabaseSync(persistedUserId)
+          } else {
+            console.log("[v0] ✅ Already synced with persisted ID")
           }
           return
         }
 
         if (lastSyncedUserId && !persistedUserId) {
-          console.log("[v0] User signed out - clearing sync")
+          console.log("[v0] 🧹 User signed out - clearing sync")
           userDataManager.setClerkUserId(null)
           setLastSyncedUserId(null)
           setSyncStatus("idle")
@@ -81,17 +92,18 @@ function ClerkUserIdSync() {
 
       if (typeof window !== "undefined") {
         localStorage.setItem("wealthwise_clerk_user_id", user.id)
-        console.log("[v0] ✅ Persisted Clerk user ID to localStorage")
+        console.log("[v0] 💾 Persisted Clerk user ID to localStorage")
       }
 
       if (user.id === lastSyncedUserId) {
+        console.log("[v0] ✅ Already synced for this user")
         return
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] USER SIGNED IN - STARTING DATABASE SYNC")
-      console.log("[v0] User ID:", user.id)
-      console.log("[v0] User Email:", user.primaryEmailAddress?.emailAddress)
+      console.log("[v0] 🔐 USER SIGNED IN - STARTING DATABASE SYNC")
+      console.log("[v0] 👤 User ID:", `${user.id.substring(0, 15)}...`)
+      console.log("[v0] 📧 User Email:", user.primaryEmailAddress?.emailAddress)
       console.log("[v0] ========================================")
 
       setLastSyncedUserId(user.id)
@@ -107,15 +119,15 @@ function ClerkUserIdSync() {
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      console.log("[v0] Loading data from Supabase database...")
+      console.log("[v0] 🔄 Loading data from Supabase database...")
       const dbData = await userDataManager.loadFromDatabase(userId)
 
       if (dbData && Object.keys(dbData).length > 0) {
-        console.log("[v0] Database data loaded!")
-        console.log("[v0]   Categories:", dbData.budgetCategories?.length || 0)
-        console.log("[v0]   Entries:", dbData.budgetEntries?.length || 0)
-        console.log("[v0]   Goals:", dbData.goals?.length || 0)
-        console.log("[v0]   Completed modules:", dbData.userProgress?.completedModules?.length || 0)
+        console.log("[v0] ✅ Database data loaded successfully!")
+        console.log("[v0]   📊 Categories:", dbData.budgetCategories?.length || 0)
+        console.log("[v0]   💰 Entries:", dbData.budgetEntries?.length || 0)
+        console.log("[v0]   🎯 Goals:", dbData.goals?.length || 0)
+        console.log("[v0]   📚 Completed modules:", dbData.userProgress?.completedModules?.length || 0)
 
         forceUIUpdate()
         setTimeout(forceUIUpdate, 100)
@@ -123,25 +135,25 @@ function ClerkUserIdSync() {
         setTimeout(forceUIUpdate, 500)
         setTimeout(forceUIUpdate, 1000)
       } else {
-        console.log("[v0] No existing data in database")
+        console.log("[v0] 📭 No existing data in database")
       }
 
-      console.log("[v0] Checking for local data to upload...")
+      console.log("[v0] 🔍 Checking for local data to upload...")
       const hasLocalData = userDataManager.hasStartedBudgeting()
       if (hasLocalData) {
-        console.log("[v0] Found local data - uploading to Supabase...")
+        console.log("[v0] 📤 Found local data - uploading to Supabase...")
         await userDataManager.migrateLocalDataToDatabase(userId)
-        console.log("[v0] Local data uploaded to cloud")
+        console.log("[v0] ✅ Local data uploaded to cloud")
       }
 
       console.log("[v0] ========================================")
-      console.log("[v0] SYNC COMPLETE!")
+      console.log("[v0] ✅ SYNC COMPLETE!")
       console.log("[v0] ========================================")
 
       setSyncStatus("success")
       setTimeout(() => setSyncStatus("idle"), 3000)
     } catch (error) {
-      console.error("[v0] Sync error:", error)
+      console.error("[v0] ❌ Sync error:", error)
       setSyncStatus("error")
       setTimeout(() => setSyncStatus("idle"), 5000)
     }
@@ -151,8 +163,8 @@ function ClerkUserIdSync() {
     if (!lastSyncedUserId) return
 
     const handleDataChange = () => {
-      console.log("[v0] Data changed - auto-syncing to database...")
-      userDataManager.syncToDatabase(lastSyncedUserId)
+      console.log("[v0] 💾 Data changed - auto-syncing to database...")
+      userDataManager.syncToDatabase(lastSyncedUserId).catch(console.error)
     }
 
     if (typeof window !== "undefined") {
