@@ -402,67 +402,63 @@ class UserDataManager {
     }
   }
 
-  migrateLocalDataToDatabase(userId: string): Promise<void> {
-    if (typeof window === "undefined") return Promise.resolve()
+  async migrateLocalDataToDatabase(userId: string): Promise<void> {
+    if (typeof window === "undefined") return
 
     try {
       console.log("[v0] 🔄 MIGRATION CHECK - Checking if local data needs to be migrated to Supabase")
       console.log("[v0] User ID for migration:", userId)
 
       // Check if data already exists in database
-      return fetch("/api/user-data", {
+      const response = await fetch("/api/user-data", {
         headers: { "x-user-id": userId },
       })
-        .then((response) => {
-          if (response.ok) {
-            return response.json()
-          }
-          throw new Error(`HTTP error! status: ${response.status}`)
-        })
-        .then(({ data }) => {
-          // If database already has data, don't overwrite
-          if (data && Object.keys(data).length > 0) {
-            console.log("[v0] ✅ Supabase database already has data - skipping migration to avoid overwriting")
-            return
-          }
 
-          // Gather all existing local data
-          const localData = {
-            profile: this.getUserProfile(),
-            budgetData: this.getBudgetData(),
-            budgetCategories: this.getBudgetCategories(),
-            budgetEntries: this.getBudgetEntries(),
-            goals: this.getGoals(),
-            learningProgress: this.getLearningProgress(),
-            userProgress: this.getUserProgress(),
-          }
+      if (response.ok) {
+        const { data } = await response.json()
 
-          // Check if there's any meaningful data to migrate
-          const hasData =
-            localData.budgetCategories.length > 0 ||
-            localData.budgetEntries.length > 0 ||
-            localData.goals.length > 0 ||
-            localData.userProgress.completedModules.length > 0
+        // If database already has data, don't overwrite
+        if (data && Object.keys(data).length > 0) {
+          console.log("[v0] ✅ Supabase database already has data - skipping migration to avoid overwriting")
+          return
+        }
+      }
 
-          if (!hasData) {
-            console.log("[v0] 📭 No local data to migrate to Supabase")
-            return
-          }
+      // Gather all existing local data
+      const localData = {
+        profile: this.getUserProfile(),
+        budgetData: this.getBudgetData(),
+        budgetCategories: this.getBudgetCategories(),
+        budgetEntries: this.getBudgetEntries(),
+        goals: this.getGoals(),
+        learningProgress: this.getLearningProgress(),
+        userProgress: this.getUserProgress(),
+      }
 
-          console.log("[v0] 📤 MIGRATING LOCAL DATA TO SUPABASE:")
-          console.log("[v0] - Budget categories:", localData.budgetCategories.length)
-          console.log("[v0] - Budget entries:", localData.budgetEntries.length)
-          console.log("[v0] - Financial goals:", localData.goals.length)
-          console.log("[v0] - Completed modules:", localData.userProgress.completedModules.length)
+      // Check if there's any meaningful data to migrate
+      const hasData =
+        localData.budgetCategories.length > 0 ||
+        localData.budgetEntries.length > 0 ||
+        localData.goals.length > 0 ||
+        localData.userProgress.completedModules.length > 0
 
-          // Upload to database
-          return this.syncToDatabase(userId).then(() => {
-            console.log("[v0] ✅ MIGRATION COMPLETE - Local data successfully uploaded to Supabase")
-          })
-        })
+      if (!hasData) {
+        console.log("[v0] 📭 No local data to migrate to Supabase")
+        return
+      }
+
+      console.log("[v0] 📤 MIGRATING LOCAL DATA TO SUPABASE:")
+      console.log("[v0] - Budget categories:", localData.budgetCategories.length)
+      console.log("[v0] - Budget entries:", localData.budgetEntries.length)
+      console.log("[v0] - Financial goals:", localData.goals.length)
+      console.log("[v0] - Completed modules:", localData.userProgress.completedModules.length)
+
+      // Upload to database
+      await this.syncToDatabase(userId)
+
+      console.log("[v0] ✅ MIGRATION COMPLETE - Local data successfully uploaded to Supabase")
     } catch (error) {
       console.error("[v0] ❌ Error migrating local data to Supabase:", error)
-      return Promise.reject(error)
     }
   }
 
@@ -915,10 +911,9 @@ class UserDataManager {
     } else {
       console.log("[v0] 🧹 Clearing Clerk user ID and user profile data")
       this.clerkUserId = null
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
+      if (typeof window !== "undefined" && userId === null) {
         localStorage.removeItem("wealthwise_clerk_user_id")
-        console.log("[v0] ✅ User profile and session cleared from localStorage")
+        console.log("[v0] ✅ User profile cleared from localStorage")
       }
     }
   }

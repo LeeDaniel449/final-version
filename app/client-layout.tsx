@@ -22,7 +22,6 @@ function ClerkUserIdSync() {
   const { user, isLoaded } = useUser()
   const [lastSyncedUserId, setLastSyncedUserId] = useState<string | null>(null)
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "success" | "error">("idle")
-  const [initialLoadDone, setInitialLoadDone] = useState(false)
 
   const forceUIUpdate = useCallback(() => {
     if (typeof window !== "undefined") {
@@ -33,58 +32,78 @@ function ClerkUserIdSync() {
   }, [])
 
   useEffect(() => {
-    if (typeof window === "undefined" || initialLoadDone) return
+    if (typeof window === "undefined") return
 
     const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
     if (persistedUserId && persistedUserId.startsWith("user_")) {
       console.log("[v0] Found persisted Clerk user ID:", persistedUserId)
-      setLastSyncedUserId(persistedUserId)
-      userDataManager.setClerkUserId(persistedUserId)
-      performDatabaseSync(persistedUserId)
+      if (!lastSyncedUserId) {
+        console.log("[v0] Loading data with persisted user ID...")
+        userDataManager.setClerkUserId(persistedUserId)
+        setLastSyncedUserId(persistedUserId)
+        performDatabaseSync(persistedUserId)
+      }
     }
-    setInitialLoadDone(true)
-  }, [initialLoadDone])
+  }, [])
 
   useEffect(() => {
-    if (!isLoaded) {
-      console.log("[v0] Clerk loading...")
-      return
-    }
+    const performSync = async () => {
+      if (!isLoaded) {
+        console.log("[v0] Clerk loading...")
+        return
+      }
 
-    if (user?.id) {
+      const persistedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
+
+      if (!user?.id) {
+        console.log("[v0] Clerk loaded - no active session")
+
+        if (persistedUserId && persistedUserId.startsWith("user_")) {
+          console.log("[v0] 🔄 Using persisted session from localStorage:", persistedUserId)
+          console.log("[v0] 📥 Loading data with persisted user ID...")
+
+          if (persistedUserId !== lastSyncedUserId) {
+            setLastSyncedUserId(persistedUserId)
+            userDataManager.setClerkUserId(persistedUserId)
+            await performDatabaseSync(persistedUserId)
+          }
+          return
+        }
+
+        if (lastSyncedUserId && !persistedUserId) {
+          console.log("[v0] User signed out - clearing sync")
+          userDataManager.setClerkUserId(null)
+          setLastSyncedUserId(null)
+          setSyncStatus("idle")
+        }
+        return
+      }
+
       if (typeof window !== "undefined") {
         localStorage.setItem("wealthwise_clerk_user_id", user.id)
-        console.log("[v0] Persisted Clerk user ID to localStorage:", user.id)
+        console.log("[v0] ✅ Persisted Clerk user ID to localStorage")
       }
 
-      if (user.id !== lastSyncedUserId) {
-        console.log("[v0] ========================================")
-        console.log("[v0] USER SIGNED IN - STARTING DATABASE SYNC")
-        console.log("[v0] User ID:", user.id)
-        console.log("[v0] User Email:", user.primaryEmailAddress?.emailAddress)
-        console.log("[v0] ========================================")
-
-        setLastSyncedUserId(user.id)
-        setSyncStatus("syncing")
-        userDataManager.setClerkUserId(user.id)
-        performDatabaseSync(user.id)
+      if (user.id === lastSyncedUserId) {
+        return
       }
-      return
+
+      console.log("[v0] ========================================")
+      console.log("[v0] USER SIGNED IN - STARTING DATABASE SYNC")
+      console.log("[v0] User ID:", user.id)
+      console.log("[v0] User Email:", user.primaryEmailAddress?.emailAddress)
+      console.log("[v0] ========================================")
+
+      setLastSyncedUserId(user.id)
+      setSyncStatus("syncing")
+
+      userDataManager.setClerkUserId(user.id)
+
+      await performDatabaseSync(user.id)
     }
 
-    console.log("[v0] Clerk loaded - no active session")
-    const persistedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
-
-    if (persistedUserId && persistedUserId.startsWith("user_")) {
-      console.log("[v0] Using persisted user session:", persistedUserId)
-      if (lastSyncedUserId !== persistedUserId) {
-        setLastSyncedUserId(persistedUserId)
-        userDataManager.setClerkUserId(persistedUserId)
-      }
-    } else {
-      console.log("[v0] No persisted session found")
-    }
-  }, [user?.id, isLoaded, lastSyncedUserId])
+    performSync()
+  }, [user?.id, isLoaded, lastSyncedUserId, forceUIUpdate])
 
   const performDatabaseSync = async (userId: string) => {
     try {
