@@ -56,18 +56,25 @@ function ClerkUserIdSync() {
 
     const checkServerSession = async () => {
       try {
+        console.log("[v0] 🔍 Checking server session cookie...")
         const response = await fetch("/api/session")
         const data = await response.json()
 
+        console.log("[v0] 🍪 Server session response:", {
+          hasUserId: !!data.userId,
+          authenticated: data.authenticated,
+          userId: data.userId ? `${data.userId.substring(0, 15)}...` : "none",
+        })
+
         if (data.userId && data.userId.startsWith("user_")) {
-          console.log("[v0] 🍪 Found server session cookie:", `${data.userId.substring(0, 15)}...`)
+          console.log("[v0] ✅ Found server session cookie - restoring session")
           localStorage.setItem("wealthwise_clerk_user_id", data.userId)
           userDataManager.setClerkUserId(data.userId)
           setLastSyncedUserId(data.userId)
           forceUIUpdate()
           await performDatabaseSync(data.userId)
         } else {
-          console.log("[v0] 🍪 No server session cookie found")
+          console.log("[v0] ❌ No valid server session found")
         }
       } catch (error) {
         console.error("[v0] ❌ Failed to check server session:", error)
@@ -76,7 +83,11 @@ function ClerkUserIdSync() {
 
     const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
     console.log("[v0] 🔍 Checking for persisted user ID on mount...")
-    console.log("[v0] Found in localStorage:", persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none")
+    console.log("[v0] 📦 localStorage check:", {
+      hasUserId: !!persistedUserId,
+      userId: persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none",
+      isValid: persistedUserId?.startsWith("user_") || false,
+    })
 
     if (persistedUserId && persistedUserId.startsWith("user_")) {
       console.log("[v0] ✅ Found persisted Clerk user ID - setting immediately")
@@ -85,12 +96,14 @@ function ClerkUserIdSync() {
       forceUIUpdate()
       performDatabaseSync(persistedUserId)
     } else {
-      console.log("[v0] ❌ No localStorage session - checking server cookie...")
+      console.log("[v0] ⏭️  No localStorage session - checking server cookie...")
       checkServerSession()
     }
   }, [forceUIUpdate])
 
   useEffect(() => {
+    if (typeof window === "undefined") return
+
     const performSync = async () => {
       if (!isLoaded) {
         console.log("[v0] ⏳ Clerk loading...")
