@@ -85,32 +85,10 @@ function ClerkUserIdSync() {
       forceUIUpdate()
       performDatabaseSync(persistedUserId)
     } else {
+      console.log("[v0] ❌ No localStorage session - checking server cookie...")
       checkServerSession()
     }
-  }, [forceUIUpdate]) // Add forceUIUpdate to dependencies
-
-  useEffect(() => {
-    if (typeof window === "undefined") return
-
-    const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
-    console.log("[v0] 🔍 Checking for persisted user ID on mount...")
-    console.log("[v0] Found in localStorage:", persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none")
-
-    if (persistedUserId && persistedUserId.startsWith("user_")) {
-      console.log("[v0] ✅ Found persisted Clerk user ID - setting immediately")
-      // Set the user ID IMMEDIATELY so data functions can use it
-      userDataManager.setClerkUserId(persistedUserId)
-      setLastSyncedUserId(persistedUserId)
-
-      // Force UI update to show the data
-      forceUIUpdate()
-
-      // Then perform database sync in the background
-      performDatabaseSync(persistedUserId)
-    } else {
-      console.log("[v0] ❌ No persisted user ID found")
-    }
-  }, [forceUIUpdate]) // Add forceUIUpdate to dependencies
+  }, [forceUIUpdate])
 
   useEffect(() => {
     const performSync = async () => {
