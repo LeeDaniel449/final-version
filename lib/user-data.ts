@@ -117,6 +117,8 @@ class UserDataManager {
     REMEMBER_ME: "wealthwise_remember_me",
     USER_PROGRESS: "wealthwise_user_progress",
     SIGNED_UP: "wealthwise_signed_up",
+    BUDGET_CATEGORIES: "wealthwise_budget_categories", // Added for clarity
+    BUDGET_ENTRIES: "wealthwise_budget_entries", // Added for clarity
   }
 
   // Added a prefix for user-specific storage keys to avoid conflicts
@@ -984,7 +986,7 @@ class UserDataManager {
         return []
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_CATEGORIES, userId)
 
       console.log("[v0] 📂 Loading categories from:", storageKey)
       const stored = localStorage.getItem(storageKey)
@@ -1029,7 +1031,7 @@ class UserDataManager {
         return
       }
 
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_CATEGORIES, userId)
 
       localStorage.setItem(storageKey, JSON.stringify(categories))
       console.log("[v0] ✅ Budget categories saved to localStorage - count:", categories.length)
@@ -1093,7 +1095,7 @@ class UserDataManager {
         console.log("[v0] ⚠️ No Clerk user authenticated - returning empty entries")
         return []
       }
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
 
       console.log("[v0] 📂 Loading entries from:", storageKey)
       const stored = localStorage.getItem(storageKey)
@@ -1115,7 +1117,7 @@ class UserDataManager {
         console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
 
       localStorage.setItem(storageKey, JSON.stringify(entries))
       console.log("[v0] ✅ Budget entries saved to localStorage - count:", entries.length)
@@ -1134,7 +1136,7 @@ class UserDataManager {
       console.error("[v0] Cannot add budget entry - user not authenticated. Please sign in.")
       return
     }
-    const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+    const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
 
     const entries = this.getBudgetEntries()
     const newEntry: BudgetEntry = {
@@ -1156,7 +1158,7 @@ class UserDataManager {
         console.warn("[v0] Cannot clear entries - no Clerk user authenticated")
         return
       }
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
       localStorage.removeItem(storageKey)
       console.log("[v0] All budget entries cleared")
     } catch (err) {
@@ -1184,12 +1186,12 @@ class UserDataManager {
     }
   }
 
-  saveBudgetData(budgetData: Partial<BudgetData>): void {
+  saveBudgetData(data: Partial<BudgetData>): void {
     if (typeof window === "undefined") return
 
     try {
       const currentData = this.getBudgetData()
-      const updatedData = { ...currentData, ...budgetData }
+      const updatedData = { ...currentData, ...data }
       const userId = this.getClerkUserId()
       if (!userId || !userId.startsWith("user_")) {
         console.error("[v0] Cannot save budget data - no Clerk user authenticated")
@@ -1197,6 +1199,13 @@ class UserDataManager {
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedData))
+
+      if (userId && userId.startsWith("user_")) {
+        console.log("[v0] 💾 Budget data saved - triggering auto-sync to Supabase")
+        this.syncToDatabase(userId).catch((error) => {
+          console.error("[v0] Auto-sync failed:", error)
+        })
+      }
     } catch (error) {
       console.error("Error saving budget data:", error)
     }
@@ -1219,8 +1228,8 @@ class UserDataManager {
         console.warn("[v0] Cannot reset budget data - no Clerk user authenticated")
         return
       }
-      const storageKeyCategories = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":categories", userId)
-      const storageKeyEntries = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA + ":entries", userId)
+      const storageKeyCategories = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_CATEGORIES, userId)
+      const storageKeyEntries = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
       const storageKeyBudgetData = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
 
       // Clear stored budget categories and entries
