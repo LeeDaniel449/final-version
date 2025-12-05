@@ -4,6 +4,7 @@ import { SignIn } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { setUserSession } from "@/app/actions/session"
 
 export default function SignInPage() {
   const { user, isLoaded } = useUser()
@@ -18,24 +19,36 @@ export default function SignInPage() {
       console.log("[v0] Timestamp:", new Date().toISOString())
       console.log("[v0] ========================================")
 
-      // Store session info for debugging
-      if (typeof window !== "undefined") {
-        const sessionData = {
-          lastSignIn: Date.now(),
-          userId: user.id,
-          email: user.primaryEmailAddress?.emailAddress,
+      const storeSession = async () => {
+        if (typeof window !== "undefined") {
+          const sessionData = {
+            lastSignIn: Date.now(),
+            userId: user.id,
+            email: user.primaryEmailAddress?.emailAddress,
+          }
+          localStorage.setItem("wealthwise_session", JSON.stringify(sessionData))
+          localStorage.setItem("wealthwise_clerk_user_id", user.id)
+
+          // Store in server-side cookie for persistence across page reloads
+          try {
+            await setUserSession(user.id)
+            console.log("[v0] ✅ Session stored in cookie")
+          } catch (error) {
+            console.error("[v0] ❌ Failed to store session in cookie:", error)
+          }
+
+          // Dispatch event to trigger sync
+          window.dispatchEvent(new CustomEvent("clerk-signin-success", { detail: { userId: user.id } }))
+
+          console.log("[v0] Session stored. Redirecting to home...")
         }
-        localStorage.setItem("wealthwise_session", JSON.stringify(sessionData))
-
-        // Dispatch event to trigger sync
-        window.dispatchEvent(new CustomEvent("clerk-signin-success", { detail: { userId: user.id } }))
-
-        console.log("[v0] Session stored. Redirecting to home...")
       }
 
-      setTimeout(() => {
-        router.replace("/")
-      }, 1000)
+      storeSession().then(() => {
+        setTimeout(() => {
+          router.replace("/")
+        }, 1000)
+      })
     }
   }, [isLoaded, user, router])
 
