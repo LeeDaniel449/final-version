@@ -272,6 +272,9 @@ class UserDataManager {
       console.log("[v0]   - Budget Categories:", data.budgetCategories.length)
       console.log("[v0]   - Budget Entries:", data.budgetEntries.length)
       console.log("[v0]   - Goals:", data.goals.length)
+      console.log("[v0]   - Completed Lessons:", data.userProgress.completedLessons || 0)
+      console.log("[v0]   - Completed Modules:", data.userProgress.completedModules?.length || 0)
+      console.log("[v0]   - Learning Progress:", data.userProgress.totalProgress || 0, "%")
       console.log("[v0]   - User ID:", resolvedUserId)
 
       console.log("[v0] 🌐 Sending POST request to /api/user-data...")
@@ -351,6 +354,9 @@ class UserDataManager {
         console.log("[v0]   - Budget Categories:", result.data.budgetCategories?.length || 0)
         console.log("[v0]   - Budget Entries:", result.data.budgetEntries?.length || 0)
         console.log("[v0]   - Goals:", result.data.goals?.length || 0)
+        console.log("[v0]   - Completed Lessons:", result.data.userProgress?.completedLessons || 0)
+        console.log("[v0]   - Completed Modules:", result.data.userProgress?.completedModules?.length || 0)
+        console.log("[v0]   - Learning Progress:", result.data.userProgress?.totalProgress || 0, "%")
         console.log("[v0]   - User ID:", resolvedUserId)
 
         if (result.data.profile) {
@@ -1637,7 +1643,7 @@ class UserDataManager {
 
       // Update current lesson
       moduleProgress.currentLesson = lessonIndex
-      moduleProgress.lastAccessed = new Date().toISOString() // Fixed typo here: modulemoduleProgress to moduleProgress
+      moduleProgress.lastAccessed = new Date().toISOString()
 
       // Update completed lessons
       if (completed && !moduleProgress.completedLessons.includes(lessonIndex)) {
@@ -1645,6 +1651,9 @@ class UserDataManager {
         moduleProgress.completedLessons.sort((a, b) => a - b)
 
         userProgress.completedLessons = (userProgress.completedLessons || 0) + 1
+        console.log("[v0] 🎓 LESSON COMPLETED!")
+        console.log("[v0] 📚 Module:", moduleId, "| Lesson:", lessonIndex)
+        console.log("[v0] 📊 Total lessons completed:", userProgress.completedLessons)
       }
 
       // Import learningModules to check total lessons per module
@@ -1662,6 +1671,9 @@ class UserDataManager {
           // Add to completedModules if not already there
           if (!userProgress.completedModules.includes(moduleId)) {
             userProgress.completedModules.push(moduleId)
+            console.log("[v0] 🏆 MODULE COMPLETED!")
+            console.log("[v0] 📚 Module ID:", moduleId)
+            console.log("[v0] 📊 Total modules completed:", userProgress.completedModules.length)
           }
         }
       }
@@ -1675,10 +1687,11 @@ class UserDataManager {
       // Save updated progress
       this.saveUserProgress(userProgress)
 
-      console.log(`📚 Lesson progress updated: Module ${moduleId}, Lesson ${lessonIndex}, Completed: ${completed}`)
+      console.log(`[v0] 📚 Lesson progress updated: Module ${moduleId}, Lesson ${lessonIndex}, Completed: ${completed}`)
       console.log(
-        `📊 Overall progress: ${userProgress.totalProgress}%, Completed modules: ${userProgress.completedModules.length}, Streak: ${userProgress.currentStreak} days`,
+        `[v0] 📊 Overall progress: ${userProgress.totalProgress}%, Completed modules: ${userProgress.completedModules.length}, Streak: ${userProgress.currentStreak} days`,
       )
+      console.log("[v0] 🔄 Lesson progress will sync to Supabase automatically")
     } catch (error) {
       console.error("Error updating lesson progress:", error)
     }
