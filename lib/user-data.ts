@@ -404,63 +404,72 @@ class UserDataManager {
     }
   }
 
-  async migrateLocalDataToDatabase(userId: string): Promise<void> {
-    if (typeof window === "undefined") return
+  migrateLocalDataToDatabase(userId: string): Promise<void> {
+    if (typeof window === "undefined") return Promise.resolve()
 
     try {
       console.log("[v0] 🔄 MIGRATION CHECK - Checking if local data needs to be migrated to Supabase")
       console.log("[v0] User ID for migration:", userId)
 
       // Check if data already exists in database
-      const response = await fetch("/api/user-data", {
+      return fetch("/api/user-data", {
         headers: { "x-user-id": userId },
       })
+        .then((response) => {
+          if (response.ok) {
+            return response.json()
+          }
+          // If response is not ok, assume no data exists and proceed with migration
+          return { data: {} }
+        })
+        .then(({ data }) => {
+          // If database already has data, don't overwrite
+          if (data && Object.keys(data).length > 0) {
+            console.log("[v0] ✅ Supabase database already has data - skipping migration to avoid overwriting")
+            return Promise.resolve()
+          }
 
-      if (response.ok) {
-        const { data } = await response.json()
+          // Gather all existing local data
+          const localData = {
+            profile: this.getUserProfile(),
+            budgetData: this.getBudgetData(),
+            budgetCategories: this.getBudgetCategories(),
+            budgetEntries: this.getBudgetEntries(),
+            goals: this.getGoals(),
+            learningProgress: this.getLearningProgress(),
+            userProgress: this.getUserProgress(),
+          }
 
-        // If database already has data, don't overwrite
-        if (data && Object.keys(data).length > 0) {
-          console.log("[v0] ✅ Supabase database already has data - skipping migration to avoid overwriting")
-          return
-        }
-      }
+          // Check if there's any meaningful data to migrate
+          const hasData =
+            localData.budgetCategories.length > 0 ||
+            localData.budgetEntries.length > 0 ||
+            localData.goals.length > 0 ||
+            localData.userProgress.completedModules.length > 0
 
-      // Gather all existing local data
-      const localData = {
-        profile: this.getUserProfile(),
-        budgetData: this.getBudgetData(),
-        budgetCategories: this.getBudgetCategories(),
-        budgetEntries: this.getBudgetEntries(),
-        goals: this.getGoals(),
-        learningProgress: this.getLearningProgress(),
-        userProgress: this.getUserProgress(),
-      }
+          if (!hasData) {
+            console.log("[v0] 📭 No local data to migrate to Supabase")
+            return Promise.resolve()
+          }
 
-      // Check if there's any meaningful data to migrate
-      const hasData =
-        localData.budgetCategories.length > 0 ||
-        localData.budgetEntries.length > 0 ||
-        localData.goals.length > 0 ||
-        localData.userProgress.completedModules.length > 0
+          console.log("[v0] 📤 MIGRATING LOCAL DATA TO SUPABASE:")
+          console.log("[v0] - Budget categories:", localData.budgetCategories.length)
+          console.log("[v0] - Budget entries:", localData.budgetEntries.length)
+          console.log("[v0] - Financial goals:", localData.goals.length)
+          console.log("[v0] - Completed modules:", localData.userProgress.completedModules.length)
 
-      if (!hasData) {
-        console.log("[v0] 📭 No local data to migrate to Supabase")
-        return
-      }
-
-      console.log("[v0] 📤 MIGRATING LOCAL DATA TO SUPABASE:")
-      console.log("[v0] - Budget categories:", localData.budgetCategories.length)
-      console.log("[v0] - Budget entries:", localData.budgetEntries.length)
-      console.log("[v0] - Financial goals:", localData.goals.length)
-      console.log("[v0] - Completed modules:", localData.userProgress.completedModules.length)
-
-      // Upload to database
-      await this.syncToDatabase(userId)
-
-      console.log("[v0] ✅ MIGRATION COMPLETE - Local data successfully uploaded to Supabase")
+          // Upload to database
+          return this.syncToDatabase(userId).then(() => {
+            console.log("[v0] ✅ MIGRATION COMPLETE - Local data successfully uploaded to Supabase")
+          })
+        })
+        .catch((error) => {
+          console.error("[v0] ❌ Error migrating local data to Supabase:", error)
+          return Promise.reject(error)
+        })
     } catch (error) {
-      console.error("[v0] ❌ Error migrating local data to Supabase:", error)
+      console.error("[v0] ❌ Error migrating local data to Supabase (outer catch):", error)
+      return Promise.reject(error)
     }
   }
 
@@ -1006,9 +1015,23 @@ class UserDataManager {
       }
 
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_CATEGORIES, userId)
-
       console.log("[v0] 📂 Loading categories from:", storageKey)
-      const stored = localStorage.getItem(storageKey)
+      let stored = localStorage.getItem(storageKey)
+
+      // If not found and userId starts with "legacy_", try without the prefix
+      if (!stored && userId.startsWith("legacy_")) {
+        const legacyUserId = userId.substring(7) // Remove "legacy_" prefix
+        const legacyKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_CATEGORIES, legacyUserId)
+        console.log("[v0] 🔄 Trying legacy storage key:", legacyKey)
+        stored = localStorage.getItem(legacyKey)
+
+        if (stored) {
+          console.log("[v0] ✅ Found data in legacy storage location")
+          // Migrate to new key format
+          localStorage.setItem(storageKey, stored)
+          console.log("[v0] 📦 Migrated data to new storage key")
+        }
+      }
 
       if (stored) {
         const parsed: BudgetCategory[] = JSON.parse(stored)
@@ -1113,10 +1136,26 @@ class UserDataManager {
         console.log("[v0] ⚠️ No authenticated user - returning empty entries")
         return []
       }
-      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
 
+      const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
       console.log("[v0] 📂 Loading entries from:", storageKey)
-      const stored = localStorage.getItem(storageKey)
+      let stored = localStorage.getItem(storageKey)
+
+      // If not found and userId starts with "legacy_", try without the prefix
+      if (!stored && userId.startsWith("legacy_")) {
+        const legacyUserId = userId.substring(7) // Remove "legacy_" prefix
+        const legacyKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, legacyUserId)
+        console.log("[v0] 🔄 Trying legacy storage key:", legacyKey)
+        stored = localStorage.getItem(legacyKey)
+
+        if (stored) {
+          console.log("[v0] ✅ Found data in legacy storage location")
+          // Migrate to new key format
+          localStorage.setItem(storageKey, stored)
+          console.log("[v0] 📦 Migrated data to new storage key")
+        }
+      }
+
       const entries = stored ? JSON.parse(stored) : []
       console.log("[v0] ✅ Loaded", entries.length, "budget entries")
       return entries
