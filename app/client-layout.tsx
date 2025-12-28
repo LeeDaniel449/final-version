@@ -34,6 +34,65 @@ function ClerkUserIdSync() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    const initSession = async () => {
+      console.log("[v0] 🚀 Initializing session on mount...")
+
+      try {
+        console.log("[v0] 🍪 Checking server session cookie...")
+        const response = await fetch("/api/session")
+        const data = await response.json()
+
+        console.log("[v0] 🍪 Server session response:", {
+          hasUserId: !!data.userId,
+          authenticated: data.authenticated,
+          userId: data.userId ? `${data.userId.substring(0, 15)}...` : "none",
+        })
+
+        if (data.userId && data.userId.startsWith("user_")) {
+          console.log("[v0] ✅ Found valid server session - restoring immediately")
+          localStorage.setItem("wealthwise_clerk_user_id", data.userId)
+          localStorage.setItem("wealthwise_session_active", "true")
+          userDataManager.setClerkUserId(data.userId)
+          setLastSyncedUserId(data.userId)
+          forceUIUpdate()
+
+          console.log("[v0] 📥 Loading data from Supabase...")
+          await performDatabaseSync(data.userId)
+          return // Session restored successfully
+        }
+      } catch (error) {
+        console.error("[v0] ❌ Failed to check server session:", error)
+      }
+
+      const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
+      const sessionActive = localStorage.getItem("wealthwise_session_active")
+
+      console.log("[v0] 📦 localStorage check:", {
+        hasUserId: !!persistedUserId,
+        sessionActive: sessionActive === "true",
+        userId: persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none",
+        isValid: persistedUserId?.startsWith("user_") || false,
+      })
+
+      if (persistedUserId && persistedUserId.startsWith("user_") && sessionActive === "true") {
+        console.log("[v0] ✅ Found persisted session in localStorage")
+        userDataManager.setClerkUserId(persistedUserId)
+        setLastSyncedUserId(persistedUserId)
+        forceUIUpdate()
+
+        console.log("[v0] 📥 Loading data from Supabase...")
+        await performDatabaseSync(persistedUserId)
+      } else {
+        console.log("[v0] ❌ No valid session found - user needs to sign in")
+      }
+    }
+
+    initSession()
+  }, []) // Only run once on mount
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
     const handleSignInSuccess = (event: CustomEvent) => {
       const { userId } = event.detail
       console.log("[v0] 🎉 Sign-in event received! User ID:", userId)
@@ -50,56 +109,6 @@ function ClerkUserIdSync() {
       window.removeEventListener("clerk-signin-success", handleSignInSuccess as EventListener)
     }
   }, [])
-
-  useEffect(() => {
-    if (typeof window === "undefined") return
-
-    const checkServerSession = async () => {
-      try {
-        console.log("[v0] 🔍 Checking server session cookie...")
-        const response = await fetch("/api/session")
-        const data = await response.json()
-
-        console.log("[v0] 🍪 Server session response:", {
-          hasUserId: !!data.userId,
-          authenticated: data.authenticated,
-          userId: data.userId ? `${data.userId.substring(0, 15)}...` : "none",
-        })
-
-        if (data.userId && data.userId.startsWith("user_")) {
-          console.log("[v0] ✅ Found server session cookie - restoring session")
-          localStorage.setItem("wealthwise_clerk_user_id", data.userId)
-          userDataManager.setClerkUserId(data.userId)
-          setLastSyncedUserId(data.userId)
-          forceUIUpdate()
-          await performDatabaseSync(data.userId)
-        } else {
-          console.log("[v0] ❌ No valid server session found")
-        }
-      } catch (error) {
-        console.error("[v0] ❌ Failed to check server session:", error)
-      }
-    }
-
-    const persistedUserId = localStorage.getItem("wealthwise_clerk_user_id")
-    console.log("[v0] 🔍 Checking for persisted user ID on mount...")
-    console.log("[v0] 📦 localStorage check:", {
-      hasUserId: !!persistedUserId,
-      userId: persistedUserId ? `${persistedUserId.substring(0, 15)}...` : "none",
-      isValid: persistedUserId?.startsWith("user_") || false,
-    })
-
-    if (persistedUserId && persistedUserId.startsWith("user_")) {
-      console.log("[v0] ✅ Found persisted Clerk user ID - setting immediately")
-      userDataManager.setClerkUserId(persistedUserId)
-      setLastSyncedUserId(persistedUserId)
-      forceUIUpdate()
-      performDatabaseSync(persistedUserId)
-    } else {
-      console.log("[v0] ⏭️  No localStorage session - checking server cookie...")
-      checkServerSession()
-    }
-  }, [forceUIUpdate])
 
   useEffect(() => {
     if (typeof window === "undefined") return

@@ -12,11 +12,11 @@ export default function SignOutPage() {
     const handleSignOut = async () => {
       console.log("[v0] 👋 Signing out...")
 
-      // Clear localStorage
       if (typeof window !== "undefined") {
         localStorage.removeItem("wealthwise_clerk_user_id")
         localStorage.removeItem("wealthwise_session")
-        console.log("[v0] ✅ Cleared localStorage")
+        localStorage.removeItem("wealthwise_session_active")
+        console.log("[v0] ✅ Cleared all localStorage session data")
       }
 
       try {

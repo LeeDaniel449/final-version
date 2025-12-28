@@ -27,6 +27,7 @@ export default function SignInPage() {
           }
           localStorage.setItem("wealthwise_session", JSON.stringify(sessionData))
           localStorage.setItem("wealthwise_clerk_user_id", user.id)
+          localStorage.setItem("wealthwise_session_active", "true")
 
           try {
             console.log("[v0] 📤 Sending session to server API...")
@@ -40,6 +41,7 @@ export default function SignInPage() {
 
             if (result.success) {
               console.log("[v0] ✅ Session stored in server cookie successfully")
+              console.log("[v0] 🔄 Session will now persist across page reloads and devices")
             } else {
               console.error("[v0] ❌ Failed to store session:", result.error)
             }
