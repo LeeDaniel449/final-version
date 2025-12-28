@@ -3,7 +3,6 @@
 import { useClerk } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { clearUserSession } from "@/app/actions/session"
 
 export default function SignOutPage() {
   const { signOut } = useClerk()
@@ -20,10 +19,19 @@ export default function SignOutPage() {
         console.log("[v0] ✅ Cleared localStorage")
       }
 
-      // Clear server-side cookie
       try {
-        await clearUserSession()
-        console.log("[v0] ✅ Cleared server session cookie")
+        console.log("[v0] 📤 Calling session DELETE API...")
+        const response = await fetch("/api/session", {
+          method: "DELETE",
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          console.log("[v0] ✅ Cleared server session cookie via API")
+        } else {
+          console.error("[v0] ❌ Failed to clear session:", result.error)
+        }
       } catch (error) {
         console.error("[v0] ❌ Failed to clear server session:", error)
       }

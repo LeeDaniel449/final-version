@@ -4,7 +4,6 @@ import { SignIn } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { setUserSession } from "@/app/actions/session"
 
 export default function SignInPage() {
   const { user, isLoaded } = useUser()
@@ -29,10 +28,21 @@ export default function SignInPage() {
           localStorage.setItem("wealthwise_session", JSON.stringify(sessionData))
           localStorage.setItem("wealthwise_clerk_user_id", user.id)
 
-          // Store in server-side cookie for persistence across page reloads
           try {
-            await setUserSession(user.id)
-            console.log("[v0] ✅ Session stored in cookie")
+            console.log("[v0] 📤 Sending session to server API...")
+            const response = await fetch("/api/session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ userId: user.id }),
+            })
+
+            const result = await response.json()
+
+            if (result.success) {
+              console.log("[v0] ✅ Session stored in server cookie successfully")
+            } else {
+              console.error("[v0] ❌ Failed to store session:", result.error)
+            }
           } catch (error) {
             console.error("[v0] ❌ Failed to store session in cookie:", error)
           }
