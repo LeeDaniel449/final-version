@@ -237,61 +237,6 @@ function ClerkLoadingWrapper({
   children: React.ReactNode
   clerkPublishableKey: string
 }) {
-  const [clerkFailed, setClerkFailed] = useState(false)
-  const [clerkLoading, setClerkLoading] = useState(true)
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      console.warn("[v0] Clerk loading timeout - falling back to no-auth mode")
-      setClerkFailed(true)
-      setClerkLoading(false)
-    }, 5000) // 5 second timeout
-
-    const handleError = (event: ErrorEvent) => {
-      if (event.message?.includes("Clerk") || event.message?.includes("failed_to_load_clerk_js")) {
-        console.error("[v0] Clerk loading error:", event.message)
-        setClerkFailed(true)
-        setClerkLoading(false)
-        event.preventDefault()
-      }
-    }
-
-    const handleClerkLoad = () => {
-      clearTimeout(timeout)
-      setClerkLoading(false)
-    }
-
-    window.addEventListener("error", handleError)
-    // Clerk dispatches a clerk:loaded event when ready
-    window.addEventListener("clerk:loaded", handleClerkLoad)
-
-    const fallbackClear = setTimeout(() => {
-      if (!clerkFailed) {
-        clearTimeout(timeout)
-        setClerkLoading(false)
-      }
-    }, 1000)
-
-    return () => {
-      clearTimeout(timeout)
-      clearTimeout(fallbackClear)
-      window.removeEventListener("error", handleError)
-      window.removeEventListener("clerk:loaded", handleClerkLoad)
-    }
-  }, [clerkFailed])
-
-  if (clerkFailed) {
-    return <AppWithoutClerk>{children}</AppWithoutClerk>
-  }
-
-  if (clerkLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    )
-  }
-
   return (
     <ClerkProvider publishableKey={clerkPublishableKey}>
       <ClerkUserIdSync />
