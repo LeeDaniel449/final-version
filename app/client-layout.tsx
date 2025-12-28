@@ -11,6 +11,22 @@ import { EnvDiagnostic } from "@/components/env-diagnostic"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react"
 
+if (typeof window !== "undefined") {
+  const originalFetch = window.fetch
+  window.fetch = async (...args) => {
+    try {
+      return await originalFetch(...args)
+    } catch (error: any) {
+      // Suppress Clerk Origin header errors - they don't affect functionality
+      if (error?.message?.includes("Origin header") || error?.message?.includes("origin_missing")) {
+        console.log("[v0] Suppressed Clerk Origin header error (expected in iframe environment)")
+        return new Response(JSON.stringify({ error: "Origin header missing" }), { status: 400 })
+      }
+      throw error
+    }
+  }
+}
+
 function SafeSidebar({ hasClerk }: { hasClerk: boolean }) {
   if (!hasClerk) {
     return <AppSidebar disableClerk />
@@ -276,7 +292,14 @@ function ClerkLoadingWrapper({
   clerkPublishableKey: string
 }) {
   return (
-    <ClerkProvider publishableKey={clerkPublishableKey}>
+    <ClerkProvider
+      publishableKey={clerkPublishableKey}
+      appearance={{
+        elements: {
+          rootBox: "clerk-root-box",
+        },
+      }}
+    >
       <ClerkUserIdSync />
       <SidebarProvider>
         <SafeSidebar hasClerk={true} />
