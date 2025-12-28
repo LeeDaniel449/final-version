@@ -54,6 +54,8 @@ export default function HomePage() {
 
   const [showTutorial, setShowTutorial] = useState(false)
   const [tutorialStep, setTutorialStep] = useState(0)
+  const [isSyncing, setIsSyncing] = useState(false)
+  const [syncResult, setSyncResult] = useState<string | null>(null)
 
   const tutorialSteps = [
     {
@@ -146,6 +148,55 @@ export default function HomePage() {
   const skipTutorial = () => {
     setShowTutorial(false)
     localStorage.setItem("wealthwise_tutorial_completed", "true")
+  }
+
+  const testCrossDeviceSync = async () => {
+    console.log("[v0] 🧪 Starting cross-device sync test...")
+    setIsSyncing(true)
+    setSyncResult(null)
+
+    try {
+      const userId = userDataManager.getUserIdForStorage()
+
+      if (!userId) {
+        setSyncResult("❌ No user authenticated - please sign in first")
+        setIsSyncing(false)
+        return
+      }
+
+      console.log("[v0] 📝 Adding test data...")
+      // Add test category
+      userDataManager.updateBudgetCategory("Test Sync Category", {
+        budgetAmount: 500,
+        spentAmount: 100,
+        type: "expense",
+      })
+
+      // Force sync to Supabase
+      console.log("[v0] 🚀 Syncing to Supabase...")
+      await userDataManager.syncToDatabase(userId)
+
+      // Wait a moment for the sync to complete
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      // Try loading from Supabase
+      console.log("[v0] 📥 Loading from Supabase...")
+      await userDataManager.loadFromDatabase(userId)
+
+      const categories = userDataManager.getBudgetCategories()
+      console.log("[v0] ✅ Categories after sync:", categories.length)
+
+      if (categories.length > 0) {
+        setSyncResult("✅ Sync works! Found " + categories.length + " categories")
+      } else {
+        setSyncResult("⚠️ Sync may not be working - no data found after sync")
+      }
+    } catch (error) {
+      console.error("[v0] ❌ Sync test error:", error)
+      setSyncResult("❌ Sync failed: " + (error as Error).message)
+    } finally {
+      setIsSyncing(false)
+    }
   }
 
   useEffect(() => {
@@ -497,6 +548,26 @@ export default function HomePage() {
             <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Here's your financial overview</p>
           </div>
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+            {isSignedIn && (
+              <Button
+                onClick={testCrossDeviceSync}
+                disabled={isSyncing}
+                variant="outline"
+                className="border-green-600 text-green-600 hover:bg-green-600 hover:text-white bg-transparent w-full sm:w-auto"
+              >
+                {isSyncing ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                    Testing Sync...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Test Sync
+                  </>
+                )}
+              </Button>
+            )}
             <Button
               onClick={startTutorial}
               variant="outline"
@@ -532,6 +603,20 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Sync Result Notification */}
+        {syncResult && (
+          <Card className="border-l-4 border-l-blue-500 bg-blue-50">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">{syncResult}</p>
+                <Button variant="ghost" size="sm" onClick={() => setSyncResult(null)} className="h-6 w-6 p-0">
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Stats Overview */}
         <div id="stats-overview" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
