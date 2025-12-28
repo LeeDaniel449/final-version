@@ -34,6 +34,44 @@ function ClerkUserIdSync() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    const syncLegacyUser = async () => {
+      const hasLegacyAuth = localStorage.getItem("wealthwise_authenticated") === "true"
+      const legacyUser = localStorage.getItem("wealthwise_current_user")
+
+      if (hasLegacyAuth && legacyUser) {
+        const legacyUserId = `legacy_${legacyUser}`
+        console.log("[v0] 🔄 Syncing legacy user from Supabase:", legacyUserId)
+
+        try {
+          setSyncStatus("syncing")
+          const dbData = await userDataManager.loadFromDatabase(legacyUserId)
+
+          if (dbData && Object.keys(dbData).length > 0) {
+            console.log("[v0] ✅ Loaded legacy user data from Supabase")
+            forceUIUpdate()
+            setTimeout(forceUIUpdate, 100)
+            setTimeout(forceUIUpdate, 300)
+            setTimeout(forceUIUpdate, 500)
+          } else {
+            console.log("[v0] 📭 No data found in Supabase for legacy user")
+          }
+
+          setSyncStatus("success")
+          setTimeout(() => setSyncStatus("idle"), 3000)
+        } catch (error) {
+          console.error("[v0] ❌ Failed to sync legacy user:", error)
+          setSyncStatus("error")
+          setTimeout(() => setSyncStatus("idle"), 5000)
+        }
+      }
+    }
+
+    syncLegacyUser()
+  }, [forceUIUpdate])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
     const initSession = async () => {
       try {
         const response = await fetch("/api/session")
@@ -64,7 +102,7 @@ function ClerkUserIdSync() {
     }
 
     initSession()
-  }, [])
+  }, [forceUIUpdate])
 
   useEffect(() => {
     if (typeof window === "undefined") return
