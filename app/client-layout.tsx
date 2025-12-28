@@ -113,7 +113,7 @@ function ClerkUserIdSync() {
           return
         }
 
-        if (lastSyncedUserId && !persistedUserId) {
+        if (lastSyncedUserId && !persistedUserId && !hasLegacyAuth) {
           userDataManager.setClerkUserId(null)
           setLastSyncedUserId(null)
           setSyncStatus("idle")
