@@ -268,12 +268,11 @@ class UserDataManager {
         userProgress: this.getUserProgress(),
       }
 
-      console.log("[v0] 📊 Data package prepared for Supabase:")
-      console.log("[v0]    - Budget Categories:", data.budgetCategories.length)
-      console.log("[v0]    - Budget Entries:", data.budgetEntries.length)
-      console.log("[v0]    - Goals:", data.goals.length)
-      console.log("[v0]    - Completed Modules:", data.userProgress.completedModules.length)
-      console.log("[v0]    - Total Data Size:", JSON.stringify(data).length, "bytes")
+      console.log("[v0] 📊 Sync Statistics:")
+      console.log("[v0]   - Budget Categories:", data.budgetCategories.length)
+      console.log("[v0]   - Budget Entries:", data.budgetEntries.length)
+      console.log("[v0]   - Goals:", data.goals.length)
+      console.log("[v0]   - User ID:", resolvedUserId)
 
       console.log("[v0] 🌐 Sending POST request to /api/user-data...")
 
@@ -302,31 +301,35 @@ class UserDataManager {
           console.log("[v0] ✅ SUPABASE SYNC SUCCESSFUL!")
           console.log("[v0] ✅ Data successfully saved to cloud database")
           console.log("[v0] ✅ This data will now sync to all your devices")
-          console.log("[v0] ========================================")
+          console.log("[v0] ✅ SUPABASE SYNC COMPLETED ========================================")
+          console.log("[v0] 💾 Data saved to Supabase successfully!")
+          console.log("[v0] 🌐 This data will now sync across all your devices")
         } else {
           console.error("[v0] ❌ Unexpected response:", result)
         }
       }
     } catch (error) {
-      console.error("[v0] ❌ SUPABASE SYNC ERROR:", error)
+      console.error("[v0] ❌ SUPABASE SYNC FAILED ========================================")
+      console.error("[v0] Error syncing to database:", error)
+      throw error
     }
   }
 
-  private async loadFromDatabase(userId?: string): Promise<any> {
+  private async loadFromDatabase(userId?: string): Promise<boolean> {
     if (!this.databaseSyncEnabled) {
       console.log("[v0] Database sync is disabled")
-      return null
+      return false
     }
 
     try {
       const resolvedUserId = userId || this.getResolvedUserId()
       if (!resolvedUserId) {
         console.warn("[v0] Cannot load from database: No user ID available")
-        return null
+        return false
       }
 
-      console.log("[v0] 📥 SUPABASE LOAD STARTED")
-      console.log("[v0] Loading from Supabase database for user:", resolvedUserId)
+      console.log("[v0] 🔄 LOADING FROM SUPABASE ========================================")
+      console.log("[v0] 📥 Loading data from Supabase for user:", resolvedUserId)
 
       const response = await fetch(`/api/user-data?userId=${encodeURIComponent(resolvedUserId)}`, {
         headers: {
@@ -337,20 +340,18 @@ class UserDataManager {
       if (!response.ok) {
         const result = await response.json()
         console.error("[v0] ❌ Failed to load from Supabase:", result)
-        return null
+        return false
       }
 
       const result = await response.json()
 
       if (result.data && Object.keys(result.data).length > 0) {
         console.log("[v0] 📊 Supabase data found! Loading into browser...")
-        console.log("[v0] Data loaded from Supabase:", {
-          hasProfile: !!result.data.profile,
-          categories: result.data.budgetCategories?.length || 0,
-          entries: result.data.budgetEntries?.length || 0,
-          goals: result.data.goals?.length || 0,
-          completedModules: result.data.userProgress?.completedModules?.length || 0,
-        })
+        console.log("[v0] 📊 Load Statistics:")
+        console.log("[v0]   - Budget Categories:", result.data.budgetCategories?.length || 0)
+        console.log("[v0]   - Budget Entries:", result.data.budgetEntries?.length || 0)
+        console.log("[v0]   - Goals:", result.data.goals?.length || 0)
+        console.log("[v0]   - User ID:", resolvedUserId)
 
         if (result.data.profile) {
           localStorage.setItem(`${this.STORAGE_PREFIX}profile_${resolvedUserId}`, JSON.stringify(result.data.profile))
@@ -387,20 +388,24 @@ class UserDataManager {
         }
 
         console.log("[v0] ✅ SUPABASE LOAD SUCCESSFUL - Data loaded from database into browser")
+        console.log("[v0] ✅ LOAD FROM SUPABASE COMPLETED ========================================")
+        console.log("[v0] 💾 Data loaded from Supabase successfully!")
+        console.log("[v0] 🌐 Your data is now synced across devices")
 
         if (typeof window !== "undefined") {
           window.dispatchEvent(new CustomEvent("userDataUpdated"))
           window.dispatchEvent(new CustomEvent("storageChanged"))
         }
 
-        return result.data
+        return true
       } else {
         console.log("[v0] 📭 No data in Supabase database for this user (first time signing in on this device)")
-        return null
+        return false
       }
     } catch (error) {
-      console.error("[v0] ❌ Error loading from Supabase:", error)
-      return null
+      console.error("[v0] ❌ LOAD FROM SUPABASE FAILED ========================================")
+      console.error("[v0] Error loading from database:", error)
+      return false
     }
   }
 
