@@ -942,6 +942,25 @@ class UserDataManager {
     return null
   }
 
+  private getUserIdForStorage(): string | null {
+    // Try Clerk first
+    const clerkId = this.getClerkUserId()
+    if (clerkId) {
+      return clerkId
+    }
+
+    // Fall back to legacy auth
+    if (this.isUserSignedUp()) {
+      const legacyUser = localStorage.getItem("wealthwise_current_user")
+      if (legacyUser) {
+        console.log("[v0] 📝 Using legacy auth user ID for storage")
+        return `legacy_${legacyUser}` // Prefix to distinguish from Clerk IDs
+      }
+    }
+
+    return null
+  }
+
   syncUserIdAcrossBrowserContexts(): void {
     if (typeof window === "undefined") return
 
@@ -977,12 +996,12 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
       console.log("[v0] 📊 getBudgetCategories - userId:", userId ? `${userId.substring(0, 15)}...` : null)
 
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] ⚠️ No Clerk user authenticated - returning empty categories")
+      if (!userId) {
+        console.log("[v0] ⚠️ No authenticated user - returning empty categories")
         return []
       }
 
@@ -1023,10 +1042,9 @@ class UserDataManager {
   saveBudgetCategories(categories: BudgetCategory[]): void {
     if (typeof window === "undefined") return
     try {
-      const userId = this.getClerkUserId()
-
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] ❌ Cannot save categories - no Clerk user authenticated")
+      const userId = this.getUserIdForStorage()
+      if (!userId) {
+        console.error("[v0] ❌ Cannot save categories - no authenticated user")
         console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
@@ -1087,12 +1105,12 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
       console.log("[v0] 📊 getBudgetEntries - userId:", userId ? `${userId.substring(0, 15)}...` : null)
 
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] ⚠️ No Clerk user authenticated - returning empty entries")
+      if (!userId) {
+        console.log("[v0] ⚠️ No authenticated user - returning empty entries")
         return []
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
@@ -1111,9 +1129,9 @@ class UserDataManager {
   saveBudgetEntries(entries: BudgetEntry[]): void {
     if (typeof window === "undefined") return
     try {
-      const userId = this.getClerkUserId()
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] ❌ Cannot save entries - no Clerk user authenticated")
+      const userId = this.getUserIdForStorage()
+      if (!userId) {
+        console.error("[v0] ❌ Cannot save entries - no authenticated user")
         console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
@@ -1130,9 +1148,9 @@ class UserDataManager {
   }
 
   addBudgetEntry(entry: Omit<BudgetEntry, "id">): void {
-    const userId = this.getClerkUserId()
+    const userId = this.getUserIdForStorage()
     // Prevent adding if no valid Clerk user ID
-    if (!userId || !userId.startsWith("user_")) {
+    if (!userId) {
       console.error("[v0] Cannot add budget entry - user not authenticated. Please sign in.")
       return
     }
@@ -1152,10 +1170,10 @@ class UserDataManager {
   clearAllBudgetEntries(): void {
     if (typeof window === "undefined") return
     try {
-      const userId = this.getClerkUserId()
-      // Only clear if we have a valid Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.warn("[v0] Cannot clear entries - no Clerk user authenticated")
+      const userId = this.getUserIdForStorage()
+      // Only clear if we have a valid authenticated user ID
+      if (!userId) {
+        console.warn("[v0] Cannot clear entries - no authenticated user")
         return
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_ENTRIES, userId)
@@ -1171,10 +1189,10 @@ class UserDataManager {
     if (typeof window === "undefined") return this.defaultBudgetData
 
     try {
-      const userId = this.getClerkUserId()
-      // Return default if no Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] No Clerk user authenticated - returning default budget data")
+      const userId = this.getUserIdForStorage()
+      // Return default if no authenticated user
+      if (!userId) {
+        console.log("[v0] No authenticated user - returning default budget data")
         return this.defaultBudgetData
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
@@ -1192,15 +1210,15 @@ class UserDataManager {
     try {
       const currentData = this.getBudgetData()
       const updatedData = { ...currentData, ...data }
-      const userId = this.getClerkUserId()
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot save budget data - no Clerk user authenticated")
+      const userId = this.getUserIdForStorage()
+      if (!userId) {
+        console.error("[v0] Cannot save budget data - no authenticated user")
         return
       }
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_DATA, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedData))
 
-      if (userId && userId.startsWith("user_")) {
+      if (userId) {
         console.log("[v0] 💾 Budget data saved - triggering auto-sync to Supabase")
         this.syncToDatabase(userId).catch((error) => {
           console.error("[v0] Auto-sync failed:", error)
@@ -1222,10 +1240,10 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
-      // Only reset if we have a valid Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.warn("[v0] Cannot reset budget data - no Clerk user authenticated")
+      const userId = this.getUserIdForStorage()
+      // Only reset if we have a valid authenticated user ID
+      if (!userId) {
+        console.warn("[v0] Cannot reset budget data - no authenticated user")
         return
       }
       const storageKeyCategories = this.getUserStorageKey(this.STORAGE_KEYS.BUDGET_CATEGORIES, userId)
@@ -1253,11 +1271,11 @@ class UserDataManager {
     if (typeof window === "undefined") return this.defaultUserProgress
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      // Return default if no Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] No Clerk user authenticated - returning default user progress")
+      // Return default if no authenticated user
+      if (!userId) {
+        console.log("[v0] No authenticated user - returning default user progress")
         return this.defaultUserProgress
       }
 
@@ -1289,10 +1307,10 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot save user progress - no Clerk user authenticated")
+      if (!userId) {
+        console.error("[v0] Cannot save user progress - no authenticated user")
         return
       }
 
@@ -1326,7 +1344,7 @@ class UserDataManager {
         }
       }
 
-      console.log("[v0] Triggering database sync for Clerk user:", userId)
+      console.log("[v0] Triggering database sync for user:", userId)
       this.syncToDatabase(userId).catch(console.error)
 
       // Dispatch event to notify other components
@@ -1343,10 +1361,10 @@ class UserDataManager {
     if (typeof window === "undefined") return []
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] No Clerk user authenticated - returning empty goals")
+      if (!userId) {
+        console.log("[v0] No authenticated user - returning empty goals")
         return []
       }
 
@@ -1363,10 +1381,10 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] ❌ Cannot save goals - no Clerk user authenticated")
+      if (!userId) {
+        console.error("[v0] ❌ Cannot save goals - no authenticated user")
         console.error("[v0] 💡 Please sign in to enable cross-device sync")
         return
       }
@@ -1383,10 +1401,10 @@ class UserDataManager {
   }
 
   addGoal(goal: Omit<GoalData, "id">): void {
-    const userId = this.getClerkUserId()
+    const userId = this.getUserIdForStorage()
 
-    // Prevent adding if no valid Clerk user ID
-    if (!userId || !userId.startsWith("user_")) {
+    // Prevent adding if no valid authenticated user ID
+    if (!userId) {
       console.error("[v0] Cannot add goal - user not authenticated. Please sign in.")
       return
     }
@@ -1403,11 +1421,11 @@ class UserDataManager {
   }
 
   updateGoal(id: string, updates: Partial<GoalData>): void {
-    const userId = this.getClerkUserId()
+    const userId = this.getUserIdForStorage()
 
-    // Prevent updating if no valid Clerk user ID
-    if (!userId || !userId.startsWith("user_")) {
-      console.error("[v0] Cannot update goal - no Clerk user ID")
+    // Prevent updating if no valid authenticated user ID
+    if (!userId) {
+      console.error("[v0] Cannot update goal - no authenticated user ID")
       return
     }
 
@@ -1422,11 +1440,11 @@ class UserDataManager {
   }
 
   deleteGoal(id: string): void {
-    const userId = this.getClerkUserId()
+    const userId = this.getUserIdForStorage()
 
-    // Prevent deleting if no valid Clerk user ID
-    if (!userId || !userId.startsWith("user_")) {
-      console.error("[v0] Cannot delete goal - no Clerk user ID")
+    // Prevent deleting if no valid authenticated user ID
+    if (!userId) {
+      console.error("[v0] Cannot delete goal - no authenticated user ID")
       return
     }
 
@@ -1441,11 +1459,11 @@ class UserDataManager {
     if (typeof window === "undefined") return this.defaultLearningProgress
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      // Return default if no Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] No Clerk user authenticated - returning default learning progress")
+      // Return default if no authenticated user
+      if (!userId) {
+        console.log("[v0] No authenticated user - returning default learning progress")
         return this.defaultLearningProgress
       }
 
@@ -1462,10 +1480,10 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot save learning progress - no Clerk user authenticated")
+      if (!userId) {
+        console.error("[v0] Cannot save learning progress - no authenticated user")
         return
       }
 
@@ -1474,7 +1492,7 @@ class UserDataManager {
       const storageKey = this.getUserStorageKey(this.STORAGE_KEYS.LEARNING_PROGRESS, userId)
       localStorage.setItem(storageKey, JSON.stringify(updatedProgress))
 
-      console.log("[v0] Triggering database sync for Clerk user:", userId)
+      console.log("[v0] Triggering database sync for user:", userId)
       this.syncToDatabase(userId).catch(console.error)
     } catch (error) {
       console.error("Error saving learning progress:", error)
@@ -1482,11 +1500,11 @@ class UserDataManager {
   }
 
   completeModule(moduleId: string): void {
-    const userId = this.getClerkUserId()
+    const userId = this.getUserIdForStorage()
 
-    // Prevent completion if no valid Clerk user ID
-    if (!userId || !userId.startsWith("user_")) {
-      console.error("[v0] Cannot complete module - no Clerk user ID")
+    // Prevent completion if no valid authenticated user ID
+    if (!userId) {
+      console.error("[v0] Cannot complete module - no authenticated user ID")
       return
     }
 
@@ -1539,11 +1557,11 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      // Prevent update if no valid Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.error("[v0] Cannot update lesson progress - no Clerk user ID")
+      // Prevent update if no valid authenticated user ID
+      if (!userId) {
+        console.error("[v0] Cannot update lesson progress - no authenticated user ID")
         return
       }
 
@@ -1643,11 +1661,11 @@ class UserDataManager {
     if (typeof window === "undefined") return
 
     try {
-      const userId = this.getClerkUserId()
+      const userId = this.getUserIdForStorage()
 
-      // Prevent check if no valid Clerk user ID
-      if (!userId || !userId.startsWith("user_")) {
-        console.log("[v0] Cannot check streak - no Clerk user ID")
+      // Prevent check if no valid authenticated user ID
+      if (!userId) {
+        console.log("[v0] Cannot check streak - no authenticated user ID")
         return
       }
 

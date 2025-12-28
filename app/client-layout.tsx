@@ -120,6 +120,10 @@ function ClerkUserIdSync() {
       }
 
       const persistedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
+      const hasLegacyAuth =
+        typeof window !== "undefined" &&
+        localStorage.getItem("wealthwise_authenticated") === "true" &&
+        localStorage.getItem("wealthwise_current_user")
 
       if (!user?.id) {
         console.log("[v0] 🔓 Clerk loaded - no active session")
@@ -136,6 +140,11 @@ function ClerkUserIdSync() {
           } else {
             console.log("[v0] ✅ Already synced with persisted ID")
           }
+          return
+        }
+
+        if (hasLegacyAuth) {
+          console.log("[v0] 🔐 Legacy authentication active - preserving user data")
           return
         }
 
