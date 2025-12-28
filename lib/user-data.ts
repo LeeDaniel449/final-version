@@ -952,7 +952,6 @@ class UserDataManager {
   }
 
   private getUserIdForStorage(): string | null {
-    // Try Clerk first
     const clerkId = this.getClerkUserId()
     if (clerkId) {
       return clerkId
@@ -996,7 +995,15 @@ class UserDataManager {
       return clerkUserId
     }
 
-    console.log("[v0] No valid Clerk user ID found")
+    if (this.isUserSignedUp()) {
+      const legacyUser = localStorage.getItem("wealthwise_current_user")
+      if (legacyUser) {
+        console.log("[v0] 📝 Using legacy user ID for Supabase sync:", legacyUser)
+        return legacyUser // Return email directly for Supabase
+      }
+    }
+
+    console.log("[v0] No authenticated user ID found for sync")
     return null
   }
 
