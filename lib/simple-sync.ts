@@ -138,30 +138,53 @@ export function loadFromLocal(userId: string): SyncData | null {
 export function findLegacyData(email: string): SyncData | null {
   if (typeof window === "undefined") return null
   
-  const possibleKeys = [
+  // All possible prefixes that data might be stored under
+  const prefixes = [
+    "wealthwise_",
+    "wealthwise_user_data_",
+  ]
+  
+  // All possible user ID formats
+  const userIds = [
     email,
     `legacy_${email}`,
   ]
   
-  console.log("[SYNC] Searching for legacy data under keys:", possibleKeys)
+  console.log("[SYNC] Searching for legacy data...")
   
-  for (const key of possibleKeys) {
-    const categories = localStorage.getItem(`${STORAGE_PREFIX}budget_categories_${key}`)
-    const entries = localStorage.getItem(`${STORAGE_PREFIX}budget_entries_${key}`)
-    const goals = localStorage.getItem(`${STORAGE_PREFIX}goals_${key}`)
-    
-    if (categories || entries || goals) {
-      console.log("[SYNC] Found legacy data under key:", key)
+  for (const prefix of prefixes) {
+    for (const userId of userIds) {
+      const catKey = `${prefix}budget_categories_${userId}`
+      const entKey = `${prefix}budget_entries_${userId}`
+      const goalKey = `${prefix}goals_${userId}`
       
-      const progress = localStorage.getItem(`${STORAGE_PREFIX}user_progress_${key}`)
-      const learning = localStorage.getItem(`${STORAGE_PREFIX}learning_progress_${key}`)
+      console.log("[SYNC] Checking key:", catKey)
       
-      return {
-        budgetCategories: categories ? JSON.parse(categories) : [],
-        budgetEntries: entries ? JSON.parse(entries) : [],
-        goals: goals ? JSON.parse(goals) : [],
-        userProgress: progress ? JSON.parse(progress) : { completedModules: [], completedLessons: {} },
-        learningProgress: learning ? JSON.parse(learning) : {},
+      const categories = localStorage.getItem(catKey)
+      const entries = localStorage.getItem(entKey)
+      const goals = localStorage.getItem(goalKey)
+      
+      if (categories || entries || goals) {
+        console.log("[SYNC] FOUND legacy data at prefix:", prefix, "userId:", userId)
+        
+        const progress = localStorage.getItem(`${prefix}user_progress_${userId}`)
+        const learning = localStorage.getItem(`${prefix}learning_progress_${userId}`)
+        
+        const data = {
+          budgetCategories: categories ? JSON.parse(categories) : [],
+          budgetEntries: entries ? JSON.parse(entries) : [],
+          goals: goals ? JSON.parse(goals) : [],
+          userProgress: progress ? JSON.parse(progress) : { completedModules: [], completedLessons: {} },
+          learningProgress: learning ? JSON.parse(learning) : {},
+        }
+        
+        console.log("[SYNC] Legacy data found:", {
+          categories: data.budgetCategories.length,
+          entries: data.budgetEntries.length,
+          goals: data.goals.length,
+        })
+        
+        return data
       }
     }
   }
