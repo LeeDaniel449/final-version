@@ -24,6 +24,13 @@ function DataSync() {
   const [synced, setSynced] = useState(false)
   const syncedRef = useRef(false)
 
+  // CLEAR legacy auth on startup - prevent data leakage
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    localStorage.removeItem("wealthwise_authenticated")
+    localStorage.removeItem("wealthwise_current_user")
+  }, [])
+
   // Fallback sync using stored user ID when Clerk fails to load
   useEffect(() => {
     if (typeof window === "undefined" || syncedRef.current) return
