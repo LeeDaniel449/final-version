@@ -25,33 +25,51 @@ function DataSync() {
   const syncedRef = useRef(false)
 
   useEffect(() => {
-    if (!isLoaded || !user?.id || syncedRef.current) return
+    // Get user ID from Clerk OR from localStorage
+    const clerkUserId = user?.id
+    const storedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
+    const userId = clerkUserId || storedUserId
+    
+    // Get email from Clerk or localStorage
+    const clerkEmail = user?.primaryEmailAddress?.emailAddress
+    const storedEmail = typeof window !== "undefined" ? localStorage.getItem("wealthwise_current_user") : null
+    const email = clerkEmail || storedEmail || ""
+
+    // Skip if no user ID at all, or already synced
+    if (!userId || syncedRef.current) return
+    
+    // If Clerk is still loading and we have a stored ID, use it
+    // If Clerk is loaded and has no user but we have stored ID, also try sync
+    if (!isLoaded && !storedUserId) return
 
     const doSync = async () => {
       syncedRef.current = true
       setSyncing(true)
       
-      const email = user.primaryEmailAddress?.emailAddress || ""
-      console.log("[SYNC] User signed in:", user.id, email)
+      console.log("[SYNC] Starting sync for user:", userId, "email:", email)
+      
+      // Set the user ID in userDataManager
+      userDataManager.setClerkUserId(userId)
       
       // Use simple sync - loads from Supabase, falls back to localStorage/legacy
-      const data = await syncOnSignIn(user.id, email)
-      
-      // Save to userDataManager so the rest of the app can use it
-      userDataManager.setClerkUserId(user.id)
+      const data = await syncOnSignIn(userId, email)
       
       if (data.budgetCategories?.length || data.budgetEntries?.length || data.goals?.length) {
-        // Store in localStorage under the Clerk user ID
-        localStorage.setItem(`wealthwise_budget_categories_${user.id}`, JSON.stringify(data.budgetCategories || []))
-        localStorage.setItem(`wealthwise_budget_entries_${user.id}`, JSON.stringify(data.budgetEntries || []))
-        localStorage.setItem(`wealthwise_goals_${user.id}`, JSON.stringify(data.goals || []))
+        // Store in localStorage under the user ID
+        localStorage.setItem(`wealthwise_budget_categories_${userId}`, JSON.stringify(data.budgetCategories || []))
+        localStorage.setItem(`wealthwise_budget_entries_${userId}`, JSON.stringify(data.budgetEntries || []))
+        localStorage.setItem(`wealthwise_goals_${userId}`, JSON.stringify(data.goals || []))
         if (data.userProgress) {
-          localStorage.setItem(`wealthwise_user_progress_${user.id}`, JSON.stringify(data.userProgress))
+          localStorage.setItem(`wealthwise_user_progress_${userId}`, JSON.stringify(data.userProgress))
         }
+        
+        console.log("[SYNC] Data saved to localStorage, triggering UI update")
         
         // Trigger UI update
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("userDataUpdated"))
+      } else {
+        console.log("[SYNC] No data found to sync")
       }
       
       setSyncing(false)
