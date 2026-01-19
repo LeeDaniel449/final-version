@@ -156,29 +156,53 @@ const Page = () => {
   }
 
   useEffect(() => {
-    if (!isLoaded) return
+    const loadUserData = async () => {
+      // Check for stored Clerk user ID even if Clerk hasn't loaded
+      const storedUserId = typeof window !== "undefined" 
+        ? localStorage.getItem("wealthwise_clerk_user_id") 
+        : null
+      
+      // Determine user ID - prefer Clerk, fallback to stored
+      const userId = user?.id || storedUserId
+      
+      // If we have a user ID (from Clerk or stored), set it and load data
+      if (userId && userId.startsWith("user_")) {
+        console.log("[v0] Loading data for user:", userId)
+        userDataManager.setClerkUserId(userId)
+        
+        // Load data from Supabase
+        try {
+          await userDataManager.loadFromDatabase(userId)
+        } catch (error) {
+          console.error("[v0] Failed to load from database:", error)
+        }
+        
+        // Get data from userDataManager (now populated)
+        const profile = userDataManager.getUserProfile()
+        const progress = userDataManager.getUserProgress()
+        const userGoals = userDataManager.getGoals()
 
-    if (!isSignedIn || !user) {
-      console.log("[v0] User not signed in - showing zero data")
-      setUserProfile(null)
-      setUserProgress(null)
-      setGoals([])
-      setRealOverallProgress(0)
-      setRealCompletedModules([])
-      setCompletedLessonsDetails([])
-      setTotalCompletedLessonsCount(0)
-      return
+        setUserProfile(profile)
+        setUserProgress(progress)
+        setGoals(userGoals)
+        calculateRealLearningProgress(progress)
+        return
+      }
+      
+      // No user at all - show empty state
+      if (isLoaded && !isSignedIn && !storedUserId) {
+        console.log("[v0] No user signed in and no stored user - showing empty data")
+        setUserProfile(null)
+        setUserProgress(null)
+        setGoals([])
+        setRealOverallProgress(0)
+        setRealCompletedModules([])
+        setCompletedLessonsDetails([])
+        setTotalCompletedLessonsCount(0)
+      }
     }
-
-    const profile = userDataManager.getUserProfile()
-    const progress = userDataManager.getUserProgress()
-    const userGoals = userDataManager.getGoals()
-
-    setUserProfile(profile)
-    setUserProgress(progress)
-    setGoals(userGoals)
-
-    calculateRealLearningProgress(progress)
+    
+    loadUserData()
   }, [isLoaded, user, isSignedIn])
 
   const calculateRealLearningProgress = (progress: UserProgress) => {
