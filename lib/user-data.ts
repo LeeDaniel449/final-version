@@ -1046,12 +1046,24 @@ class UserDataManager {
   }
 
   private getUserIdForStorage(): string | null {
+    // FIRST: Check for stored Clerk user ID (highest priority)
+    const storedClerkId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
+    if (storedClerkId && storedClerkId.startsWith("user_")) {
+      // Clear any legacy auth that might be lingering
+      if (localStorage.getItem("wealthwise_authenticated")) {
+        localStorage.removeItem("wealthwise_authenticated")
+        localStorage.removeItem("wealthwise_current_user")
+      }
+      return storedClerkId
+    }
+    
+    // SECOND: Check memory Clerk ID
     const clerkId = this.getClerkUserId()
     if (clerkId) {
       return clerkId
     }
 
-    // Fall back to legacy auth
+    // LAST: Fall back to legacy auth only if NO Clerk ID exists anywhere
     if (this.isUserSignedUp()) {
       const legacyUser = localStorage.getItem("wealthwise_current_user")
       if (legacyUser) {
