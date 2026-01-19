@@ -977,8 +977,10 @@ class UserDataManager {
     localStorage.removeItem(this.STORAGE_KEYS.USER_PROFILE)
   }
 
-  // Store the Clerk user ID internally
-  private clerkUserId: string | null = null
+  // Store the Clerk user ID internally - initialize from localStorage immediately
+  private clerkUserId: string | null = typeof window !== "undefined" 
+    ? localStorage.getItem("wealthwise_clerk_user_id") 
+    : null
 
   private getUserStorageKey(baseKey: string, userId?: string): string {
     if (!userId && typeof window !== "undefined") {
