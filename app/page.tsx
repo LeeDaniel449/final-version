@@ -511,28 +511,35 @@ const Page = () => {
             </Button>
             <div className="flex items-center gap-2 justify-between sm:justify-start">
               <NotificationBell />
-              <Link href={isSignedIn ? "/settings" : "/sign-in"} className="flex-1 sm:flex-initial">
+              {isSignedIn ? (
                 <Button
-                  className={`w-full sm:w-auto ${
-                    isSignedIn
-                      ? "bg-green-600 hover:bg-green-700"
-                      : "bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90"
-                  } text-white shadow-lg`}
-                  disabled={isSignedIn}
+                  className="w-full sm:w-auto bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white shadow-lg"
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({
+                        title: 'WealthLink - Financial Literacy App',
+                        text: 'Check out WealthLink - an app that helps you learn about personal finance and manage your money!',
+                        url: window.location.origin,
+                      })
+                    } else {
+                      navigator.clipboard.writeText(window.location.origin)
+                      alert('Link copied to clipboard!')
+                    }
+                  }}
                 >
-                  {isSignedIn ? (
-                    <>
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Signed In
-                    </>
-                  ) : (
-                    <>
-                      <LogIn className="w-4 h-4 mr-2" />
-                      Sign In
-                    </>
-                  )}
+                  <ArrowRight className="w-4 h-4 mr-2" />
+                  Share
                 </Button>
-              </Link>
+              ) : (
+                <Link href="/sign-in" className="flex-1 sm:flex-initial">
+                  <Button
+                    className="w-full sm:w-auto bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white shadow-lg"
+                  >
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
