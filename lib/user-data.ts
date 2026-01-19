@@ -367,13 +367,13 @@ class UserDataManager {
         }
         if (result.data.budgetCategories) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}categories_${resolvedUserId}`,
+            `${this.STORAGE_PREFIX}budget_categories_${resolvedUserId}`,
             JSON.stringify(result.data.budgetCategories),
           )
         }
         if (result.data.budgetEntries) {
           localStorage.setItem(
-            `${this.STORAGE_PREFIX}entries_${resolvedUserId}`,
+            `${this.STORAGE_PREFIX}budget_entries_${resolvedUserId}`,
             JSON.stringify(result.data.budgetEntries),
           )
         }
