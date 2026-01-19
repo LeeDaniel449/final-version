@@ -139,6 +139,9 @@ function ClerkUserIdSync() {
     }
   }, [])
 
+  // Track if initial sync has been performed
+  const [initialSyncDone, setInitialSyncDone] = useState(false)
+
   useEffect(() => {
     if (typeof window === "undefined") return
 
@@ -156,6 +159,7 @@ function ClerkUserIdSync() {
       if (!user?.id) {
         if (persistedUserId && persistedUserId.startsWith("user_")) {
           if (persistedUserId !== lastSyncedUserId) {
+            console.log("[v0] Using persisted user ID:", persistedUserId)
             setLastSyncedUserId(persistedUserId)
             userDataManager.setClerkUserId(persistedUserId)
             await performDatabaseSync(persistedUserId)
@@ -175,14 +179,29 @@ function ClerkUserIdSync() {
         return
       }
 
+      // User is signed in with Clerk
+      console.log("[v0] Clerk user detected:", user.id)
+      
       if (typeof window !== "undefined") {
         localStorage.setItem("wealthwise_clerk_user_id", user.id)
+        localStorage.setItem("wealthwise_session_active", "true")
+      }
+
+      // Perform initial sync on first load, even if user.id matches lastSyncedUserId
+      if (!initialSyncDone) {
+        console.log("[v0] Performing initial sync for user:", user.id)
+        setInitialSyncDone(true)
+        setLastSyncedUserId(user.id)
+        userDataManager.setClerkUserId(user.id)
+        await performDatabaseSync(user.id)
+        return
       }
 
       if (user.id === lastSyncedUserId) {
         return
       }
 
+      console.log("[v0] User changed, syncing new user:", user.id)
       setLastSyncedUserId(user.id)
       setSyncStatus("syncing")
 
@@ -192,24 +211,36 @@ function ClerkUserIdSync() {
     }
 
     performSync()
-  }, [user?.id, isLoaded, lastSyncedUserId, forceUIUpdate])
+  }, [user?.id, isLoaded, lastSyncedUserId, forceUIUpdate, initialSyncDone])
 
   const performDatabaseSync = async (userId: string) => {
     try {
-      const dbData = await userDataManager.loadFromDatabase(userId)
+      console.log("[v0] Starting database sync for user:", userId)
+      setSyncStatus("syncing")
+      
+      // Load data from Supabase - returns boolean indicating if data was found
+      const hasDbData = await userDataManager.loadFromDatabase(userId)
+      console.log("[v0] Load from database result:", hasDbData)
 
-      if (dbData && Object.keys(dbData).length > 0) {
-        forceUIUpdate()
-        setTimeout(forceUIUpdate, 100)
-        setTimeout(forceUIUpdate, 300)
-        setTimeout(forceUIUpdate, 500)
-        setTimeout(forceUIUpdate, 1000)
+      // Always update UI after loading
+      forceUIUpdate()
+      setTimeout(forceUIUpdate, 100)
+      setTimeout(forceUIUpdate, 300)
+      setTimeout(forceUIUpdate, 500)
+      setTimeout(forceUIUpdate, 1000)
+
+      // If no data in DB, check if we have local data to upload
+      if (!hasDbData) {
+        console.log("[v0] No data in Supabase, checking for local data to migrate...")
+        const hasLocalData = userDataManager.hasStartedBudgeting()
+        if (hasLocalData) {
+          console.log("[v0] Found local data, migrating to Supabase...")
+          await userDataManager.migrateLocalDataToDatabase(userId)
+        }
       }
 
-      const hasLocalData = userDataManager.hasStartedBudgeting()
-      if (hasLocalData) {
-        await userDataManager.migrateLocalDataToDatabase(userId)
-      }
+      // Also sync current data to ensure it's saved
+      await userDataManager.syncToDatabase(userId)
 
       setSyncStatus("success")
       setTimeout(() => setSyncStatus("idle"), 3000)
