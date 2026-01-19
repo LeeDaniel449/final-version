@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { NotificationBell } from "@/components/notification-bell"
+import { ShareButton } from "@/components/share-button" // Declare the ShareButton variable
 import { userDataManager, type UserProfile, type UserProgress, type Goal } from "@/lib/user-data"
 import { learningModules } from "@/lib/learning-data"
 import { useUser } from "@clerk/nextjs"
@@ -32,6 +33,8 @@ import {
   HelpCircle,
   X,
   ArrowRight,
+  Share2,
+  Check,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -512,24 +515,7 @@ const Page = () => {
             <div className="flex items-center gap-2 justify-between sm:justify-start">
               <NotificationBell />
               {isSignedIn ? (
-                <Button
-                  className="w-full sm:w-auto bg-gradient-to-r from-brand-blue to-brand-purple hover:from-brand-blue/90 hover:to-brand-purple/90 text-white shadow-lg"
-                  onClick={() => {
-                    if (navigator.share) {
-                      navigator.share({
-                        title: 'WealthLink - Financial Literacy App',
-                        text: 'Check out WealthLink - an app that helps you learn about personal finance and manage your money!',
-                        url: window.location.origin,
-                      })
-                    } else {
-                      navigator.clipboard.writeText(window.location.origin)
-                      alert('Link copied to clipboard!')
-                    }
-                  }}
-                >
-                  <ArrowRight className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
+                <ShareButton />
               ) : (
                 <Link href="/sign-in" className="flex-1 sm:flex-initial">
                   <Button
