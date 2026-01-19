@@ -318,7 +318,7 @@ class UserDataManager {
     }
   }
 
-  private async loadFromDatabase(userId?: string): Promise<boolean> {
+  async loadFromDatabase(userId?: string): Promise<boolean> {
     if (!this.databaseSyncEnabled) {
       console.log("[v0] Database sync is disabled")
       return false
