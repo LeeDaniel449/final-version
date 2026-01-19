@@ -59,7 +59,7 @@ export default function HomePage() {
 
   const tutorialSteps = [
     {
-      title: "Welcome to WealthWise! 👋",
+      title: "Welcome to WealthLink! 👋",
       description:
         "Let's take a quick tour of your financial dashboard. This tutorial will show you all the key features to help you manage your money effectively.",
       highlight: null,
