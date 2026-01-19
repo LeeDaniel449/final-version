@@ -25,28 +25,42 @@ function DataSync() {
   const syncedRef = useRef(false)
 
   useEffect(() => {
-    // Get user ID from Clerk OR from localStorage
+    if (typeof window === "undefined") return
+    
+    // Get user ID from Clerk
     const clerkUserId = user?.id
-    const storedUserId = typeof window !== "undefined" ? localStorage.getItem("wealthwise_clerk_user_id") : null
-    const userId = clerkUserId || storedUserId
-    
-    // Get email from Clerk or localStorage
     const clerkEmail = user?.primaryEmailAddress?.emailAddress
-    const storedEmail = typeof window !== "undefined" ? localStorage.getItem("wealthwise_current_user") : null
-    const email = clerkEmail || storedEmail || ""
-
-    // Skip if no user ID at all, or already synced
-    if (!userId || syncedRef.current) return
     
-    // If Clerk is still loading and we have a stored ID, use it
-    // If Clerk is loaded and has no user but we have stored ID, also try sync
-    if (!isLoaded && !storedUserId) return
+    // Check for legacy auth data
+    const legacyEmail = localStorage.getItem("wealthwise_current_user")
+    const hasLegacyAuth = localStorage.getItem("wealthwise_authenticated") === "true"
+    
+    // If Clerk user is signed in, CLEAR any legacy auth that doesn't match
+    if (clerkUserId && clerkEmail) {
+      if (hasLegacyAuth && legacyEmail && legacyEmail !== clerkEmail) {
+        console.log("[SYNC] Clearing mismatched legacy auth. Clerk email:", clerkEmail, "Legacy email:", legacyEmail)
+        localStorage.removeItem("wealthwise_authenticated")
+        localStorage.removeItem("wealthwise_current_user")
+      }
+    }
+    
+    // Only use Clerk user ID - don't fall back to legacy
+    const userId = clerkUserId
+    const email = clerkEmail || ""
+
+    // Skip if no Clerk user ID or already synced
+    if (!userId || syncedRef.current) return
+    if (!isLoaded) return
 
     const doSync = async () => {
       syncedRef.current = true
       setSyncing(true)
       
-      console.log("[SYNC] Starting sync for user:", userId, "email:", email)
+      console.log("[SYNC] Starting sync for Clerk user:", userId, "email:", email)
+      
+      // Clear any legacy auth when using Clerk
+      localStorage.removeItem("wealthwise_authenticated")
+      localStorage.removeItem("wealthwise_current_user")
       
       // Set the user ID in userDataManager
       userDataManager.setClerkUserId(userId)
