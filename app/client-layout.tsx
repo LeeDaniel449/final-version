@@ -146,15 +146,20 @@ function ClerkUserIdSync() {
 
   // Define performDatabaseSync BEFORE useEffect that uses it
   const performDatabaseSync = useCallback(async (userId: string) => {
+    console.log("[v0] performDatabaseSync CALLED with userId:", userId)
     try {
       console.log("[v0] === STARTING DATABASE SYNC ===")
       console.log("[v0] User ID:", userId)
       setSyncStatus("syncing")
       
-      // FIRST: Load data from Supabase
-      console.log("[v0] Step 1: Loading data from Supabase...")
+      // STEP 0: ALWAYS check for legacy data first and migrate it
+      console.log("[v0] Step 0: Checking for legacy data to migrate...")
+      await userDataManager.migrateLocalDataToDatabase(userId)
+      
+      // STEP 1: Load data from Supabase
+      console.log("[v0] Step 1: About to call loadFromDatabase...")
       const hasDbData = await userDataManager.loadFromDatabase(userId)
-      console.log("[v0] Load from database result:", hasDbData)
+      console.log("[v0] Step 1 COMPLETE - Load from database result:", hasDbData)
 
       // Always update UI after loading
       forceUIUpdate()
@@ -163,19 +168,20 @@ function ClerkUserIdSync() {
       setTimeout(forceUIUpdate, 500)
       setTimeout(forceUIUpdate, 1000)
 
-      // If no data in DB, check if we have local data to upload
-      if (!hasDbData) {
-        console.log("[v0] Step 2: No data in Supabase, checking for local data to migrate...")
-        const hasLocalData = userDataManager.hasStartedBudgeting()
-        if (hasLocalData) {
-          console.log("[v0] Found local data, migrating to Supabase...")
-          await userDataManager.migrateLocalDataToDatabase(userId)
-        }
+      // STEP 2: Sync current data to database (only if we have data)
+      const categories = userDataManager.getBudgetCategories()
+      const entries = userDataManager.getBudgetEntries()
+      const goals = userDataManager.getGoals()
+      
+      if (categories.length > 0 || entries.length > 0 || goals.length > 0) {
+        console.log("[v0] Step 2: Syncing data to Supabase...")
+        console.log("[v0] - Categories:", categories.length)
+        console.log("[v0] - Entries:", entries.length)
+        console.log("[v0] - Goals:", goals.length)
+        await userDataManager.syncToDatabase(userId)
+      } else {
+        console.log("[v0] Step 2: No local data to sync, skipping upload to prevent overwriting")
       }
-
-      // Sync current data to database
-      console.log("[v0] Step 3: Syncing current data to Supabase...")
-      await userDataManager.syncToDatabase(userId)
 
       console.log("[v0] === DATABASE SYNC COMPLETE ===")
       setSyncStatus("success")
