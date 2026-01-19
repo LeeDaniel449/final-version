@@ -24,62 +24,86 @@ function DataSync() {
   const [synced, setSynced] = useState(false)
   const syncedRef = useRef(false)
 
+  // Fallback sync using stored user ID when Clerk fails to load
+  useEffect(() => {
+    if (typeof window === "undefined" || syncedRef.current) return
+    
+    // Wait a bit for Clerk, then fallback to stored user ID
+    const fallbackTimer = setTimeout(async () => {
+      if (syncedRef.current) return
+      
+      const storedUserId = localStorage.getItem("wealthwise_clerk_user_id")
+      if (!storedUserId || !storedUserId.startsWith("user_")) return
+      
+      console.log("[SYNC] Clerk timeout - using stored user ID:", storedUserId)
+      syncedRef.current = true
+      setSyncing(true)
+      
+      userDataManager.setClerkUserId(storedUserId)
+      
+      // Load from Supabase
+      const data = await syncOnSignIn(storedUserId, "")
+      
+      if (data.budgetCategories?.length || data.budgetEntries?.length || data.goals?.length) {
+        localStorage.setItem(`wealthwise_budget_categories_${storedUserId}`, JSON.stringify(data.budgetCategories || []))
+        localStorage.setItem(`wealthwise_budget_entries_${storedUserId}`, JSON.stringify(data.budgetEntries || []))
+        localStorage.setItem(`wealthwise_goals_${storedUserId}`, JSON.stringify(data.goals || []))
+        if (data.userProgress) {
+          localStorage.setItem(`wealthwise_user_progress_${storedUserId}`, JSON.stringify(data.userProgress))
+        }
+        
+        console.log("[SYNC] Fallback sync complete, triggering UI update")
+        window.dispatchEvent(new Event("storage"))
+        window.dispatchEvent(new CustomEvent("userDataUpdated"))
+      }
+      
+      setSyncing(false)
+      setSynced(true)
+      setTimeout(() => setSynced(false), 2000)
+    }, 2000) // 2 second timeout before fallback
+    
+    return () => clearTimeout(fallbackTimer)
+  }, [])
+
+  // Main sync using Clerk user
   useEffect(() => {
     if (typeof window === "undefined") return
+    if (!isLoaded || !user?.id || syncedRef.current) return
     
-    // Get user ID from Clerk
-    const clerkUserId = user?.id
-    const clerkEmail = user?.primaryEmailAddress?.emailAddress
+    const clerkUserId = user.id
+    const clerkEmail = user.primaryEmailAddress?.emailAddress || ""
     
-    // Check for legacy auth data
+    // Clear mismatched legacy auth
     const legacyEmail = localStorage.getItem("wealthwise_current_user")
-    const hasLegacyAuth = localStorage.getItem("wealthwise_authenticated") === "true"
-    
-    // If Clerk user is signed in, CLEAR any legacy auth that doesn't match
-    if (clerkUserId && clerkEmail) {
-      if (hasLegacyAuth && legacyEmail && legacyEmail !== clerkEmail) {
-        console.log("[SYNC] Clearing mismatched legacy auth. Clerk email:", clerkEmail, "Legacy email:", legacyEmail)
-        localStorage.removeItem("wealthwise_authenticated")
-        localStorage.removeItem("wealthwise_current_user")
-      }
+    if (legacyEmail && legacyEmail !== clerkEmail) {
+      localStorage.removeItem("wealthwise_authenticated")
+      localStorage.removeItem("wealthwise_current_user")
     }
-    
-    // Only use Clerk user ID - don't fall back to legacy
-    const userId = clerkUserId
-    const email = clerkEmail || ""
-
-    // Skip if no Clerk user ID or already synced
-    if (!userId || syncedRef.current) return
-    if (!isLoaded) return
 
     const doSync = async () => {
       syncedRef.current = true
       setSyncing(true)
       
-      console.log("[SYNC] Starting sync for Clerk user:", userId, "email:", email)
+      console.log("[SYNC] Starting sync for Clerk user:", clerkUserId, "email:", clerkEmail)
       
-      // Clear any legacy auth when using Clerk
+      // Store the Clerk user ID for future fallback
+      localStorage.setItem("wealthwise_clerk_user_id", clerkUserId)
       localStorage.removeItem("wealthwise_authenticated")
       localStorage.removeItem("wealthwise_current_user")
       
-      // Set the user ID in userDataManager
-      userDataManager.setClerkUserId(userId)
+      userDataManager.setClerkUserId(clerkUserId)
       
-      // Use simple sync - loads from Supabase, falls back to localStorage/legacy
-      const data = await syncOnSignIn(userId, email)
+      const data = await syncOnSignIn(clerkUserId, clerkEmail)
       
       if (data.budgetCategories?.length || data.budgetEntries?.length || data.goals?.length) {
-        // Store in localStorage under the user ID
-        localStorage.setItem(`wealthwise_budget_categories_${userId}`, JSON.stringify(data.budgetCategories || []))
-        localStorage.setItem(`wealthwise_budget_entries_${userId}`, JSON.stringify(data.budgetEntries || []))
-        localStorage.setItem(`wealthwise_goals_${userId}`, JSON.stringify(data.goals || []))
+        localStorage.setItem(`wealthwise_budget_categories_${clerkUserId}`, JSON.stringify(data.budgetCategories || []))
+        localStorage.setItem(`wealthwise_budget_entries_${clerkUserId}`, JSON.stringify(data.budgetEntries || []))
+        localStorage.setItem(`wealthwise_goals_${clerkUserId}`, JSON.stringify(data.goals || []))
         if (data.userProgress) {
-          localStorage.setItem(`wealthwise_user_progress_${userId}`, JSON.stringify(data.userProgress))
+          localStorage.setItem(`wealthwise_user_progress_${clerkUserId}`, JSON.stringify(data.userProgress))
         }
         
         console.log("[SYNC] Data saved to localStorage, triggering UI update")
-        
-        // Trigger UI update
         window.dispatchEvent(new Event("storage"))
         window.dispatchEvent(new CustomEvent("userDataUpdated"))
       } else {
