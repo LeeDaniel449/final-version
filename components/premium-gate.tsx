@@ -68,19 +68,11 @@ export function PremiumGate({ children }: { children: React.ReactNode }) {
       return
     }
 
-    const hasUnlocksAllFeature = has?.({ feature: 'unlocks_all' }) || false
-    const hasPremiumMetadata = user.publicMetadata?.premium === true
-    const hasPremiumAccess = hasUnlocksAllFeature || hasPremiumMetadata
-    
-    console.log("[v0] ========== PREMIUM STATUS CHECK ==========")
+    // Grant access to ALL signed-in users - no premium check needed
+    console.log("[v0] PremiumGate: User is signed in - granting full access")
     console.log("[v0] User ID:", user.id)
-    console.log("[v0] has({ feature: 'unlocks_all' }):", hasUnlocksAllFeature)
-    console.log("[v0] publicMetadata.premium:", hasPremiumMetadata)
-    console.log("[v0] hasPremiumAccess:", hasPremiumAccess)
-    console.log("[v0] Will show overlay:", !hasPremiumAccess && !isPublicRoute)
-    console.log("[v0] ==========================================")
-
-    setShowOverlay(!hasPremiumAccess)
+    
+    setShowOverlay(false)
     setCheckComplete(true)
 
     return () => clearTimeout(timeout)
